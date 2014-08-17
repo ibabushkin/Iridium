@@ -154,7 +154,7 @@ class Condition(Structure):
 		self.corresponding_token = 'condition'
 	
 	def code(self):
-		return ''.join(self.code_lines)
+		return '\n'.join(self.code_lines)
 		
 	def get_code_begin(self):
 		return ''
