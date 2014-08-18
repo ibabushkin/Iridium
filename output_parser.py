@@ -24,6 +24,8 @@ class OutputParser:
 			self.stack.append(CodeBlock(index+1))
 		elif string.startswith('loop'):
 			self.stack.append(Loop())
+		elif string.startswith('doloop'):
+			self.stack.append(DoLoop())
 		elif string.startswith('if'):
 			self.stack.append(If())
 		elif string.startswith('elseif'):
@@ -31,7 +33,10 @@ class OutputParser:
 		elif string.startswith('else'):
 			self.stack.push(Else())
 		elif string.startswith('condition'):
-			self.stack.append(Condition(index+1))
+			do_param = False
+			if self.stack[-1].corresponding_token == 'doloop':
+				do_param = True
+			self.stack.append(Condition(index+1, do_param))
 	
 	def get_lines(self, first, last):
 		return self.lines[first:last]
@@ -101,7 +106,7 @@ class CodeBlock(Structure):
 class Loop(Structure):
 	def __init__(self):
 		Structure.__init__(self)
-		self.do = None # do-while loop?
+		#self.do = None # do-while loop?
 		self.condition = None
 		self.corresponding_token = 'loop'
 	
@@ -110,6 +115,19 @@ class Loop(Structure):
 	
 	def get_code_end(self):
 		return '}\n'
+		
+class DoLoop(Structure):
+	def __init__(self):
+		Structure.__init__(self)
+		#self.do = None # do-while loop?
+		self.condition = None
+		self.corresponding_token = 'doloop'
+	
+	def get_code_begin(self):
+		return 'do{'
+	
+	def get_code_end(self):
+		return ');\n'
 		
 class If(Structure):
 	def __init__(self):
@@ -147,11 +165,12 @@ class Else(Structure):
 		return '}\n'
 
 class Condition(Structure):
-	def __init__(self, first_line):
+	def __init__(self, first_line, do=False):
 		Structure.__init__(self)
 		self.code_lines = []
 		self.first_line = first_line
 		self.corresponding_token = 'condition'
+		self.do_while_loop = do
 	
 	def code(self):
 		return '\n'.join(self.code_lines)
@@ -160,8 +179,11 @@ class Condition(Structure):
 		return ''
 	
 	def get_code_end(self):
-		return '/**'+ self.code() +'*/){\n'
+		if not self.do_while_loop:
+			return '/**'+ self.code() +'*/){\n'
+		return '}while(/**'+ self.code() +'**/'
 
 o = OutputParser('tests/func.asm')
 o.parse()
+print '=============END OF DEBUG=============='
 print o.output

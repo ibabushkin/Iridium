@@ -14,7 +14,7 @@ Dieses Dokument soll eine komplette Spezifikation besagten Metaformats
 darstellen und wird bei Bedarf aktualisiert und geändert, zumal die Soft-
 ware sich noch im sehr frühen Alphastadium befindet.
 
-Formatspezfikation v0.1:
+Formatspezfikation v0.2:
 
 Dokumente dieses Formats sind Assemblerlstings, die auf besondere Weise mit
 Kommentaren versehen sind, die vom Formatparser verwendet werden, um eine
@@ -55,6 +55,7 @@ if : If-Struktur
 elseif : Else-If-Struktur
 else : Else-Block
 loop : Schleife, derzet kein Suport für vor-/nachprüfende Schleifen
+doloop : Nachprüfende Schleife, neu hinzugefügt ab v0.2
 condition : Bedingung
 
 Anmerkung: der aktuelle Parser verwendet einen Stack um alle aktuellen
@@ -63,6 +64,9 @@ fatal für den Output.
 
 Die if-, elseif- und loop-Strukturen erfordern als ersten Nachfolger
 eine condition-, als zweiten (optionalen) eine code-Struktur.
+Die doloop-Struktur erfordert 2 Nachfolger: eine code-Struktur und danach eine
+condition-Struktur. Wichtig: Der Parser unterscheidet zwischen Conditions in
+Nachprüfenden Schleifen und anderen Kontexten (s. Quelllcode)
 
 Auch wenn der Stack als Speicher für alle aktuellen Strukturen als Schwach-
 stelle erscheint, ist er der sicherste und sinnvollste Weg, da er syntaktisch
