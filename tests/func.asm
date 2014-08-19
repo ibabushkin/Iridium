@@ -1,5 +1,5 @@
 _sort_string:
-; begin func(_sort_string)
+; begin func(_sort_string,int,int|a,int|b)
 	push	ebp
 	mov ebp, esp
 ; bytes(40)

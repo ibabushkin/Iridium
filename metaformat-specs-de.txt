@@ -50,7 +50,7 @@ bytes(anzahl) : fügt Kommentar über allozierten Speicher, angegeben über
                 
 Knotentokens:
 
-func : Funktion, derzeit kein Support für Parameter und Rückgabewerte
+func(name, return_type, args...) : Funktion
 if : If-Struktur
 elseif : Else-If-Struktur
 else : Else-Block
@@ -66,7 +66,7 @@ Die if-, elseif- und loop-Strukturen erfordern als ersten Nachfolger
 eine condition-, als zweiten (optionalen) eine code-Struktur.
 Die doloop-Struktur erfordert 2 Nachfolger: eine code-Struktur und danach eine
 condition-Struktur. Wichtig: Der Parser unterscheidet zwischen Conditions in
-Nachprüfenden Schleifen und anderen Kontexten (s. Quelllcode)
+Nachprüfenden Schleifen und anderen Kontexten (s. Quellcode)
 
 Auch wenn der Stack als Speicher für alle aktuellen Strukturen als Schwach-
 stelle erscheint, ist er der sicherste und sinnvollste Weg, da er syntaktisch

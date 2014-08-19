@@ -28,9 +28,12 @@ class OutputParser:
 		# for details.
 		# @param index: the numer of the current line in the ASM-listing
 		if string.startswith('func'): # self-explanatory...
-			print 'Function...'
-			func_name = string.split('(')[1][:-1] # get <name> from "begin func(<name>)"
-			self.stack.append(Function(func_name))
+			print 'Function...' # debug
+			arguments = string.split('(')[1][:-1].split(',')
+			a = []
+			if len(arguments) > 2:
+				a = arguments[2:]
+			self.stack.append(Function(arguments[0], arguments[1], a)) # name, ret. the rest
 		elif string.startswith('code'):
 			self.stack.append(CodeBlock(index+1))
 		elif string.startswith('loop'):
@@ -102,16 +105,26 @@ class Structure:
 
 class Function(Structure):
 	# the abstraction of a function
-	def __init__(self, name, ret='int', args=[]):
+	def __init__(self, name, ret='int', args=''):
 		Structure.__init__(self)
 		self.name = name # the name, e.g printf
 		self.ret = ret # datatype that is returned
-		self.args = args # a list of all arguments, not used
+		self.args = args # a list of all args of the form ['int|a', 'char|b']
 		self.corresponding_token = 'func' # see class Structure
 	
+	def format_args(self):
+		l = len(self.args)
+		ret = ''
+		for i, j in enumerate(self.args):
+			ret += j.replace('|', ' ')
+			if i < l-1:
+				ret += ', '
+		return ret
+			
+		
 	def get_code_begin(self):
 		# see class Structure
-		return self.ret + ' ' + self.name + '(){\n'
+		return self.ret + ' ' + self.name + '('+ self.format_args() +'){\n'
 	
 	def get_code_end(self):
 		# see class Structure
@@ -138,7 +151,7 @@ class Loop(Structure):
 	# the abstraction of a loop
 	def __init__(self):
 		Structure.__init__(self)
-		self.condition = None # not used
+		#self.condition = None # not used
 		self.corresponding_token = 'loop' # see class Structure
 	
 	def get_code_begin(self):
@@ -153,7 +166,7 @@ class DoLoop(Structure):
 	# the abstraction of a do-while loop
 	def __init__(self):
 		Structure.__init__(self)
-		self.condition = None # not used
+		#self.condition = None # not used
 		self.corresponding_token = 'doloop' # see class Structure
 	
 	def get_code_begin(self):
@@ -168,7 +181,7 @@ class If(Structure):
 	# the abstraction of an if-block
 	def __init__(self):
 		Structure.__init__(self)
-		self.condition = None # not used
+		#self.condition = None # not used
 		self.corresponding_token = 'if' # see class Structure
 	
 	def get_code_begin(self):
@@ -183,7 +196,7 @@ class ElseIf(Structure):
 	# an else-if structure
 	def __init__(self):
 		Structure.__init__(self)
-		self.condition = None # not used
+		#self.condition = None # not used
 		self.corresponding_token = 'elseif' # see class Structure
 	
 	def get_code_begin(self):
