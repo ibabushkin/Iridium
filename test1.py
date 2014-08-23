@@ -146,9 +146,9 @@ class Loader:
             print 'Section: %s. Virtual Address: 0x%x, Virtual Size: 0x%x, Size of raw Data: 0x%x' % (section.Name, hex(section.VirtualAddress), hex(section.Misc_VirtualSize), section.SizeOfRawData)
 
 if __name__ == '__main__':
-    l = Loader('D:\Ino\Development and Hacking\RE Material\compiled\\31.exe')
+    l = Loader('tests/1.exe')
     pl = LabelParser(l.code)
     pl.parse()
-    #p = Parser(pl.code)
-    #p.parse()
+    p = Parser(pl.code)
+    p.parse()
     print hex(l.ep)
