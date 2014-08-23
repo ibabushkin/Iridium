@@ -32,8 +32,13 @@ class Parser:
             
 class FunctionParser:
     def __init__(self, function):
-        self.function = function
+        self.code = function.code
+        self.label_indexes = []
+        self.last_label = None
+    
+    def parse(self):
+        
             
 if __name__ == '__main__':
-    p = Parser('tests/1.asm')
+    p = Parser('tests/2.asm')
     p.print_results()

@@ -1,11 +1,10 @@
+; Input	MD5   :	9A8927D1B44804C9A1F707040D7996DB
 
-; Input	MD5   :	C16E98491BBBC3B788F79D31814FC632
-
-; File Name   :	Z:\home\thewormkill\decomp\tests\1.exe
+; File Name   :	Z:\home\thewormkill\decomp\tests\2.exe
 ; Format      :	Portable executable for	80386 (PE)
 ; Imagebase   :	400000
 ; Section 1. (virtual address 00001000)
-; Virtual size			: 000067B0 (  26544.)
+; Virtual size			: 00006760 (  26464.)
 ; Section size in file		: 00006800 (  26624.)
 ; Offset to raw	data for section: 00000400
 ; Flags	60500020: Text Executable Readable
@@ -66,13 +65,13 @@ call	__set_app_type
 
 loc_4010B2:
 mov	dword ptr [esp], 0FFFFFFFFh
-call	sub_4016C0
+call	sub_401670
 mov	edx, ds:dword_40A040
 mov	ds:dword_40AD8C, eax
 mov	ds:dword_40AD90, eax
 mov	eax, ds:_fmode
 mov	[eax], edx
-call	sub_4019D0
+call	sub_401980
 cmp	dword_408018, 1
 jz	short loc_401150
 xor	eax, eax
@@ -106,8 +105,8 @@ jmp	loc_401098
 align 10h
 
 loc_401150:
-mov	dword ptr [esp], offset	sub_401970
-call	sub_401960
+mov	dword ptr [esp], offset	sub_401920
+call	sub_401910
 xor	eax, eax
 add	esp, 1Ch
 retn
@@ -151,7 +150,7 @@ mov	edi, edx
 sub	esp, 7Ch
 rep stosd
 mov	al, 30h
-call	sub_402720
+call	sub_4026D0
 sub	esp, eax
 lea	eax, [esp+88h+var_6E+1]
 and	eax, 0FFFFFFF0h
@@ -186,7 +185,7 @@ loc_401214:
 mov	[esp+8Ch+var_84], 0
 mov	[esp+8Ch+var_88], ebx
 mov	[esp+8Ch+var_8C], offset dword_40AD94
-call	sub_402780
+call	sub_402730
 sub	esp, 0Ch
 test	eax, eax
 jnz	short loc_401200
@@ -212,7 +211,7 @@ jnz	short loc_401273
 lock xchg ebx, ds:dword_40AD94
 
 loc_401273:
-mov	eax, ds:off_409038
+mov	eax, ds:off_409030
 test	eax, eax
 jz	short loc_401298
 mov	[esp+8Ch+var_84], 0
@@ -222,12 +221,12 @@ call	eax ; TlsCallback_0
 sub	esp, 0Ch	; lpTopLevelExceptionFilter
 
 loc_401298:
-call	sub_401C80
-mov	[esp+8Ch+var_8C], offset loc_4017B0
+call	sub_401C30
+mov	[esp+8Ch+var_8C], offset loc_401760
 call	ds:SetUnhandledExceptionFilter
 sub	esp, 4		; hModule
 mov	ds:dword_40A044, eax
-call	sub_402210
+call	sub_4021C0
 mov	[esp+8Ch+var_88], offset a_set_invalid_p ; "_set_invalid_parameter_handler"
 mov	[esp+8Ch+var_8C], eax
 call	ds:GetProcAddress
@@ -238,7 +237,7 @@ mov	[esp+8Ch+var_8C], offset dword_401000
 call	eax ; TlsCallback_0
 
 loc_4012D8:
-call	sub_4022D0
+call	sub_402280
 mov	eax, ds:_acmdln
 xor	ecx, ecx
 mov	ds:dword_40AD88, 400000h
@@ -329,7 +328,7 @@ loc_4013BA:
 mov	eax, [ebp-70h]
 mov	dword ptr [eax+ebx], 0
 mov	ds:dword_40A008, eax
-call	sub_402360
+call	sub_402310
 mov	eax, ds:__initenv
 mov	edx, ds:dword_40A00C
 mov	[eax], edx
@@ -400,7 +399,7 @@ sub_401180 endp
 align 10h
 sub	esp, 0Ch
 mov	ds:dword_40A03C, 1
-call	sub_402380
+call	sub_402330
 add	esp, 0Ch
 jmp	sub_401180
 align 10h
@@ -411,7 +410,7 @@ public start
 start proc near
 sub	esp, 0Ch
 mov	ds:dword_40A03C, 0
-call	sub_402380
+call	sub_402330
 add	esp, 0Ch
 jmp	sub_401180
 start endp
@@ -425,101 +424,43 @@ main proc near
 
 var_20=	dword ptr -20h
 var_1C=	dword ptr -1Ch
-var_8= dword ptr -8
 var_4= dword ptr -4
 
 push	ebp
 mov	ebp, esp
 and	esp, 0FFFFFFF0h
 sub	esp, 20h	; char *
-call	sub_402360
-mov	[esp+20h+var_4], 7
-mov	[esp+20h+var_8], 0Dh
-mov	eax, [esp+20h+var_8]
-mov	[esp+20h+var_1C], eax
+call	sub_402310
+mov	[esp+20h+var_4], 0
+jmp	short loc_401531
+
+loc_401518:
 mov	eax, [esp+20h+var_4]
-mov	[esp+20h+var_20], eax
-call	add
 mov	[esp+20h+var_1C], eax
-mov	[esp+20h+var_20], offset aAddD ; "add: %d"
+mov	[esp+20h+var_20], offset aIterationD ; "Iteration %d"
 call	printf
-mov	eax, [esp+20h+var_8]
-mov	[esp+20h+var_1C], eax
+add	[esp+20h+var_4], 1
+
+loc_401531:
+cmp	[esp+20h+var_4], 13h
+jle	short loc_401518
+mov	[esp+20h+var_4], 0FFFFFFFFh
+
+loc_401540:
+add	[esp+20h+var_4], 1
 mov	eax, [esp+20h+var_4]
-mov	[esp+20h+var_20], eax
-call	sub
 mov	[esp+20h+var_1C], eax
-mov	[esp+20h+var_20], offset aSubD ; "sub: %d"
+mov	[esp+20h+var_20], offset aIterationD ; "Iteration %d"
 call	printf
-mov	eax, [esp+20h+var_8]
-mov	[esp+20h+var_1C], eax
-mov	eax, [esp+20h+var_4]
-mov	[esp+20h+var_20], eax
-call	mul
-mov	[esp+20h+var_1C], eax
-mov	[esp+20h+var_20], offset aMulD ; "mul: %d"
-call	printf
+cmp	[esp+20h+var_4], 13h
+jle	short loc_401540
 call	_getch
 mov	eax, 0
 leave
 retn
 main endp
 
-
-
-; Attributes: bp-based frame
-
-add proc near
-
-arg_0= dword ptr  8
-arg_4= dword ptr  0Ch
-
-push	ebp
-mov	ebp, esp
-mov	eax, [ebp+arg_4]
-mov	edx, [ebp+arg_0]
-add	eax, edx
-pop	ebp
-retn
-add endp
-
-
-
-; Attributes: bp-based frame
-
-sub proc near
-
-arg_0= dword ptr  8
-arg_4= dword ptr  0Ch
-
-push	ebp
-mov	ebp, esp
-mov	eax, [ebp+arg_4]
-mov	edx, [ebp+arg_0]
-mov	ecx, edx
-sub	ecx, eax
-mov	eax, ecx
-pop	ebp
-retn
-sub endp
-
-
-
-; Attributes: bp-based frame
-
-mul proc near
-
-arg_0= dword ptr  8
-arg_4= dword ptr  0Ch
-
-push	ebp
-mov	ebp, esp
-mov	eax, [ebp+arg_0]
-imul	eax, [ebp+arg_4]
-pop	ebp
-retn
-mul endp
-
+align 10h
 
 
 
@@ -536,21 +477,21 @@ arg_8= dword ptr  0Ch
 sub	esp, 1Ch
 mov	eax, [esp+1Ch+arg_4]
 test	eax, eax
-jz	short loc_4015E0
+jz	short loc_401590
 cmp	eax, 3
-jz	short loc_4015E0
+jz	short loc_401590
 mov	eax, 1
 add	esp, 1Ch
 retn	0Ch
 align 10h
 
-loc_4015E0:
+loc_401590:
 mov	edx, [esp+1Ch+arg_8]
 mov	[esp+1Ch+var_18], eax
 mov	eax, [esp+1Ch+arg_0]
 mov	[esp+1Ch+var_14], edx
 mov	[esp+1Ch+var_1C], eax
-call	sub_402680
+call	sub_402630
 mov	eax, 1
 add	esp, 1Ch
 retn	0Ch
@@ -574,52 +515,52 @@ push	ebx
 sub	esp, 18h
 cmp	dword_408014, 2
 mov	eax, [esp+18h+arg_4]
-jz	short loc_40162B
+jz	short loc_4015DB
 mov	dword_408014, 2
 
-loc_40162B:
+loc_4015DB:
 cmp	eax, 2
-jz	short loc_401641
+jz	short loc_4015F1
 cmp	eax, 1
-jz	short loc_401670
+jz	short loc_401620
 
-loc_401635:
+loc_4015E5:
 add	esp, 18h
 mov	eax, 1
 pop	ebx
 retn	0Ch
 
-loc_401641:
+loc_4015F1:
 mov	ebx, offset unk_40C030
 cmp	ebx, offset unk_40C030
-jz	short loc_401635
+jz	short loc_4015E5
 db	66h
 nop
 
-loc_401650:
+loc_401600:
 mov	eax, [ebx]
 test	eax, eax
-jz	short loc_401658
+jz	short loc_401608
 call	eax
 
-loc_401658:
+loc_401608:
 add	ebx, 4
 cmp	ebx, offset unk_40C030
-jnz	short loc_401650
+jnz	short loc_401600
 add	esp, 18h
 mov	eax, 1
 pop	ebx
 retn	0Ch
 align 10h
 
-loc_401670:
+loc_401620:
 mov	eax, [esp+18h+arg_8]
 mov	[esp+18h+var_14], 1
 mov	[esp+18h+var_10], eax
 mov	eax, [esp+18h+arg_0]
 mov	[esp+18h+var_18], eax
-call	sub_402680
-jmp	short loc_401635
+call	sub_402630
+jmp	short loc_4015E5
 TlsCallback_0 endp
 
 align 10h
@@ -632,31 +573,31 @@ align 10h
 
 
 
-sub_4016B0 proc	near
+sub_401660 proc	near
 
 arg_0= dword ptr  4
 
 mov	eax, [esp+arg_0]
 retn
-sub_4016B0 endp
+sub_401660 endp
 
 align 10h
 
 
 
-sub_4016C0 proc	near
+sub_401670 proc	near
 
 arg_0= dword ptr  4
 
 mov	eax, [esp+arg_0]
 retn
-sub_4016C0 endp
+sub_401670 endp
 
 align 10h
 
 
 
-sub_4016D0 proc	near
+sub_401680 proc	near
 
 var_28=	dword ptr -28h
 var_24=	dword ptr -24h
@@ -669,19 +610,19 @@ push	ebx
 sub	esp, 28h
 mov	eax, ds:dword_40AD90
 mov	[esp+28h+var_28], eax
-call	sub_4016B0
+call	sub_401660
 cmp	eax, 0FFFFFFFFh
 mov	[esp+28h+var_10], eax
-jz	loc_401770
+jz	loc_401720
 mov	[esp+28h+var_28], 8
 call	_lock
 mov	eax, ds:dword_40AD90
 mov	[esp+28h+var_28], eax
-call	sub_4016B0
+call	sub_401660
 mov	[esp+28h+var_10], eax
 mov	eax, ds:dword_40AD8C
 mov	[esp+28h+var_28], eax
-call	sub_4016B0
+call	sub_401660
 mov	[esp+28h+var_C], eax
 lea	eax, [esp+28h+var_C]
 mov	[esp+28h+var_20], eax
@@ -693,11 +634,11 @@ call	__dllonexit
 mov	ebx, eax
 mov	eax, [esp+28h+var_10]
 mov	[esp+28h+var_28], eax
-call	sub_4016C0
+call	sub_401670
 mov	ds:dword_40AD90, eax
 mov	eax, [esp+28h+var_C]
 mov	[esp+28h+var_28], eax
-call	sub_4016C0
+call	sub_401670
 mov	[esp+28h+var_28], 8
 mov	ds:dword_40AD8C, eax
 call	_unlock
@@ -707,7 +648,7 @@ pop	ebx
 retn			; _onexit_t
 align 10h
 
-loc_401770:
+loc_401720:
 mov	eax, [esp+28h+arg_0]
 mov	[esp+28h+var_28], eax
 call	ds:_onexit
@@ -716,13 +657,13 @@ mov	ebx, eax
 mov	eax, ebx
 pop	ebx
 retn
-sub_4016D0 endp
+sub_401680 endp
 
 align 10h
 
 
 
-sub_401790 proc	near
+sub_401740 proc	near
 
 var_1C=	dword ptr -1Ch
 arg_0= dword ptr  4
@@ -730,16 +671,16 @@ arg_0= dword ptr  4
 sub	esp, 1Ch
 mov	eax, [esp+1Ch+arg_0]
 mov	[esp+1Ch+var_1C], eax
-call	sub_4016D0
+call	sub_401680
 cmp	eax, 1
 sbb	eax, eax
 add	esp, 1Ch
 retn
-sub_401790 endp
+sub_401740 endp
 
 align 10h
 
-loc_4017B0:
+loc_401760:
 push	esi
 push	ebx
 sub	esp, 14h
@@ -747,109 +688,109 @@ mov	ebx, [esp+20h]
 mov	eax, [ebx]
 mov	eax, [eax]
 cmp	eax, 0C0000091h
-ja	short loc_401807
+ja	short loc_4017B7
 cmp	eax, 0C000008Dh
-jb	short loc_401830
+jb	short loc_4017E0
 
-loc_4017CB:
+loc_40177B:
 mov	esi, 1
 
-loc_4017D0:
+loc_401780:
 mov	dword ptr [esp+4], 0
 mov	dword ptr [esp], 8
 call	signal
 cmp	eax, 1
-jz	loc_4018E0
+jz	loc_401890
 test	eax, eax
-jz	short loc_40181C
+jz	short loc_4017CC
 mov	dword ptr [esp], 8
 call	eax
 
-loc_4017FA:
+loc_4017AA:
 mov	eax, 0FFFFFFFFh
 
-loc_4017FF:
+loc_4017AF:
 add	esp, 14h
 pop	ebx
 pop	esi
 retn	4
 
-loc_401807:
+loc_4017B7:
 cmp	eax, 0C0000094h
-jz	short loc_401866
+jz	short loc_401816
 cmp	eax, 0C0000096h
-jz	short loc_40183E
+jz	short loc_4017EE
 cmp	eax, 0C0000093h
-jz	short loc_4017CB
+jz	short loc_40177B
 
-loc_40181C:
+loc_4017CC:
 mov	eax, ds:dword_40A044
 test	eax, eax
-jz	short loc_4017FF
+jz	short loc_4017AF
 mov	[esp+20h], ebx
 add	esp, 14h
 pop	ebx
 pop	esi
 jmp	eax
 
-loc_401830:
+loc_4017E0:
 cmp	eax, 0C0000005h
-jz	short loc_401870
+jz	short loc_401820
 cmp	eax, 0C000001Dh
-jnz	short loc_40181C
+jnz	short loc_4017CC
 
-loc_40183E:
+loc_4017EE:
 mov	dword ptr [esp+4], 0
 mov	dword ptr [esp], 4
 call	signal
 cmp	eax, 1
-jz	short loc_4018A0
+jz	short loc_401850
 test	eax, eax
-jz	short loc_40181C
+jz	short loc_4017CC
 mov	dword ptr [esp], 4
 call	eax
-jmp	short loc_4017FA
+jmp	short loc_4017AA
 
-loc_401866:
+loc_401816:
 xor	esi, esi
-jmp	loc_4017D0
+jmp	loc_401780
+align 10h
+
+loc_401820:
+mov	dword ptr [esp+4], 0
+mov	dword ptr [esp], 0Bh
+call	signal
+cmp	eax, 1
+jz	short loc_401870
+test	eax, eax
+jz	short loc_4017CC
+mov	dword ptr [esp], 0Bh
+call	eax
+jmp	loc_4017AA
+align 10h
+
+loc_401850:
+mov	dword ptr [esp+4], 1
+mov	dword ptr [esp], 4
+call	signal
+jmp	loc_4017AA
 align 10h
 
 loc_401870:
-mov	dword ptr [esp+4], 0
-mov	dword ptr [esp], 0Bh
-call	signal
-cmp	eax, 1
-jz	short loc_4018C0
-test	eax, eax
-jz	short loc_40181C
-mov	dword ptr [esp], 0Bh
-call	eax
-jmp	loc_4017FA
-align 10h
-
-loc_4018A0:
-mov	dword ptr [esp+4], 1
-mov	dword ptr [esp], 4
-call	signal
-jmp	loc_4017FA
-align 10h
-
-loc_4018C0:
 mov	dword ptr [esp+4], 1
 mov	dword ptr [esp], 0Bh
 call	signal
-jmp	loc_4017FA
+jmp	loc_4017AA
 align 10h
 
-loc_4018E0:
+loc_401890:
 mov	dword ptr [esp+4], 1
 mov	dword ptr [esp], 8
 call	signal
 test	esi, esi
-jz	loc_4017FA
-call	sub_4022D0
-jmp	loc_4017FA
+jz	loc_4017AA
+call	sub_402280
+jmp	loc_4017AA
 align 10h
 sub	esp, 3Ch
 mov	eax, ds:dword_40A048
@@ -857,7 +798,7 @@ fld	qword ptr [esp+48h]
 fld	qword ptr [esp+50h]
 fld	qword ptr [esp+58h]
 test	eax, eax
-jz	short loc_401951
+jz	short loc_401901
 fxch	st(2)
 mov	edx, [esp+40h]
 fstp	qword ptr [esp+18h]
@@ -869,36 +810,36 @@ mov	[esp+14h], edx
 lea	edx, [esp+10h]
 mov	[esp], edx
 call	eax
-jmp	short loc_401957
+jmp	short loc_401907
 
-loc_401951:
+loc_401901:
 fstp	st
 fstp	st
 fstp	st
 
-loc_401957:
+loc_401907:
 add	esp, 3Ch
 retn
 align 10h
 
 
 
-sub_401960 proc	near
+sub_401910 proc	near
 
 arg_0= dword ptr  4
 
-; FUNCTION CHUNK AT 004074E0 SIZE 00000006 BYTES
+; FUNCTION CHUNK AT 00407490 SIZE 00000006 BYTES
 
 mov	eax, [esp+arg_0]
 mov	ds:dword_40A048, eax
-jmp	loc_4074E0
-sub_401960 endp
+jmp	loc_407490
+sub_401910 endp
 
 align 10h
 
 
 
-sub_401970 proc	near
+sub_401920 proc	near
 
 var_3C=	dword ptr -3Ch
 var_38=	dword ptr -38h
@@ -915,10 +856,10 @@ mov	eax, [esp+3Ch+arg_0]
 mov	ecx, [eax]
 sub	ecx, 1
 cmp	ecx, 5
-ja	short loc_40198D
-mov	edx, ds:off_409158[ecx*4]
+ja	short loc_40193D
+mov	edx, ds:off_409150[ecx*4]
 
-loc_40198D:
+loc_40193D:
 fld	qword ptr [eax+18h]
 fstp	[esp+3Ch+var_1C]
 fld	qword ptr [eax+10h]
@@ -932,26 +873,26 @@ mov	[esp+3Ch+var_30], eax
 mov	eax, ds:_iob
 add	eax, 40h
 mov	[esp+3Ch+var_3C], eax
-call	sub_4027A0
+call	sub_402750
 xor	eax, eax
 add	esp, 3Ch
 retn
-sub_401970 endp
+sub_401920 endp
 
 align 10h
 
 
 
-sub_4019D0 proc	near
+sub_401980 proc	near
 xor	eax, eax
 retn
-sub_4019D0 endp
+sub_401980 endp
 
 align 10h
 
 
 
-sub_4019E0 proc	near
+sub_401990 proc	near
 
 var_18=	dword ptr -18h
 var_14=	dword ptr -14h
@@ -966,23 +907,23 @@ mov	[esp+18h+var_14], offset aMingwW64Runtim ; "Mingw-w64 runtime failure:\n"
 lea	ebx, [esp+18h+arg_4]
 add	eax, 40h
 mov	[esp+18h+var_18], eax
-call	sub_4027A0
+call	sub_402750
 mov	eax, [esp+18h+arg_0]
 mov	[esp+18h+var_10], ebx
 mov	[esp+18h+var_14], eax
 mov	eax, ds:_iob
 add	eax, 40h
 mov	[esp+18h+var_18], eax
-call	sub_4027E0
+call	sub_402790
 call	abort
-jmp	short sub_401A30
-sub_4019E0 endp
+jmp	short sub_4019E0
+sub_401990 endp
 
 align 10h
 
 
 
-sub_401A30 proc	near
+sub_4019E0 proc	near
 
 var_50=	dword ptr -50h
 var_4C=	dword ptr -4Ch
@@ -1006,38 +947,38 @@ mov	[esp+50h+var_34], ecx
 mov	ecx, ds:dword_40A054
 mov	[esp+50h+var_38], edx
 test	ecx, ecx
-jle	loc_401C30
+jle	loc_401BE0
 mov	edx, ds:dword_40A050
 xor	ebx, ebx
 
-loc_401A57:
+loc_401A07:
 mov	eax, [edx+4]
 cmp	esi, eax
-jb	short loc_401A6C
+jb	short loc_401A1C
 mov	edi, [edx+8]
 add	eax, [edi+8]
 cmp	esi, eax
-jb	loc_401B40
+jb	loc_401AF0
 
-loc_401A6C:
+loc_401A1C:
 add	ebx, 1
 add	edx, 0Ch
 cmp	ebx, ecx
-jnz	short loc_401A57
+jnz	short loc_401A07
 
-loc_401A76:
+loc_401A26:
 mov	[esp+50h+var_50], esi
-call	sub_402030
+call	sub_401FE0
 test	eax, eax
 mov	ebp, eax
-jz	loc_401C57
+jz	loc_401C07
 lea	ecx, [ebx+ebx*2]
 mov	ebx, ds:dword_40A050
 lea	edi, ds:0[ecx*4]
 add	ebx, edi
 mov	[ebx+8], eax
 mov	dword ptr [ebx], 0
-call	sub_402100
+call	sub_4020B0
 lea	edx, [esp+50h+var_2C]
 add	eax, [ebp+0Ch]
 mov	[ebx+4], eax
@@ -1052,27 +993,27 @@ call	ebx ; VirtualQuery
 sub	esp, 0Ch	; lpAddress
 test	eax, eax
 mov	edx, [esp+50h+var_3C]
-jz	loc_401C37
+jz	loc_401BE7
 mov	eax, [esp+50h+var_18]
 cmp	eax, 4
-jnz	loc_401BD0
+jnz	loc_401B80
 
-loc_401AF2:
+loc_401AA2:
 add	ds:dword_40A054, 1
 
-loc_401AF9:
+loc_401AA9:
 mov	[esp+50h+var_48], 1Ch
 mov	[esp+50h+var_4C], edx
 mov	[esp+50h+var_50], esi
 call	ebx ; VirtualQuery
 sub	esp, 0Ch	; void *
 test	eax, eax
-jz	loc_401C67
+jz	loc_401C17
 mov	eax, [esp+50h+var_18]
 cmp	eax, 4
-jnz	short loc_401B50
+jnz	short loc_401B00
 
-loc_401B1E:
+loc_401ACE:
 mov	eax, [esp+50h+var_34]
 mov	[esp+50h+var_50], esi
 mov	[esp+50h+var_48], eax
@@ -1080,7 +1021,7 @@ mov	eax, [esp+50h+var_38]
 mov	[esp+50h+var_4C], eax
 call	memcpy
 
-loc_401B36:
+loc_401AE6:
 add	esp, 4Ch
 pop	ebx
 pop	esi
@@ -1089,15 +1030,15 @@ pop	ebp
 retn			; lpAddress
 align 10h
 
-loc_401B40:
+loc_401AF0:
 lea	edx, [esp+50h+var_2C]
 mov	ebx, ds:VirtualQuery
-jmp	short loc_401AF9
+jmp	short loc_401AA9
 align 10h
 
-loc_401B50:
+loc_401B00:
 cmp	eax, 40h
-jz	short loc_401B1E
+jz	short loc_401ACE
 mov	eax, [esp+50h+var_20]
 lea	ebp, [esp+50h+var_30]
 mov	ebx, ds:VirtualProtect
@@ -1116,9 +1057,9 @@ mov	[esp+50h+var_4C], eax
 call	memcpy
 mov	eax, [esp+50h+var_18]
 cmp	eax, 40h
-jz	short loc_401B36
+jz	short loc_401AE6
 cmp	eax, 4
-jz	short loc_401B36
+jz	short loc_401AE6
 mov	eax, [esp+50h+var_30]
 mov	[esp+50h+var_44], ebp
 mov	[esp+50h+var_48], eax
@@ -1136,9 +1077,9 @@ pop	ebp
 retn			; lpAddress
 align 10h
 
-loc_401BD0:
+loc_401B80:
 cmp	eax, 40h
-jz	loc_401AF2
+jz	loc_401AA2
 mov	eax, [esp+50h+var_20]
 mov	ecx, ds:dword_40A050
 mov	[esp+50h+var_3C], edx
@@ -1152,45 +1093,45 @@ call	ds:VirtualProtect
 sub	esp, 10h
 test	eax, eax
 mov	edx, [esp+50h+var_3C]
-jnz	loc_401AF2
+jnz	loc_401AA2
 call	ds:GetLastError
 mov	[esp+50h+var_50], offset aVirtualprotect ; "  VirtualProtect failed with code 0x%x"
 mov	[esp+50h+var_4C], eax
-call	sub_4019E0
+call	sub_401990
 nop
 lea	esi, [esi+0]
 
-loc_401C30:
+loc_401BE0:
 xor	ebx, ebx
-jmp	loc_401A76
+jmp	loc_401A26
 
-loc_401C37:
+loc_401BE7:
 mov	eax, ds:dword_40A050
 mov	eax, [eax+edi+4]
 mov	[esp+50h+var_48], eax
 mov	eax, [ebp+8]
 mov	[esp+50h+var_50], offset aVirtualqueryFa ; "  VirtualQuery failed for %d bytes at a"...
 mov	[esp+50h+var_4C], eax
-call	sub_4019E0
+call	sub_401990
 
-loc_401C57:
+loc_401C07:
 mov	[esp+50h+var_4C], esi
 mov	[esp+50h+var_50], offset aAddressPHasNoI ; "Address %p has no image-section"
-call	sub_4019E0
+call	sub_401990
 
-loc_401C67:
+loc_401C17:
 mov	[esp+50h+var_48], esi
 mov	[esp+50h+var_4C], 1Ch
 mov	[esp+50h+var_50], offset aVirtualqueryFa ; "  VirtualQuery failed for %d bytes at a"...
-call	sub_4019E0
+call	sub_401990
 nop
-sub_401A30 endp
+sub_4019E0 endp
 
 
 
 ; Attributes: bp-based frame
 
-sub_401C80 proc	near
+sub_401C30 proc	near
 
 var_6C=	dword ptr -6Ch
 var_68=	dword ptr -68h
@@ -1205,11 +1146,11 @@ var_C= dword ptr -0Ch
 
 mov	eax, ds:dword_40A04C
 test	eax, eax
-jz	short loc_401C90
+jz	short loc_401C40
 retn
 align 10h
 
-loc_401C90:
+loc_401C40:
 push	ebp
 mov	ebp, esp
 push	edi
@@ -1217,11 +1158,11 @@ push	esi
 push	ebx
 sub	esp, 5Ch
 mov	ds:dword_40A04C, 1
-call	sub_402070
+call	sub_402020
 lea	eax, [eax+eax*2]
 lea	eax, ds:1Eh[eax*4]
 and	eax, 0FFFFFFF0h
-call	sub_402720
+call	sub_4026D0
 mov	ds:dword_40A054, 0
 sub	esp, eax
 lea	eax, [esp+6Ch+var_4D]
@@ -1230,30 +1171,30 @@ mov	ds:dword_40A050, eax
 mov	eax, offset dword_409624
 sub	eax, offset dword_409624
 cmp	eax, 7
-jle	loc_401D81
+jle	loc_401D31
 cmp	eax, 0Bh
-jle	loc_401E40
+jle	loc_401DF0
 mov	eax, ds:dword_409624
 test	eax, eax
-jnz	loc_401D89
+jnz	loc_401D39
 mov	eax, ds:dword_409628
 test	eax, eax
-jnz	loc_401D89
+jnz	loc_401D39
 mov	edi, ds:dword_40962C
 mov	ebx, offset unk_409630
 test	edi, edi
-jz	loc_401E45
+jz	loc_401DF5
 mov	ebx, offset dword_409624
 
-loc_401D20:
+loc_401CD0:
 mov	eax, [ebx+8]
 cmp	eax, 1
-jnz	loc_401F17
+jnz	loc_401EC7
 add	ebx, 0Ch
 cmp	ebx, offset dword_409624
-jnb	short loc_401D81
+jnb	short loc_401D31
 
-loc_401D37:
+loc_401CE7:
 mov	edx, [ebx]
 movzx	esi, byte ptr [ebx+8]
 mov	edi, [ebx+4]
@@ -1261,17 +1202,17 @@ mov	ecx, [edx+400000h]
 cmp	esi, 10h
 lea	eax, [edi+400000h]
 mov	[ebp-50h], ecx
-jz	loc_401E5F
+jz	loc_401E0F
 cmp	esi, 20h
-jz	loc_401ED5
+jz	loc_401E85
 cmp	esi, 8
-jz	loc_401EA8
+jz	loc_401E58
 mov	[esp+6Ch+var_68], esi
 mov	[esp+6Ch+var_6C], offset aUnknownPseudoR ; "  Unknown pseudo relocation	bit size %d"...
 mov	[ebp+var_3C], 0
-call	sub_4019E0
+call	sub_401990
 
-loc_401D81:
+loc_401D31:
 lea	esp, [ebp-0Ch]
 pop	ebx
 pop	esi
@@ -1279,14 +1220,14 @@ pop	edi
 pop	ebp
 retn			; lpAddress
 
-loc_401D89:
+loc_401D39:
 mov	ebx, offset dword_409624
 
-loc_401D8E:
+loc_401D3E:
 cmp	ebx, offset dword_409624
-jnb	short loc_401D81
+jnb	short loc_401D31
 
-loc_401D96:
+loc_401D46:
 mov	edx, [ebx+4]
 mov	ecx, 4
 lea	eax, [edx+400000h]
@@ -1295,31 +1236,31 @@ add	edx, [ebx]
 add	ebx, 8
 mov	[ebp+var_38], edx
 lea	edx, [ebp+var_38]
-call	sub_401A30
+call	sub_4019E0
 cmp	ebx, offset dword_409624
-jb	short loc_401D96
+jb	short loc_401D46
 
-loc_401DC2:
+loc_401D72:
 mov	eax, ds:dword_40A054
 xor	ebx, ebx
 xor	esi, esi
 lea	edi, [ebp+var_34]
 test	eax, eax
-jg	short loc_401DE2
-jmp	short loc_401D81
+jg	short loc_401D92
+jmp	short loc_401D31
 
-loc_401DD4:
+loc_401D84:
 add	esi, 1
 add	ebx, 0Ch
 cmp	esi, ds:dword_40A054
-jge	short loc_401D81
+jge	short loc_401D31
 
-loc_401DE2:
+loc_401D92:
 mov	eax, ds:dword_40A050
 add	eax, ebx
 mov	edx, [eax]
 test	edx, edx
-jz	short loc_401DD4
+jz	short loc_401D84
 mov	[esp+6Ch+var_64], 1Ch
 mov	[esp+6Ch+var_68], edi
 mov	eax, [eax+4]
@@ -1327,7 +1268,7 @@ mov	[esp+6Ch+var_6C], eax
 call	ds:VirtualQuery
 sub	esp, 0Ch	; lpAddress
 test	eax, eax
-jz	loc_401EF4
+jz	loc_401EA4
 lea	eax, [ebp+var_38]
 mov	[esp+6Ch+var_60], eax
 mov	eax, ds:dword_40A050
@@ -1339,22 +1280,22 @@ mov	eax, [ebp+var_34]
 mov	[esp+6Ch+var_6C], eax
 call	ds:VirtualProtect
 sub	esp, 10h
-jmp	short loc_401DD4
+jmp	short loc_401D84
 align 10h
 
-loc_401E40:
+loc_401DF0:
 mov	ebx, offset dword_409624
 
-loc_401E45:
+loc_401DF5:
 mov	esi, [ebx]
 test	esi, esi
-jnz	loc_401D8E
+jnz	loc_401D3E
 mov	ecx, [ebx+4]
 test	ecx, ecx
-jz	loc_401D20
-jmp	loc_401D8E
+jz	loc_401CD0
+jmp	loc_401D3E
 
-loc_401E5F:
+loc_401E0F:
 movzx	edi, word ptr [edi+400000h]
 movzx	esi, di
 mov	ecx, esi
@@ -1368,15 +1309,15 @@ lea	edx, [ebp+var_3C]
 add	ecx, esi
 mov	[ebp+var_3C], ecx
 mov	ecx, 2
-call	sub_401A30
+call	sub_4019E0
 
-loc_401E94:
+loc_401E44:
 add	ebx, 0Ch
 cmp	ebx, offset dword_409624
-jb	loc_401D37
-jmp	loc_401DC2
+jb	loc_401CE7
+jmp	loc_401D72
 
-loc_401EA8:
+loc_401E58:
 movzx	esi, byte ptr [eax]
 mov	edi, esi
 or	edi, 0FFFFFF00h
@@ -1388,10 +1329,10 @@ add	ecx, esi
 mov	[ebp+var_3C], ecx
 lea	edx, [ebp+var_3C]
 mov	ecx, 1
-call	sub_401A30
-jmp	short loc_401E94
+call	sub_4019E0
+jmp	short loc_401E44
 
-loc_401ED5:
+loc_401E85:
 mov	ecx, [ebp-50h]
 add	edx, 400000h
 sub	ecx, edx
@@ -1399,10 +1340,10 @@ add	ecx, [eax]
 lea	edx, [ebp+var_3C]
 mov	[ebp+var_3C], ecx
 mov	ecx, 4
-call	sub_401A30
-jmp	short loc_401E94
+call	sub_4019E0
+jmp	short loc_401E44
 
-loc_401EF4:
+loc_401EA4:
 add	ebx, ds:dword_40A050
 mov	eax, [ebx+4]
 mov	[esp+6Ch+var_64], eax
@@ -1410,12 +1351,12 @@ mov	eax, [ebx+8]
 mov	eax, [eax+8]
 mov	[esp+6Ch+var_6C], offset aVirtualqueryFa ; "  VirtualQuery failed for %d bytes at a"...
 mov	[esp+6Ch+var_68], eax
-call	sub_4019E0
+call	sub_401990
 
-loc_401F17:
+loc_401EC7:
 mov	[esp+6Ch+var_68], eax
 mov	[esp+6Ch+var_6C], offset aUnknownPseud_0 ; "  Unknown pseudo relocation	protocol ve"...
-call	sub_4019E0
+call	sub_401990
 nop
 nop
 nop
@@ -1425,39 +1366,39 @@ nop
 nop
 nop
 nop
-sub_401C80 endp
+sub_401C30 endp
 
 
 
 
-sub_401F30 proc	near
+sub_401EE0 proc	near
 
 arg_0= dword ptr  4
 
 mov	edx, [esp+arg_0]
 xor	eax, eax
 cmp	word ptr [edx],	5A4Dh
-jz	short loc_401F40
+jz	short loc_401EF0
 
-locret_401F3D:
+locret_401EED:
 rep retn
 align 10h
 
-loc_401F40:
+loc_401EF0:
 add	edx, [edx+3Ch]
 cmp	dword ptr [edx], 4550h
-jnz	short locret_401F3D
+jnz	short locret_401EED
 xor	eax, eax
 cmp	word ptr [edx+18h], 10Bh
 setz	al
 retn
-sub_401F30 endp
+sub_401EE0 endp
 
 align 10h
 
 
 
-sub_401F60 proc	near
+sub_401F10 proc	near
 
 arg_0= dword ptr  0Ch
 arg_4= dword ptr  10h
@@ -1471,32 +1412,32 @@ movzx	esi, word ptr [edx+6]
 movzx	eax, word ptr [edx+14h]
 test	esi, esi
 lea	eax, [edx+eax+18h]
-jz	short loc_401F98
+jz	short loc_401F48
 xor	edx, edx
 nop
 
-loc_401F80:
+loc_401F30:
 mov	ecx, [eax+0Ch]
 cmp	ecx, ebx
-ja	short loc_401F8E
+ja	short loc_401F3E
 add	ecx, [eax+8]
 cmp	ebx, ecx
-jb	short loc_401F9A
+jb	short loc_401F4A
 
-loc_401F8E:
+loc_401F3E:
 add	edx, 1
 add	eax, 28h
 cmp	edx, esi
-jb	short loc_401F80
+jb	short loc_401F30
 
-loc_401F98:
+loc_401F48:
 xor	eax, eax
 
-loc_401F9A:
+loc_401F4A:
 pop	ebx
 pop	esi
 retn
-sub_401F60 endp
+sub_401F10 endp
 
 align 10h
 push	ebp
@@ -1508,35 +1449,35 @@ mov	edi, [esp+30h]
 mov	[esp], edi
 call	strlen
 cmp	eax, 8
-ja	short loc_402020
+ja	short loc_401FD0
 mov	dword ptr [esp], 400000h
-call	sub_401F30
+call	sub_401EE0
 test	eax, eax
-jz	short loc_402020
+jz	short loc_401FD0
 mov	eax, ds:40003Ch
 movzx	edx, word ptr [eax+400014h]
 add	eax, 400000h
 movzx	ebp, word ptr [eax+6]
 lea	ebx, [eax+edx+18h]
 test	ebp, ebp
-jz	short loc_402020
+jz	short loc_401FD0
 xor	esi, esi
-jmp	short loc_401FFA
+jmp	short loc_401FAA
 align 10h
 
-loc_401FF0:
+loc_401FA0:
 add	esi, 1
 add	ebx, 28h
 cmp	esi, ebp
-jnb	short loc_402020
+jnb	short loc_401FD0
 
-loc_401FFA:
+loc_401FAA:
 mov	dword ptr [esp+8], 8
 mov	[esp+4], edi
 mov	[esp], ebx
 call	strncmp
 test	eax, eax
-jnz	short loc_401FF0
+jnz	short loc_401FA0
 add	esp, 1Ch
 mov	eax, ebx
 pop	ebx
@@ -1546,7 +1487,7 @@ pop	ebp
 retn
 align 10h
 
-loc_402020:
+loc_401FD0:
 add	esp, 1Ch
 xor	ebx, ebx
 mov	eax, ebx
@@ -1559,7 +1500,7 @@ align 10h
 
 
 
-sub_402030 proc	near
+sub_401FE0 proc	near
 
 var_8= dword ptr -8
 var_4= dword ptr -4
@@ -1567,80 +1508,80 @@ arg_0= dword ptr  4
 
 sub	esp, 8
 mov	[esp+8+var_8], 400000h
-call	sub_401F30
+call	sub_401EE0
 mov	edx, eax
 xor	eax, eax
 test	edx, edx
-jz	short loc_402060
+jz	short loc_402010
 mov	eax, [esp+8+arg_0]
 mov	[esp+8+var_8], 400000h
 sub	eax, 400000h
 mov	[esp+8+var_4], eax
-call	sub_401F60
+call	sub_401F10
 
-loc_402060:
+loc_402010:
 add	esp, 8
 retn
-sub_402030 endp
+sub_401FE0 endp
 
 align 10h
 
 
 
-sub_402070 proc	near
+sub_402020 proc	near
 
 var_4= dword ptr -4
 
 sub	esp, 4
 mov	[esp+4+var_4], 400000h
-call	sub_401F30
+call	sub_401EE0
 xor	edx, edx
 test	eax, eax
-jz	short loc_402091
+jz	short loc_402041
 mov	eax, ds:40003Ch
 movzx	edx, word ptr [eax+400006h]
 
-loc_402091:
+loc_402041:
 mov	eax, edx
 add	esp, 4
 retn
-sub_402070 endp
+sub_402020 endp
 
 align 10h
 push	ebx
 sub	esp, 4
 mov	dword ptr [esp], 400000h
 mov	ebx, [esp+0Ch]
-call	sub_401F30
+call	sub_401EE0
 test	eax, eax
-jz	short loc_4020F7
+jz	short loc_4020A7
 mov	edx, ds:40003Ch
 movzx	eax, word ptr [edx+400014h]
 add	edx, 400000h
 movzx	ecx, word ptr [edx+6]
 lea	eax, [edx+eax+18h]
 test	ecx, ecx
-jz	short loc_4020F7
+jz	short loc_4020A7
 xor	edx, edx
 lea	esi, [esi+0]
 
-loc_4020E0:
+loc_402090:
 test	byte ptr [eax+27h], 20h
-jz	short loc_4020ED
+jz	short loc_40209D
 test	ebx, ebx
-jz	short loc_4020F9
+jz	short loc_4020A9
 sub	ebx, 1
 
-loc_4020ED:
+loc_40209D:
 add	edx, 1
 add	eax, 28h
 cmp	edx, ecx
-jb	short loc_4020E0
+jb	short loc_402090
 
-loc_4020F7:
+loc_4020A7:
 xor	eax, eax
 
-loc_4020F9:
+loc_4020A9:
 add	esp, 4
 pop	ebx
 retn
@@ -1648,13 +1589,13 @@ align 10h
 
 
 
-sub_402100 proc	near
+sub_4020B0 proc	near
 
 var_4= dword ptr -4
 
 sub	esp, 4
 mov	[esp+4+var_4], 400000h
-call	sub_401F30
+call	sub_401EE0
 xor	edx, edx
 test	eax, eax
 mov	eax, 400000h
@@ -1662,35 +1603,35 @@ cmovnz	edx, eax
 add	esp, 4
 mov	eax, edx
 retn
-sub_402100 endp
+sub_4020B0 endp
 
-jmp	short loc_402130
+jmp	short loc_4020E0
 align 10h
 
-loc_402130:
+loc_4020E0:
 push	ebx
 xor	ebx, ebx
 sub	esp, 8
 mov	dword ptr [esp], 400000h
-call	sub_401F30
+call	sub_401EE0
 test	eax, eax
-jnz	short loc_402150
+jnz	short loc_402100
 
-loc_402146:
+loc_4020F6:
 add	esp, 8
 mov	eax, ebx
 pop	ebx
 retn
 align 10h
 
-loc_402150:
+loc_402100:
 mov	eax, [esp+10h]
 mov	dword ptr [esp], 400000h
 sub	eax, 400000h
 mov	[esp+4], eax
-call	sub_401F60
+call	sub_401F10
 test	eax, eax
-jz	short loc_402146
+jz	short loc_4020F6
 mov	ebx, [eax+24h]
 add	esp, 8
 not	ebx
@@ -1702,7 +1643,7 @@ align 10h
 
 
 
-sub_402180 proc	near
+sub_402130 proc	near
 
 var_8= dword ptr -8
 var_4= dword ptr -4
@@ -1714,44 +1655,44 @@ push	ebx
 sub	esp, 8
 mov	[esp+8+var_8], 400000h
 mov	ebx, [esp+8+arg_0]
-call	sub_401F30
+call	sub_401EE0
 test	eax, eax
-jz	short loc_402200
+jz	short loc_4021B0
 mov	eax, ds:40003Ch
 xor	edi, edi
 mov	esi, [eax+400080h]
 test	esi, esi
-jz	short loc_4021F1
+jz	short loc_4021A1
 mov	[esp+8+var_4], esi
 mov	[esp+8+var_8], 400000h
-call	sub_401F60
+call	sub_401F10
 test	eax, eax
-jz	short loc_4021F1
+jz	short loc_4021A1
 mov	edx, esi
 add	edx, 400000h
-jnz	short loc_4021D6
-jmp	short loc_4021F1
+jnz	short loc_402186
+jmp	short loc_4021A1
 align 10h
 
-loc_4021D0:
+loc_402180:
 sub	ebx, 1
 add	edx, 14h
 
-loc_4021D6:
+loc_402186:
 mov	ecx, [edx+4]
 test	ecx, ecx
-jnz	short loc_4021E4
+jnz	short loc_402194
 mov	eax, [edx+0Ch]
 test	eax, eax
-jz	short loc_402200
+jz	short loc_4021B0
 
-loc_4021E4:
+loc_402194:
 test	ebx, ebx
-jg	short loc_4021D0
+jg	short loc_402180
 mov	edi, [edx+0Ch]
 add	edi, 400000h
 
-loc_4021F1:
+loc_4021A1:
 add	esp, 8
 mov	eax, edi
 pop	ebx
@@ -1760,7 +1701,7 @@ pop	edi
 retn
 align 10h
 
-loc_402200:
+loc_4021B0:
 add	esp, 8
 xor	edi, edi
 mov	eax, edi
@@ -1768,180 +1709,180 @@ pop	ebx
 pop	esi
 pop	edi
 retn
-sub_402180 endp
+sub_402130 endp
 
 align 10h
 
 
 
-sub_402210 proc	near
+sub_4021C0 proc	near
 
 var_1C=	dword ptr -1Ch
 
 mov	eax, ds:dword_40A058
 test	eax, eax
-jz	short loc_402220
+jz	short loc_4021D0
 retn
 align 10h
 
-loc_402220:
+loc_4021D0:
 push	ebx
 xor	eax, eax
 sub	esp, 18h	; lpLibFileName
 mov	[esp+1Ch+var_1C], eax
 lea	ebx, [eax+1]
-call	sub_402180
+call	sub_402130
 test	eax, eax
-jz	short loc_402297
+jz	short loc_402247
 
-loc_402235:
+loc_4021E5:
 movzx	edx, byte ptr [eax]
 and	edx, 0FFFFFFDFh
 cmp	dl, 4Dh
-jnz	short loc_402286
+jnz	short loc_402236
 movzx	edx, byte ptr [eax+1]
 and	edx, 0FFFFFFDFh
 cmp	dl, 53h
-jnz	short loc_402286
+jnz	short loc_402236
 movzx	edx, byte ptr [eax+2]
 and	edx, 0FFFFFFDFh
 cmp	dl, 56h
-jnz	short loc_402286
+jnz	short loc_402236
 movzx	edx, byte ptr [eax+3]
 and	edx, 0FFFFFFDFh
 cmp	dl, 43h
-jnz	short loc_402286
+jnz	short loc_402236
 movzx	edx, byte ptr [eax+4]
 and	edx, 0FFFFFFDFh
 cmp	dl, 52h
-jnz	short loc_402286
+jnz	short loc_402236
 movzx	edx, byte ptr [eax+5]
 mov	ecx, edx
 and	ecx, 0FFFFFFDFh
 cmp	cl, 54h
-jz	short loc_4022AE
+jz	short loc_40225E
 sub	edx, 30h
 cmp	dl, 9
-jbe	short loc_4022AE
+jbe	short loc_40225E
 
-loc_402286:
+loc_402236:
 mov	eax, ebx
 mov	[esp+1Ch+var_1C], eax
 lea	ebx, [eax+1]
-call	sub_402180
+call	sub_402130
 test	eax, eax
-jnz	short loc_402235
+jnz	short loc_4021E5
 
-loc_402297:		; "msvcrt.dll"
+loc_402247:		; "msvcrt.dll"
 mov	[esp+1Ch+var_1C], offset aMsvcrt_dll
 call	ds:LoadLibraryW
 sub	esp, 4		; lpModuleName
 mov	ds:dword_40A058, eax
-jmp	short loc_4022C3
+jmp	short loc_402273
 
-loc_4022AE:
+loc_40225E:
 mov	[esp+1Ch+var_1C], eax
 call	ds:GetModuleHandleA
 sub	esp, 4
 test	eax, eax
 mov	ds:dword_40A058, eax
-jz	short loc_402297
+jz	short loc_402247
 
-loc_4022C3:
+loc_402273:
 add	esp, 18h
 pop	ebx
 retn
-sub_402210 endp
+sub_4021C0 endp
 
 align 10h
 
 
 
-sub_4022D0 proc	near
+sub_402280 proc	near
 fninit
 retn
-sub_4022D0 endp
+sub_402280 endp
 
 align 10h
-dword_4022E0 dd	408010A1h, 85008B00h, 831F74C0h, 90660CECh
+dword_402290 dd	408010A1h, 85008B00h, 831F74C0h, 90660CECh
 
-loc_4022F0:
+loc_4022A0:
 call	eax
 mov	eax, off_408010
 lea	edx, [eax+4]
 mov	eax, [eax+4]
 mov	off_408010, edx
 test	eax, eax
-jnz	short loc_4022F0
+jnz	short loc_4022A0
 add	esp, 0Ch
 rep retn
 align 10h
 
 
 
-sub_402310 proc	near
+sub_4022C0 proc	near
 
 var_18=	dword ptr -18h
 
 push	ebx
 sub	esp, 18h
-mov	ebx, ds:dword_4077A0
+mov	ebx, ds:dword_407750
 cmp	ebx, 0FFFFFFFFh
-jz	short loc_402343
+jz	short loc_4022F3
 
-loc_40231F:
+loc_4022CF:
 test	ebx, ebx
-jz	short loc_402332
+jz	short loc_4022E2
 
-loc_402323:
-call	ds:dword_4077A0[ebx*4]
+loc_4022D3:
+call	ds:dword_407750[ebx*4]
 sub	ebx, 1
 lea	esi, [esi+0]
-jnz	short loc_402323
+jnz	short loc_4022D3
 
-loc_402332:
-mov	[esp+18h+var_18], offset dword_4022E0
-call	sub_401790
+loc_4022E2:
+mov	[esp+18h+var_18], offset dword_402290
+call	sub_401740
 add	esp, 18h
 pop	ebx
 retn
 
-loc_402343:
+loc_4022F3:
 xor	ebx, ebx
-jmp	short loc_402349
+jmp	short loc_4022F9
 
-loc_402347:
+loc_4022F7:
 mov	ebx, eax
 
-loc_402349:
+loc_4022F9:
 lea	eax, [ebx+1]
-mov	edx, ds:dword_4077A0[eax*4]
+mov	edx, ds:dword_407750[eax*4]
 test	edx, edx
-jnz	short loc_402347
-jmp	short loc_40231F
+jnz	short loc_4022F7
+jmp	short loc_4022CF
+sub_4022C0 endp
+
+align 10h
+
+
+
+sub_402310 proc	near
+mov	ecx, ds:dword_40A05C
+test	ecx, ecx
+jz	short loc_402320
+rep retn
+align 10h
+
+loc_402320:
+mov	ds:dword_40A05C, 1
+jmp	short sub_4022C0
 sub_402310 endp
 
 align 10h
 
 
 
-sub_402360 proc	near
-mov	ecx, ds:dword_40A05C
-test	ecx, ecx
-jz	short loc_402370
-rep retn
-align 10h
-
-loc_402370:
-mov	ds:dword_40A05C, 1
-jmp	short sub_402310
-sub_402360 endp
-
-align 10h
-
-
-
-sub_402380 proc	near
+sub_402330 proc	near
 
 var_4C=	dword ptr -4Ch
 var_30=	dword ptr -30h
@@ -1963,11 +1904,11 @@ cmp	eax, 0BB40E64Eh
 mov	[esp+4Ch+var_4], ebp
 mov	[esp+4Ch+var_2C], 0
 mov	[esp+4Ch+var_28], 0
-jz	short loc_4023D0
+jz	short loc_402380
 not	eax
 mov	dword_408048, eax
 
-loc_4023B6:
+loc_402366:
 mov	ebx, [esp+4Ch+var_10]
 mov	esi, [esp+4Ch+var_C]
 mov	edi, [esp+4Ch+var_8]
@@ -1976,7 +1917,7 @@ add	esp, 4Ch
 retn			; lpSystemTimeAsFileTime
 align 10h
 
-loc_4023D0:
+loc_402380:
 lea	eax, [esp+4Ch+var_2C]
 mov	[esp+4Ch+var_4C], eax
 call	ds:GetSystemTimeAsFileTime
@@ -2000,20 +1941,20 @@ xor	edi, esi
 xor	edi, ebx
 xor	edi, [esp+4Ch+var_30]
 cmp	edi, 0BB40E64Eh
-jz	short loc_402440
+jz	short loc_4023F0
 mov	eax, edi
 not	eax
 
-loc_402430:
+loc_4023E0:
 mov	dword_408044, edi
 mov	dword_408048, eax
-jmp	loc_4023B6
+jmp	loc_402366
 
-loc_402440:
+loc_4023F0:
 mov	eax, 44BF19B0h
 mov	edi, 0BB40E64Fh
-jmp	short loc_402430
-sub_402380 endp
+jmp	short loc_4023E0
+sub_402330 endp
 
 align 10h
 push	ebp
@@ -2035,7 +1976,7 @@ mov	eax, dword_408048
 mov	[ebp-0Ch], eax
 call	ds:SetUnhandledExceptionFilter
 sub	esp, 4
-mov	dword ptr [esp], offset	off_409280
+mov	dword ptr [esp], offset	off_409278
 call	ds:UnhandledExceptionFilter
 sub	esp, 4
 call	ds:GetCurrentProcess
@@ -2056,7 +1997,7 @@ nop
 
 
 
-sub_4024E0 proc	near
+sub_402490 proc	near
 
 var_1C=	dword ptr -1Ch
 
@@ -2072,10 +2013,10 @@ mov	ebp, ds:TlsGetValue
 mov	edi, ds:GetLastError
 sub	esp, 4		; dwTlsIndex
 test	ebx, ebx
-jz	short loc_402535
+jz	short loc_4024E5
 lea	esi, [esi+0]
 
-loc_402510:
+loc_4024C0:
 mov	eax, [ebx]
 mov	[esp+1Ch+var_1C], eax
 call	ebp ; TlsGetValue
@@ -2083,19 +2024,19 @@ sub	esp, 4		; lpCriticalSection
 mov	esi, eax
 call	edi ; GetLastError
 test	eax, eax
-jnz	short loc_40252E
+jnz	short loc_4024DE
 test	esi, esi
-jz	short loc_40252E
+jz	short loc_4024DE
 mov	eax, [ebx+4]
 mov	[esp+1Ch+var_1C], esi
 call	eax
 
-loc_40252E:
+loc_4024DE:
 mov	ebx, [ebx+8]
 test	ebx, ebx
-jnz	short loc_402510
+jnz	short loc_4024C0
 
-loc_402535:
+loc_4024E5:
 mov	[esp+1Ch+var_1C], offset unk_40A3A4
 call	ds:LeaveCriticalSection
 sub	esp, 4
@@ -2105,7 +2046,7 @@ pop	esi
 pop	edi
 pop	ebp
 retn
-sub_4024E0 endp
+sub_402490 endp
 
 align 10h
 sub	esp, 1Ch
@@ -2114,22 +2055,22 @@ mov	[esp+18h], esi
 xor	esi, esi
 mov	[esp+14h], ebx
 test	eax, eax
-jnz	short loc_402574
+jnz	short loc_402524
 
-loc_402566:
+loc_402516:
 mov	eax, esi
 mov	ebx, [esp+14h]
 mov	esi, [esp+18h]
 add	esp, 1Ch
 retn
 
-loc_402574:
+loc_402524:
 mov	dword ptr [esp+4], 0Ch
 mov	dword ptr [esp], 1
 call	calloc
 test	eax, eax
 mov	ebx, eax
-jz	short loc_4025D7
+jz	short loc_402587
 mov	eax, [esp+20h]
 mov	dword ptr [esp], offset	unk_40A3A4
 mov	[ebx], eax
@@ -2149,78 +2090,78 @@ mov	esi, [esp+18h]
 add	esp, 1Ch
 retn
 
-loc_4025D7:
+loc_402587:
 mov	esi, 0FFFFFFFFh
-jmp	short loc_402566
+jmp	short loc_402516
 align 10h
 push	ebx
 sub	esp, 18h
 mov	eax, ds:dword_40A3A0
 mov	ebx, [esp+20h]
 test	eax, eax
-jnz	short loc_4025F8
+jnz	short loc_4025A8
 add	esp, 18h
 xor	eax, eax
 pop	ebx
 retn
 
-loc_4025F8:
+loc_4025A8:
 mov	dword ptr [esp], offset	unk_40A3A4
 call	ds:EnterCriticalSection
 mov	edx, ds:dword_40A3BC
 sub	esp, 4
 test	edx, edx
-jz	short loc_40262F
+jz	short loc_4025DF
 mov	eax, [edx]
 cmp	eax, ebx
-jnz	short loc_402628
-jmp	short loc_402666
+jnz	short loc_4025D8
+jmp	short loc_402616
 align 10h
 
-loc_402620:
+loc_4025D0:
 mov	ecx, [eax]
 cmp	ecx, ebx
-jz	short loc_402646
+jz	short loc_4025F6
 mov	edx, eax
 
-loc_402628:
+loc_4025D8:
 mov	eax, [edx+8]
 test	eax, eax
-jnz	short loc_402620
+jnz	short loc_4025D0
 
-loc_40262F:
+loc_4025DF:
 mov	dword ptr [esp], offset	unk_40A3A4
 call	ds:LeaveCriticalSection
 sub	esp, 4
 
-loc_40263F:
+loc_4025EF:
 add	esp, 18h
 xor	eax, eax
 pop	ebx
 retn
 
-loc_402646:
+loc_4025F6:
 mov	ecx, [eax+8]
 mov	[edx+8], ecx
 
-loc_40264C:
+loc_4025FC:
 mov	[esp], eax
 call	free
 mov	dword ptr [esp], offset	unk_40A3A4
 call	ds:LeaveCriticalSection
 sub	esp, 4
-jmp	short loc_40263F
+jmp	short loc_4025EF
 
-loc_402666:
+loc_402616:
 mov	eax, [edx+8]
 mov	ds:dword_40A3BC, eax
 mov	eax, edx
-jmp	short loc_40264C
+jmp	short loc_4025FC
 align 10h
 
 
 
-sub_402680 proc	near
+sub_402630 proc	near
 
 var_1C=	dword ptr -1Ch
 arg_4= dword ptr  8
@@ -2228,12 +2169,40 @@ arg_4= dword ptr  8
 sub	esp, 1Ch
 mov	eax, [esp+1Ch+arg_4]
 cmp	eax, 1
-jz	short loc_4026D0
-jb	short loc_4026A0
+jz	short loc_402680
+jb	short loc_402650
 cmp	eax, 3
-jz	short loc_4026F0
+jz	short loc_4026A0
 
-loc_402693:
+loc_402643:
+mov	eax, 1
+add	esp, 1Ch
+retn			; lpCriticalSection
+align 10h
+
+loc_402650:
+mov	eax, ds:dword_40A3A0
+test	eax, eax
+jnz	short loc_4026C2
+
+loc_402659:
+mov	eax, ds:dword_40A3A0
+cmp	eax, 1
+jnz	short loc_402643
+mov	ds:dword_40A3A0, 0
+mov	[esp+1Ch+var_1C], offset unk_40A3A4
+call	ds:DeleteCriticalSection
+sub	esp, 4
+jmp	short loc_402643
+align 10h
+
+loc_402680:
+mov	eax, ds:dword_40A3A0
+test	eax, eax
+jz	short loc_4026B0
+
+loc_402689:
+mov	ds:dword_40A3A0, 1
 mov	eax, 1
 add	esp, 1Ch
 retn			; lpCriticalSection
@@ -2242,54 +2211,26 @@ align 10h
 loc_4026A0:
 mov	eax, ds:dword_40A3A0
 test	eax, eax
-jnz	short loc_402712
+jz	short loc_402643
+call	sub_402490
+jmp	short loc_402643
 
-loc_4026A9:
-mov	eax, ds:dword_40A3A0
-cmp	eax, 1
-jnz	short loc_402693
-mov	ds:dword_40A3A0, 0
-mov	[esp+1Ch+var_1C], offset unk_40A3A4
-call	ds:DeleteCriticalSection
-sub	esp, 4
-jmp	short loc_402693
-align 10h
-
-loc_4026D0:
-mov	eax, ds:dword_40A3A0
-test	eax, eax
-jz	short loc_402700
-
-loc_4026D9:
-mov	ds:dword_40A3A0, 1
-mov	eax, 1
-add	esp, 1Ch
-retn			; lpCriticalSection
-align 10h
-
-loc_4026F0:
-mov	eax, ds:dword_40A3A0
-test	eax, eax
-jz	short loc_402693
-call	sub_4024E0
-jmp	short loc_402693
-
-loc_402700:
+loc_4026B0:
 mov	[esp+1Ch+var_1C], offset unk_40A3A4
 call	ds:InitializeCriticalSection
 sub	esp, 4
-jmp	short loc_4026D9
+jmp	short loc_402689
 
-loc_402712:
-call	sub_4024E0
-jmp	short loc_4026A9
-sub_402680 endp
+loc_4026C2:
+call	sub_402490
+jmp	short loc_402659
+sub_402630 endp
 
 align 10h
 
 
 
-sub_402720 proc	near
+sub_4026D0 proc	near
 
 arg_0= dword ptr  0Ch
 
@@ -2297,40 +2238,32 @@ push	ecx
 push	eax
 cmp	eax, 1000h
 lea	ecx, [esp+arg_0]
-jb	short loc_402742
+jb	short loc_4026F2
 
-loc_40272D:
+loc_4026DD:
 sub	ecx, 1000h
 or	dword ptr [ecx], 0
 sub	eax, 1000h
 cmp	eax, 1000h
-ja	short loc_40272D
+ja	short loc_4026DD
 
-loc_402742:
+loc_4026F2:
 sub	ecx, eax
 or	dword ptr [ecx], 0
 pop	eax
 pop	ecx
 retn
-sub_402720 endp
+sub_4026D0 endp
 
 align 4
-
-
-; Attributes: thunk
-
-; int getch(void)
-_getch proc near
-jmp	ds:__imp__getch
-_getch endp
-
+; [00000006 BYTES: COLLAPSED FUNCTION _getch. PRESS KEYPAD "+" TO EXPAND]
 align 10h
 dd 0C24448Bh, 824548Bh,	4244C8Bh, 11B10FF0h
 dd 900DEBC3h, 3	dup(90909090h)
 
 
 
-sub_402780 proc	near
+sub_402730 proc	near
 
 arg_0= dword ptr  4
 arg_4= dword ptr  8
@@ -2341,13 +2274,13 @@ mov	edx, [esp+arg_4]
 mov	ecx, [esp+arg_0]
 lock cmpxchg [ecx], edx
 retn	0Ch
-sub_402780 endp
+sub_402730 endp
 
 align 10h
 
 
 
-sub_4027A0 proc	near
+sub_402750 proc	near
 
 var_2C=	dword ptr -2Ch
 var_28=	dword ptr -28h
@@ -2367,16 +2300,16 @@ mov	[esp+2Ch+var_2C], 6000h
 mov	[esp+2Ch+var_20], eax
 mov	eax, [esp+2Ch+arg_0]
 mov	[esp+2Ch+var_28], eax
-call	sub_403E90
+call	sub_403E40
 add	esp, 2Ch
 retn
-sub_4027A0 endp
+sub_402750 endp
 
 align 10h
 
 
 
-sub_4027E0 proc	near
+sub_402790 proc	near
 
 var_2C=	dword ptr -2Ch
 var_28=	dword ptr -28h
@@ -2396,16 +2329,16 @@ mov	eax, [esp+2Ch+arg_4]
 mov	[esp+2Ch+var_20], eax
 mov	eax, [esp+2Ch+arg_0]
 mov	[esp+2Ch+var_28], eax
-call	sub_403E90
+call	sub_403E40
 add	esp, 2Ch
 retn
-sub_4027E0 endp
+sub_402790 endp
 
 align 10h
 
 
 
-sub_402820 proc	near
+sub_4027D0 proc	near
 
 var_48=	dword ptr -48h
 var_44=	dword ptr -44h
@@ -2444,25 +2377,25 @@ fxam
 fstsw	ax
 fstp	st
 test	ah, 1
-jz	short loc_402870
+jz	short loc_402820
 test	ah, 4
-jz	loc_4028F0
+jz	loc_4028A0
 mov	[esp+48h+var_10], 3
 movzx	edx, word ptr [esp+48h+var_20]
 xor	eax, eax
-jmp	short loc_402884
+jmp	short loc_402834
 
-loc_402870:
+loc_402820:
 test	ah, 4
-jnz	short loc_4028D1
+jnz	short loc_402881
 movzx	edx, word ptr [esp+48h+var_20]
 xor	eax, eax
 mov	[esp+48h+var_10], 0
 
-loc_402884:
+loc_402834:
 and	edx, 8000h
 
-loc_40288A:
+loc_40283A:
 mov	ebx, [esp+48h+arg_18]
 mov	[ebx], edx
 lea	edx, [esp+48h+var_C]
@@ -2478,41 +2411,41 @@ lea	edx, [esp+48h+var_10]
 mov	[esp+48h+var_3C], edx
 lea	edx, [esp+48h+var_28]
 mov	[esp+48h+var_40], edx
-call	sub_4047E0
+call	sub_404790
 add	esp, 48h
 pop	ebx
 retn
 
-loc_4028D1:
+loc_402881:
 test	ah, 40h
-jz	short loc_402900
+jz	short loc_4028B0
 mov	[esp+48h+var_10], 2
 movzx	edx, word ptr [esp+48h+var_20]
 mov	eax, 0FFFFBFC3h
-jmp	short loc_402884
+jmp	short loc_402834
 align 10h
 
-loc_4028F0:
+loc_4028A0:
 mov	[esp+48h+var_10], 4
 xor	eax, eax
 xor	edx, edx
-jmp	short loc_40288A
+jmp	short loc_40283A
 align 10h
 
-loc_402900:
+loc_4028B0:
 movzx	edx, word ptr [esp+48h+var_20]
 mov	[esp+48h+var_10], 1
 mov	eax, edx
 and	eax, 7FFFh
 sub	eax, 403Eh
-jmp	loc_402884
-sub_402820 endp
+jmp	loc_402834
+sub_4027D0 endp
 
 align 10h
 
 
 
-sub_402920 proc	near
+sub_4028D0 proc	near
 
 var_28=	dword ptr -28h
 var_24=	dword ptr -24h
@@ -2522,20 +2455,20 @@ push	ebx
 sub	esp, 28h
 mov	ecx, [edx+4]
 test	ch, 40h
-jnz	short loc_402934
+jnz	short loc_4028E4
 mov	ebx, [edx+20h]
 cmp	[edx+24h], ebx
-jle	short loc_402944
+jle	short loc_4028F4
 
-loc_402934:
+loc_4028E4:
 and	ch, 20h
-jnz	short loc_402950
+jnz	short loc_402900
 mov	ebx, [edx]
 mov	ecx, [edx+20h]
 mov	[ebx+ecx], al
 mov	ebx, [edx+20h]
 
-loc_402944:
+loc_4028F4:
 add	ebx, 1
 mov	[edx+20h], ebx
 add	esp, 28h
@@ -2543,7 +2476,7 @@ pop	ebx
 retn			; int
 align 10h
 
-loc_402950:
+loc_402900:
 mov	ecx, [edx]
 mov	[esp+28h+var_28], eax
 mov	[esp+28h+var_C], edx
@@ -2556,13 +2489,13 @@ mov	[edx+20h], ebx
 add	esp, 28h
 pop	ebx
 retn
-sub_402920 endp
+sub_4028D0 endp
 
 align 10h
 
 
 
-sub_402980 proc	near
+sub_402930 proc	near
 
 var_58=	dword ptr -58h
 var_54=	dword ptr -54h
@@ -2585,70 +2518,70 @@ lea	esi, [esp+58h+var_28]
 mov	[esp+58h+var_50], eax
 mov	[esp+58h+var_54], 0
 mov	[esp+58h+var_58], esi
-call	sub_405E40
+call	sub_405DF0
 mov	eax, [ebx+0Ch]
 test	eax, eax
-js	short loc_4029B5
+js	short loc_402965
 cmp	ebp, eax
 cmovg	ebp, eax
 
-loc_4029B5:
+loc_402965:
 mov	eax, [ebx+8]
 cmp	ebp, eax
-jge	loc_402A47
+jge	loc_4029F7
 sub	eax, ebp
 test	eax, eax
 mov	[ebx+8], eax
-jle	short loc_4029D3
+jle	short loc_402983
 test	byte ptr [ebx+5], 4
-jz	loc_402A50
+jz	loc_402A00
 
-loc_4029D3:
+loc_402983:
 test	ebp, ebp
 mov	[esp+58h+var_3C], ebx
-jle	short loc_402A20
+jle	short loc_4029D0
 
-loc_4029DB:
+loc_40298B:
 movzx	eax, word ptr [edi]
 lea	edx, [esp+58h+var_2C]
 add	edi, 2
 mov	[esp+58h+var_50], edx
 mov	[esp+58h+var_58], esi
 mov	[esp+58h+var_54], eax
-call	sub_405E40
+call	sub_405DF0
 test	eax, eax
-jle	short loc_402A20
+jle	short loc_4029D0
 lea	ecx, [esi+eax]
 mov	ebx, esi
 
-loc_4029FE:
+loc_4029AE:
 movsx	eax, byte ptr [ebx]
 add	ebx, 1
 mov	edx, [esp+58h+var_3C]
 mov	[esp+58h+var_40], ecx
-call	sub_402920
+call	sub_4028D0
 mov	ecx, [esp+58h+var_40]
 cmp	ebx, ecx
-jnz	short loc_4029FE
+jnz	short loc_4029AE
 sub	ebp, 1
 test	ebp, ebp
-jg	short loc_4029DB
+jg	short loc_40298B
 
-loc_402A20:
+loc_4029D0:
 mov	ebx, [esp+58h+var_3C]
-jmp	short loc_402A32
+jmp	short loc_4029E2
 
-loc_402A26:
+loc_4029D6:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 
-loc_402A32:
+loc_4029E2:
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jg	short loc_402A26
+jg	short loc_4029D6
 add	esp, 4Ch
 pop	ebx
 pop	esi
@@ -2656,31 +2589,31 @@ pop	edi
 pop	ebp
 retn
 
-loc_402A47:
+loc_4029F7:
 mov	dword ptr [ebx+8], 0FFFFFFFFh
-jmp	short loc_4029D3
+jmp	short loc_402983
 
-loc_402A50:
+loc_402A00:
 sub	eax, 1
 mov	[ebx+8], eax
 
-loc_402A56:
+loc_402A06:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jnz	short loc_402A56
-jmp	loc_4029D3
-sub_402980 endp
+jnz	short loc_402A06
+jmp	loc_402983
+sub_402930 endp
 
 align 10h
 
 
 
-sub_402A80 proc	near
+sub_402A30 proc	near
 push	edi
 mov	edi, eax
 mov	eax, [ecx+0Ch]
@@ -2689,82 +2622,82 @@ mov	esi, edx
 push	ebx
 mov	ebx, ecx
 test	eax, eax
-js	short loc_402A95
+js	short loc_402A45
 cmp	edx, eax
 cmovg	esi, eax
 
-loc_402A95:
+loc_402A45:
 mov	eax, [ebx+8]
 cmp	esi, eax
-jge	short loc_402B10
+jge	short loc_402AC0
 sub	eax, esi
 test	eax, eax
 mov	[ebx+8], eax
-jle	short loc_402ACA
+jle	short loc_402A7A
 test	byte ptr [ebx+5], 4
-jnz	short loc_402ACA
+jnz	short loc_402A7A
 sub	eax, 1
 mov	[ebx+8], eax
 
-loc_402AB1:
+loc_402A61:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jnz	short loc_402AB1
+jnz	short loc_402A61
 
-loc_402ACA:
+loc_402A7A:
 test	esi, esi
-jz	short loc_402AFC
+jz	short loc_402AAC
 db	66h
 nop
 
-loc_402AD0:
+loc_402A80:
 movsx	eax, byte ptr [edi]
 mov	edx, ebx
 add	edi, 1
-call	sub_402920
+call	sub_4028D0
 sub	esi, 1
-jnz	short loc_402AD0
+jnz	short loc_402A80
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jle	short loc_402B09
+jle	short loc_402AB9
 nop
 
-loc_402AF0:
+loc_402AA0:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 
-loc_402AFC:
+loc_402AAC:
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jg	short loc_402AF0
+jg	short loc_402AA0
 
-loc_402B09:
+loc_402AB9:
 pop	ebx
 pop	esi
 pop	edi
 retn
 align 10h
 
-loc_402B10:
+loc_402AC0:
 mov	dword ptr [ebx+8], 0FFFFFFFFh
-jmp	short loc_402ACA
-sub_402A80 endp
+jmp	short loc_402A7A
+sub_402A30 endp
 
 align 10h
 
 
 
-sub_402B20 proc	near
+sub_402AD0 proc	near
 
 var_20=	dword ptr -20h
 var_10=	dword ptr -10h
@@ -2779,27 +2712,27 @@ mov	[esp+2Ch+var_C], esi
 mov	[esp+2Ch+var_8], edi
 mov	[esp+2Ch+var_4], ebp
 mov	dword ptr [ecx+0Ch], 0FFFFFFFFh
-jz	short loc_402B85
+jz	short loc_402B35
 mov	ebp, [ecx+4]
 lea	edi, [esp+2Ch+var_20+1]
 mov	byte ptr [esp+2Ch+var_20], 2Dh
 lea	eax, [esp+2Ch+var_20]
 
-loc_402B4E:
+loc_402AFE:
 and	ebp, 20h
 xor	esi, esi
 
-loc_402B53:
+loc_402B03:
 movzx	ebx, byte ptr [edx+esi]
 and	ebx, 0FFFFFFDFh
 or	ebx, ebp
 mov	[edi+esi], bl
 add	esi, 1
 cmp	esi, 3
-jnz	short loc_402B53
+jnz	short loc_402B03
 lea	edx, [edi+3]
 sub	edx, eax
-call	sub_402A80
+call	sub_402A30
 mov	ebx, [esp+2Ch+var_10]
 mov	esi, [esp+2Ch+var_C]
 mov	edi, [esp+2Ch+var_8]
@@ -2807,36 +2740,36 @@ mov	ebp, [esp+2Ch+var_4]
 add	esp, 2Ch
 retn
 
-loc_402B85:
+loc_402B35:
 mov	ebp, [ecx+4]
 test	ebp, 100h
-jz	short loc_402BA0
+jz	short loc_402B50
 mov	byte ptr [esp+2Ch+var_20], 2Bh
 lea	edi, [esp+2Ch+var_20+1]
 lea	eax, [esp+2Ch+var_20]
-jmp	short loc_402B4E
+jmp	short loc_402AFE
 align 10h
 
-loc_402BA0:
+loc_402B50:
 test	ebp, 40h
-jz	short loc_402BB7
+jz	short loc_402B67
 mov	byte ptr [esp+2Ch+var_20], 20h
 lea	edi, [esp+2Ch+var_20+1]
 lea	eax, [esp+2Ch+var_20]
-jmp	short loc_402B4E
+jmp	short loc_402AFE
 
-loc_402BB7:
+loc_402B67:
 lea	eax, [esp+2Ch+var_20]
 mov	edi, eax
-jmp	short loc_402B4E
-sub_402B20 endp
+jmp	short loc_402AFE
+sub_402AD0 endp
 
 align 10h
 
 
 ; Attributes: bp-based frame
 
-sub_402BC0 proc	near
+sub_402B70 proc	near
 
 var_48=	dword ptr -48h
 var_44=	dword ptr -44h
@@ -2871,44 +2804,44 @@ cmovns	esi, eax
 add	esi, 17h
 test	bh, 10h
 mov	[ebp+var_1C], eax
-jz	short loc_402BFA
+jz	short loc_402BAA
 cmp	word ptr [ecx+1Ch], 0
-jnz	loc_402DE0
+jnz	loc_402D90
 
-loc_402BFA:
+loc_402BAA:
 mov	eax, [edi+8]
 cmp	esi, eax
 cmovge	eax, esi
 add	eax, 0Fh
 and	eax, 0FFFFFFF0h
-call	sub_402720
+call	sub_4026D0
 sub	esp, eax
 test	bl, 80h
 lea	edx, [esp+48h+var_38]
 mov	[ebp+var_20], edx
-jz	short loc_402C2C
+jz	short loc_402BDC
 mov	eax, [ebp+var_2C]
 test	eax, eax
-js	loc_402E48
+js	loc_402DF8
 and	bl, 7Fh
 mov	[edi+4], ebx
 
-loc_402C2C:
+loc_402BDC:
 mov	ecx, [ebp+var_24]
 mov	esi, [ebp+var_28]
 mov	ebx, [ebp+var_20]
 mov	edx, ecx
 or	edx, esi
-jz	loc_402CEB
+jz	loc_402C9B
 mov	[ebp+var_1C], edi
 mov	edi, ecx
 
-loc_402C44:
+loc_402BF4:
 mov	[esp+48h+var_48], esi
 mov	[esp+48h+var_44], edi
 mov	[esp+48h+var_40], 0Ah
 mov	[esp+48h+var_3C], 0
-call	sub_407550
+call	sub_407500
 lea	ecx, [ebx+1]
 add	eax, 30h
 mov	[ebx], al
@@ -2917,19 +2850,19 @@ mov	[esp+48h+var_44], edi
 mov	[esp+48h+var_40], 0Ah
 mov	[esp+48h+var_3C], 0
 mov	[ebp+var_34], ecx
-call	sub_407690
+call	sub_407640
 mov	ecx, [ebp+var_34]
 mov	esi, eax
 mov	edi, edx
 or	edx, esi
-jz	short loc_402CE0
+jz	short loc_402C90
 cmp	[ebp+var_20], ecx
-jz	loc_402DC2
+jz	loc_402D72
 mov	eax, [ebp+var_1C]
 test	byte ptr [eax+5], 10h
-jz	short loc_402CC4
+jz	short loc_402C74
 cmp	word ptr [eax+1Ch], 0
-jz	short loc_402CC4
+jz	short loc_402C74
 mov	eax, ecx
 sub	eax, [ebp+var_20]
 mov	edx, eax
@@ -2939,127 +2872,127 @@ add	eax, edx
 and	eax, 3
 sub	eax, edx
 cmp	eax, 3
-jz	short loc_402CD0
+jz	short loc_402C80
 
-loc_402CC4:
+loc_402C74:
 mov	ebx, ecx
-jmp	loc_402C44
+jmp	loc_402BF4
 align 10h
 
-loc_402CD0:
+loc_402C80:
 lea	ecx, [ebx+2]
 mov	byte ptr [ebx+1], 2Ch
 mov	ebx, ecx
-jmp	loc_402C44
+jmp	loc_402BF4
 align 10h
 
-loc_402CE0:
+loc_402C90:
 mov	edi, [ebp+var_1C]
 mov	ebx, ecx
 mov	eax, [edi+0Ch]
 mov	[ebp+var_1C], eax
 
-loc_402CEB:
+loc_402C9B:
 mov	esi, [ebp+var_1C]
 test	esi, esi
-jle	short loc_402D0A
+jle	short loc_402CBA
 mov	eax, [ebp+var_20]
 sub	eax, ebx
 add	eax, [ebp+var_1C]
 test	eax, eax
-jle	short loc_402D0A
+jle	short loc_402CBA
 add	eax, ebx
 
-loc_402D00:
+loc_402CB0:
 mov	byte ptr [ebx],	30h
 add	ebx, 1
 cmp	ebx, eax
-jnz	short loc_402D00
+jnz	short loc_402CB0
 
-loc_402D0A:
+loc_402CBA:
 cmp	ebx, [ebp+var_20]
-jz	loc_402E60
+jz	loc_402E10
 
-loc_402D13:
+loc_402CC3:
 mov	eax, [edi+8]
 test	eax, eax
-jle	short loc_402D6E
+jle	short loc_402D1E
 mov	edx, [ebp+var_20]
 sub	edx, ebx
 add	edx, eax
 mov	eax, [edi+4]
 test	edx, edx
 mov	[edi+8], edx
-jle	short loc_402D71
+jle	short loc_402D21
 test	eax, 1C0h
-jz	short loc_402D38
+jz	short loc_402CE8
 sub	edx, 1
 mov	[edi+8], edx
 
-loc_402D38:
+loc_402CE8:
 mov	edx, [edi+0Ch]
 test	edx, edx
-js	loc_402E06
+js	loc_402DB6
 
-loc_402D43:
+loc_402CF3:
 test	ah, 4
-jnz	short loc_402D71
+jnz	short loc_402D21
 mov	edx, [edi+8]
 lea	esi, [edx-1]
 test	edx, edx
 mov	[edi+8], esi
-jle	short loc_402D71
+jle	short loc_402D21
 
-loc_402D55:
+loc_402D05:
 mov	edx, edi
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [edi+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[edi+8], edx
-jg	short loc_402D55
+jg	short loc_402D05
 
-loc_402D6E:
+loc_402D1E:
 mov	eax, [edi+4]
 
-loc_402D71:
+loc_402D21:
 test	al, 80h
-jz	short loc_402DD0
+jz	short loc_402D80
 mov	byte ptr [ebx],	2Dh
 add	ebx, 1
 
-loc_402D7B:
+loc_402D2B:
 cmp	[ebp+var_20], ebx
 mov	esi, [ebp+var_20]
-jnb	short loc_402DAD
+jnb	short loc_402D5D
 
-loc_402D83:
+loc_402D33:
 sub	ebx, 1
 mov	edx, edi
 movsx	eax, byte ptr [ebx]
-call	sub_402920
+call	sub_4028D0
 cmp	ebx, esi
-jnz	short loc_402D83
+jnz	short loc_402D33
 mov	eax, [edi+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[edi+8], edx
-jle	short loc_402DBA
+jle	short loc_402D6A
 
-loc_402DA1:
+loc_402D51:
 mov	edx, edi
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 
-loc_402DAD:
+loc_402D5D:
 mov	eax, [edi+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[edi+8], edx
-jg	short loc_402DA1
+jg	short loc_402D51
 
-loc_402DBA:
+loc_402D6A:
 lea	esp, [ebp-0Ch]
 pop	ebx
 pop	esi
@@ -3067,21 +3000,21 @@ pop	edi
 pop	ebp
 retn
 
-loc_402DC2:
+loc_402D72:
 mov	ecx, [ebp+var_20]
 mov	ebx, ecx
-jmp	loc_402C44
+jmp	loc_402BF4
 align 10h
 
-loc_402DD0:
+loc_402D80:
 test	ah, 1
-jz	short loc_402DF7
+jz	short loc_402DA7
 mov	byte ptr [ebx],	2Bh
 add	ebx, 1
-jmp	short loc_402D7B
+jmp	short loc_402D2B
 align 10h
 
-loc_402DE0:
+loc_402D90:
 mov	eax, esi
 mov	edx, 55555556h
 imul	edx
@@ -3089,39 +3022,39 @@ mov	eax, esi
 sar	eax, 1Fh
 sub	edx, eax
 add	esi, edx
-jmp	loc_402BFA
+jmp	loc_402BAA
 
-loc_402DF7:
+loc_402DA7:
 test	al, 40h
-jz	short loc_402D7B
+jz	short loc_402D2B
 mov	byte ptr [ebx],	20h
 add	ebx, 1
-jmp	loc_402D7B
+jmp	loc_402D2B
 
-loc_402E06:
+loc_402DB6:
 mov	edx, eax
 and	edx, 600h
 cmp	edx, 200h
-jnz	loc_402D43
+jnz	loc_402CF3
 mov	edx, [edi+8]
 lea	esi, [edx-1]
 test	edx, edx
 mov	[edi+8], esi
-jle	loc_402D71
+jle	loc_402D21
 nop
 lea	esi, [esi+0]
 
-loc_402E30:
+loc_402DE0:
 mov	byte ptr [ebx],	30h
 mov	eax, [edi+8]
 add	ebx, 1
 lea	edx, [eax-1]
 test	eax, eax
 mov	[edi+8], edx
-jg	short loc_402E30
-jmp	loc_402D6E
+jg	short loc_402DE0
+jmp	loc_402D1E
 
-loc_402E48:
+loc_402DF8:
 mov	eax, [ebp+var_30]
 mov	edx, [ebp+var_2C]
 neg	eax
@@ -3129,23 +3062,23 @@ adc	edx, 0
 neg	edx
 mov	[ebp+var_28], eax
 mov	[ebp+var_24], edx
-jmp	loc_402C2C
+jmp	loc_402BDC
 
-loc_402E60:
+loc_402E10:
 mov	ecx, [edi+0Ch]
 test	ecx, ecx
-jz	loc_402D13
+jz	loc_402CC3
 mov	byte ptr [ebx],	30h
 add	ebx, 1
-jmp	loc_402D13
-sub_402BC0 endp
+jmp	loc_402CC3
+sub_402B70 endp
 
 align 10h
 
 
 ; Attributes: bp-based frame
 
-sub_402E80 proc	near
+sub_402E30 proc	near
 
 var_38=	dword ptr -38h
 var_34=	dword ptr -34h
@@ -3191,12 +3124,12 @@ mov	edx, [edx+4]
 add	ecx, eax
 mov	[ebp+var_38], edx
 and	dh, 10h
-jz	short loc_402EEE
+jz	short loc_402E9E
 mov	eax, [ebp+arg_0]
 cmp	word ptr [eax+1Ch], 0
-jnz	loc_403110
+jnz	loc_4030C0
 
-loc_402EEE:
+loc_402E9E:
 mov	edx, [ebp+arg_0]
 mov	edx, [edx+8]
 cmp	ecx, edx
@@ -3204,12 +3137,12 @@ cmovl	ecx, edx
 lea	eax, [ecx+0Fh]
 and	eax, 0FFFFFFF0h
 mov	[ebp+var_30], edx
-call	sub_402720
+call	sub_4026D0
 sub	esp, eax
 mov	eax, [ebp+var_34]
 or	eax, [ebp+var_20]
 mov	[ebp+var_24], esp
-jz	loc_403170
+jz	loc_403120
 mov	eax, [ebp+var_28]
 mov	edx, ebx
 mov	ebx, esp
@@ -3217,13 +3150,13 @@ mov	ecx, [ebp+var_1C]
 mov	byte ptr [ebp+var_1C], dl
 and	eax, 20h
 mov	[ebp+var_20], eax
-jmp	short loc_402F49
+jmp	short loc_402EF9
 align 10h
 
-loc_402F30:
+loc_402EE0:
 mov	[ebx-1], dl
 
-loc_402F33:
+loc_402EE3:
 shrd	esi, edi, cl
 xor	eax, eax
 shr	edi, cl
@@ -3232,121 +3165,121 @@ cmovnz	esi, edi
 cmovnz	edi, eax
 mov	edx, edi
 or	edx, esi
-jz	short loc_402F65
+jz	short loc_402F15
 
-loc_402F49:
+loc_402EF9:
 movzx	eax, byte ptr [ebp+var_1C]
 add	ebx, 1
 and	eax, esi
 lea	edx, [eax+30h]
 cmp	dl, 39h
-jle	short loc_402F30
+jle	short loc_402EE0
 add	eax, 37h
 or	al, byte ptr [ebp+var_20]
 mov	[ebx-1], al
-jmp	short loc_402F33
+jmp	short loc_402EE3
 
-loc_402F65:
+loc_402F15:
 cmp	[ebp+var_24], ebx
-jz	loc_403170
+jz	loc_403120
 
-loc_402F6E:
+loc_402F1E:
 mov	eax, [ebp+var_2C]
 test	eax, eax
-jle	loc_403127
+jle	loc_4030D7
 mov	eax, [ebp+var_24]
 sub	eax, ebx
 add	eax, [ebp+var_2C]
 test	eax, eax
-jle	loc_403127
+jle	loc_4030D7
 add	eax, ebx
 nop
 lea	esi, [esi+0]
 
-loc_402F90:
+loc_402F40:
 mov	byte ptr [ebx],	30h
 add	ebx, 1
 cmp	ebx, eax
-jnz	short loc_402F90
+jnz	short loc_402F40
 
-loc_402F9A:
+loc_402F4A:
 cmp	ebx, [ebp+var_24]
-jz	loc_403150
+jz	loc_403100
 
-loc_402FA3:
+loc_402F53:
 mov	eax, ebx
 sub	eax, [ebp+var_24]
 cmp	[ebp+var_30], eax
-jle	loc_403053
+jle	loc_403003
 mov	edi, [ebp+var_30]
 sub	edi, eax
 mov	eax, [ebp+arg_0]
 test	edi, edi
 mov	[eax+8], edi
-jle	short loc_402FE1
+jle	short loc_402F91
 cmp	[ebp+var_28], 6Fh
-jz	short loc_402FD3
+jz	short loc_402F83
 mov	eax, [ebp+arg_0]
 test	byte ptr [eax+5], 8
-jnz	loc_4030C2
+jnz	loc_403072
 
-loc_402FD3:
+loc_402F83:
 mov	edx, [ebp+arg_0]
 mov	eax, [edx+0Ch]
 test	eax, eax
-js	loc_4030D9
+js	loc_403089
 
-loc_402FE1:
+loc_402F91:
 lea	esi, [edi-1]
 
-loc_402FE4:
+loc_402F94:
 cmp	[ebp+var_28], 6Fh
-jz	short loc_402FF7
+jz	short loc_402FA7
 mov	eax, [ebp+arg_0]
 test	byte ptr [eax+5], 8
-jnz	loc_4030B0
+jnz	loc_403060
 
-loc_402FF7:
+loc_402FA7:
 test	edi, edi
-jle	short loc_403004
+jle	short loc_402FB4
 mov	eax, [ebp+arg_0]
 test	byte ptr [eax+5], 4
-jz	short loc_403070
+jz	short loc_403020
 
-loc_403004:
+loc_402FB4:
 cmp	ebx, [ebp+var_24]
-jbe	short loc_40302E
+jbe	short loc_402FDE
 mov	[ebp+var_1C], edi
 mov	edi, [ebp+var_24]
 mov	[ebp+var_24], esi
 mov	esi, ebx
 mov	ebx, [ebp+arg_0]
 
-loc_403017:
+loc_402FC7:
 sub	esi, 1
 mov	edx, ebx
 movsx	eax, byte ptr [esi]
-call	sub_402920
+call	sub_4028D0
 cmp	esi, edi
-jnz	short loc_403017
+jnz	short loc_402FC7
 mov	edi, [ebp+var_1C]
 mov	esi, [ebp+var_24]
 
-loc_40302E:
+loc_402FDE:
 test	edi, edi
 mov	ebx, [ebp+arg_0]
-jle	short loc_40304B
+jle	short loc_402FFB
 
-loc_403035:
+loc_402FE5:
 mov	eax, 20h
 sub	esi, 1
 mov	edx, ebx
-call	sub_402920
+call	sub_4028D0
 lea	eax, [esi+1]
 test	eax, eax
-jg	short loc_403035
+jg	short loc_402FE5
 
-loc_40304B:
+loc_402FFB:
 lea	esp, [ebp-0Ch]
 pop	ebx
 pop	esi
@@ -3354,27 +3287,27 @@ pop	edi
 pop	ebp
 retn
 
-loc_403053:
+loc_403003:
 mov	edx, [ebp+arg_0]
 mov	esi, 0FFFFFFFEh
 mov	edi, 0FFFFFFFFh
 mov	dword ptr [edx+8], 0FFFFFFFFh
-jmp	loc_402FE4
+jmp	loc_402F94
 align 10h
 
-loc_403070:
+loc_403020:
 mov	edi, [ebp+arg_0]
 mov	[ebp+var_1C], ebx
 mov	ebx, esi
 
-loc_403078:
+loc_403028:
 mov	eax, 20h
 sub	ebx, 1
 mov	edx, edi
-call	sub_402920
+call	sub_4028D0
 lea	eax, [ebx+1]
 test	eax, eax
-jg	short loc_403078
+jg	short loc_403028
 xor	eax, eax
 test	esi, esi
 mov	ebx, [ebp+var_1C]
@@ -3382,49 +3315,49 @@ lea	edi, [esi-1]
 cmovns	eax, esi
 sub	edi, eax
 lea	esi, [edi-1]
-jmp	loc_403004
+jmp	loc_402FB4
 
-loc_4030A5:
+loc_403055:
 lea	esi, [edi-3]
 mov	edi, eax
 lea	esi, [esi+0]
 
-loc_4030B0:
+loc_403060:
 movzx	edx, byte ptr [ebp+var_28]
 mov	byte ptr [ebx+1], 30h
 mov	[ebx], dl
 add	ebx, 2
-jmp	loc_402FF7
+jmp	loc_402FA7
 
-loc_4030C2:
+loc_403072:
 lea	eax, [edi-2]
 test	eax, eax
-jle	short loc_4030A5
+jle	short loc_403055
 mov	edx, [ebp+arg_0]
 mov	edi, eax
 mov	eax, [edx+0Ch]
 test	eax, eax
-jns	loc_402FE1
+jns	loc_402F91
 
-loc_4030D9:
+loc_403089:
 mov	edx, [ebp+arg_0]
 mov	eax, [edx+4]
 and	eax, 600h
 cmp	eax, 200h
-jnz	loc_402FE1
+jnz	loc_402F91
 lea	eax, [ebx+edi]
 
-loc_4030F2:
+loc_4030A2:
 mov	byte ptr [ebx],	30h
 add	ebx, 1
 cmp	ebx, eax
-jnz	short loc_4030F2
+jnz	short loc_4030A2
 mov	esi, 0FFFFFFFEh
 mov	edi, 0FFFFFFFFh
-jmp	loc_402FE4
+jmp	loc_402F94
 align 10h
 
-loc_403110:
+loc_4030C0:
 mov	eax, ecx
 mov	edx, 55555556h
 imul	edx
@@ -3432,44 +3365,44 @@ mov	eax, ecx
 sar	eax, 1Fh
 sub	edx, eax
 add	ecx, edx
-jmp	loc_402EEE
+jmp	loc_402E9E
 
-loc_403127:
+loc_4030D7:
 cmp	[ebp+var_28], 6Fh
-jnz	loc_402F9A
+jnz	loc_402F4A
 mov	eax, [ebp+arg_0]
 test	byte ptr [eax+5], 8
-jz	loc_402F9A
+jz	loc_402F4A
 mov	byte ptr [ebx],	30h
 add	ebx, 1
-jmp	loc_402F9A
+jmp	loc_402F4A
 align 10h
 
-loc_403150:
+loc_403100:
 mov	edx, [ebp+arg_0]
 mov	eax, [edx+0Ch]
 test	eax, eax
-jz	loc_402FA3
+jz	loc_402F53
 mov	byte ptr [ebx],	30h
 add	ebx, 1
-jmp	loc_402FA3
+jmp	loc_402F53
 align 10h
 
-loc_403170:
+loc_403120:
 mov	eax, [ebp+var_38]
 mov	edx, [ebp+arg_0]
 mov	ebx, [ebp+var_24]
 and	ah, 0F7h
 mov	[edx+4], eax
-jmp	loc_402F6E
-sub_402E80 endp
+jmp	loc_402F1E
+sub_402E30 endp
 
 align 10h
 
 
 ; Attributes: bp-based frame
 
-sub_403190 proc	near
+sub_403140 proc	near
 
 var_48=	dword ptr -48h
 var_44=	dword ptr -44h
@@ -3489,17 +3422,17 @@ push	ebx
 mov	ebx, eax
 sub	esp, 3Ch
 cmp	dword ptr [eax+10h], 0FFFFFFFDh
-jz	loc_403224
+jz	loc_4031D4
 movzx	edx, word ptr [eax+14h]
 
-loc_4031A9:
+loc_403159:
 test	dx, dx
-jz	short loc_403202
+jz	short loc_4031B2
 mov	eax, [ebx+10h]
 mov	[ebp+var_2C], esp
 add	eax, 0Fh
 and	eax, 0FFFFFFF0h
-call	sub_402720
+call	sub_4026D0
 sub	esp, eax
 lea	edi, [esp+48h+var_38]
 lea	eax, [ebp+var_1C]
@@ -3507,20 +3440,20 @@ mov	[ebp+var_1C], 0
 mov	[esp+48h+var_40], eax
 mov	[esp+48h+var_44], edx
 mov	[esp+48h+var_48], edi
-call	sub_405E40
+call	sub_405DF0
 test	eax, eax
-jle	short loc_403216
+jle	short loc_4031C6
 lea	esi, [edi+eax]
 
-loc_4031E6:
+loc_403196:
 movsx	eax, byte ptr [edi]
 mov	edx, ebx
 add	edi, 1
-call	sub_402920
+call	sub_4028D0
 cmp	edi, esi
-jnz	short loc_4031E6
+jnz	short loc_403196
 
-loc_4031F7:
+loc_4031A7:
 mov	esp, [ebp+var_2C]
 lea	esp, [ebp-0Ch]
 pop	ebx
@@ -3529,10 +3462,10 @@ pop	edi
 pop	ebp
 retn
 
-loc_403202:
+loc_4031B2:
 mov	edx, ebx
 mov	eax, 2Eh
-call	sub_402920
+call	sub_4028D0
 lea	esp, [ebp-0Ch]
 pop	ebx
 pop	esi
@@ -3540,13 +3473,13 @@ pop	edi
 pop	ebp
 retn
 
-loc_403216:
+loc_4031C6:
 mov	edx, ebx
 mov	eax, 2Eh
-call	sub_402920
-jmp	short loc_4031F7
+call	sub_4028D0
+jmp	short loc_4031A7
 
-loc_403224:
+loc_4031D4:
 mov	[ebp+var_1C], 0
 call	localeconv
 lea	edx, [ebp+var_1C]
@@ -3556,26 +3489,26 @@ mov	eax, [eax]
 mov	[esp+48h+var_44], eax
 lea	eax, [ebp-1Eh]
 mov	[esp+48h+var_48], eax
-call	sub_406140
+call	sub_4060F0
 test	eax, eax
-jle	short loc_403264
+jle	short loc_403214
 movzx	edx, [ebp+var_1E]
 mov	[ebx+14h], dx
 
-loc_40325C:
+loc_40320C:
 mov	[ebx+10h], eax
-jmp	loc_4031A9
+jmp	loc_403159
 
-loc_403264:
+loc_403214:
 movzx	edx, word ptr [ebx+14h]
-jmp	short loc_40325C
-sub_403190 endp
+jmp	short loc_40320C
+sub_403140 endp
 
 align 10h
 
 
 
-sub_403270 proc	near
+sub_403220 proc	near
 
 var_1C=	dword ptr -1Ch
 arg_0= dword ptr  8
@@ -3591,128 +3524,128 @@ sub	esp, 1Ch
 test	edi, edi
 mov	ebx, [esp+28h+arg_0]
 mov	ecx, [ebx+8]
-jle	loc_4034E6
+jle	loc_403496
 cmp	edi, ecx
-jge	loc_4033B0
+jge	loc_403360
 sub	ecx, edi
 mov	[ebx+8], ecx
 
-loc_403299:
+loc_403249:
 test	ecx, ecx
-js	loc_4033B0
+js	loc_403360
 
-loc_4032A1:
+loc_403251:
 mov	eax, [ebx+0Ch]
 cmp	eax, ecx
-jge	loc_4033B0
+jge	loc_403360
 sub	ecx, eax
 test	ecx, ecx
 mov	[ebx+8], ecx
-jle	loc_4033BC
+jle	loc_40336C
 test	eax, eax
-jle	loc_403561
+jle	loc_403511
 
-loc_4032C1:
+loc_403271:
 sub	ecx, 1
 test	edi, edi
 mov	[ebx+8], ecx
-jg	loc_4033C4
+jg	loc_403374
 nop
 
-loc_4032D0:
+loc_403280:
 test	ecx, ecx
-jle	short loc_4032F2
+jle	short loc_4032A2
 test	ebp, ebp
-jz	loc_4034A1
+jz	loc_403451
 
-loc_4032DC:
+loc_40328C:
 sub	ecx, 1
 test	ecx, ecx
 mov	[ebx+8], ecx
-jz	short loc_4032F2
+jz	short loc_4032A2
 mov	eax, [ebx+4]
 
-loc_4032E9:
+loc_403299:
 test	ah, 6
-jz	loc_403433
+jz	loc_4033E3
 
-loc_4032F2:
+loc_4032A2:
 test	ebp, ebp
-jnz	loc_403448
+jnz	loc_4033F8
 
-loc_4032FA:
+loc_4032AA:
 mov	eax, [ebx+4]
 test	ah, 1
-jnz	loc_403500
+jnz	loc_4034B0
 test	al, 40h
-jnz	loc_403550
+jnz	loc_403500
 
-loc_40330E:
+loc_4032BE:
 mov	edx, [ebx+8]
 test	edx, edx
-jle	short loc_403328
+jle	short loc_4032D8
 mov	eax, [ebx+4]
 and	eax, 600h
 cmp	eax, 200h
-jz	loc_403511
+jz	loc_4034C1
 
-loc_403328:
+loc_4032D8:
 test	edi, edi
-jle	loc_403538
+jle	loc_4034E8
 
-loc_403330:
+loc_4032E0:
 lea	eax, [ebx+1Ch]
 mov	ebp, 55555556h
 mov	[esp+28h+var_1C], eax
 
-loc_40333C:
+loc_4032EC:
 movzx	edx, byte ptr [esi]
 mov	eax, 30h
 test	dl, dl
-jz	short loc_40334E
+jz	short loc_4032FE
 movsx	eax, dl
 add	esi, 1
 
-loc_40334E:
+loc_4032FE:
 mov	edx, ebx
-call	sub_402920
+call	sub_4028D0
 sub	edi, 1
-jnz	loc_403460
+jnz	loc_403410
 
-loc_40335E:
+loc_40330E:
 mov	eax, [ebx+0Ch]
 test	eax, eax
-jle	loc_4034B5
+jle	loc_403465
 
-loc_403369:
+loc_403319:
 mov	eax, ebx
-call	sub_403190
+call	sub_403140
 test	edi, edi
 mov	eax, [ebx+0Ch]
-jz	short loc_40339C
-jmp	loc_4034C7
+jz	short loc_40334C
+jmp	loc_403477
 align 10h
 
-loc_403380:
+loc_403330:
 movzx	edx, byte ptr [esi]
 mov	eax, 30h
 test	dl, dl
-jz	short loc_403392
+jz	short loc_403342
 movsx	eax, dl
 add	esi, 1
 
-loc_403392:
+loc_403342:
 mov	edx, ebx
-call	sub_402920
+call	sub_4028D0
 
-loc_403399:
+loc_403349:
 mov	eax, [ebx+0Ch]
 
-loc_40339C:
+loc_40334C:
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+0Ch], edx
-jg	short loc_403380
+jg	short loc_403330
 add	esp, 1Ch
 pop	ebx
 pop	esi
@@ -3721,19 +3654,19 @@ pop	ebp
 retn
 align 10h
 
-loc_4033B0:
+loc_403360:
 mov	dword ptr [ebx+8], 0FFFFFFFFh
 mov	ecx, 0FFFFFFFFh
 
-loc_4033BC:
+loc_40336C:
 test	edi, edi
-jle	loc_4032D0
+jle	loc_403280
 
-loc_4033C4:
+loc_403374:
 test	byte ptr [ebx+5], 10h
-jz	loc_4032D0
+jz	loc_403280
 cmp	word ptr [ebx+1Ch], 0
-jz	loc_4032D0
+jz	loc_403280
 lea	eax, [edi+2]
 mov	edx, 55555556h
 mov	[esp+28h+var_1C], eax
@@ -3742,53 +3675,53 @@ mov	eax, [esp+28h+var_1C]
 sar	eax, 1Fh
 sub	edx, eax
 cmp	edx, 1
-jle	loc_4032D0
+jle	loc_403280
 test	ecx, ecx
-jle	loc_4032F2
+jle	loc_4032A2
 mov	eax, ecx
 sub	eax, edx
 add	eax, 1
-jmp	short loc_403418
+jmp	short loc_4033C8
 align 10h
 
-loc_403410:
+loc_4033C0:
 test	ecx, ecx
-jz	loc_403575
+jz	loc_403525
 
-loc_403418:
+loc_4033C8:
 sub	ecx, 1
 cmp	ecx, eax
-jnz	short loc_403410
+jnz	short loc_4033C0
 mov	[ebx+8], ecx
-jmp	loc_4032D0
+jmp	loc_403280
 
-loc_403427:
+loc_4033D7:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 
-loc_403433:
+loc_4033E3:
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jg	short loc_403427
+jg	short loc_4033D7
 test	ebp, ebp
-jz	loc_4032FA
+jz	loc_4032AA
 
-loc_403448:
+loc_4033F8:
 mov	edx, ebx
 mov	eax, 2Dh
-call	sub_402920
-jmp	loc_40330E
+call	sub_4028D0
+jmp	loc_4032BE
 align 10h
 
-loc_403460:
+loc_403410:
 test	byte ptr [ebx+5], 10h
-jz	loc_40333C
+jz	loc_4032EC
 cmp	word ptr [ebx+1Ch], 0
 nop
-jz	loc_40333C
+jz	loc_4032EC
 mov	eax, edi
 imul	ebp
 mov	eax, edi
@@ -3796,100 +3729,100 @@ sar	eax, 1Fh
 sub	edx, eax
 lea	eax, [edx+edx*2]
 cmp	edi, eax
-jnz	loc_40333C
+jnz	loc_4032EC
 mov	eax, [esp+28h+var_1C]
 mov	ecx, ebx
 mov	edx, 1
-call	sub_402980
-jmp	loc_40333C
+call	sub_402930
+jmp	loc_4032EC
 
-loc_4034A1:
+loc_403451:
 mov	eax, [ebx+4]
 test	eax, 1C0h
-jz	loc_4032E9
+jz	loc_403299
 nop
-jmp	loc_4032DC
+jmp	loc_40328C
 
-loc_4034B5:
+loc_403465:
 test	byte ptr [ebx+5], 8
-jnz	loc_403369
+jnz	loc_403319
 test	edi, edi
-jz	loc_40339C
+jz	loc_40334C
 
-loc_4034C7:
+loc_403477:
 add	eax, edi
 mov	[ebx+0Ch], eax
 lea	esi, [esi+0]
 
-loc_4034D0:
+loc_403480:
 mov	edx, ebx
 mov	eax, 30h
-call	sub_402920
+call	sub_4028D0
 add	edi, 1
-js	short loc_4034D0
-jmp	loc_403399
+js	short loc_403480
+jmp	loc_403349
 
-loc_4034E6:
+loc_403496:
 test	ecx, ecx
-jle	loc_403299
+jle	loc_403249
 sub	ecx, 1
 mov	[ebx+8], ecx
-jmp	loc_4032A1
+jmp	loc_403251
 align 10h
 
-loc_403500:
+loc_4034B0:
 mov	edx, ebx
 mov	eax, 2Bh
-call	sub_402920
-jmp	loc_40330E
+call	sub_4028D0
+jmp	loc_4032BE
 
-loc_403511:
+loc_4034C1:
 sub	edx, 1
 mov	[ebx+8], edx
 
-loc_403517:
+loc_4034C7:
 mov	edx, ebx
 mov	eax, 30h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jg	short loc_403517
+jg	short loc_4034C7
 test	edi, edi
-jg	loc_403330
+jg	loc_4032E0
 
-loc_403538:
+loc_4034E8:
 mov	edx, ebx
 mov	eax, 30h
-call	sub_402920
-jmp	loc_40335E
+call	sub_4028D0
+jmp	loc_40330E
 align 10h
 
-loc_403550:
+loc_403500:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
-jmp	loc_40330E
+call	sub_4028D0
+jmp	loc_4032BE
 
-loc_403561:
+loc_403511:
 test	byte ptr [ebx+5], 8
-jz	loc_4033BC
+jz	loc_40336C
 nop
 lea	esi, [esi+0]
-jmp	loc_4032C1
+jmp	loc_403271
 
-loc_403575:
+loc_403525:
 mov	dword ptr [ebx+8], 0
-jmp	loc_4032F2
-sub_403270 endp
+jmp	loc_4032A2
+sub_403220 endp
 
-jmp	short sub_403590
+jmp	short sub_403540
 align 10h
 
 
 
-sub_403590 proc	near
+sub_403540 proc	near
 
 var_38=	dword ptr -38h
 var_24=	dword ptr -24h
@@ -3918,10 +3851,10 @@ sar	ecx, 1Fh
 sar	edx, 2
 mov	ebx, edx
 sub	ebx, ecx
-jz	short loc_4035E3
+jz	short loc_403593
 mov	ecx, 66666667h
 
-loc_4035D0:
+loc_403580:
 mov	eax, ebx
 add	esi, 1
 imul	ecx
@@ -3929,25 +3862,25 @@ sar	ebx, 1Fh
 sar	edx, 2
 sub	edx, ebx
 mov	ebx, edx
-jnz	short loc_4035D0
+jnz	short loc_403580
 
-loc_4035E3:
+loc_403593:
 mov	eax, [edi+28h]
 mov	edx, [edi+8]
 cmp	esi, eax
 cmovl	esi, eax
 lea	eax, [esi+2]
 cmp	edx, eax
-jg	short loc_403650
+jg	short loc_403600
 mov	dword ptr [edi+8], 0FFFFFFFFh
 
-loc_4035FC:
+loc_4035AC:
 mov	edx, [esp+38h+var_24]
 mov	ecx, 1
 mov	eax, ebp
 mov	[esp+38h+var_38], edi
 add	esi, 1
-call	sub_403270
+call	sub_403220
 mov	eax, [edi+28h]
 mov	[edi+0Ch], eax
 mov	eax, [edi+4]
@@ -3957,12 +3890,12 @@ or	edx, 1C0h
 or	eax, 45h
 mov	[edi+4], edx
 mov	edx, edi
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esp+38h+var_20]
 mov	ecx, edi
 add	[edi+8], esi
 mov	edx, [esp+38h+var_1C]
-call	sub_402BC0
+call	sub_402B70
 add	esp, 2Ch
 pop	ebx
 pop	esi
@@ -3971,17 +3904,17 @@ pop	ebp
 retn
 align 10h
 
-loc_403650:
+loc_403600:
 sub	edx, eax
 mov	[edi+8], edx
-jmp	short loc_4035FC
-sub_403590 endp
+jmp	short loc_4035AC
+sub_403540 endp
 
 align 10h
 
 
 
-sub_403660 proc	near
+sub_403610 proc	near
 
 var_40=	dword ptr -40h
 var_3C=	dword ptr -3Ch
@@ -4003,9 +3936,9 @@ mov	ebx, eax
 sub	esp, 40h
 mov	eax, [eax+0Ch]
 test	eax, eax
-js	loc_403710
+js	loc_4036C0
 
-loc_403673:
+loc_403623:
 fld	[esp+40h+arg_0]
 mov	[esp+40h+var_30], eax
 lea	edx, [esp+40h+var_18]
@@ -4022,34 +3955,34 @@ mov	[esp+40h+var_38], eax
 mov	eax, [esp+40h+var_4]
 mov	[esp+40h+var_34], eax
 mov	eax, 3
-call	sub_402820
+call	sub_4027D0
 mov	ecx, [esp+40h+var_14]
 cmp	ecx, 0FFFF8000h
 mov	edi, eax
-jz	short loc_403721
+jz	short loc_4036D1
 mov	edx, eax
 mov	eax, [esp+40h+var_18]
 mov	[esp+40h+var_40], ebx
-call	sub_403270
+call	sub_403220
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jle	short loc_4036FA
+jle	short loc_4036AA
 
-loc_4036E1:
+loc_403691:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	ecx, [ebx+8]
 lea	esi, [ecx-1]
 test	ecx, ecx
 mov	[ebx+8], esi
-jg	short loc_4036E1
+jg	short loc_403691
 
-loc_4036FA:
+loc_4036AA:
 mov	[esp+40h+var_40], edi
-call	sub_4063E0
+call	sub_406390
 add	esp, 40h
 pop	ebx
 pop	esi
@@ -4057,30 +3990,30 @@ pop	edi
 retn
 align 10h
 
-loc_403710:
+loc_4036C0:
 mov	dword ptr [ebx+0Ch], 6
 mov	eax, 6
-jmp	loc_403673
+jmp	loc_403623
 
-loc_403721:
+loc_4036D1:
 mov	edx, eax
 mov	eax, [esp+40h+var_18]
 mov	ecx, ebx
-call	sub_402B20
+call	sub_402AD0
 mov	[esp+40h+var_40], edi
-call	sub_4063E0
+call	sub_406390
 add	esp, 40h
 pop	ebx
 pop	esi
 pop	edi
 retn
-sub_403660 endp
+sub_403610 endp
 
 align 10h
 
 
 
-sub_403740 proc	near
+sub_4036F0 proc	near
 
 var_40=	dword ptr -40h
 var_3C=	dword ptr -3Ch
@@ -4102,10 +4035,10 @@ mov	ebx, eax
 sub	esp, 40h	; char *
 mov	eax, [eax+0Ch]
 cmp	eax, 0
-jl	loc_403877
-jz	loc_403860
+jl	loc_403827
+jz	loc_403810
 
-loc_40375A:
+loc_40370A:
 fld	[esp+40h+arg_0]
 mov	[esp+40h+var_30], eax
 lea	edx, [esp+40h+var_18]
@@ -4122,73 +4055,73 @@ mov	[esp+40h+var_38], eax
 mov	eax, [esp+40h+var_4]
 mov	[esp+40h+var_34], eax
 mov	eax, 2
-call	sub_402820
+call	sub_4027D0
 mov	esi, [esp+40h+var_14]
 cmp	esi, 0FFFF8000h
 mov	edi, eax
-jz	loc_403892
+jz	loc_403842
 cmp	esi, 0FFFFFFFDh
-jl	short loc_403828
+jl	short loc_4037D8
 mov	eax, [ebx+0Ch]
 cmp	esi, eax
-jg	short loc_403828
+jg	short loc_4037D8
 test	byte ptr [ebx+5], 8
-jnz	loc_403888
+jnz	loc_403838
 mov	[esp+40h+var_40], edi
 call	strlen
 sub	eax, esi
 test	eax, eax
 mov	[ebx+0Ch], eax
-js	loc_4038A1
+js	loc_403851
 
-loc_4037DC:
+loc_40378C:
 mov	eax, [esp+40h+var_18]
 mov	edx, edi
 mov	ecx, esi
 mov	[esp+40h+var_40], ebx
-call	sub_403270
+call	sub_403220
 mov	eax, [ebx+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[ebx+8], edx
-jle	short loc_40384C
+jle	short loc_4037FC
 lea	esi, [esi+0]
 
-loc_403800:
+loc_4037B0:
 mov	edx, ebx
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	ecx, [ebx+8]
 lea	esi, [ecx-1]
 test	ecx, ecx
 mov	[ebx+8], esi
-jg	short loc_403800
+jg	short loc_4037B0
 mov	[esp+40h+var_40], edi
-call	sub_4063E0
+call	sub_406390
 add	esp, 40h
 pop	ebx
 pop	esi
 pop	edi
 retn			; char *
 
-loc_403828:
+loc_4037D8:
 test	byte ptr [ebx+5], 8
-jnz	short loc_403871
+jnz	short loc_403821
 mov	[esp+40h+var_40], edi
 call	strlen
 sub	eax, 1
 mov	[ebx+0Ch], eax
 
-loc_40383C:
+loc_4037EC:
 mov	eax, [esp+40h+var_18]
 mov	ecx, esi
 mov	edx, edi
 mov	[esp+40h+var_40], ebx
-call	sub_403590
+call	sub_403540
 
-loc_40384C:
+loc_4037FC:
 mov	[esp+40h+var_40], edi
-call	sub_4063E0
+call	sub_406390
 add	esp, 40h
 pop	ebx
 pop	esi
@@ -4196,46 +4129,46 @@ pop	edi
 retn
 align 10h
 
-loc_403860:
+loc_403810:
 mov	dword ptr [ebx+0Ch], 1
 mov	eax, 1
-jmp	loc_40375A
+jmp	loc_40370A
 
-loc_403871:
+loc_403821:
 sub	dword ptr [ebx+0Ch], 1
-jmp	short loc_40383C
+jmp	short loc_4037EC
 
-loc_403877:
+loc_403827:
 mov	dword ptr [ebx+0Ch], 6
 mov	eax, 6
-jmp	loc_40375A
+jmp	loc_40370A
 
-loc_403888:
+loc_403838:
 sub	eax, esi
 mov	[ebx+0Ch], eax
-jmp	loc_4037DC
+jmp	loc_40378C
 
-loc_403892:
+loc_403842:
 mov	edx, eax
 mov	eax, [esp+40h+var_18]
 mov	ecx, ebx
-call	sub_402B20
-jmp	short loc_40384C
+call	sub_402AD0
+jmp	short loc_4037FC
 
-loc_4038A1:
+loc_403851:
 mov	edx, [ebx+8]
 test	edx, edx
-jle	loc_4037DC
+jle	loc_40378C
 add	eax, edx
 mov	[ebx+8], eax
-jmp	loc_4037DC
-sub_403740 endp
+jmp	loc_40378C
+sub_4036F0 endp
 
 align 10h
 
 
 
-sub_4038C0 proc	near
+sub_403870 proc	near
 
 var_60=	dword ptr -60h
 var_5C=	dword ptr -5Ch
@@ -4261,44 +4194,44 @@ fxam
 fstsw	ax
 and	ax, 4500h
 cmp	ax, 100h
-jz	loc_403D5C
+jz	loc_403D0C
 movzx	edx, word ptr [esp+30h]
 mov	ebx, edx
 and	ebx, 8000h
-jnz	loc_403A92
+jnz	loc_403A42
 
-loc_4038F9:
+loc_4038A9:
 fxam
 fstsw	ax
 fstp	st
 and	ax, 4500h
 cmp	ax, 500h
-jz	loc_403D6E
+jz	loc_403D1E
 and	dx, 7FFFh
-jz	loc_403AA0
+jz	loc_403A50
 mov	edi, [esp+60h+var_3A+2]
 sub	dx, 3FFFh
 mov	ebp, [esp+2Ch]
 
-loc_403926:
+loc_4038D6:
 mov	eax, [esi+0Ch]
 cmp	eax, 0Eh
-ja	loc_4039CE
+ja	loc_40397E
 test	ebp, ebp
-js	short loc_40394E
+js	short loc_4038FE
 mov	ecx, edi
 mov	ebx, ebp
 lea	esi, [esi+0]
 
-loc_403940:
+loc_4038F0:
 shld	ebx, ecx, 1
 add	ecx, ecx
 test	ebx, ebx
-jns	short loc_403940
+jns	short loc_4038F0
 mov	edi, ecx
 mov	ebp, ebx
 
-loc_40394E:
+loc_4038FE:
 mov	ecx, edi
 mov	ebx, ebp
 shrd	ecx, ebp, 1
@@ -4321,7 +4254,7 @@ add	[esp+60h+var_60], edi
 adc	[esp+60h+var_5C], ebp
 mov	edi, [esp+60h+var_5C]
 test	edi, edi
-js	loc_403D54
+js	loc_403D04
 mov	edi, [esp+60h+var_60]
 mov	ebp, [esp+60h+var_5C]
 shld	ebp, edi, 1
@@ -4329,7 +4262,7 @@ add	edi, edi
 mov	[esp+60h+var_60], edi
 mov	[esp+60h+var_5C], ebp
 
-loc_4039AD:
+loc_40395D:
 mov	ebp, [esp+60h+var_5C]
 mov	ecx, 0Fh
 xor	ebx, ebx
@@ -4342,10 +4275,10 @@ and	ecx, 20h
 cmovnz	edi, ebp
 cmovnz	ebp, ebx
 
-loc_4039CE:
+loc_40397E:
 mov	ecx, ebp
 or	ecx, edi
-jz	loc_403D7E
+jz	loc_403D2E
 lea	ecx, [esp+60h+var_28]
 mov	eax, edi
 mov	[esp+60h+var_58], ecx
@@ -4359,143 +4292,143 @@ mov	[esp+60h+var_4C], ecx
 mov	ecx, [esp+60h+var_48]
 and	ecx, 20h
 mov	[esp+60h+var_50], ecx
-jmp	short loc_403A48
+jmp	short loc_4039F8
 align 10h
 
-loc_403A10:
+loc_4039C0:
 mov	edi, [esi+0Ch]
 test	edi, edi
-jle	short loc_403A1D
+jle	short loc_4039CD
 sub	edi, 1
 mov	[esi+0Ch], edi
 
-loc_403A1D:
+loc_4039CD:
 shrd	eax, edx, 4
 shr	edx, 4
 
-loc_403A24:
+loc_4039D4:
 test	ebp, ebp
-jz	short loc_403A80
+jz	short loc_403A30
 
-loc_403A28:
+loc_4039D8:
 cmp	ebp, 9
-jle	short loc_403A8D
+jle	short loc_403A3D
 movzx	ecx, byte ptr [esp+60h+var_50]
 add	ebp, 37h
 or	ebp, ecx
 
-loc_403A37:
+loc_4039E7:
 mov	ecx, ebp
 mov	[ebx], cl
 add	ebx, 1
 
-loc_403A3E:
+loc_4039EE:
 mov	edi, edx
 or	edi, eax
-jz	loc_403B10
+jz	loc_403AC0
 
-loc_403A48:
+loc_4039F8:
 mov	ebp, eax
 and	ebp, 0Fh
 cmp	ebp, eax
-jnz	short loc_403A10
+jnz	short loc_4039C0
 cmp	ebx, [esp+60h+var_58]
-ja	short loc_403A66
+ja	short loc_403A16
 mov	edi, [esp+60h+var_4C]
 test	edi, edi
-jnz	short loc_403A66
+jnz	short loc_403A16
 mov	ecx, [esi+0Ch]
 test	ecx, ecx
-jle	short loc_403A6C
+jle	short loc_403A1C
 
-loc_403A66:
+loc_403A16:
 mov	byte ptr [ebx],	2Eh
 add	ebx, 1
 
-loc_403A6C:
+loc_403A1C:
 cmp	edx, 0
-ja	short loc_403AE0
+ja	short loc_403A90
 cmp	eax, 1
-ja	short loc_403AE0
+ja	short loc_403A90
 xor	eax, eax
 xor	edx, edx
 test	ebp, ebp
-jnz	short loc_403A28
+jnz	short loc_4039D8
 db	66h
 nop
 
-loc_403A80:
+loc_403A30:
 cmp	ebx, [esp+60h+var_58]
-ja	short loc_403A8D
+ja	short loc_403A3D
 mov	ecx, [esi+0Ch]
 test	ecx, ecx
-js	short loc_403A3E
+js	short loc_4039EE
 
-loc_403A8D:
+loc_403A3D:
 add	ebp, 30h
-jmp	short loc_403A37
+jmp	short loc_4039E7
 
-loc_403A92:
+loc_403A42:
 or	dword ptr [esi+4], 80h
-jmp	loc_4038F9
+jmp	loc_4038A9
 align 10h
 
-loc_403AA0:
+loc_403A50:
 mov	ebp, [esp+2Ch]
 xor	edx, edx
 mov	edi, [esp+60h+var_3A+2]
 mov	eax, ebp
 or	eax, edi
-jz	loc_403926
+jz	loc_4038D6
 test	ebp, ebp
-js	loc_403DBC
+js	loc_403D6C
 mov	eax, 0FFFFC001h
 mov	ecx, edi
 mov	ebx, ebp
 
-loc_403AC5:
+loc_403A75:
 shld	ebx, ecx, 1
 mov	edx, eax
 add	ecx, ecx
 sub	eax, 1
 test	ebx, ebx
-jns	short loc_403AC5
+jns	short loc_403A75
 mov	edi, ecx
 mov	ebp, ebx
-jmp	loc_403926
+jmp	loc_4038D6
 align 10h
 
-loc_403AE0:
+loc_403A90:
 movzx	edi, word ptr [esp+60h+var_44]
 sub	edi, 1
 
-loc_403AE8:
+loc_403A98:
 shrd	eax, edx, 1
 mov	ecx, edi
 shr	edx, 1
 cmp	edx, 0
 lea	edi, [ecx-1]
-ja	short loc_403AE8
+ja	short loc_403A98
 cmp	eax, 1
-ja	short loc_403AE8
+ja	short loc_403A98
 mov	word ptr [esp+60h+var_44], cx
 xor	eax, eax
 xor	edx, edx
-jmp	loc_403A24
+jmp	loc_4039D4
 align 10h
 
-loc_403B10:
+loc_403AC0:
 cmp	ebx, [esp+60h+var_58]
 movzx	edx, word ptr [esp+60h+var_44]
-jz	loc_403DB7
+jz	loc_403D67
 mov	ebp, [esp+60h+var_48]
 mov	[esp+60h+var_4C], ebp
 
-loc_403B27:
+loc_403AD7:
 mov	edi, [esi+8]
 test	edi, edi
 mov	[esp+60h+var_44], edi
-jle	loc_403D19
+jle	loc_403CC9
 movsx	edx, dx
 mov	eax, ebx
 mov	[esp+60h+var_50], edx
@@ -4517,10 +4450,10 @@ sar	edx, 2
 sar	eax, 1Fh
 mov	ecx, edx
 sub	ecx, eax
-jz	loc_403DAD
+jz	loc_403D5D
 mov	ebp, 2
 
-loc_403B85:
+loc_403B35:
 mov	eax, 66666667h
 add	edi, 1
 imul	ecx
@@ -4529,143 +4462,143 @@ sar	ecx, 1Fh
 sar	edx, 2
 sub	edx, ecx
 mov	ecx, edx
-jnz	short loc_403B85
+jnz	short loc_403B35
 movsx	ebp, bp
 
-loc_403BA1:
+loc_403B51:
 cmp	[esp+60h+var_44], edi
-jle	short loc_403C00
+jle	short loc_403BB0
 mov	eax, [esp+60h+var_44]
 sub	eax, edi
 test	[esp+60h+var_48], 600h
-jnz	loc_403D2A
+jnz	loc_403CDA
 lea	edx, [eax-1]
 test	eax, eax
 mov	[esi+8], edx
-jle	short loc_403C07
+jle	short loc_403BB7
 
-loc_403BC5:
+loc_403B75:
 mov	edx, esi
 mov	eax, 20h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esi+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[esi+8], edx
-jg	short loc_403BC5
+jg	short loc_403B75
 mov	ecx, [esi+4]
 mov	[esp+60h+var_4C], ecx
 test	byte ptr [esp+60h+var_4C], 80h
-jz	short loc_403C0E
+jz	short loc_403BBE
 lea	esi, [esi+0]
 
-loc_403BF0:
+loc_403BA0:
 mov	edx, esi
 mov	eax, 2Dh
-call	sub_402920
-jmp	short loc_403C27
+call	sub_4028D0
+jmp	short loc_403BD7
 align 10h
 
-loc_403C00:
+loc_403BB0:
 mov	dword ptr [esi+8], 0FFFFFFFFh
 
-loc_403C07:
+loc_403BB7:
 test	byte ptr [esp+60h+var_4C], 80h
-jnz	short loc_403BF0
+jnz	short loc_403BA0
 
-loc_403C0E:
+loc_403BBE:
 test	[esp+60h+var_4C], 100h
-jnz	loc_403D32
+jnz	loc_403CE2
 test	byte ptr [esp+60h+var_4C], 40h
-jnz	loc_403D43
+jnz	loc_403CF3
 
-loc_403C27:
+loc_403BD7:
 mov	edx, esi
 mov	eax, 30h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esi+4]
 mov	edx, esi
 and	eax, 20h
 or	eax, 58h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esi+8]
 test	eax, eax
-jle	short loc_403C6F
+jle	short loc_403C1F
 test	byte ptr [esi+5], 2
-jz	short loc_403C6F
+jz	short loc_403C1F
 sub	eax, 1
 mov	[esi+8], eax
 
-loc_403C56:
+loc_403C06:
 mov	edx, esi
 mov	eax, 30h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esi+8]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[esi+8], edx
-jg	short loc_403C56
+jg	short loc_403C06
 
-loc_403C6F:
+loc_403C1F:
 cmp	ebx, [esp+60h+var_58]
 mov	edi, [esp+60h+var_58]
-ja	short loc_403CA4
-jmp	short loc_403CCC
+ja	short loc_403C54
+jmp	short loc_403C7C
 align 10h
 
-loc_403C80:
+loc_403C30:
 movzx	eax, word ptr [esi+1Ch]
 test	ax, ax
 mov	word ptr [esp+60h+var_3A], ax
-jz	short loc_403CA0
+jz	short loc_403C50
 mov	ecx, esi
 mov	edx, 1
 lea	eax, [esp+60h+var_3A]
-call	sub_402980
+call	sub_402930
 db	66h
 nop
 
-loc_403CA0:
+loc_403C50:
 cmp	ebx, edi
-jz	short loc_403CCC
+jz	short loc_403C7C
 
-loc_403CA4:
+loc_403C54:
 sub	ebx, 1
 movsx	eax, byte ptr [ebx]
 cmp	eax, 2Eh
-jz	short loc_403D10
+jz	short loc_403CC0
 cmp	eax, 2Ch
-jz	short loc_403C80
+jz	short loc_403C30
 mov	edx, esi
-call	sub_402920
-jmp	short loc_403CA0
+call	sub_4028D0
+jmp	short loc_403C50
 align 10h
 
-loc_403CC0:
+loc_403C70:
 mov	edx, esi
 mov	eax, 30h
-call	sub_402920
+call	sub_4028D0
 
-loc_403CCC:
+loc_403C7C:
 mov	eax, [esi+0Ch]
 lea	edx, [eax-1]
 test	eax, eax
 mov	[esi+0Ch], edx
-jg	short loc_403CC0
+jg	short loc_403C70
 mov	eax, [esi+4]
 mov	edx, esi
 and	eax, 20h
 or	eax, 50h
-call	sub_402920
+call	sub_4028D0
 mov	eax, [esp+60h+var_50]
 mov	ecx, esi
 add	[esi+8], ebp
 or	dword ptr [esi+4], 1C0h
 mov	edx, eax
 sar	edx, 1Fh
-call	sub_402BC0
+call	sub_402B70
 
-loc_403D03:
+loc_403CB3:
 add	esp, 5Ch
 pop	ebx
 pop	esi
@@ -4674,99 +4607,99 @@ pop	ebp
 retn
 align 10h
 
-loc_403D10:
+loc_403CC0:
 mov	eax, esi
-call	sub_403190
-jmp	short loc_403CA0
+call	sub_403140
+jmp	short loc_403C50
 
-loc_403D19:
+loc_403CC9:
 movsx	edx, dx
 mov	ebp, 2
 mov	[esp+60h+var_50], edx
-jmp	loc_403C07
+jmp	loc_403BB7
 
-loc_403D2A:
+loc_403CDA:
 mov	[esi+8], eax
-jmp	loc_403C07
+jmp	loc_403BB7
 
-loc_403D32:
+loc_403CE2:
 mov	edx, esi
 mov	eax, 2Bh
-call	sub_402920
-jmp	loc_403C27
+call	sub_4028D0
+jmp	loc_403BD7
 
-loc_403D43:
+loc_403CF3:
 mov	edx, esi
 mov	eax, 20h
-call	sub_402920
-jmp	loc_403C27
+call	sub_4028D0
+jmp	loc_403BD7
 
-loc_403D54:
+loc_403D04:
 add	edx, 1
-jmp	loc_4039AD
+jmp	loc_40395D
 
-loc_403D5C:
+loc_403D0C:
 fstp	st
 mov	ecx, esi
-mov	edx, offset unk_409288
+mov	edx, offset unk_409280
 xor	eax, eax
-call	sub_402B20
-jmp	short loc_403D03
+call	sub_402AD0
+jmp	short loc_403CB3
 
-loc_403D6E:
+loc_403D1E:
 mov	ecx, esi
-mov	edx, offset unk_40928C
+mov	edx, offset unk_409284
 mov	eax, ebx
-call	sub_402B20
-jmp	short loc_403D03
+call	sub_402AD0
+jmp	short loc_403CB3
 
-loc_403D7E:
+loc_403D2E:
 mov	edi, [esi+4]
 lea	ebx, [esp+60h+var_28]
 mov	[esp+60h+var_58], ebx
 mov	[esp+60h+var_48], edi
 
-loc_403D8D:
+loc_403D3D:
 test	eax, eax
-jle	short loc_403DC6
+jle	short loc_403D76
 mov	ecx, [esp+60h+var_48]
 mov	[esp+60h+var_4C], ecx
 
-loc_403D99:
+loc_403D49:
 mov	byte ptr [esp+60h+var_28], 2Eh
 lea	ebx, [esp+60h+var_28+1]
 
-loc_403DA2:
+loc_403D52:
 mov	byte ptr [ebx],	30h
 add	ebx, 1
-jmp	loc_403B27
+jmp	loc_403AD7
 
-loc_403DAD:
+loc_403D5D:
 mov	ebp, 2
-jmp	loc_403BA1
+jmp	loc_403B51
 
-loc_403DB7:
+loc_403D67:
 mov	eax, [esi+0Ch]
-jmp	short loc_403D8D
+jmp	short loc_403D3D
 
-loc_403DBC:
+loc_403D6C:
 mov	edx, 0FFFFC002h
-jmp	loc_403926
+jmp	loc_4038D6
 
-loc_403DC6:
+loc_403D76:
 mov	ebx, [esp+60h+var_48]
 test	[esp+60h+var_48], 800h
 mov	[esp+60h+var_4C], ebx
 mov	ebx, [esp+60h+var_58]
-jz	short loc_403DA2
-jmp	short loc_403D99
-sub_4038C0 endp
+jz	short loc_403D52
+jmp	short loc_403D49
+sub_403870 endp
 
 align 10h
 
 
 
-sub_403DE0 proc	near
+sub_403D90 proc	near
 
 var_44=	dword ptr -44h
 var_40=	dword ptr -40h
@@ -4787,10 +4720,10 @@ mov	ebx, eax
 sub	esp, 44h
 mov	eax, [eax+0Ch]
 test	eax, eax
-js	short loc_403E60
+js	short loc_403E10
 add	eax, 1
 
-loc_403DF1:
+loc_403DA1:
 fld	[esp+44h+arg_0]
 mov	[esp+44h+var_34], eax
 lea	edx, [esp+44h+var_1C]
@@ -4807,46 +4740,46 @@ mov	[esp+44h+var_3C], eax
 mov	eax, [esp+44h+var_8]
 mov	[esp+44h+var_38], eax
 mov	eax, 2
-call	sub_402820
+call	sub_4027D0
 mov	ecx, [esp+44h+var_18]
 cmp	ecx, 0FFFF8000h
 mov	esi, eax
-jz	short loc_403E70
+jz	short loc_403E20
 mov	edx, eax
 mov	eax, [esp+44h+var_1C]
 mov	[esp+44h+var_44], ebx
-call	sub_403590
+call	sub_403540
 mov	[esp+44h+var_44], esi
-call	sub_4063E0
+call	sub_406390
 add	esp, 44h
 pop	ebx
 pop	esi
 retn
 
-loc_403E60:
+loc_403E10:
 mov	dword ptr [ebx+0Ch], 6
 mov	eax, 7
-jmp	short loc_403DF1
+jmp	short loc_403DA1
 align 10h
 
-loc_403E70:
+loc_403E20:
 mov	edx, eax
 mov	eax, [esp+44h+var_1C]
 mov	ecx, ebx
-call	sub_402B20
+call	sub_402AD0
 mov	[esp+44h+var_44], esi
-call	sub_4063E0
+call	sub_406390
 add	esp, 44h
 pop	ebx
 pop	esi
 retn
-sub_403DE0 endp
+sub_403D90 endp
 
 align 10h
 
 
 
-sub_403E90 proc	near
+sub_403E40 proc	near
 
 var_7C=	tbyte ptr -7Ch
 var_70=	dword ptr -70h
@@ -4901,31 +4834,31 @@ mov	eax, [esp+7Ch+arg_8]
 mov	[esp+7Ch+var_14], eax
 call	getenv
 test	eax, eax
-jz	short loc_403F32
+jz	short loc_403EE2
 movsx	edx, byte ptr [eax]
 mov	eax, 2
 sub	edx, 30h
 cmp	edx, 2
-jbe	short loc_403F3F
+jbe	short loc_403EEF
 
-loc_403F32:
-call	sub_406690
+loc_403EE2:
+call	sub_406640
 and	eax, 1
 neg	eax
 add	eax, 3
 
-loc_403F3F:
+loc_403EEF:
 mov	[esp+7Ch+var_10], eax
 
-loc_403F43:
+loc_403EF3:
 movsx	eax, byte ptr [ebp+0]
 lea	esi, [ebp+1]
 test	eax, eax
-jz	loc_404012
+jz	loc_403FC2
 
-loc_403F52:
+loc_403F02:
 cmp	eax, 25h
-jnz	loc_404020
+jnz	loc_403FD0
 mov	edx, [esp+7Ch+arg_0]
 lea	ecx, [esp+7Ch+var_30]
 mov	ebx, esi
@@ -4937,59 +4870,59 @@ mov	[esp+7Ch+var_34], edx
 movzx	edx, byte ptr [ebp+1]
 mov	[esp+7Ch+var_58], 0
 test	dl, dl
-jz	short loc_404001
+jz	short loc_403FB1
 
-loc_403F92:
+loc_403F42:
 movsx	eax, dl
 sub	edx, 20h
 cmp	dl, 5Ah
 lea	ebp, [ebx+1]
-jbe	loc_404030
+jbe	loc_403FE0
 
-loc_403FA4:
+loc_403F54:
 cmp	eax, 39h
-jg	loc_404713
+jg	loc_4046C3
 cmp	ecx, 3
-ja	loc_404713
+ja	loc_4046C3
 cmp	eax, 2Fh
-jle	loc_404713
+jle	loc_4046C3
 test	ecx, ecx
-jnz	loc_4045E8
+jnz	loc_404598
 mov	ecx, 1
 
-loc_403FCC:
+loc_403F7C:
 mov	edx, [esp+7Ch+var_54]
 test	edx, edx
-jz	short loc_403FF7
+jz	short loc_403FA7
 mov	edx, [esp+7Ch+var_54]
 mov	edx, [edx]
 test	edx, edx
 mov	[esp+7Ch+var_60], edx
-js	loc_4046B5
+js	loc_404665
 mov	edx, [esp+7Ch+var_60]
 lea	edx, [edx+edx*4]
 lea	eax, [eax+edx*2-30h]
 mov	edx, [esp+7Ch+var_54]
 mov	[edx], eax
 
-loc_403FF7:
+loc_403FA7:
 movzx	edx, byte ptr [ebx+1]
 
-loc_403FFB:
+loc_403FAB:
 mov	ebx, ebp
 
-loc_403FFD:
+loc_403FAD:
 test	dl, dl
-jnz	short loc_403F92
+jnz	short loc_403F42
 
-loc_404001:
+loc_403FB1:
 mov	ebp, ebx
 movsx	eax, byte ptr [ebp+0]
 lea	esi, [ebp+1]
 test	eax, eax
-jnz	loc_403F52
+jnz	loc_403F02
 
-loc_404012:
+loc_403FC2:
 mov	eax, [esp+7Ch+var_18]
 add	esp, 7Ch
 pop	ebx
@@ -4999,163 +4932,163 @@ pop	ebp
 retn			; wchar_t *
 align 10h
 
-loc_404020:
+loc_403FD0:
 lea	edx, [esp+7Ch+var_38]
 mov	ebp, esi
-call	sub_402920
-jmp	loc_403F43
+call	sub_4028D0
+jmp	loc_403EF3
 
-loc_404030:
+loc_403FE0:
 movzx	edx, dl
-jmp	ds:off_4092BC[edx*4]
+jmp	ds:off_4092B4[edx*4]
 align 10h
 
-loc_404040:
+loc_403FF0:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	ebx, ebp
 mov	[esp+7Ch+var_58], 2
-jmp	short loc_403FFD
+jmp	short loc_403FAD
 
-loc_404055:
+loc_404005:
 mov	edx, [esp+7Ch+var_58]
 mov	eax, edi
 sub	edx, 2
 cmp	edx, 1
-jbe	loc_4045F8
+jbe	loc_4045A8
 mov	ebx, [eax]
 add	edi, 4
 test	ebx, ebx
-jz	loc_4042E6
+jz	loc_404296
 
-loc_404074:
+loc_404024:
 mov	dword ptr [esp+7Ch+var_7C], ebx
 call	strlen
 mov	edx, eax
 
-loc_40407E:
+loc_40402E:
 lea	ecx, [esp+7Ch+var_38]
 mov	eax, ebx
-call	sub_402A80
-jmp	loc_403F43
+call	sub_402A30
+jmp	loc_403EF3
 align 10h
 
-loc_404090:
+loc_404040:
 mov	edx, [esp+7Ch+var_58]
 mov	eax, edi
 mov	[esp+7Ch+var_2C], 0FFFFFFFFh
 sub	edx, 2
 cmp	edx, 1
-jbe	loc_404438
+jbe	loc_4043E8
 mov	eax, [eax]
 lea	ecx, [esp+7Ch+var_38]
 mov	edx, 1
 add	edi, 4
 mov	byte ptr [esp+7Ch+var_44], al
 lea	eax, [esp+7Ch+var_44]
-call	sub_402A80
-jmp	loc_403F43
+call	sub_402A30
+jmp	loc_403EF3
 align 10h
 
-loc_4040D0:
+loc_404080:
 mov	eax, [esp+7Ch+var_34]
 or	eax, 20h
 test	al, 4
 mov	[esp+7Ch+var_34], eax
-jz	loc_40446C
+jz	loc_40441C
 
-loc_4040E3:
+loc_404093:
 fld	tbyte ptr [edi]
 lea	ebx, [edi+0Ch]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_4038C0
-jmp	loc_403F43
+call	sub_403870
+jmp	loc_403EF3
 align 10h
 
-loc_404100:
+loc_4040B0:
 cmp	[esp+7Ch+var_58], 3
-jz	loc_404660
+jz	loc_404610
 cmp	[esp+7Ch+var_58], 2
-jz	loc_4046C9
+jz	loc_404679
 movd	xmm0, dword ptr	[edi]
 cmp	[esp+7Ch+var_58], 1
 movq	[esp+7Ch+var_44], xmm0
 lea	edx, [edi+4]
-jz	loc_404728
+jz	loc_4046D8
 cmp	[esp+7Ch+var_58], 4
 mov	edi, edx
-jz	loc_404778
+jz	loc_404728
 
-loc_40413B:
+loc_4040EB:
 cmp	eax, 75h
-jz	loc_404238
+jz	loc_4041E8
 lea	edx, [esp+7Ch+var_38]
 mov	ecx, dword ptr [esp+7Ch+var_44+4]
 mov	dword ptr [esp+7Ch+var_7C], edx
 mov	edx, dword ptr [esp+7Ch+var_44]
-call	sub_402E80
-jmp	loc_403F43
+call	sub_402E30
+jmp	loc_403EF3
 align 10h
 
-loc_404160:
+loc_404110:
 mov	eax, [esp+7Ch+var_34]
 or	eax, 20h
 test	al, 4
 mov	[esp+7Ch+var_34], eax
-jz	loc_4043CC
+jz	loc_40437C
 
-loc_404173:
+loc_404123:
 fld	tbyte ptr [edi]
 lea	ebx, [edi+0Ch]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403740
-jmp	loc_403F43
+call	sub_4036F0
+jmp	loc_403EF3
 align 10h
 
-loc_404190:
+loc_404140:
 mov	eax, [esp+7Ch+var_34]
 or	eax, 20h
 test	al, 4
 mov	[esp+7Ch+var_34], eax
-jz	loc_4043F0
+jz	loc_4043A0
 
-loc_4041A3:
+loc_404153:
 fld	tbyte ptr [edi]
 lea	ebx, [edi+0Ch]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403660
-jmp	loc_403F43
+call	sub_403610
+jmp	loc_403EF3
 align 10h
 
-loc_4041C0:
+loc_404170:
 mov	eax, [esp+7Ch+var_34]
 or	eax, 20h
 test	al, 4
 mov	[esp+7Ch+var_34], eax
-jz	loc_404414
+jz	loc_4043C4
 
-loc_4041D3:
+loc_404183:
 fld	tbyte ptr [edi]
 lea	ebx, [edi+0Ch]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403DE0
-jmp	loc_403F43
+call	sub_403D90
+jmp	loc_403EF3
 align 10h
 
-loc_4041F0:
+loc_4041A0:
 or	[esp+7Ch+var_34], 80h
 cmp	[esp+7Ch+var_58], 3
-jz	loc_40464B
+jz	loc_4045FB
 cmp	[esp+7Ch+var_58], 2
-jz	loc_4046E6
+jz	loc_404696
 mov	eax, [edi]
 lea	edx, [edi+4]
 mov	edi, eax
@@ -5163,27 +5096,27 @@ sar	edi, 1Fh
 cmp	[esp+7Ch+var_58], 1
 mov	dword ptr [esp+7Ch+var_44], eax
 mov	dword ptr [esp+7Ch+var_44+4], edi
-jz	loc_404740
+jz	loc_4046F0
 cmp	[esp+7Ch+var_58], 4
 mov	edi, edx
-jz	loc_40478E
+jz	loc_40473E
 
-loc_404238:
+loc_4041E8:
 mov	eax, dword ptr [esp+7Ch+var_44]
 lea	ecx, [esp+7Ch+var_38]
 mov	edx, dword ptr [esp+7Ch+var_44+4]
-call	sub_402BC0
-jmp	loc_403F43
+call	sub_402B70
+jmp	loc_403EF3
 align 10h
 
-loc_404250:
+loc_404200:
 test	ecx, ecx
-jnz	short loc_404265
+jnz	short loc_404215
 mov	ecx, [esp+7Ch+arg_0]
 cmp	[esp+7Ch+var_34], ecx
-jz	loc_4046FD
+jz	loc_4046AD
 
-loc_404265:
+loc_404215:
 movd	xmm0, dword ptr	[edi]
 movq	[esp+7Ch+var_44], xmm0
 mov	edx, dword ptr [esp+7Ch+var_44]
@@ -5193,139 +5126,139 @@ mov	dword ptr [esp+7Ch+var_7C], eax
 lea	ebx, [edi+4]
 mov	eax, 78h
 mov	edi, ebx
-call	sub_402E80
-jmp	loc_403F43
+call	sub_402E30
+jmp	loc_403EF3
 
-loc_404292:
+loc_404242:
 cmp	[esp+7Ch+var_58], 4
-jz	loc_40463B
+jz	loc_4045EB
 cmp	[esp+7Ch+var_58], 1
 mov	eax, [edi]
 mov	edx, [esp+7Ch+var_18]
-jz	loc_4046DB
+jz	loc_40468B
 cmp	[esp+7Ch+var_58], 2
-jz	loc_404759
+jz	loc_404709
 cmp	[esp+7Ch+var_58], 3
 mov	[eax], edx
-jz	loc_4047A5
+jz	loc_404755
 add	edi, 4
-jmp	loc_403F43
+jmp	loc_403EF3
 align 10h
 
-loc_4042D0:
+loc_404280:
 mov	eax, [esp+7Ch+var_50]
 mov	dword ptr [esp+7Ch+var_7C], eax
 call	strerror
 test	eax, eax
 mov	ebx, eax
-jnz	loc_404074
+jnz	loc_404024
 
-loc_4042E6:
+loc_404296:
 mov	edx, 6
 mov	ebx, offset aNull ; "(null)"
-jmp	loc_40407E
+jmp	loc_40402E
 
-loc_4042F5:
+loc_4042A5:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	[esp+7Ch+var_58], 2
 cmp	dl, 6Ch
-jnz	loc_403FFB
+jnz	loc_403FAB
 lea	ebp, [ebx+2]
 movzx	edx, byte ptr [ebx+2]
 mov	[esp+7Ch+var_58], 3
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_404325:
+loc_4042D5:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	ebx, ebp
 mov	[esp+7Ch+var_58], 3
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_404340:
+loc_4042F0:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	[esp+7Ch+var_58], 1
 cmp	dl, 68h
-jnz	loc_403FFB
+jnz	loc_403FAB
 lea	ebp, [ebx+2]
 movzx	edx, byte ptr [ebx+2]
 mov	[esp+7Ch+var_58], 4
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_404370:
+loc_404320:
 or	[esp+7Ch+var_34], 4
 mov	ecx, 4
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_404385:
+loc_404335:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	[esp+7Ch+var_58], 2
 cmp	dl, 36h
-jz	loc_404675
+jz	loc_404625
 cmp	dl, 33h
-jnz	loc_403FFB
+jnz	loc_403FAB
 cmp	byte ptr [ebx+2], 32h
-jnz	loc_403FFB
+jnz	loc_403FAB
 lea	ebp, [ebx+3]
 movzx	edx, byte ptr [ebx+3]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_4043C0:
+loc_404370:
 mov	eax, [esp+7Ch+var_34]
 test	al, 4
-jnz	loc_404173
+jnz	loc_404123
 
-loc_4043CC:
+loc_40437C:
 fld	qword ptr [edi]
 lea	ebx, [edi+8]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403740
-jmp	loc_403F43
+call	sub_4036F0
+jmp	loc_403EF3
 
-loc_4043E4:
+loc_404394:
 mov	eax, [esp+7Ch+var_34]
 test	al, 4
-jnz	loc_4041A3
+jnz	loc_404153
 
-loc_4043F0:
+loc_4043A0:
 fld	qword ptr [edi]
 lea	ebx, [edi+8]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403660
-jmp	loc_403F43
+call	sub_403610
+jmp	loc_403EF3
 
-loc_404408:
+loc_4043B8:
 mov	eax, [esp+7Ch+var_34]
 test	al, 4
-jnz	loc_4041D3
+jnz	loc_404183
 
-loc_404414:
+loc_4043C4:
 fld	qword ptr [edi]
 lea	ebx, [edi+8]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_403DE0
-jmp	loc_403F43
+call	sub_403D90
+jmp	loc_403EF3
 align 10h
 
-loc_404430:
+loc_4043E0:
 mov	[esp+7Ch+var_2C], 0FFFFFFFFh
 
-loc_404438:
+loc_4043E8:
 mov	eax, [edi]
 lea	ebx, [edi+4]
 mov	edx, 1
@@ -5333,86 +5266,86 @@ lea	ecx, [esp+7Ch+var_38]
 mov	edi, ebx
 mov	word ptr [esp+7Ch+var_4A], ax
 lea	eax, [esp+7Ch+var_4A]
-call	sub_402980
-jmp	loc_403F43
+call	sub_402930
+jmp	loc_403EF3
 align 10h
 
-loc_404460:
+loc_404410:
 mov	eax, [esp+7Ch+var_34]
 test	al, 4
-jnz	loc_4040E3
+jnz	loc_404093
 
-loc_40446C:
+loc_40441C:
 fld	qword ptr [edi]
 lea	ebx, [edi+8]
 fstp	[esp+7Ch+var_7C]
 mov	edi, ebx
 lea	eax, [esp+7Ch+var_38]
-call	sub_4038C0
-jmp	loc_403F43
+call	sub_403870
+jmp	loc_403EF3
 
-loc_404484:
+loc_404434:
 test	ecx, ecx
-jnz	loc_403FA4
+jnz	loc_403F54
 or	[esp+7Ch+var_34], 200h
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_4044A0:
+loc_404450:
 cmp	ecx, 1
-jbe	loc_404695
+jbe	loc_404645
 
-loc_4044A9:
+loc_404459:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_4044C0:
+loc_404470:
 test	ecx, ecx
-jnz	loc_403FF7
+jnz	loc_403FA7
 or	[esp+7Ch+var_34], 400h
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_4044E0:
+loc_404490:
 test	ecx, ecx
-jnz	loc_403FF7
+jnz	loc_403FA7
 or	[esp+7Ch+var_34], 100h
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_404500:
+loc_4044B0:
 mov	eax, [esp+7Ch+var_54]
 test	eax, eax
-jz	short loc_4044A9
+jz	short loc_404459
 test	ecx, 0FFFFFFFDh
-jnz	loc_404623
+jnz	loc_4045D3
 mov	edx, [edi]
 lea	eax, [edi+4]
 mov	edi, [esp+7Ch+var_54]
 test	edx, edx
 mov	[edi], edx
-js	loc_404763
+js	loc_404713
 
-loc_404527:
+loc_4044D7:
 movzx	edx, byte ptr [ebx+1]
 mov	edi, eax
 mov	ebx, ebp
 mov	[esp+7Ch+var_54], 0
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_404540:
+loc_4044F0:
 test	ecx, ecx
-jnz	loc_403FF7
+jnz	loc_403FA7
 mov	[esp+7Ch+var_5C], ecx
 or	[esp+7Ch+var_34], 1000h
 mov	[esp+7Ch+var_4A+2], 0
@@ -5424,48 +5357,48 @@ mov	eax, [eax+4]
 mov	dword ptr [esp+7Ch+var_7C+4], eax
 lea	eax, [esp+7Ch+var_4A]
 mov	dword ptr [esp+7Ch+var_7C], eax
-call	sub_406140
+call	sub_4060F0
 mov	ecx, [esp+7Ch+var_5C]
 test	eax, eax
-jle	short loc_404596
+jle	short loc_404546
 movzx	edx, word ptr [esp+7Ch+var_4A]
 mov	[esp+7Ch+var_1C], dx
 
-loc_404596:
+loc_404546:
 mov	[esp+7Ch+var_20], eax
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_4045A5:
+loc_404555:
 lea	edx, [esp+7Ch+var_38]
-call	sub_402920
-jmp	loc_403F43
+call	sub_4028D0
+jmp	loc_403EF3
 
-loc_4045B3:
+loc_404563:
 test	ecx, ecx
-jnz	loc_403FF7
+jnz	loc_403FA7
 or	[esp+7Ch+var_34], 800h
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 align 10h
 
-loc_4045D0:
+loc_404580:
 test	ecx, ecx
-jnz	loc_403FF7
+jnz	loc_403FA7
 or	[esp+7Ch+var_34], 40h
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_4045E8:
+loc_404598:
 cmp	ecx, 2
 mov	edx, 3
 cmovz	ecx, edx
-jmp	loc_403FCC
+jmp	loc_403F7C
 
-loc_4045F8:
+loc_4045A8:
 mov	ebx, [edi]
 mov	eax, offset aNull_0 ; "(null)"
 lea	esi, [edi+4]
@@ -5477,162 +5410,162 @@ call	wcslen
 lea	ecx, [esp+7Ch+var_38]
 mov	edx, eax
 mov	eax, ebx
-call	sub_402980
-jmp	loc_403F43
+call	sub_402930
+jmp	loc_403EF3
 
-loc_404623:
+loc_4045D3:
 movzx	edx, byte ptr [ebx+1]
 mov	ecx, 4
 mov	ebx, ebp
 mov	[esp+7Ch+var_54], 0
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_40463B:
+loc_4045EB:
 mov	edx, [edi]
 add	edi, 4
 mov	eax, [esp+7Ch+var_18]
 mov	[edx], al
-jmp	loc_403F43
+jmp	loc_403EF3
 
-loc_40464B:
+loc_4045FB:
 mov	eax, [edi]
 mov	edx, [edi+4]
 add	edi, 8
 mov	dword ptr [esp+7Ch+var_44], eax
 mov	dword ptr [esp+7Ch+var_44+4], edx
-jmp	loc_404238
+jmp	loc_4041E8
 
-loc_404660:
+loc_404610:
 mov	ecx, [edi]
 mov	ebx, [edi+4]
 add	edi, 8
 mov	dword ptr [esp+7Ch+var_44], ecx
 mov	dword ptr [esp+7Ch+var_44+4], ebx
-jmp	loc_40413B
+jmp	loc_4040EB
 
-loc_404675:
+loc_404625:
 cmp	byte ptr [ebx+2], 34h
-jnz	loc_403FFB
+jnz	loc_403FAB
 lea	ebp, [ebx+3]
 movzx	edx, byte ptr [ebx+3]
 mov	[esp+7Ch+var_58], 3
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_404695:
+loc_404645:
 lea	ecx, [esp+7Ch+var_2C]
 mov	[esp+7Ch+var_2C], 0
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
 mov	[esp+7Ch+var_54], ecx
 mov	ecx, 2
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_4046B5:
+loc_404665:
 mov	edx, [esp+7Ch+var_54]
 sub	eax, 30h
 mov	[edx], eax
 movzx	edx, byte ptr [ebx+1]
 mov	ebx, ebp
-jmp	loc_403FFD
+jmp	loc_403FAD
 
-loc_4046C9:
+loc_404679:
 movd	xmm0, dword ptr	[edi]
 add	edi, 4
 movq	[esp+7Ch+var_44], xmm0
-jmp	loc_40413B
+jmp	loc_4040EB
 
-loc_4046DB:
+loc_40468B:
 mov	[eax], dx
 add	edi, 4
-jmp	loc_403F43
+jmp	loc_403EF3
 
-loc_4046E6:
+loc_404696:
 mov	eax, [edi]
 add	edi, 4
 mov	ecx, eax
 sar	ecx, 1Fh
 mov	dword ptr [esp+7Ch+var_44], eax
 mov	dword ptr [esp+7Ch+var_44+4], ecx
-jmp	loc_404238
+jmp	loc_4041E8
 
-loc_4046FD:
+loc_4046AD:
 mov	eax, ecx
 or	ah, 2
 mov	[esp+7Ch+var_34], eax
 mov	[esp+7Ch+var_2C], 8
-jmp	loc_404265
+jmp	loc_404215
 
-loc_404713:
+loc_4046C3:
 lea	edx, [esp+7Ch+var_38]
 mov	eax, 25h
-call	sub_402920
+call	sub_4028D0
 mov	ebp, esi
-jmp	loc_403F43
+jmp	loc_403EF3
 
-loc_404728:
+loc_4046D8:
 movzx	ecx, word ptr [esp+7Ch+var_44]
 mov	edi, edx
 mov	dword ptr [esp+7Ch+var_44+4], 0
 mov	dword ptr [esp+7Ch+var_44], ecx
-jmp	loc_40413B
+jmp	loc_4040EB
 
-loc_404740:
+loc_4046F0:
 movsx	eax, word ptr [esp+7Ch+var_44]
 mov	edi, edx
 mov	ecx, eax
 sar	ecx, 1Fh
 mov	dword ptr [esp+7Ch+var_44], eax
 mov	dword ptr [esp+7Ch+var_44+4], ecx
-jmp	loc_404238
+jmp	loc_4041E8
 
-loc_404759:
+loc_404709:
 mov	[eax], edx
 add	edi, 4
-jmp	loc_403F43
+jmp	loc_403EF3
 
-loc_404763:
+loc_404713:
 test	ecx, ecx
-jnz	short loc_4047B5
+jnz	short loc_404765
 or	[esp+7Ch+var_34], 400h
 neg	[esp+7Ch+var_30]
-jmp	loc_404527
+jmp	loc_4044D7
 
-loc_404778:
+loc_404728:
 movzx	edx, byte ptr [esp+7Ch+var_44]
 mov	dword ptr [esp+7Ch+var_44+4], 0
 mov	dword ptr [esp+7Ch+var_44], edx
-jmp	loc_40413B
+jmp	loc_4040EB
 
-loc_40478E:
+loc_40473E:
 movsx	eax, byte ptr [esp+7Ch+var_44]
 mov	edx, eax
 sar	edx, 1Fh
 mov	dword ptr [esp+7Ch+var_44], eax
 mov	dword ptr [esp+7Ch+var_44+4], edx
-jmp	loc_404238
+jmp	loc_4041E8
 
-loc_4047A5:
+loc_404755:
 mov	ecx, edx
 add	edi, 4
 sar	ecx, 1Fh
 mov	[eax+4], ecx
-jmp	loc_403F43
+jmp	loc_403EF3
 
-loc_4047B5:
+loc_404765:
 mov	[esp+7Ch+var_2C], 0FFFFFFFFh
 mov	edi, eax
 movzx	edx, byte ptr [ebx+1]
 mov	[esp+7Ch+var_54], 0
 mov	ebx, ebp
-jmp	loc_403FFD
-sub_403E90 endp
+jmp	loc_403FAD
+sub_403E40 endp
 
 align 10h
 
 
 
-sub_4047E0 proc	near
+sub_404790 proc	near
 
 var_9C=	dword ptr -9Ch
 var_98=	dword ptr -98h
@@ -5684,70 +5617,70 @@ mov	[edx], eax
 mov	eax, esi
 and	eax, 7
 cmp	eax, 4		; switch 5 cases
-ja	loc_4048A0	; default
-jmp	ds:off_409438[eax*4] ; switch jump
+ja	loc_404850	; default
+jmp	ds:off_409430[eax*4] ; switch jump
 
-loc_404811:
+loc_4047C1:
 movzx	eax, byte ptr [ecx-1]
 mov	esi, ecx
-jmp	short loc_404833
+jmp	short loc_4047E3
 
-loc_404819:
+loc_4047C9:
 fstp	st
 fstp	st
 fstp	st
-jmp	short loc_404833
+jmp	short loc_4047E3
 
-loc_404821:
+loc_4047D1:
 fstp	st
 fstp	st
 fstp	st
 fstp	st
-jmp	short loc_404833
+jmp	short loc_4047E3
 
-loc_40482B:
+loc_4047DB:
 fstp	st
 fstp	st
 fstp	st
 fstp	st
 
-loc_404833:
+loc_4047E3:
 cmp	al, 39h
 lea	ecx, [esi-1]
-jnz	loc_405BD6
+jnz	loc_405B86
 cmp	ecx, ebx
-jnz	short loc_404811
+jnz	short loc_4047C1
 add	[esp+9Ch+var_24], 1
 mov	eax, 31h
 mov	byte ptr [ebx],	30h
 
-loc_40484F:
+loc_4047FF:
 mov	[ecx], al
 mov	ecx, [esp+9Ch+var_24]
 mov	dword ptr [esp+9Ch+var_7C], 20h
 add	ecx, 1
 mov	[esp+9Ch+var_70], ecx
 
-loc_404864:
+loc_404814:
 mov	[esp+9Ch+var_9C], ebp
-call	sub_4068E0
+call	sub_406890
 mov	eax, [esp+9Ch+arg_1C]
 mov	ecx, [esp+9Ch+var_70]
 mov	edx, [esp+9Ch+arg_18]
 mov	byte ptr [esi],	0
 test	eax, eax
 mov	[edx], ecx
-jz	short loc_404890
+jz	short loc_404840
 mov	eax, [esp+9Ch+arg_1C]
 mov	[eax], esi
 
-loc_404890:
+loc_404840:
 mov	edx, [esp+9Ch+arg_C]
 mov	ecx, dword ptr [esp+9Ch+var_7C]
 or	[edx], ecx
 lea	esi, [esi+0]
 
-loc_4048A0:		; default
+loc_404850:		; default
 add	esp, 9Ch
 mov	eax, ebx
 pop	ebx
@@ -5757,23 +5690,23 @@ pop	ebp
 retn
 align 10h
 
-loc_4048B0:		; case 0x1
+loc_404860:		; case 0x1
 mov	eax, [esp+9Ch+arg_0]
 xor	edx, edx
 mov	edi, [eax]
 cmp	edi, 20h
-jle	short loc_4048CE
+jle	short loc_40487E
 mov	eax, 20h
 
-loc_4048C5:
+loc_404875:
 add	eax, eax
 add	edx, 1
 cmp	edi, eax
-jg	short loc_4048C5
+jg	short loc_404875
 
-loc_4048CE:
+loc_40487E:
 mov	[esp+9Ch+var_9C], edx
-call	sub_406820
+call	sub_4067D0
 mov	edx, [esp+9Ch+arg_8]
 mov	ebp, eax
 lea	eax, [edi-1]
@@ -5784,53 +5717,53 @@ lea	edx, [ebp+14h]
 mov	ecx, edx
 mov	[esp+9Ch+var_74], edx
 
-loc_4048F8:
+loc_4048A8:
 mov	edx, [eax]
 add	eax, 4
 mov	[ecx], edx
 add	ecx, 4
 cmp	ebx, eax
-jnb	short loc_4048F8
+jnb	short loc_4048A8
 mov	edx, [esp+9Ch+var_74]
 sub	ecx, edx
 sar	ecx, 2
 nop
 
-loc_404910:
+loc_4048C0:
 lea	eax, [ecx-1]
 mov	ebx, [ebp+eax*4+14h]
 test	ebx, ebx
-jnz	loc_404DC1
+jnz	loc_404D71
 test	eax, eax
 mov	ecx, eax
-jnz	short loc_404910
+jnz	short loc_4048C0
 mov	dword ptr [ebp+10h], 0
 mov	[esp+9Ch+var_58], 0
 
-loc_404934:
+loc_4048E4:
 mov	[esp+9Ch+var_9C], ebp
-call	sub_407340
+call	sub_4072F0
 mov	ecx, [esp+9Ch+arg_4]
 mov	[esp+9Ch+var_4C], ecx
 test	eax, eax
 mov	[esp+9Ch+var_10], eax
-jnz	loc_404D98
+jnz	loc_404D48
 
-loc_404956:
+loc_404906:
 mov	ecx, [ebp+10h]
 test	ecx, ecx
-jnz	loc_404A20
+jnz	loc_4049D0
 mov	[esp+9Ch+var_9C], ebp
-call	sub_4068E0
+call	sub_406890
 
-loc_404969:		; case 0x0
+loc_404919:		; case 0x0
 mov	ecx, [esp+9Ch+arg_18]
 mov	eax, [esp+9Ch+arg_1C]
 mov	dword ptr [ecx], 1
 mov	[esp+9Ch+var_94], 1
 mov	[esp+9Ch+var_98], eax
 mov	[esp+9Ch+var_9C], offset a0 ; "0"
-call	sub_406390
+call	sub_406340
 add	esp, 9Ch
 mov	ebx, eax
 mov	eax, ebx
@@ -5840,14 +5773,14 @@ pop	edi
 pop	ebp
 retn
 
-loc_4049A4:		; case 0x4
+loc_404954:		; case 0x4
 mov	edx, [esp+9Ch+arg_18]
 mov	ecx, [esp+9Ch+arg_1C]
 mov	dword ptr [edx], 0FFFF8000h
 mov	[esp+9Ch+var_94], 3
 mov	[esp+9Ch+var_98], ecx
 mov	[esp+9Ch+var_9C], offset aNan ;	"NaN"
-call	sub_406390
+call	sub_406340
 add	esp, 9Ch
 mov	ebx, eax
 mov	eax, ebx
@@ -5858,14 +5791,14 @@ pop	ebp
 retn
 align 10h
 
-loc_4049E0:		; case 0x3
+loc_404990:		; case 0x3
 mov	ecx, [esp+9Ch+arg_18]
 mov	eax, [esp+9Ch+arg_1C]
 mov	dword ptr [ecx], 0FFFF8000h
 mov	[esp+9Ch+var_94], 8
 mov	[esp+9Ch+var_98], eax
 mov	[esp+9Ch+var_9C], offset aInfinity ; "Infinity"
-call	sub_406390
+call	sub_406340
 add	esp, 9Ch
 mov	ebx, eax
 mov	eax, ebx
@@ -5876,11 +5809,11 @@ pop	ebp
 retn			; void *
 align 10h
 
-loc_404A20:
+loc_4049D0:
 lea	eax, [esp+9Ch+var_10]
 mov	[esp+9Ch+var_98], eax
 mov	[esp+9Ch+var_9C], ebp
-call	sub_406FF0
+call	sub_406FA0
 mov	ecx, [esp+9Ch+var_4C]
 mov	edx, [esp+9Ch+var_58]
 lea	eax, [ecx+edx-1]
@@ -5898,82 +5831,82 @@ sub	ebx, 435h
 mov	dword ptr [esp+9Ch+var_64+4], ecx
 test	ebx, ebx
 fld	[esp+9Ch+var_64]
-fsub	ds:flt_40944C
-fmul	ds:dbl_409450
-fadd	ds:dbl_409458
+fsub	ds:flt_409444
+fmul	ds:dbl_409448
+fadd	ds:dbl_409450
+fild	[esp+9Ch+var_20]
+fmul	ds:dbl_409458
+faddp	st(1), st
+jle	short loc_404A52
+mov	[esp+9Ch+var_20], ebx
 fild	[esp+9Ch+var_20]
 fmul	ds:dbl_409460
 faddp	st(1), st
-jle	short loc_404AA2
-mov	[esp+9Ch+var_20], ebx
-fild	[esp+9Ch+var_20]
-fmul	ds:dbl_409468
-faddp	st(1), st
 
-loc_404AA2:
+loc_404A52:
 fst	[esp+9Ch+var_8C]
 fldz
 cvttsd2si edx, [esp+9Ch+var_8C]
 fucomip	st, st(1)
 mov	[esp+9Ch+var_74], edx
-ja	loc_4051F3
+ja	loc_4051A3
 fstp	st
 
-loc_404ABC:
+loc_404A6C:
 mov	ebx, eax
 shl	ebx, 14h
 add	ebx, ecx
 cmp	[esp+9Ch+var_74], 16h
 mov	dword ptr [esp+9Ch+var_64+4], ebx
 mov	[esp+9Ch+var_38], 1
-ja	short loc_404AFE
+ja	short loc_404AAE
 mov	edx, [esp+9Ch+var_74]
 fld	ds:dbl_4094C0[edx*8]
 fld	[esp+9Ch+var_64]
 fxch	st(1)
 fucomip	st, st(1)
 fstp	st
-jbe	loc_404E60
+jbe	loc_404E10
 sub	[esp+9Ch+var_74], 1
 mov	[esp+9Ch+var_38], 0
 
-loc_404AFE:
+loc_404AAE:
 mov	ecx, [esp+9Ch+var_58]
 mov	[esp+9Ch+var_44], 0
 sub	ecx, eax
 sub	ecx, 1
 mov	[esp+9Ch+var_50], ecx
-js	loc_4051E0
+js	loc_405190
 
-loc_404B19:
+loc_404AC9:
 mov	edx, [esp+9Ch+var_74]
 test	edx, edx
-js	loc_405210
+js	loc_4051C0
 mov	ecx, [esp+9Ch+var_74]
 add	[esp+9Ch+var_50], ecx
 mov	[esp+9Ch+var_40], 0
 mov	[esp+9Ch+var_3C], ecx
 
-loc_404B39:
+loc_404AE9:
 cmp	[esp+9Ch+arg_10], 9
-ja	loc_404DE0
+ja	loc_404D90
 cmp	[esp+9Ch+arg_10], 5
-jle	loc_404DEB
+jle	loc_404D9B
 sub	[esp+9Ch+arg_10], 4
 xor	eax, eax
 
-loc_404B5F:
+loc_404B0F:
 cmp	[esp+9Ch+arg_10], 3
-jz	loc_4054B7
-jg	loc_404E00
+jz	loc_405467
+jg	loc_404DB0
 cmp	[esp+9Ch+arg_10], 2
-jz	loc_40546C
+jz	loc_40541C
 
-loc_404B81:
+loc_404B31:
 mov	[esp+9Ch+var_20], edi
 xor	edx, edx
 fild	[esp+9Ch+var_20]
-fmul	ds:dbl_409470
+fmul	ds:dbl_409468
 mov	[esp+9Ch+var_34], 1
 mov	[esp+9Ch+var_30], 0FFFFFFFFh
 mov	[esp+9Ch+var_48], 0FFFFFFFFh
@@ -5983,10 +5916,10 @@ cvttsd2si eax, [esp+9Ch+var_8C]
 add	eax, 3
 mov	[esp+9Ch+var_10], eax
 
-loc_404BC8:
+loc_404B78:
 mov	[esp+9Ch+var_9C], eax
 mov	byte ptr [esp+9Ch+var_84], dl
-call	sub_406350
+call	sub_406300
 mov	ecx, [esp+9Ch+arg_0]
 movzx	edx, byte ptr [esp+9Ch+var_84]
 mov	ecx, [ecx+0Ch]
@@ -5994,53 +5927,53 @@ mov	ebx, eax
 sub	ecx, 1
 cmp	ecx, 0
 mov	[esp+9Ch+var_54], ecx
-jz	short loc_404C0F
+jz	short loc_404BBF
 mov	eax, 2
 cmovge	eax, ecx
 and	esi, 8
 mov	[esp+9Ch+var_54], eax
-jz	short loc_404C0F
+jz	short loc_404BBF
 mov	eax, 3
 sub	eax, [esp+9Ch+var_54]
 mov	[esp+9Ch+var_54], eax
 
-loc_404C0F:
+loc_404BBF:
 test	dl, dl
-jz	loc_404EC0
+jz	loc_404E70
 mov	edx, [esp+9Ch+var_54]
 or	edx, [esp+9Ch+var_74]
-jnz	loc_404EC0
+jnz	loc_404E70
 mov	ecx, [esp+9Ch+var_38]
 mov	[esp+9Ch+var_10], 0
 fld	[esp+9Ch+var_64]
 test	ecx, ecx
-jz	short loc_404C46
+jz	short loc_404BF6
 fld1
 fucomip	st, st(1)
-ja	loc_405AF3
+ja	loc_405AA3
 
-loc_404C46:
+loc_404BF6:
 fld	st
 mov	eax, [esp+9Ch+var_48]
 fadd	st, st(1)
-fadd	ds:flt_409484
+fadd	ds:flt_40947C
 fstp	[esp+9Ch+var_2C]
 sub	dword ptr [esp+9Ch+var_2C+4], 3400000h
 test	eax, eax
-jz	loc_404E83
+jz	loc_404E33
 mov	edx, [esp+9Ch+var_48]
 fst	[esp+9Ch+var_8C]
 mov	[esp+9Ch+var_24], 0
 movsd	xmm0, [esp+9Ch+var_8C]
 
-loc_404C7E:
+loc_404C2E:
 mov	eax, [esp+9Ch+var_34]
 test	eax, eax
-jz	loc_405798
+jz	loc_405748
 fld	[esp+9Ch+var_2C]
 cvttsd2si eax, xmm0
 movsd	[esp+9Ch+var_8C], xmm0
-fld	ds:flt_40948C
+fld	ds:flt_409484
 lea	esi, [ebx+1]
 fdiv	ds:dbl_4094B8[edx*8]
 mov	[esp+9Ch+var_20], eax
@@ -6053,37 +5986,37 @@ fsubrp	st(1), st
 fxch	st(1)
 mov	[ebx], al
 fucomi	st, st(1)
-ja	loc_404D68
+ja	loc_404D18
 fld	st(1)
-fsubr	ds:flt_409478
+fsubr	ds:flt_409470
 fxch	st(1)
 fucomi	st, st(1)
 fstp	st(1)
-ja	loc_404819
+ja	loc_4047C9
 mov	eax, [esp+9Ch+var_10]
 add	eax, 1
 cmp	eax, edx
 mov	[esp+9Ch+var_10], eax
-jge	loc_404EA9
-fld	ds:flt_40947C
-jmp	short loc_404D38
+jge	loc_404E59
+fld	ds:flt_409474
+jmp	short loc_404CE8
 
-loc_404D07:
+loc_404CB7:
 fld	st(1)
-fsubr	ds:flt_409478
+fsubr	ds:flt_409470
 fxch	st(1)
 fucomi	st, st(1)
 fstp	st(1)
-ja	loc_404821
+ja	loc_4047D1
 mov	eax, [esp+9Ch+var_10]
 add	eax, 1
 cmp	edx, eax
 mov	[esp+9Ch+var_10], eax
-jle	loc_404EAF
+jle	loc_404E5F
 fxch	st(1)
 fxch	st(2)
 
-loc_404D38:
+loc_404CE8:
 fmul	st(1), st
 fmul	st(2), st
 fxch	st(2)
@@ -6097,184 +6030,184 @@ fxch	st(1)
 mov	[esi], al
 add	esi, 1
 fucomi	st, st(1)
-jbe	short loc_404D07
+jbe	short loc_404CB7
 fstp	st
 fstp	st(1)
 fstp	st(1)
-jmp	short loc_404D6C
+jmp	short loc_404D1C
 
-loc_404D68:
+loc_404D18:
 fstp	st
 fstp	st(1)
 
-loc_404D6C:
+loc_404D1C:
 fldz
 fxch	st(1)
 fucomip	st, st(1)
 fstp	st
-jp	loc_405C23
-jnz	loc_405C23
+jp	loc_405BD3
+jnz	loc_405BD3
 mov	eax, [esp+9Ch+var_24]
 mov	dword ptr [esp+9Ch+var_7C], 0
 add	eax, 1
 mov	[esp+9Ch+var_70], eax
-jmp	loc_404864
+jmp	loc_404814
 
-loc_404D98:
+loc_404D48:
 mov	[esp+9Ch+var_98], eax
 mov	[esp+9Ch+var_9C], ebp
-call	sub_407230
+call	sub_4071E0
 mov	eax, [esp+9Ch+var_10]
 mov	edx, [esp+9Ch+arg_4]
 sub	[esp+9Ch+var_58], eax
 add	edx, eax
 mov	[esp+9Ch+var_4C], edx
-jmp	loc_404956
+jmp	loc_404906
 
-loc_404DC1:
+loc_404D71:
 bsr	eax, [ebp+ecx*4+10h]
 mov	[ebp+10h], ecx
 shl	ecx, 5
 xor	eax, 1Fh
 sub	ecx, eax
 mov	[esp+9Ch+var_58], ecx
-jmp	loc_404934
+jmp	loc_4048E4
 align 10h
 
-loc_404DE0:
+loc_404D90:
 mov	[esp+9Ch+arg_10], 0
 
-loc_404DEB:
+loc_404D9B:
 add	eax, 3FEh
 cmp	eax, 7F7h
 setbe	al
-jmp	loc_404B5F
+jmp	loc_404B0F
 align 10h
 
-loc_404E00:
+loc_404DB0:
 cmp	[esp+9Ch+arg_10], 4
-jz	loc_4054AD
+jz	loc_40545D
 cmp	[esp+9Ch+arg_10], 5
-jnz	loc_404B81
+jnz	loc_404B31
 mov	[esp+9Ch+var_34], 1
 
-loc_404E24:
+loc_404DD4:
 mov	edx, [esp+9Ch+arg_14]
 add	edx, [esp+9Ch+var_74]
 mov	[esp+9Ch+var_30], edx
 add	edx, 1
 test	edx, edx
 mov	[esp+9Ch+var_48], edx
-jle	loc_4056EE
+jle	loc_40569E
 cmp	edx, 0Eh
 mov	[esp+9Ch+var_10], edx
 setbe	dl
 and	edx, eax
 mov	eax, [esp+9Ch+var_48]
-jmp	loc_404BC8
+jmp	loc_404B78
 align 10h
 
-loc_404E60:
+loc_404E10:
 mov	[esp+9Ch+var_38], 0
-jmp	loc_404AFE
+jmp	loc_404AAE
 
-loc_404E6D:
+loc_404E1D:
 fld	st
 fadd	st, st(1)
-fadd	ds:flt_409484
+fadd	ds:flt_40947C
 fstp	[esp+9Ch+var_2C]
 sub	dword ptr [esp+9Ch+var_2C+4], 3400000h
 
-loc_404E83:
+loc_404E33:
 fld	st
-fsub	ds:flt_409488
+fsub	ds:flt_409480
 fld	[esp+9Ch+var_2C]
 fxch	st(1)
 fucomi	st, st(1)
-ja	loc_40577B
+ja	loc_40572B
 fxch	st(1)
 fchs
 fucomip	st, st(1)
 fstp	st
-ja	loc_4051B2
-jmp	short loc_404EB9
+ja	loc_405162
+jmp	short loc_404E69
 
-loc_404EA9:
+loc_404E59:
 fstp	st
 fstp	st
-jmp	short loc_404EB9
+jmp	short loc_404E69
 
-loc_404EAF:
+loc_404E5F:
 fstp	st
 fstp	st
 fstp	st
-jmp	short loc_404EB9
+jmp	short loc_404E69
 
-loc_404EB7:
+loc_404E67:
 fstp	st
 
-loc_404EB9:
+loc_404E69:
 fstp	[esp+9Ch+var_64]
 lea	esi, [esi+0]
 
-loc_404EC0:
+loc_404E70:
 mov	eax, [esp+9Ch+var_4C]
 test	eax, eax
-js	loc_404F80
+js	loc_404F30
 mov	eax, [esp+9Ch+arg_0]
 mov	edx, [esp+9Ch+var_74]
 cmp	edx, [eax+14h]
-jg	loc_404F80
+jg	loc_404F30
 mov	eax, [esp+9Ch+var_48]
 fld	ds:dbl_4094C0[edx*8]
 test	eax, eax
-jg	loc_4055D8
+jg	loc_405588
 mov	eax, [esp+9Ch+arg_14]
 shr	eax, 1Fh
 test	al, al
-jz	loc_4055D8
+jz	loc_405588
 mov	eax, [esp+9Ch+var_48]
 test	eax, eax
-jnz	loc_4051B6
-fmul	ds:flt_409488
+jnz	loc_405166
+fmul	ds:flt_409480
 fld	[esp+9Ch+var_64]
 fxch	st(1)
 fucomip	st, st(1)
 fstp	st
-jnb	loc_4051B8
+jnb	loc_405168
 add	edx, 2
 xor	edi, edi
 mov	[esp+9Ch+var_70], edx
 mov	dword ptr [esp+9Ch+var_64], 0
 
-loc_404F38:
+loc_404EE8:
 mov	byte ptr [ebx],	31h
 lea	esi, [ebx+1]
 xor	edx, edx
 mov	dword ptr [esp+9Ch+var_7C], 20h
 
-loc_404F48:
+loc_404EF8:
 mov	[esp+9Ch+var_9C], edi
 mov	[esp+9Ch+var_84], edx
-call	sub_4068E0
+call	sub_406890
 mov	edx, dword ptr [esp+9Ch+var_64]
 test	edx, edx
 mov	edx, [esp+9Ch+var_84]
-jz	loc_404864
+jz	loc_404814
 cmp	edx, dword ptr [esp+9Ch+var_64]
-jnz	loc_405457
+jnz	loc_405407
 
-loc_404F6E:
+loc_404F1E:
 mov	eax, dword ptr [esp+9Ch+var_64]
 mov	[esp+9Ch+var_9C], eax
-call	sub_4068E0
-jmp	loc_404864
+call	sub_406890
+jmp	loc_404814
 align 10h
 
-loc_404F80:
+loc_404F30:
 mov	ecx, [esp+9Ch+var_34]
 test	ecx, ecx
-jz	loc_405230
+jz	loc_4051E0
 mov	eax, [esp+9Ch+arg_0]
 mov	esi, [esp+9Ch+var_4C]
 sub	edi, [esp+9Ch+var_58]
@@ -6283,42 +6216,42 @@ sub	esi, edi
 lea	eax, [edi+1]
 mov	[esp+9Ch+var_10], eax
 cmp	esi, ecx
-jge	loc_405400
+jge	loc_4053B0
 cmp	[esp+9Ch+arg_10], 5
-jz	loc_405400
+jz	loc_4053B0
 cmp	[esp+9Ch+arg_10], 3
-jz	loc_405400
+jz	loc_4053B0
 mov	eax, [esp+9Ch+var_4C]
 mov	edx, [esp+9Ch+var_48]
 sub	eax, ecx
 add	eax, 1
 test	edx, edx
 mov	[esp+9Ch+var_10], eax
-jle	loc_405722
+jle	loc_4056D2
 cmp	[esp+9Ch+arg_10], 1
-jle	loc_405722
+jle	loc_4056D2
 cmp	[esp+9Ch+var_48], eax
-jl	loc_40540E
+jl	loc_4053BE
 mov	ecx, [esp+9Ch+var_44]
 mov	esi, [esp+9Ch+var_40]
 mov	[esp+9Ch+var_4C], ecx
 db	66h
 nop
 
-loc_405010:
+loc_404FC0:
 mov	[esp+9Ch+var_9C], 1
 add	[esp+9Ch+var_44], eax
 add	[esp+9Ch+var_50], eax
-call	sub_406A30
+call	sub_4069E0
 mov	dword ptr [esp+9Ch+var_64], eax
 
-loc_405028:
+loc_404FD8:
 mov	eax, [esp+9Ch+var_50]
 test	eax, eax
-jle	short loc_40505C
+jle	short loc_40500C
 mov	eax, [esp+9Ch+var_4C]
 test	eax, eax
-jle	short loc_40505C
+jle	short loc_40500C
 mov	ecx, [esp+9Ch+var_4C]
 cmp	[esp+9Ch+var_50], ecx
 mov	eax, ecx
@@ -6329,61 +6262,61 @@ sub	ecx, eax
 mov	[esp+9Ch+var_10], eax
 mov	[esp+9Ch+var_4C], ecx
 
-loc_40505C:
+loc_40500C:
 mov	edi, [esp+9Ch+var_40]
 test	edi, edi
-jle	short loc_4050AC
+jle	short loc_40505C
 mov	ecx, [esp+9Ch+var_34]
 test	ecx, ecx
-jz	loc_4056D7
+jz	loc_405687
 test	esi, esi
-jle	short loc_4050A0
+jle	short loc_405050
 mov	eax, dword ptr [esp+9Ch+var_64]
 mov	[esp+9Ch+var_98], esi
 mov	[esp+9Ch+var_9C], eax
-call	sub_406BC0
+call	sub_406B70
 mov	[esp+9Ch+var_98], ebp
 mov	[esp+9Ch+var_9C], eax
 mov	dword ptr [esp+9Ch+var_64], eax
-call	sub_406A60
+call	sub_406A10
 mov	[esp+9Ch+var_9C], ebp
 mov	edi, eax
-call	sub_4068E0
+call	sub_406890
 mov	ebp, edi
 
-loc_4050A0:
+loc_405050:
 mov	eax, [esp+9Ch+var_40]
 sub	eax, esi
-jnz	loc_405733
+jnz	loc_4056E3
 
-loc_4050AC:
+loc_40505C:
 mov	[esp+9Ch+var_9C], 1
-call	sub_406A30
+call	sub_4069E0
 mov	edx, [esp+9Ch+var_3C]
 test	edx, edx
 mov	edi, eax
-jle	short loc_4050D4
+jle	short loc_405084
 mov	ecx, [esp+9Ch+var_3C]
 mov	[esp+9Ch+var_9C], eax
 mov	[esp+9Ch+var_98], ecx
-call	sub_406BC0
+call	sub_406B70
 mov	edi, eax
 
-loc_4050D4:
+loc_405084:
 cmp	[esp+9Ch+arg_10], 1
 mov	[esp+9Ch+var_40], 0
-jle	loc_40569B
+jle	loc_40564B
 
-loc_4050EA:
+loc_40509A:
 mov	eax, [esp+9Ch+var_3C]
 mov	esi, 1Fh
 test	eax, eax
-jz	short loc_405102
+jz	short loc_4050B2
 mov	eax, [edi+10h]
 bsr	esi, [edi+eax*4+10h]
 xor	esi, 1Fh
 
-loc_405102:
+loc_4050B2:
 sub	esi, [esp+9Ch+var_50]
 mov	ecx, [esp+9Ch+var_44]
 sub	esi, 4
@@ -6392,131 +6325,131 @@ add	ecx, esi
 mov	eax, esi
 test	ecx, ecx
 mov	[esp+9Ch+var_10], esi
-jle	short loc_405134
+jle	short loc_4050E4
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], ecx
-call	sub_406CE0
+call	sub_406C90
 mov	ebp, eax
 mov	eax, [esp+9Ch+var_10]
 
-loc_405134:
+loc_4050E4:
 add	eax, [esp+9Ch+var_50]
 test	eax, eax
-jle	short loc_40514A
+jle	short loc_4050FA
 mov	[esp+9Ch+var_9C], edi
 mov	[esp+9Ch+var_98], eax
-call	sub_406CE0
+call	sub_406C90
 mov	edi, eax
 
-loc_40514A:
+loc_4050FA:
 mov	eax, [esp+9Ch+var_38]
 test	eax, eax
-jnz	loc_4054C4
+jnz	loc_405474
 
-loc_405156:
+loc_405106:
 mov	eax, [esp+9Ch+var_48]
 test	eax, eax
-jg	loc_405250
+jg	loc_405200
 cmp	[esp+9Ch+arg_10], 2
-jle	loc_405250
+jle	loc_405200
 
-loc_405170:
+loc_405120:
 mov	eax, [esp+9Ch+var_48]
 test	eax, eax
-jnz	short loc_4051C2
+jnz	short loc_405172
 mov	[esp+9Ch+var_9C], edi
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 5
-call	sub_406930
+call	sub_4068E0
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], eax
 mov	edi, eax
-call	sub_406DF0
+call	sub_406DA0
 test	eax, eax
-jle	short loc_4051C2
+jle	short loc_405172
 mov	ecx, [esp+9Ch+var_74]
 add	ecx, 2
 mov	[esp+9Ch+var_70], ecx
-jmp	loc_404F38
+jmp	loc_404EE8
 
-loc_4051B2:
+loc_405162:
 fstp	st
-jmp	short loc_4051B8
+jmp	short loc_405168
 
-loc_4051B6:
+loc_405166:
 fstp	st
 
-loc_4051B8:
+loc_405168:
 xor	edi, edi
 mov	dword ptr [esp+9Ch+var_64], 0
 
-loc_4051C2:
+loc_405172:
 mov	eax, [esp+9Ch+arg_14]
 mov	esi, ebx
 xor	edx, edx
 mov	dword ptr [esp+9Ch+var_7C], 10h
 neg	eax
 mov	[esp+9Ch+var_70], eax
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_4051E0:
+loc_405190:
 neg	ecx
 mov	[esp+9Ch+var_44], ecx
 mov	[esp+9Ch+var_50], 0
-jmp	loc_404B19
+jmp	loc_404AC9
 
-loc_4051F3:
+loc_4051A3:
 fild	[esp+9Ch+var_74]
 fucomip	st, st(1)
 fstp	st
-jp	short loc_405203
-jz	loc_404ABC
+jp	short loc_4051B3
+jz	loc_404A6C
 
-loc_405203:
+loc_4051B3:
 sub	[esp+9Ch+var_74], 1
-jmp	loc_404ABC
+jmp	loc_404A6C
 align 10h
 
-loc_405210:
+loc_4051C0:
 mov	edx, [esp+9Ch+var_74]
 sub	[esp+9Ch+var_44], edx
 mov	[esp+9Ch+var_3C], 0
 neg	edx
 mov	[esp+9Ch+var_40], edx
-jmp	loc_404B39
+jmp	loc_404AE9
 align 10h
 
-loc_405230:
+loc_4051E0:
 mov	edx, [esp+9Ch+var_44]
 mov	esi, [esp+9Ch+var_40]
 mov	dword ptr [esp+9Ch+var_64], 0
 mov	[esp+9Ch+var_4C], edx
-jmp	loc_405028
+jmp	loc_404FD8
 align 10h
 
-loc_405250:
+loc_405200:
 mov	eax, [esp+9Ch+var_34]
 test	eax, eax
-jz	loc_405520
+jz	loc_4054D0
 
-loc_40525C:
+loc_40520C:
 add	esi, [esp+9Ch+var_4C]
 test	esi, esi
-jle	short loc_405278
+jle	short loc_405228
 mov	eax, dword ptr [esp+9Ch+var_64]
 mov	[esp+9Ch+var_98], esi
 mov	[esp+9Ch+var_9C], eax
-call	sub_406CE0
+call	sub_406C90
 mov	dword ptr [esp+9Ch+var_64], eax
 
-loc_405278:
+loc_405228:
 mov	esi, [esp+9Ch+var_40]
 mov	eax, dword ptr [esp+9Ch+var_64]
 test	esi, esi
 mov	[esp+9Ch+var_50], eax
-jnz	loc_4059F9
+jnz	loc_4059A9
 
-loc_40528C:
+loc_40523C:
 mov	edx, dword ptr [esp+9Ch+var_64]
 mov	[esp+9Ch+var_68], edi
 mov	edi, [esp+9Ch+var_50]
@@ -6524,37 +6457,37 @@ mov	[esp+9Ch+var_70], ebx
 mov	dword ptr [esp+9Ch+var_64], ebx
 mov	[esp+9Ch+var_10], 1
 mov	ebx, edx
-jmp	loc_40538F
+jmp	loc_40533F
 
-loc_4052B2:
+loc_405262:
 mov	[esp+9Ch+var_9C], edx
 mov	[esp+9Ch+var_84], eax
-call	sub_4068E0
+call	sub_406890
 mov	eax, [esp+9Ch+var_84]
 mov	edx, [esp+9Ch+arg_10]
 or	edx, eax
-jnz	short loc_4052E5
+jnz	short loc_405295
 mov	ecx, [esp+9Ch+arg_8]
 test	byte ptr [ecx],	1
-jnz	short loc_4052E5
+jnz	short loc_405295
 mov	edx, [esp+9Ch+var_54]
 test	edx, edx
-jz	loc_405C7A
+jz	loc_405C2A
 
-loc_4052E5:
+loc_405295:
 test	esi, esi
-js	loc_40586D
+js	loc_40581D
 or	esi, [esp+9Ch+arg_10]
-jnz	short loc_405306
+jnz	short loc_4052B6
 mov	edx, [esp+9Ch+arg_8]
 test	byte ptr [edx],	1
-jz	loc_40586D
+jz	loc_40581D
 
-loc_405306:
+loc_4052B6:
 test	eax, eax
-jg	loc_405A43
+jg	loc_4059F3
 
-loc_40530E:
+loc_4052BE:
 mov	ecx, [esp+9Ch+var_70]
 movzx	edx, byte ptr [esp+9Ch+var_6C]
 mov	[ecx], dl
@@ -6562,208 +6495,208 @@ mov	edx, [esp+9Ch+var_48]
 add	ecx, 1
 cmp	[esp+9Ch+var_10], edx
 mov	[esp+9Ch+var_70], ecx
-jz	loc_405AB7
+jz	loc_405A67
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
-call	sub_406930
+call	sub_4068E0
 cmp	ebx, edi
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
 mov	[esp+9Ch+var_9C], ebx
 mov	ebp, eax
-jz	loc_4053F3
-call	sub_406930
+jz	loc_4053A3
+call	sub_4068E0
 mov	[esp+9Ch+var_9C], edi
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
 mov	ebx, eax
-call	sub_406930
+call	sub_4068E0
 mov	edi, eax
 
-loc_405387:
+loc_405337:
 add	[esp+9Ch+var_10], 1
 
-loc_40538F:
+loc_40533F:
 mov	eax, [esp+9Ch+var_68]
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], eax
-call	sub_406400
+call	sub_4063B0
 mov	[esp+9Ch+var_98], ebx
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_58], eax
 add	eax, 30h
 mov	[esp+9Ch+var_6C], eax
-call	sub_406DF0
+call	sub_406DA0
 mov	[esp+9Ch+var_98], edi
 mov	esi, eax
 mov	eax, [esp+9Ch+var_68]
 mov	[esp+9Ch+var_9C], eax
-call	sub_406E60
+call	sub_406E10
 mov	edx, eax
 mov	eax, 1
 mov	ecx, [edx+0Ch]
 test	ecx, ecx
-jnz	loc_4052B2
+jnz	loc_405262
 mov	[esp+9Ch+var_98], edx
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_84], edx
-call	sub_406DF0
+call	sub_406DA0
 mov	edx, [esp+9Ch+var_84]
-jmp	loc_4052B2
+jmp	loc_405262
 
-loc_4053F3:
-call	sub_406930
+loc_4053A3:
+call	sub_4068E0
 mov	ebx, eax
 mov	edi, eax
-jmp	short loc_405387
+jmp	short loc_405337
 align 10h
 
-loc_405400:
+loc_4053B0:
 cmp	[esp+9Ch+arg_10], 1
-jle	loc_405722
+jle	loc_4056D2
 
-loc_40540E:
+loc_4053BE:
 mov	eax, [esp+9Ch+var_48]
 mov	esi, [esp+9Ch+var_40]
 sub	eax, 1
 sub	esi, eax
 cmp	[esp+9Ch+var_40], eax
-jge	short loc_405431
+jge	short loc_4053E1
 mov	ecx, eax
 xor	esi, esi
 sub	ecx, [esp+9Ch+var_40]
 add	[esp+9Ch+var_3C], ecx
 mov	[esp+9Ch+var_40], eax
 
-loc_405431:
+loc_4053E1:
 mov	eax, [esp+9Ch+var_48]
 test	eax, eax
-js	loc_4059DB
+js	loc_40598B
 mov	ecx, [esp+9Ch+var_48]
 mov	edx, [esp+9Ch+var_44]
 mov	[esp+9Ch+var_10], ecx
 mov	eax, ecx
 mov	[esp+9Ch+var_4C], edx
-jmp	loc_405010
+jmp	loc_404FC0
 
-loc_405457:
+loc_405407:
 test	edx, edx
-jz	loc_404F6E
+jz	loc_404F1E
 mov	[esp+9Ch+var_9C], edx
-call	sub_4068E0
-jmp	loc_404F6E
+call	sub_406890
+jmp	loc_404F1E
 
-loc_40546C:
+loc_40541C:
 mov	[esp+9Ch+var_34], 0
 
-loc_405474:
+loc_405424:
 mov	ebx, [esp+9Ch+arg_14]
 test	ebx, ebx
-jle	loc_40570D
+jle	loc_4056BD
 cmp	[esp+9Ch+arg_14], 0Eh
 setbe	dl
 
-loc_40548E:
+loc_40543E:
 mov	ecx, [esp+9Ch+arg_14]
 and	edx, eax
 mov	[esp+9Ch+var_10], ecx
 mov	eax, ecx
 mov	[esp+9Ch+var_30], ecx
 mov	[esp+9Ch+var_48], ecx
-jmp	loc_404BC8
+jmp	loc_404B78
 
-loc_4054AD:
+loc_40545D:
 mov	[esp+9Ch+var_34], 1
-jmp	short loc_405474
+jmp	short loc_405424
 
-loc_4054B7:
+loc_405467:
 mov	[esp+9Ch+var_34], 0
-jmp	loc_404E24
+jmp	loc_404DD4
 
-loc_4054C4:
+loc_405474:
 mov	[esp+9Ch+var_98], edi
 mov	[esp+9Ch+var_9C], ebp
-call	sub_406DF0
+call	sub_406DA0
 test	eax, eax
-jns	loc_405156
+jns	loc_405106
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
 sub	[esp+9Ch+var_74], 1
-call	sub_406930
+call	sub_4068E0
 mov	ebp, eax
 mov	eax, [esp+9Ch+var_34]
 test	eax, eax
-jnz	loc_405CB9
+jnz	loc_405C69
 cmp	[esp+9Ch+var_30], 0
 mov	edx, [esp+9Ch+var_30]
-jg	short loc_40551C
+jg	short loc_4054CC
 cmp	[esp+9Ch+arg_10], 2
-jg	loc_405D8E
+jg	loc_405D3E
 
-loc_40551C:
+loc_4054CC:
 mov	[esp+9Ch+var_48], edx
 
-loc_405520:
+loc_4054D0:
 mov	esi, ebx
 mov	dword ptr [esp+9Ch+var_7C], ebx
 mov	ebx, [esp+9Ch+var_48]
 mov	[esp+9Ch+var_10], 1
-jmp	short loc_405559
+jmp	short loc_405509
 
-loc_405537:
+loc_4054E7:
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
-call	sub_406930
+call	sub_4068E0
 add	[esp+9Ch+var_10], 1
 mov	ebp, eax
 
-loc_405559:
+loc_405509:
 mov	[esp+9Ch+var_98], edi
 mov	[esp+9Ch+var_9C], ebp
-call	sub_406400
+call	sub_4063B0
 add	eax, 30h
 mov	[esi], al
 add	esi, 1
 cmp	ebx, [esp+9Ch+var_10]
-jg	short loc_405537
+jg	short loc_4054E7
 mov	ebx, dword ptr [esp+9Ch+var_7C]
 xor	edx, edx
 mov	[esp+9Ch+var_6C], eax
 
-loc_405580:
+loc_405530:
 mov	eax, [esp+9Ch+var_54]
 test	eax, eax
-jz	loc_40596E
+jz	loc_40591E
 cmp	[esp+9Ch+var_54], 2
-jz	loc_4059AA
+jz	loc_40595A
 cmp	dword ptr [ebp+10h], 1
-jle	loc_405BBE
+jle	loc_405B6E
 
-loc_4055A1:
+loc_405551:
 movzx	ecx, byte ptr [esi-1]
-jmp	short loc_4055AD
+jmp	short loc_40555D
 
-loc_4055A7:
+loc_405557:
 movzx	ecx, byte ptr [eax-1]
 mov	esi, eax
 
-loc_4055AD:
+loc_40555D:
 cmp	cl, 39h
 lea	eax, [esi-1]
-jnz	loc_405AD6
+jnz	loc_405A86
 cmp	eax, ebx
-jnz	short loc_4055A7
+jnz	short loc_405557
 mov	ecx, [esp+9Ch+var_74]
 mov	byte ptr [ebx],	31h
 mov	dword ptr [esp+9Ch+var_7C], 20h
 add	ecx, 2
 mov	[esp+9Ch+var_70], ecx
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_4055D8:
+loc_405588:
 fld	[esp+9Ch+var_64]
 lea	esi, [ebx+1]
 fld	st
@@ -6781,22 +6714,22 @@ fldz
 fxch	st(1)
 fucomi	st, st(1)
 fstp	st(1)
-jnp	loc_405CF7
+jnp	loc_405CA7
 
-loc_405617:
+loc_4055C7:
 mov	ecx, [esp+9Ch+var_10]
 cmp	[esp+9Ch+var_48], ecx
-jz	loc_405748
-fld	ds:flt_40947C
+jz	loc_4056F8
+fld	ds:flt_409474
 mov	edi, [esp+9Ch+var_48]
-jmp	short loc_405643
+jmp	short loc_4055F3
 
-loc_405634:
+loc_4055E4:
 mov	ecx, [esp+9Ch+var_10]
 cmp	edi, ecx
-jz	loc_405746
+jz	loc_4056F6
 
-loc_405643:
+loc_4055F3:
 add	ecx, 1
 fmul	st(1), st
 mov	[esp+9Ch+var_10], ecx
@@ -6815,103 +6748,103 @@ fldz
 fxch	st(2)
 fucomi	st, st(2)
 fstp	st(2)
-jp	short loc_405634
-jnz	short loc_405634
+jp	short loc_4055E4
+jnz	short loc_4055E4
 fstp	st
 fstp	st
 fstp	st
 
-loc_405683:
+loc_405633:
 mov	edx, [esp+9Ch+var_74]
 mov	dword ptr [esp+9Ch+var_7C], 0
 add	edx, 1
 mov	[esp+9Ch+var_70], edx
-jmp	loc_404864
+jmp	loc_404814
 
-loc_40569B:
+loc_40564B:
 cmp	[esp+9Ch+var_58], 1
-jnz	loc_4050EA
+jnz	loc_40509A
 mov	edx, [esp+9Ch+arg_0]
 mov	eax, [edx+4]
 add	eax, 1
 cmp	[esp+9Ch+arg_4], eax
-jle	loc_4050EA
+jle	loc_40509A
 add	[esp+9Ch+var_44], 1
 add	[esp+9Ch+var_50], 1
 mov	[esp+9Ch+var_40], 1
-jmp	loc_4050EA
+jmp	loc_40509A
 
-loc_4056D7:
+loc_405687:
 mov	edx, [esp+9Ch+var_40]
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], edx
-call	sub_406BC0
+call	sub_406B70
 mov	ebp, eax
-jmp	loc_4050AC
+jmp	loc_40505C
 
-loc_4056EE:
+loc_40569E:
 cmp	[esp+9Ch+var_48], 0Eh
 mov	[esp+9Ch+var_10], 1
 setbe	dl
 and	edx, eax
 mov	eax, 1
-jmp	loc_404BC8
+jmp	loc_404B78
 
-loc_40570D:
+loc_4056BD:
 mov	edx, 1
 mov	[esp+9Ch+arg_14], 1
-jmp	loc_40548E
+jmp	loc_40543E
 
-loc_405722:
+loc_4056D2:
 mov	edx, [esp+9Ch+var_44]
 mov	esi, [esp+9Ch+var_40]
 mov	[esp+9Ch+var_4C], edx
-jmp	loc_405010
+jmp	loc_404FC0
 
-loc_405733:
+loc_4056E3:
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], eax
-call	sub_406BC0
+call	sub_406B70
 mov	ebp, eax
-jmp	loc_4050AC
+jmp	loc_40505C
 
-loc_405746:
+loc_4056F6:
 fstp	st
 
-loc_405748:
+loc_4056F8:
 mov	edi, [esp+9Ch+var_54]
 test	edi, edi
-jz	loc_405A98
+jz	loc_405A48
 fstp	st
 fstp	st
 cmp	[esp+9Ch+var_54], 1
-jz	loc_405C69
+jz	loc_405C19
 mov	ecx, [esp+9Ch+var_74]
 mov	dword ptr [esp+9Ch+var_7C], 10h
 add	ecx, 1
 mov	[esp+9Ch+var_70], ecx
-jmp	loc_404864
+jmp	loc_404814
 
-loc_40577B:
+loc_40572B:
 fstp	st
 fstp	st
 fstp	st
 mov	[esp+9Ch+var_70], 2
 xor	edi, edi
 mov	dword ptr [esp+9Ch+var_64], 0
-jmp	loc_404F38
+jmp	loc_404EE8
 
-loc_405798:
+loc_405748:
 fld	[esp+9Ch+var_2C]
 mov	esi, ebx
 fmul	ds:dbl_4094B8[edx*8]
 mov	[esp+9Ch+var_10], 1
 fld	[esp+9Ch+var_64]
-fld	ds:flt_40947C
-jmp	short loc_4057DA
+fld	ds:flt_409474
+jmp	short loc_40578A
 align 10h
 
-loc_4057C0:
+loc_405770:
 fmul	st(1), st
 fxch	st(1)
 add	ecx, 1
@@ -6920,10 +6853,10 @@ fst	[esp+9Ch+var_8C]
 fxch	st(1)
 movsd	xmm0, [esp+9Ch+var_8C]
 
-loc_4057DA:
+loc_40578A:
 cvttsd2si eax, xmm0
 test	eax, eax
-jz	short loc_4057FA
+jz	short loc_4057AA
 fstp	st(1)
 mov	[esp+9Ch+var_20], eax
 movsd	[esp+9Ch+var_8C], xmm0
@@ -6932,52 +6865,52 @@ fld	[esp+9Ch+var_8C]
 fsubrp	st(1), st
 fxch	st(1)
 
-loc_4057FA:
+loc_4057AA:
 add	eax, 30h
 mov	[esi], al
 mov	ecx, [esp+9Ch+var_10]
 add	esi, 1
 cmp	ecx, edx
-jnz	short loc_4057C0
+jnz	short loc_405770
 fstp	st
-fld	ds:flt_40948C
+fld	ds:flt_409484
 fld	st(2)
 fadd	st, st(1)
 fxch	st(2)
 fucomi	st, st(2)
 fstp	st(2)
-ja	loc_40482B
+ja	loc_4047DB
 fsubrp	st(2), st
 fxch	st(1)
 fucomip	st, st(1)
-jbe	loc_404EB7
+jbe	loc_404E67
 fstp	st(1)
 fldz
 fxch	st(1)
 fucomip	st, st(1)
 fstp	st
-jp	short loc_405843
-jz	loc_405C3B
+jp	short loc_4057F3
+jz	loc_405BEB
 
-loc_405843:
+loc_4057F3:
 mov	dword ptr [esp+9Ch+var_7C], 10h
-jmp	short loc_405856
+jmp	short loc_405806
 align 10h
 
-loc_405850:
+loc_405800:
 movzx	eax, byte ptr [edx-1]
 mov	esi, edx
 
-loc_405856:
+loc_405806:
 cmp	al, 30h
 lea	edx, [esi-1]
-jz	short loc_405850
+jz	short loc_405800
 mov	eax, [esp+9Ch+var_24]
 add	eax, 1
 mov	[esp+9Ch+var_70], eax
-jmp	loc_404864
+jmp	loc_404814
 
-loc_40586D:
+loc_40581D:
 mov	ecx, [esp+9Ch+var_54]
 mov	edx, ebx
 mov	[esp+9Ch+var_50], edi
@@ -6985,61 +6918,61 @@ mov	esi, [esp+9Ch+var_70]
 mov	edi, [esp+9Ch+var_68]
 mov	ebx, dword ptr [esp+9Ch+var_64]
 test	ecx, ecx
-jz	loc_405B56
+jz	loc_405B06
 cmp	dword ptr [ebp+10h], 1
-jle	loc_405B4C
+jle	loc_405AFC
 
-loc_405895:
+loc_405845:
 cmp	[esp+9Ch+var_54], 2
-jz	loc_405BB1
+jz	loc_405B61
 mov	dword ptr [esp+9Ch+var_7C], edi
 mov	edi, edx
 mov	[esp+9Ch+var_5C], ebx
 mov	ebx, [esp+9Ch+var_50]
-jmp	short loc_405912
+jmp	short loc_4058C2
 
-loc_4058B0:
+loc_405860:
 movzx	ecx, byte ptr [esp+9Ch+var_6C]
 mov	[esi], cl
 add	esi, 1
 mov	[esp+9Ch+var_9C], ebx
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
-call	sub_406930
+call	sub_4068E0
 cmp	edi, ebx
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
 cmovz	edi, eax
 mov	[esp+9Ch+var_84], eax
-call	sub_406930
+call	sub_4068E0
 mov	ebp, eax
 mov	eax, dword ptr [esp+9Ch+var_7C]
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], eax
-call	sub_406400
+call	sub_4063B0
 mov	edx, [esp+9Ch+var_84]
 mov	ebx, edx
 add	eax, 30h
 mov	[esp+9Ch+var_6C], eax
 
-loc_405912:
+loc_4058C2:
 mov	eax, dword ptr [esp+9Ch+var_7C]
 mov	[esp+9Ch+var_98], ebx
 mov	[esp+9Ch+var_9C], eax
-call	sub_406DF0
+call	sub_406DA0
 test	eax, eax
-jg	short loc_4058B0
+jg	short loc_405860
 cmp	[esp+9Ch+var_6C], 39h
 mov	edx, edi
 mov	[esp+9Ch+var_50], ebx
 mov	edi, dword ptr [esp+9Ch+var_7C]
 mov	ebx, [esp+9Ch+var_5C]
-jz	loc_405BDE
+jz	loc_405B8E
 add	[esp+9Ch+var_6C], 1
 mov	dword ptr [esp+9Ch+var_7C], 20h
 
-loc_40594C:
+loc_4058FC:
 movzx	eax, byte ptr [esp+9Ch+var_6C]
 mov	[esi], al
 mov	ecx, [esp+9Ch+var_74]
@@ -7048,58 +6981,58 @@ mov	eax, [esp+9Ch+var_50]
 add	ecx, 1
 mov	[esp+9Ch+var_70], ecx
 mov	dword ptr [esp+9Ch+var_64], eax
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_40596E:
+loc_40591E:
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], 1
 mov	[esp+9Ch+var_84], edx
-call	sub_406CE0
+call	sub_406C90
 mov	[esp+9Ch+var_98], edi
 mov	[esp+9Ch+var_9C], eax
 mov	ebp, eax
-call	sub_406DF0
+call	sub_406DA0
 mov	edx, [esp+9Ch+var_84]
 cmp	eax, 0
-jg	loc_4055A1
-jnz	short loc_4059AA
+jg	loc_405551
+jnz	short loc_40595A
 test	byte ptr [esp+9Ch+var_6C], 1
-jnz	loc_4055A1
+jnz	loc_405551
 
-loc_4059AA:
+loc_40595A:
 cmp	dword ptr [ebp+10h], 1
 db	66h
 nop
-jle	loc_405D51
+jle	loc_405D01
 
-loc_4059B6:
+loc_405966:
 mov	dword ptr [esp+9Ch+var_7C], 10h
-jmp	short loc_4059C2
+jmp	short loc_405972
 
-loc_4059C0:
+loc_405970:
 mov	esi, eax
 
-loc_4059C2:
+loc_405972:
 cmp	byte ptr [esi-1], 30h
 lea	eax, [esi-1]
-jz	short loc_4059C0
+jz	short loc_405970
 mov	ecx, [esp+9Ch+var_74]
 add	ecx, 1
 mov	[esp+9Ch+var_70], ecx
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_4059DB:
+loc_40598B:
 mov	ecx, [esp+9Ch+var_44]
 xor	eax, eax
 sub	ecx, [esp+9Ch+var_48]
 mov	[esp+9Ch+var_10], 0
 mov	[esp+9Ch+var_4C], ecx
-jmp	loc_405010
+jmp	loc_404FC0
 
-loc_4059F9:
+loc_4059A9:
 mov	eax, [eax+4]
 mov	[esp+9Ch+var_9C], eax
-call	sub_406820
+call	sub_4067D0
 mov	ecx, dword ptr [esp+9Ch+var_64]
 lea	edx, [eax+0Ch]
 mov	esi, eax
@@ -7112,20 +7045,20 @@ mov	[esp+9Ch+var_94], eax
 call	memcpy
 mov	[esp+9Ch+var_98], 1
 mov	[esp+9Ch+var_9C], esi
-call	sub_406CE0
+call	sub_406C90
 mov	[esp+9Ch+var_50], eax
-jmp	loc_40528C
+jmp	loc_40523C
 
-loc_405A43:
+loc_4059F3:
 cmp	[esp+9Ch+var_54], 2
-jz	loc_40530E
+jz	loc_4052BE
 cmp	[esp+9Ch+var_6C], 39h
 mov	edx, ebx
 mov	[esp+9Ch+var_50], edi
 mov	esi, [esp+9Ch+var_70]
 mov	edi, [esp+9Ch+var_68]
 mov	ebx, dword ptr [esp+9Ch+var_64]
-jz	loc_405BDE
+jz	loc_405B8E
 movzx	eax, byte ptr [esp+9Ch+var_6C]
 mov	ecx, [esp+9Ch+var_74]
 mov	dword ptr [esp+9Ch+var_7C], 20h
@@ -7136,20 +7069,20 @@ add	ecx, 1
 add	esi, 1
 mov	[esp+9Ch+var_70], ecx
 mov	dword ptr [esp+9Ch+var_64], eax
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_405A98:
+loc_405A48:
 fadd	st, st
 fucomi	st, st(1)
-jbe	loc_405BF6
+jbe	loc_405BA6
 fstp	st
 fstp	st
 mov	ecx, [esp+9Ch+var_74]
 movzx	eax, byte ptr [esi-1]
 mov	[esp+9Ch+var_24], ecx
-jmp	loc_404833
+jmp	loc_4047E3
 
-loc_405AB7:
+loc_405A67:
 mov	[esp+9Ch+var_50], edi
 mov	eax, [esp+9Ch+var_50]
 mov	edx, ebx
@@ -7157,136 +7090,136 @@ mov	edi, [esp+9Ch+var_68]
 mov	ebx, dword ptr [esp+9Ch+var_64]
 mov	esi, [esp+9Ch+var_70]
 mov	dword ptr [esp+9Ch+var_64], eax
-jmp	loc_405580
+jmp	loc_405530
 
-loc_405AD6:
+loc_405A86:
 add	ecx, 1
 mov	[eax], cl
 mov	ecx, [esp+9Ch+var_74]
 mov	dword ptr [esp+9Ch+var_7C], 20h
 add	ecx, 1
 mov	[esp+9Ch+var_70], ecx
-jmp	loc_404F48
+jmp	loc_404EF8
 
-loc_405AF3:
+loc_405AA3:
 mov	edx, [esp+9Ch+var_48]
 test	edx, edx
-jz	loc_404E6D
+jz	loc_404E1D
 mov	eax, [esp+9Ch+var_30]
 test	eax, eax
-jle	loc_404EB9
+jle	loc_404E69
 fld	st
 mov	edx, [esp+9Ch+var_30]
-fmul	ds:flt_40947C
+fmul	ds:flt_409474
 mov	[esp+9Ch+var_24], 0FFFFFFFFh
 fst	[esp+9Ch+var_8C]
-fmul	ds:flt_409480
+fmul	ds:flt_409478
 movsd	xmm0, [esp+9Ch+var_8C]
 movsd	[esp+9Ch+var_64], xmm0
-fadd	ds:flt_409484
+fadd	ds:flt_40947C
 fstp	[esp+9Ch+var_2C]
 sub	dword ptr [esp+9Ch+var_2C+4], 3400000h
-jmp	loc_404C7E
+jmp	loc_404C2E
 
-loc_405B4C:
+loc_405AFC:
 cmp	dword ptr [ebp+14h], 0
-jnz	loc_405895
+jnz	loc_405845
 
-loc_405B56:
+loc_405B06:
 test	eax, eax
-jle	loc_405C19
+jle	loc_405BC9
 mov	[esp+9Ch+var_9C], ebp
 mov	[esp+9Ch+var_98], 1
 mov	[esp+9Ch+var_84], edx
-call	sub_406CE0
+call	sub_406C90
 mov	[esp+9Ch+var_98], edi
 mov	[esp+9Ch+var_9C], eax
 mov	ebp, eax
-call	sub_406DF0
+call	sub_406DA0
 mov	edx, [esp+9Ch+var_84]
 cmp	eax, 0
-jle	loc_405D2A
+jle	loc_405CDA
 
-loc_405B8D:
+loc_405B3D:
 cmp	[esp+9Ch+var_6C], 39h
-jz	short loc_405BDE
+jz	short loc_405B8E
 mov	ecx, [esp+9Ch+var_58]
 mov	dword ptr [esp+9Ch+var_7C], 20h
 add	ecx, 31h
 mov	[esp+9Ch+var_6C], ecx
 
-loc_405BA7:
+loc_405B57:
 cmp	dword ptr [ebp+10h], 1
-jle	loc_405D06
+jle	loc_405CB6
 
-loc_405BB1:
+loc_405B61:
 mov	dword ptr [esp+9Ch+var_7C], 10h
-jmp	loc_40594C
+jmp	loc_4058FC
 
-loc_405BBE:
+loc_405B6E:
 mov	ecx, [ebp+14h]
 test	ecx, ecx
-jnz	loc_4055A1
+jnz	loc_405551
 mov	dword ptr [esp+9Ch+var_7C], 0
-jmp	loc_4059C2
+jmp	loc_405972
 
-loc_405BD6:
+loc_405B86:
 add	eax, 1
-jmp	loc_40484F
+jmp	loc_4047FF
 
-loc_405BDE:
+loc_405B8E:
 mov	eax, [esp+9Ch+var_50]
 mov	ecx, 39h
 mov	byte ptr [esi],	39h
 add	esi, 1
 mov	dword ptr [esp+9Ch+var_64], eax
-jmp	loc_4055AD
+jmp	loc_40555D
 
-loc_405BF6:
+loc_405BA6:
 fxch	st(1)
 fucomip	st, st(1)
 fstp	st
-jp	short loc_405C00
-jz	short loc_405C48
+jp	short loc_405BB0
+jz	short loc_405BF8
 
-loc_405C00:
+loc_405BB0:
 mov	edx, [esp+9Ch+var_74]
 movzx	eax, byte ptr [esi-1]
 mov	dword ptr [esp+9Ch+var_7C], 10h
 mov	[esp+9Ch+var_24], edx
-jmp	loc_405856
+jmp	loc_405806
 
-loc_405C19:
+loc_405BC9:
 mov	dword ptr [esp+9Ch+var_7C], 0
-jmp	short loc_405BA7
+jmp	short loc_405B57
 
-loc_405C23:
+loc_405BD3:
 mov	edx, [esp+9Ch+var_24]
 mov	dword ptr [esp+9Ch+var_7C], 10h
 add	edx, 1
 mov	[esp+9Ch+var_70], edx
-jmp	loc_404864
+jmp	loc_404814
 
-loc_405C3B:
+loc_405BEB:
 mov	dword ptr [esp+9Ch+var_7C], 0
-jmp	loc_405856
+jmp	loc_405806
 
-loc_405C48:
+loc_405BF8:
 test	al, 1
 movzx	eax, byte ptr [esi-1]
-jnz	loc_405D44
+jnz	loc_405CF4
 mov	ecx, [esp+9Ch+var_74]
 mov	dword ptr [esp+9Ch+var_7C], 10h
 mov	[esp+9Ch+var_24], ecx
-jmp	loc_405856
+jmp	loc_405806
 
-loc_405C69:
+loc_405C19:
 mov	edx, [esp+9Ch+var_74]
 movzx	eax, byte ptr [esi-1]
 mov	[esp+9Ch+var_24], edx
-jmp	loc_404833
+jmp	loc_4047E3
 
-loc_405C7A:
+loc_405C2A:
 cmp	[esp+9Ch+var_6C], 39h
 mov	edx, ebx
 mov	[esp+9Ch+var_50], edi
@@ -7294,91 +7227,91 @@ mov	ecx, esi
 mov	edi, [esp+9Ch+var_68]
 mov	ebx, dword ptr [esp+9Ch+var_64]
 mov	esi, [esp+9Ch+var_70]
-jz	loc_405BDE
+jz	loc_405B8E
 test	ecx, ecx
-jle	loc_405D68
+jle	loc_405D18
 mov	ecx, [esp+9Ch+var_58]
 mov	dword ptr [esp+9Ch+var_7C], 20h
 add	ecx, 31h
 mov	[esp+9Ch+var_6C], ecx
-jmp	loc_40594C
+jmp	loc_4058FC
 
-loc_405CB9:
+loc_405C69:
 mov	eax, dword ptr [esp+9Ch+var_64]
 mov	[esp+9Ch+var_94], 0
 mov	[esp+9Ch+var_98], 0Ah
 mov	[esp+9Ch+var_9C], eax
-call	sub_406930
+call	sub_4068E0
 cmp	[esp+9Ch+var_30], 0
 mov	dword ptr [esp+9Ch+var_64], eax
-jg	short loc_405CEA
+jg	short loc_405C9A
 cmp	[esp+9Ch+arg_10], 2
-jg	short loc_405D1D
+jg	short loc_405CCD
 
-loc_405CEA:
+loc_405C9A:
 mov	edx, [esp+9Ch+var_30]
 mov	[esp+9Ch+var_48], edx
-jmp	loc_40525C
+jmp	loc_40520C
 
-loc_405CF7:
-jnz	loc_405617
+loc_405CA7:
+jnz	loc_4055C7
 fstp	st
 fstp	st
-jmp	loc_405683
+jmp	loc_405633
 
-loc_405D06:
+loc_405CB6:
 cmp	dword ptr [ebp+14h], 0
 mov	eax, 10h
 cmovz	eax, dword ptr [esp+9Ch+var_7C]
 mov	dword ptr [esp+9Ch+var_7C], eax
-jmp	loc_40594C
+jmp	loc_4058FC
 
-loc_405D1D:
+loc_405CCD:
 mov	ecx, [esp+9Ch+var_30]
 mov	[esp+9Ch+var_48], ecx
-jmp	loc_405170
+jmp	loc_405120
 
-loc_405D2A:
-jnz	short loc_405D37
+loc_405CDA:
+jnz	short loc_405CE7
 test	byte ptr [esp+9Ch+var_6C], 1
-jnz	loc_405B8D
+jnz	loc_405B3D
 
-loc_405D37:
+loc_405CE7:
 mov	dword ptr [esp+9Ch+var_7C], 20h
-jmp	loc_405BA7
+jmp	loc_405B57
 
-loc_405D44:
+loc_405CF4:
 mov	edx, [esp+9Ch+var_74]
 mov	[esp+9Ch+var_24], edx
-jmp	loc_404833
+jmp	loc_4047E3
 
-loc_405D51:
+loc_405D01:
 cmp	dword ptr [ebp+14h], 0
 mov	dword ptr [esp+9Ch+var_7C], 0
-jnz	loc_4059B6
-jmp	loc_4059C2
+jnz	loc_405966
+jmp	loc_405972
 
-loc_405D68:
+loc_405D18:
 cmp	dword ptr [ebp+10h], 1
 mov	dword ptr [esp+9Ch+var_7C], 10h
-jg	loc_40594C
+jg	loc_4058FC
 cmp	dword ptr [ebp+14h], 1
 sbb	eax, eax
 not	eax
 and	eax, 10h
 mov	dword ptr [esp+9Ch+var_7C], eax
-jmp	loc_40594C
+jmp	loc_4058FC
 
-loc_405D8E:
+loc_405D3E:
 mov	[esp+9Ch+var_48], edx
-jmp	loc_405170
-sub_4047E0 endp
+jmp	loc_405120
+sub_404790 endp
 
 align 10h
 
 
 
-sub_405DA0 proc	near
+sub_405D50 proc	near
 
 var_4C=	dword ptr -4Ch
 var_48=	dword ptr -48h
@@ -7400,19 +7333,19 @@ mov	edx, [esp+4Ch+arg_8]
 mov	eax, [esp+4Ch+arg_4]
 test	edx, edx
 mov	word ptr [esp+4Ch+var_20], ax
-jnz	short loc_405DD0
+jnz	short loc_405D80
 cmp	ax, 0FFh
-ja	short loc_405E28
+ja	short loc_405DD8
 mov	edx, [esp+4Ch+arg_0]
 mov	[edx], al
 mov	eax, 1
 
-loc_405DC5:
+loc_405D75:
 add	esp, 4Ch
 retn			; CodePage
 align 10h
 
-loc_405DD0:
+loc_405D80:
 lea	eax, [esp+4Ch+var_10]
 mov	[esp+4Ch+var_30], eax
 mov	eax, [esp+4Ch+arg_C]
@@ -7429,24 +7362,24 @@ mov	[esp+4Ch+var_44], eax
 call	ds:WideCharToMultiByte
 sub	esp, 20h
 test	eax, eax
-jz	short loc_405E28
+jz	short loc_405DD8
 mov	edx, [esp+4Ch+var_10]
 test	edx, edx
-jz	short loc_405DC5
+jz	short loc_405D75
 
-loc_405E28:
+loc_405DD8:
 call	_errno
 mov	dword ptr [eax], 2Ah
 mov	eax, 0FFFFFFFFh
 add	esp, 4Ch
 retn
-sub_405DA0 endp
+sub_405D50 endp
 
 align 10h
 
 
 
-sub_405E40 proc	near
+sub_405DF0 proc	near
 
 var_2C=	dword ptr -2Ch
 var_28=	dword ptr -28h
@@ -7475,13 +7408,13 @@ mov	[esp+2Ch+var_28], esi
 mov	[esp+2Ch+var_2C], ebx
 mov	[esp+2Ch+var_20], edi
 mov	[esp+2Ch+var_24], eax
-call	sub_405DA0
+call	sub_405D50
 mov	ebx, [esp+2Ch+var_C]
 mov	esi, [esp+2Ch+var_8]
 mov	edi, [esp+2Ch+var_4]
 add	esp, 2Ch
 retn
-sub_405E40 endp
+sub_405DF0 endp
 
 align 10h
 push	ebp
@@ -7498,41 +7431,41 @@ mov	edi, [eax]
 mov	eax, [esp+54h]
 mov	esi, [eax]
 test	esi, esi
-jz	short loc_405F17
+jz	short loc_405EC7
 test	ebp, ebp
-jz	loc_405F50
+jz	loc_405F00
 mov	ecx, [esp+58h]
 test	ecx, ecx
-jz	short loc_405F23
+jz	short loc_405ED3
 mov	eax, esi
 mov	esi, edi
 mov	edi, eax
-jmp	short loc_405EF3
+jmp	short loc_405EA3
 
-loc_405EE0:
+loc_405E90:
 add	ebp, eax
 add	ebx, eax
 cmp	byte ptr [ebp-1], 0
-jz	short loc_405F33
+jz	short loc_405EE3
 add	edi, 2
 cmp	[esp+58h], ebx
-jbe	short loc_405F21
+jbe	short loc_405ED1
 
-loc_405EF3:
+loc_405EA3:
 mov	eax, [esp+1Ch]
 mov	[esp+0Ch], esi
 mov	[esp+8], eax
 movzx	eax, word ptr [edi]
 mov	[esp], ebp
 mov	[esp+4], eax
-call	sub_405DA0
+call	sub_405D50
 test	eax, eax
-jg	short loc_405EE0
+jg	short loc_405E90
 
-loc_405F12:
+loc_405EC2:
 mov	ebx, 0FFFFFFFFh
 
-loc_405F17:
+loc_405EC7:
 add	esp, 3Ch
 mov	eax, ebx
 pop	ebx
@@ -7541,10 +7474,10 @@ pop	edi
 pop	ebp
 retn
 
-loc_405F21:
+loc_405ED1:
 mov	esi, edi
 
-loc_405F23:
+loc_405ED3:
 mov	eax, [esp+54h]
 mov	[eax], esi
 add	esp, 3Ch
@@ -7555,7 +7488,7 @@ pop	edi
 pop	ebp
 retn
 
-loc_405F33:
+loc_405EE3:
 mov	eax, [esp+54h]
 sub	ebx, 1
 mov	dword ptr [eax], 0
@@ -7568,42 +7501,42 @@ pop	ebp
 retn
 align 10h
 
-loc_405F50:
+loc_405F00:
 mov	eax, [esp+58h]
 lea	ebp, [esp+2Bh]
 test	eax, eax
-jnz	short loc_405F72
-jmp	short loc_405F17
+jnz	short loc_405F22
+jmp	short loc_405EC7
 align 10h
 
-loc_405F60:
+loc_405F10:
 add	ebx, eax
 cmp	byte ptr [esp+eax+2Ah],	0
-jz	short loc_405F96
+jz	short loc_405F46
 add	esi, 2
 cmp	[esp+58h], ebx
-jbe	short loc_405F17
+jbe	short loc_405EC7
 
-loc_405F72:
+loc_405F22:
 mov	eax, [esp+1Ch]
 mov	[esp+0Ch], edi
 mov	[esp+8], eax
 movzx	eax, word ptr [esi]
 mov	[esp], ebp
 mov	[esp+4], eax
-call	sub_405DA0
+call	sub_405D50
 test	eax, eax
-jg	short loc_405F60
-jmp	loc_405F12
+jg	short loc_405F10
+jmp	loc_405EC2
 
-loc_405F96:
+loc_405F46:
 sub	ebx, 1
-jmp	loc_405F17
+jmp	loc_405EC7
 align 10h
 
 
 
-sub_405FA0 proc	near
+sub_405F50 proc	near
 
 var_34=	dword ptr -34h
 var_30=	dword ptr -30h
@@ -7625,29 +7558,29 @@ sub	esp, 34h	; CodePage
 mov	ebx, [esp+34h+arg_4]
 mov	esi, [esp+34h+arg_C]
 test	ebx, ebx
-jz	loc_406115
+jz	loc_4060C5
 mov	edx, [esp+34h+arg_8]
 test	edx, edx
-jz	loc_406120
+jz	loc_4060D0
 mov	eax, [esi]
 mov	dword ptr [esi], 0
 mov	[esp+34h+var_8], eax
 movzx	eax, byte ptr [ebx]
 test	al, al
-jz	loc_406070
+jz	loc_406020
 cmp	[esp+34h+arg_14], 1
-jbe	short loc_406050
+jbe	short loc_406000
 cmp	byte ptr [esp+34h+var_8], 0
-jnz	loc_406081
+jnz	loc_406031
 mov	edx, [esp+34h+arg_10]
 mov	[esp+34h+var_30], eax
 mov	[esp+34h+var_34], edx
 call	ds:IsDBCSLeadByteEx
 sub	esp, 8		; CodePage
 test	eax, eax
-jz	short loc_406050
+jz	short loc_406000
 cmp	[esp+34h+arg_8], 1
-jbe	loc_40612A
+jbe	loc_4060DA
 mov	eax, [esp+34h+arg_0]
 mov	edx, [esp+34h+arg_10]
 mov	[esp+34h+var_20], 1
@@ -7659,19 +7592,19 @@ mov	[esp+34h+var_34], edx
 call	ds:MultiByteToWideChar
 sub	esp, 18h
 test	eax, eax
-jz	short loc_4060C1
+jz	short loc_406071
 
-loc_406045:
+loc_405FF5:
 add	esp, 34h
 mov	eax, 2
 pop	ebx
 pop	esi
 retn
 
-loc_406050:
+loc_406000:
 mov	eax, [esp+34h+arg_10]
 test	eax, eax
-jnz	short loc_4060D3
+jnz	short loc_406083
 movzx	eax, byte ptr [ebx]
 mov	edx, [esp+34h+arg_0]
 mov	[edx], ax
@@ -7682,18 +7615,18 @@ pop	esi
 retn
 align 10h
 
-loc_406070:
+loc_406020:
 mov	eax, [esp+34h+arg_0]
 mov	word ptr [eax],	0
 xor	eax, eax
 
-loc_40607B:
+loc_40602B:
 add	esp, 34h
 pop	ebx
 pop	esi
 retn			; CodePage
 
-loc_406081:
+loc_406031:
 mov	byte ptr [esp+34h+var_8+1], al
 lea	eax, [esp+34h+var_8]
 mov	edx, [esp+34h+arg_0]
@@ -7707,15 +7640,15 @@ mov	[esp+34h+var_34], eax
 call	ds:MultiByteToWideChar
 sub	esp, 18h	; CodePage
 test	eax, eax
-jnz	short loc_406045
+jnz	short loc_405FF5
 
-loc_4060C1:
+loc_406071:
 call	_errno
 mov	dword ptr [eax], 2Ah
 mov	eax, 0FFFFFFFFh
-jmp	short loc_40607B
+jmp	short loc_40602B
 
-loc_4060D3:
+loc_406083:
 mov	eax, [esp+34h+arg_0]
 mov	edx, [esp+34h+arg_10]
 mov	[esp+34h+var_20], 1
@@ -7727,11 +7660,11 @@ mov	[esp+34h+var_34], edx
 call	ds:MultiByteToWideChar
 sub	esp, 18h
 test	eax, eax
-jz	short loc_4060C1
+jz	short loc_406071
 mov	eax, 1
-jmp	loc_40607B
+jmp	loc_40602B
 
-loc_406115:
+loc_4060C5:
 add	esp, 34h
 xor	eax, eax
 pop	ebx
@@ -7739,22 +7672,22 @@ pop	esi
 retn
 align 10h
 
-loc_406120:
+loc_4060D0:
 mov	eax, 0FFFFFFFEh
-jmp	loc_40607B
+jmp	loc_40602B
 
-loc_40612A:
+loc_4060DA:
 movzx	eax, byte ptr [ebx]
 mov	[esi], al
 mov	eax, 0FFFFFFFEh
-jmp	loc_40607B
-sub_405FA0 endp
+jmp	loc_40602B
+sub_405F50 endp
 
 align 10h
 
 
 
-sub_406140 proc	near
+sub_4060F0 proc	near
 
 var_3C=	dword ptr -3Ch
 var_38=	dword ptr -38h
@@ -7794,13 +7727,13 @@ mov	eax, [esp+3Ch+arg_8]
 mov	[esp+3Ch+var_34], eax
 mov	eax, [esp+3Ch+arg_4]
 mov	[esp+3Ch+var_38], eax
-call	sub_405FA0
+call	sub_405F50
 mov	ebx, [esp+3Ch+var_E+2]
 mov	esi, [esp+3Ch+var_8]
 mov	edi, [esp+3Ch+var_4]
 add	esp, 3Ch
 retn
-sub_406140 endp
+sub_4060F0 endp
 
 align 10h
 push	ebp
@@ -7822,31 +7755,31 @@ mov	[esp+2Ch], eax
 mov	eax, ds:__mb_cur_max
 mov	eax, [eax]
 mov	[esp+28h], eax
-jz	short loc_406280
+jz	short loc_406230
 mov	ecx, [esi]
 test	ecx, ecx
-jz	short loc_406280
+jz	short loc_406230
 test	ebp, ebp
-jz	loc_406290
+jz	loc_406240
 mov	eax, esi
 xor	ebx, ebx
 test	edi, edi
 mov	esi, ebp
 mov	ebp, eax
-jnz	short loc_406231
-jmp	short loc_406270
+jnz	short loc_4061E1
+jmp	short loc_406220
 align 10h
 
-loc_406220:
+loc_4061D0:
 mov	ecx, [ebp+0]
 add	ebx, eax
 add	esi, 2
 add	ecx, eax
 cmp	edi, ebx
 mov	[ebp+0], ecx
-jbe	short loc_406261
+jbe	short loc_406211
 
-loc_406231:
+loc_4061E1:
 mov	eax, [esp+28h]
 mov	[esp+4], ecx
 mov	[esp], esi
@@ -7858,18 +7791,18 @@ mov	[esp+0Ch], eax
 mov	eax, edi
 sub	eax, ebx
 mov	[esp+8], eax
-call	sub_405FA0
+call	sub_405F50
 test	eax, eax
-jg	short loc_406220
+jg	short loc_4061D0
 
-loc_406261:
+loc_406211:
 test	eax, eax
-jnz	short loc_406270
+jnz	short loc_406220
 cmp	ebx, edi
-jnb	short loc_406270
+jnb	short loc_406220
 mov	dword ptr [ebp+0], 0
 
-loc_406270:
+loc_406220:
 add	esp, 4Ch
 mov	eax, ebx
 pop	ebx
@@ -7879,7 +7812,7 @@ pop	ebp
 retn
 align 10h
 
-loc_406280:
+loc_406230:
 add	esp, 4Ch
 xor	ebx, ebx
 mov	eax, ebx
@@ -7890,26 +7823,26 @@ pop	ebp
 retn
 align 10h
 
-loc_406290:
+loc_406240:
 xor	ebx, ebx
 test	edi, edi
 mov	word ptr [esp+3Eh], 0
-jz	short loc_406270
+jz	short loc_406220
 mov	ebp, [esp+28h]
 mov	[esp+28h], edi
 mov	edi, [esp+2Ch]
-jmp	short loc_4062BE
+jmp	short loc_40626E
 align 10h
 
-loc_4062B0:
+loc_406260:
 mov	ecx, [esi]
 add	ebx, eax
 add	ecx, eax
 cmp	[esp+28h], ebx
 mov	[esi], ecx
-jbe	short loc_406270
+jbe	short loc_406220
 
-loc_4062BE:
+loc_40626E:
 mov	eax, [esp+24h]
 mov	[esp+14h], ebp
 mov	[esp+10h], edi
@@ -7918,10 +7851,10 @@ mov	[esp+0Ch], eax
 lea	eax, [esp+3Eh]
 mov	[esp+4], ecx
 mov	[esp], eax
-call	sub_405FA0
+call	sub_405F50
 test	eax, eax
-jg	short loc_4062B0
-jmp	short loc_406270
+jg	short loc_406260
+jmp	short loc_406220
 align 10h
 push	esi
 push	ebx
@@ -7943,7 +7876,7 @@ mov	eax, [esp+40h]
 mov	[esp+4], eax
 lea	eax, [esp+2Eh]
 mov	[esp], eax
-call	sub_405FA0
+call	sub_405F50
 add	esp, 34h
 pop	ebx
 pop	esi
@@ -7952,7 +7885,7 @@ align 10h
 
 
 
-sub_406350 proc	near
+sub_406300 proc	near
 
 var_18=	dword ptr -18h
 arg_0= dword ptr  8
@@ -7962,31 +7895,31 @@ xor	ebx, ebx
 sub	esp, 18h
 mov	ecx, [esp+18h+arg_0]
 cmp	ecx, 13h
-jle	short loc_406370
+jle	short loc_406320
 mov	eax, 4
 
-loc_406364:
+loc_406314:
 add	eax, eax
 add	ebx, 1
 lea	edx, [eax+0Fh]
 cmp	edx, ecx
-jl	short loc_406364
+jl	short loc_406314
 
-loc_406370:
+loc_406320:
 mov	[esp+18h+var_18], ebx
-call	sub_406820
+call	sub_4067D0
 mov	[eax], ebx
 add	esp, 18h
 add	eax, 4
 pop	ebx
 retn
-sub_406350 endp
+sub_406300 endp
 
 align 10h
 
 
 
-sub_406390 proc	near
+sub_406340 proc	near
 
 var_14=	dword ptr -14h
 arg_0= dword ptr  0Ch
@@ -8000,39 +7933,39 @@ mov	eax, [esp+14h+arg_8]
 mov	ebx, [esp+14h+arg_0]
 mov	esi, [esp+14h+arg_4]
 mov	[esp+14h+var_14], eax
-call	sub_406350
+call	sub_406300
 movzx	edx, byte ptr [ebx]
 lea	ecx, [ebx+1]
 test	dl, dl
 mov	[eax], dl
 mov	edx, eax
-jz	short loc_4063C6
+jz	short loc_406376
 
-loc_4063B7:
+loc_406367:
 movzx	ebx, byte ptr [ecx]
 add	edx, 1
 add	ecx, 1
 test	bl, bl
 mov	[edx], bl
-jnz	short loc_4063B7
+jnz	short loc_406367
 
-loc_4063C6:
+loc_406376:
 test	esi, esi
-jz	short loc_4063CC
+jz	short loc_40637C
 mov	[esi], edx
 
-loc_4063CC:
+loc_40637C:
 add	esp, 14h
 pop	ebx
 pop	esi
 retn
-sub_406390 endp
+sub_406340 endp
 
 align 10h
 
 
 
-sub_4063E0 proc	near
+sub_406390 proc	near
 
 arg_0= dword ptr  4
 
@@ -8044,14 +7977,14 @@ mov	[eax], ecx
 mov	[eax+4], edx
 sub	eax, 4
 mov	[esp+arg_0], eax
-jmp	sub_4068E0
-sub_4063E0 endp
+jmp	sub_406890
+sub_406390 endp
 
 align 10h
 
 
 
-sub_406400 proc	near
+sub_4063B0 proc	near
 
 var_68=	dword ptr -68h
 var_64=	dword ptr -64h
@@ -8081,7 +8014,7 @@ mov	ecx, [esp+68h+arg_4]
 mov	ebx, [esp+68h+arg_0]
 mov	edx, [ecx+10h]
 cmp	edx, [ebx+10h]
-jg	loc_406613
+jg	loc_4065C3
 add	ebx, 14h
 mov	ebp, ecx
 mov	[esp+68h+var_24], ebx
@@ -8102,7 +8035,7 @@ div	ecx
 test	eax, eax
 mov	[esp+68h+var_2C], eax
 mov	[esp+68h+var_20], eax
-jz	loc_40654F
+jz	loc_4064FF
 mov	eax, [esp+68h+var_24]
 xor	esi, esi
 xor	edi, edi
@@ -8115,7 +8048,7 @@ mov	[esp+68h+var_3C], 0
 mov	ebp, eax
 lea	esi, [esi+0]
 
-loc_406490:
+loc_406440:
 mov	esi, [esp+68h+var_44]
 mov	eax, [esp+68h+var_2C]
 mov	[esp+68h+var_34], 0
@@ -8145,52 +8078,52 @@ mov	eax, edi
 and	eax, 1
 cmp	[esp+68h+var_30], esi
 mov	[esp+68h+var_40], eax
-jnb	short loc_406490
+jnb	short loc_406440
 mov	eax, [esp+68h+var_28]
 mov	ecx, [esp+68h+arg_0]
 mov	ebp, [esp+68h+var_1C]
 add	eax, 4
 mov	edi, [ecx+eax*4+4]
 test	edi, edi
-jnz	short loc_40654F
+jnz	short loc_4064FF
 lea	eax, [ecx+eax*4]
 cmp	[esp+68h+var_24], eax
-jnb	short loc_406544
+jnb	short loc_4064F4
 mov	esi, [eax]
 test	esi, esi
-jnz	short loc_406544
+jnz	short loc_4064F4
 mov	ecx, [esp+68h+var_24]
 mov	edx, [esp+68h+var_28]
-jmp	short loc_406536
+jmp	short loc_4064E6
 align 10h
 
-loc_406530:
+loc_4064E0:
 mov	ebx, [eax]
 test	ebx, ebx
-jnz	short loc_406540
+jnz	short loc_4064F0
 
-loc_406536:
+loc_4064E6:
 sub	eax, 4
 sub	edx, 1
 cmp	ecx, eax
-jb	short loc_406530
+jb	short loc_4064E0
 
-loc_406540:
+loc_4064F0:
 mov	[esp+68h+var_28], edx
 
-loc_406544:
+loc_4064F4:
 mov	esi, [esp+68h+var_28]
 mov	ebx, [esp+68h+arg_0]
 mov	[ebx+10h], esi
 
-loc_40654F:
+loc_4064FF:
 mov	ecx, [esp+68h+arg_4]
 mov	ebx, [esp+68h+arg_0]
 mov	[esp+68h+var_64], ecx
 mov	[esp+68h+var_68], ebx
-call	sub_406DF0
+call	sub_406DA0
 test	eax, eax
-js	loc_40660F
+js	loc_4065BF
 mov	esi, [esp+68h+var_2C]
 xor	ebx, ebx
 mov	ecx, [esp+68h+var_24]
@@ -8200,7 +8133,7 @@ mov	[esp+68h+var_44], ecx
 xor	ecx, ecx
 mov	[esp+68h+var_20], esi
 
-loc_406586:
+loc_406536:
 mov	eax, [esp+68h+var_40]
 xor	edi, edi
 xor	edx, edx
@@ -8221,54 +8154,54 @@ add	ebp, 4
 and	ecx, 1
 cmp	[esp+68h+var_30], eax
 mov	[esp+68h+var_44], ebp
-jnb	short loc_406586
+jnb	short loc_406536
 mov	eax, [esp+68h+var_28]
 mov	ecx, [esp+68h+arg_0]
 add	eax, 4
 mov	edi, [ecx+eax*4+4]
 test	edi, edi
-jnz	short loc_40660F
+jnz	short loc_4065BF
 lea	eax, [ecx+eax*4]
 cmp	[esp+68h+var_24], eax
-jnb	short loc_406604
+jnb	short loc_4065B4
 mov	esi, [eax]
 test	esi, esi
-jnz	short loc_406604
+jnz	short loc_4065B4
 mov	ecx, [esp+68h+var_24]
 mov	edx, [esp+68h+var_28]
-jmp	short loc_4065F6
+jmp	short loc_4065A6
 align 10h
 
-loc_4065F0:
+loc_4065A0:
 mov	ebx, [eax]
 test	ebx, ebx
-jnz	short loc_406600
+jnz	short loc_4065B0
 
-loc_4065F6:
+loc_4065A6:
 sub	eax, 4
 sub	edx, 1
 cmp	ecx, eax
-jb	short loc_4065F0
+jb	short loc_4065A0
 
-loc_406600:
+loc_4065B0:
 mov	[esp+68h+var_28], edx
 
-loc_406604:
+loc_4065B4:
 mov	esi, [esp+68h+var_28]
 mov	ebx, [esp+68h+arg_0]
 mov	[ebx+10h], esi
 
-loc_40660F:
+loc_4065BF:
 mov	eax, [esp+68h+var_20]
 
-loc_406613:
+loc_4065C3:
 add	esp, 5Ch
 pop	ebx
 pop	esi
 pop	edi
 pop	ebp
 retn
-sub_406400 endp
+sub_4063B0 endp
 
 align 10h
 push	ebx
@@ -8276,9 +8209,9 @@ sub	esp, 18h
 mov	eax, dword_408034
 mov	ebx, ds:dword_40A3D0
 test	eax, eax
-jnz	short loc_406643
+jnz	short loc_4065F3
 
-loc_406633:
+loc_4065E3:
 mov	eax, [esp+20h]
 mov	ds:dword_40A3D0, eax
 add	esp, 18h
@@ -8286,14 +8219,14 @@ mov	eax, ebx
 pop	ebx
 retn
 
-loc_406643:
-call	sub_402210
+loc_4065F3:
+call	sub_4021C0
 mov	dword ptr [esp+4], offset a_set_output_fo ; "_set_output_format"
 mov	[esp], eax
 call	ds:GetProcAddress
 sub	esp, 8
 test	eax, eax
-jz	short loc_406680
+jz	short loc_406630
 mov	edx, [esp+20h]
 mov	[esp], edx
 call	eax
@@ -8305,33 +8238,33 @@ pop	ebx
 retn
 align 10h
 
-loc_406680:
+loc_406630:
 mov	dword_408034, 0
-jmp	short loc_406633
+jmp	short loc_4065E3
 align 10h
 
 
 
-sub_406690 proc	near
+sub_406640 proc	near
 
 var_1C=	dword ptr -1Ch
 var_18=	dword ptr -18h
 
 mov	edx, dword_408038
 test	edx, edx
-jnz	short loc_4066A0
+jnz	short loc_406650
 mov	eax, ds:dword_40A3D0
 retn
 
-loc_4066A0:		; hModule
+loc_406650:		; hModule
 sub	esp, 1Ch
-call	sub_402210
+call	sub_4021C0
 mov	[esp+1Ch+var_18], offset a_get_output_fo ; "_get_output_format"
 mov	[esp+1Ch+var_1C], eax
 call	ds:GetProcAddress
 sub	esp, 8
 test	eax, eax
-jz	short loc_4066D6
+jz	short loc_406686
 call	eax
 mov	edx, 1
 mov	dword_408038, edx
@@ -8339,19 +8272,19 @@ mov	ds:dword_40A3D0, eax
 add	esp, 1Ch
 retn
 
-loc_4066D6:
+loc_406686:
 xor	edx, edx
 mov	eax, ds:dword_40A3D0
 mov	dword_408038, edx
 add	esp, 1Ch
 retn
-sub_406690 endp
+sub_406640 endp
 
 align 10h
 
 
 
-sub_4066F0 proc	near
+sub_4066A0 proc	near
 
 var_18=	dword ptr -18h
 
@@ -8361,13 +8294,13 @@ push	ebx
 sub	esp, 14h	; lpCriticalSection
 mov	edx, ds:dword_40AD20
 cmp	edx, 2
-jz	short loc_406747
+jz	short loc_4066F7
 test	edx, edx
-jnz	short loc_40676E
+jnz	short loc_40671E
 mov	dl, 1
 lock xchg edx, ds:dword_40AD20
 test	edx, edx
-jnz	short loc_406763
+jnz	short loc_406713
 mov	ebx, ds:InitializeCriticalSection
 mov	[esp+18h+var_18], offset unk_40AD40
 call	ebx ; InitializeCriticalSection
@@ -8375,11 +8308,11 @@ sub	esp, 4		; lpCriticalSection
 mov	[esp+18h+var_18], offset unk_40AD58
 call	ebx ; InitializeCriticalSection
 sub	esp, 4		; lpCriticalSection
-mov	[esp+18h+var_18], offset dword_4067E0
-call	sub_401790
+mov	[esp+18h+var_18], offset dword_406790
+call	sub_401740
 mov	ds:dword_40AD20, 2
 
-loc_406747:
+loc_4066F7:
 lea	eax, [esi+esi*2]
 lea	eax, ds:40AD40h[eax*8]
 mov	[esp+18h+var_18], eax
@@ -8390,52 +8323,52 @@ pop	ebx
 pop	esi
 retn			; dwMilliseconds
 
-loc_406763:
+loc_406713:
 cmp	edx, 2
-jz	short loc_4067A2
+jz	short loc_406752
 mov	edx, ds:dword_40AD20
 
-loc_40676E:
+loc_40671E:
 cmp	edx, 1
-jnz	short loc_406797
+jnz	short loc_406747
 mov	ebx, ds:Sleep
 lea	esi, [esi+0]
 
-loc_406780:
+loc_406730:
 mov	[esp+18h+var_18], 1
 call	ebx ; Sleep
 mov	edx, ds:dword_40AD20
 sub	esp, 4
 cmp	edx, 1
-jz	short loc_406780
+jz	short loc_406730
 
-loc_406797:
+loc_406747:
 cmp	edx, 2
-jz	short loc_406747
+jz	short loc_4066F7
 add	esp, 14h
 pop	ebx
 pop	esi
 retn
 
-loc_4067A2:
+loc_406752:
 mov	ds:dword_40AD20, 2
-jmp	short loc_406747
-sub_4066F0 endp
+jmp	short loc_4066F7
+sub_4066A0 endp
 
 align 10h
 
 
 
-sub_4067B0 proc	near
+sub_406760 proc	near
 
 var_1C=	dword ptr -1Ch
 
 cmp	ds:dword_40AD20, 2
-jz	short loc_4067C0
+jz	short loc_406770
 rep retn
 align 10h
 
-loc_4067C0:
+loc_406770:
 lea	eax, [eax+eax*2]
 sub	esp, 1Ch	; lpCriticalSection
 lea	eax, ds:40AD40h[eax*8]
@@ -8444,17 +8377,17 @@ call	ds:LeaveCriticalSection
 sub	esp, 4
 add	esp, 1Ch
 retn
-sub_4067B0 endp
+sub_406760 endp
 
 align 10h
-dword_4067E0 dd	3B8h, 587F000h,	40AD20h, 7402F883h, 53C3F302h
+dword_406790 dd	3B8h, 587F000h,	40AD20h, 7402F883h, 53C3F302h
 dd 8B18EC83h, 40B1501Dh, 2404C700h, 40AD40h
 dd 0EC83D3FFh, 2404C704h, 40AD58h, 0EC83D3FFh
 dd 18C48304h, 0B68DC35Bh, 0
 
 
 
-sub_406820 proc	near
+sub_4067D0 proc	near
 
 var_1C=	dword ptr -1Ch
 var_C= dword ptr -0Ch
@@ -8468,42 +8401,42 @@ mov	[esp+1Ch+var_8], esi
 mov	esi, [esp+1Ch+arg_0]
 mov	[esp+1Ch+var_C], ebx
 mov	[esp+1Ch+var_4], edi
-call	sub_4066F0
+call	sub_4066A0
 cmp	esi, 9
-jg	short loc_406855
+jg	short loc_406805
 mov	ebx, ds:dword_40A3E0[esi*4]
 test	ebx, ebx
-jz	short loc_4068A6
+jz	short loc_406856
 mov	eax, [ebx]
 mov	ds:dword_40A3E0[esi*4],	eax
-jmp	short loc_40687F
+jmp	short loc_40682F
 
-loc_406855:
+loc_406805:
 mov	edi, 1
 mov	ecx, esi
 shl	edi, cl
 lea	eax, ds:1Bh[edi*4]
 shr	eax, 3
 
-loc_406868:
+loc_406818:
 shl	eax, 3
 mov	[esp+1Ch+var_1C], eax
 call	malloc
 test	eax, eax
 mov	ebx, eax
-jz	short loc_406894
+jz	short loc_406844
 
-loc_406879:
+loc_406829:
 mov	[ebx+4], esi
 mov	[ebx+8], edi
 
-loc_40687F:
+loc_40682F:
 xor	eax, eax
-call	sub_4067B0
+call	sub_406760
 mov	dword ptr [ebx+10h], 0
 mov	dword ptr [ebx+0Ch], 0
 
-loc_406894:
+loc_406844:
 mov	eax, ebx
 mov	esi, [esp+1Ch+var_8]
 mov	ebx, [esp+1Ch+var_C]
@@ -8511,7 +8444,7 @@ mov	edi, [esp+1Ch+var_4]
 add	esp, 1Ch
 retn
 
-loc_4068A6:
+loc_406856:
 mov	ebx, off_40803C
 mov	edi, 1
 mov	ecx, esi
@@ -8523,17 +8456,17 @@ sub	edx, offset unk_40A420
 sar	edx, 3
 add	edx, eax
 cmp	edx, 120h
-ja	short loc_406868
+ja	short loc_406818
 lea	eax, [ebx+eax*8]
 mov	off_40803C, eax
-jmp	short loc_406879
-sub_406820 endp
+jmp	short loc_406829
+sub_4067D0 endp
 
 align 10h
 
 
 
-sub_4068E0 proc	near
+sub_406890 proc	near
 
 arg_0= dword ptr  8
 
@@ -8541,11 +8474,11 @@ push	ebx
 sub	esp, 8
 mov	ebx, [esp+8+arg_0]
 test	ebx, ebx
-jz	short loc_406920
+jz	short loc_4068D0
 cmp	dword ptr [ebx+4], 9
-jg	short loc_406917
+jg	short loc_4068C7
 xor	eax, eax
-call	sub_4066F0
+call	sub_4066A0
 mov	eax, [ebx+4]
 mov	edx, ds:dword_40A3E0[eax*4]
 mov	ds:dword_40A3E0[eax*4],	ebx
@@ -8553,24 +8486,24 @@ xor	eax, eax
 mov	[ebx], edx
 add	esp, 8
 pop	ebx
-jmp	sub_4067B0
+jmp	sub_406760
 
-loc_406917:
+loc_4068C7:
 add	esp, 8
 pop	ebx
 jmp	free
 
-loc_406920:
+loc_4068D0:
 add	esp, 8
 pop	ebx
 retn
-sub_4068E0 endp
+sub_406890 endp
 
 align 10h
 
 
 
-sub_406930 proc	near
+sub_4068E0 proc	near
 
 var_38=	dword ptr -38h
 var_34=	dword ptr -34h
@@ -8609,7 +8542,7 @@ mov	[esp+38h+var_28], eax
 mov	[esp+38h+var_24], edx
 nop
 
-loc_406970:
+loc_406920:
 mov	eax, [ecx+ebp*4]
 mov	ebx, [esp+38h+var_24]
 imul	ebx, eax
@@ -8622,18 +8555,18 @@ mov	[ecx+ebp*4], eax
 add	ebp, 1
 mov	esi, edx
 cmp	[esp+38h+var_1C], ebp
-jg	short loc_406970
+jg	short loc_406920
 mov	ebp, edi
 mov	edi, edx
 mov	ecx, ebp
 or	ecx, edx
-jz	short loc_4069BF
+jz	short loc_40696F
 mov	eax, [esp+38h+arg_0]
 mov	ecx, [esp+38h+var_1C]
 cmp	ecx, [eax+8]
-jge	short loc_4069D0
+jge	short loc_406980
 
-loc_4069AB:
+loc_40695B:
 mov	ecx, [esp+38h+var_1C]
 mov	eax, [esp+38h+arg_0]
 mov	[eax+ecx*4+14h], edi
@@ -8641,7 +8574,7 @@ mov	edi, ecx
 add	edi, 1
 mov	[eax+10h], edi
 
-loc_4069BF:
+loc_40696F:
 mov	eax, [esp+38h+arg_0]
 add	esp, 2Ch
 pop	ebx
@@ -8651,15 +8584,15 @@ pop	ebp
 retn			; void *
 align 10h
 
-loc_4069D0:
+loc_406980:
 mov	eax, [eax+4]
 mov	[esp+38h+var_20], eax
 add	eax, 1
 mov	[esp+38h+var_38], eax
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
 mov	ebx, eax
-jz	short loc_406A22
+jz	short loc_4069D2
 mov	ecx, [esp+38h+arg_0]
 lea	eax, [eax+0Ch]
 mov	edx, [ecx+10h]
@@ -8672,43 +8605,43 @@ mov	[esp+38h+var_34], edx
 call	memcpy
 mov	eax, [esp+38h+arg_0]
 mov	[esp+38h+var_38], eax
-call	sub_4068E0
+call	sub_406890
 mov	[esp+38h+arg_0], ebx
-jmp	short loc_4069AB
+jmp	short loc_40695B
 
-loc_406A22:
+loc_4069D2:
 mov	[esp+38h+arg_0], 0
-jmp	short loc_4069BF
-sub_406930 endp
+jmp	short loc_40696F
+sub_4068E0 endp
 
 align 10h
 
 
 
-sub_406A30 proc	near
+sub_4069E0 proc	near
 
 var_1C=	dword ptr -1Ch
 arg_0= dword ptr  4
 
 sub	esp, 1Ch
 mov	[esp+1Ch+var_1C], 1
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
-jz	short loc_406A51
+jz	short loc_406A01
 mov	edx, [esp+1Ch+arg_0]
 mov	dword ptr [eax+10h], 1
 mov	[eax+14h], edx
 
-loc_406A51:
+loc_406A01:
 add	esp, 1Ch
 retn
-sub_406A30 endp
+sub_4069E0 endp
 
 align 10h
 
 
 
-sub_406A60 proc	near
+sub_406A10 proc	near
 
 var_5C=	dword ptr -5Ch
 var_44=	dword ptr -44h
@@ -8735,7 +8668,7 @@ mov	ecx, [esp+5Ch+arg_4]
 mov	ebp, [esi+10h]
 mov	ebx, [ecx+10h]
 cmp	ebp, ebx
-jge	short loc_406A85
+jge	short loc_406A35
 mov	eax, ebp
 mov	ebp, ebx
 mov	ebx, eax
@@ -8743,7 +8676,7 @@ mov	eax, esi
 mov	esi, ecx
 mov	ecx, eax
 
-loc_406A85:
+loc_406A35:
 lea	edi, [ebp+ebx+0]
 xor	eax, eax
 cmp	edi, [esi+8]
@@ -8752,11 +8685,11 @@ setnle	al
 add	eax, [esi+4]
 mov	[esp+5Ch+var_38], ecx
 mov	[esp+5Ch+var_5C], eax
-call	sub_406820
+call	sub_4067D0
 mov	ecx, [esp+5Ch+var_38]
 test	eax, eax
 mov	[esp+5Ch+var_14], eax
-jz	loc_406BAC
+jz	loc_406B5C
 mov	edx, [esp+5Ch+var_14]
 add	eax, 14h
 lea	edx, [edx+edi*4+14h]
@@ -8764,16 +8697,16 @@ mov	[esp+5Ch+var_10], edx
 mov	edx, eax
 mov	edi, [esp+5Ch+var_10]
 cmp	eax, [esp+5Ch+var_10]
-jnb	short loc_406ADD
+jnb	short loc_406A8D
 nop
 
-loc_406AD0:
+loc_406A80:
 mov	dword ptr [edx], 0
 add	edx, 4
 cmp	edi, edx
-ja	short loc_406AD0
+ja	short loc_406A80
 
-loc_406ADD:
+loc_406A8D:
 lea	edi, [esi+14h]
 mov	[esp+5Ch+var_18], edi
 lea	edi, [ecx+14h]
@@ -8784,21 +8717,21 @@ mov	[esp+5Ch+var_28], esi
 mov	[esp+5Ch+var_2C], edi
 mov	[esp+5Ch+var_20], ecx
 mov	[esp+5Ch+var_24], eax
-jnb	short loc_406B6B
+jnb	short loc_406B1B
 
-loc_406B03:
+loc_406AB3:
 mov	edi, [esp+5Ch+var_2C]
 mov	ebp, [edi]
 add	edi, 4
 mov	[esp+5Ch+var_2C], edi
 test	ebp, ebp
-jz	short loc_406B5C
+jz	short loc_406B0C
 mov	ecx, [esp+5Ch+var_24]
 xor	esi, esi
 xor	edi, edi
 mov	ebx, [esp+5Ch+var_18]
 
-loc_406B20:
+loc_406AD0:
 mov	eax, [ebx]
 mul	ebp
 mov	[esp+5Ch+var_44], eax
@@ -8817,48 +8750,48 @@ xor	edi, edi
 mov	[ecx], edx
 add	ecx, 4
 cmp	[esp+5Ch+var_28], ebx
-ja	short loc_406B20
+ja	short loc_406AD0
 mov	[ecx], esi
 
-loc_406B5C:
+loc_406B0C:
 mov	edi, [esp+5Ch+var_2C]
 add	[esp+5Ch+var_24], 4
 cmp	[esp+5Ch+var_20], edi
-ja	short loc_406B03
+ja	short loc_406AB3
 
-loc_406B6B:
+loc_406B1B:
 mov	eax, [esp+5Ch+var_1C]
 test	eax, eax
-jle	short loc_406BA1
+jle	short loc_406B51
 mov	edi, [esp+5Ch+var_10]
 mov	ebx, [edi-4]
 test	ebx, ebx
-jnz	short loc_406BA1
+jnz	short loc_406B51
 mov	eax, [esp+5Ch+var_1C]
 mov	edx, [esp+5Ch+var_1C]
 neg	eax
 lea	eax, [edi+eax*4]
-jmp	short loc_406B98
+jmp	short loc_406B48
 align 10h
 
-loc_406B90:
+loc_406B40:
 mov	ecx, [eax+edx*4-4]
 test	ecx, ecx
-jnz	short loc_406B9D
+jnz	short loc_406B4D
 
-loc_406B98:
+loc_406B48:
 sub	edx, 1
-jnz	short loc_406B90
+jnz	short loc_406B40
 
-loc_406B9D:
+loc_406B4D:
 mov	[esp+5Ch+var_1C], edx
 
-loc_406BA1:
+loc_406B51:
 mov	edi, [esp+5Ch+var_1C]
 mov	eax, [esp+5Ch+var_14]
 mov	[eax+10h], edi
 
-loc_406BAC:
+loc_406B5C:
 mov	eax, [esp+5Ch+var_14]
 add	esp, 5Ch
 pop	ebx
@@ -8866,13 +8799,13 @@ pop	esi
 pop	edi
 pop	ebp
 retn
-sub_406A60 endp
+sub_406A10 endp
 
 align 10h
 
 
 
-sub_406BC0 proc	near
+sub_406B70 proc	near
 
 var_1C=	dword ptr -1Ch
 var_18=	dword ptr -18h
@@ -8889,44 +8822,44 @@ mov	ebx, [esp+1Ch+arg_4]
 mov	edi, [esp+1Ch+arg_0]
 mov	eax, ebx
 and	eax, 3
-jnz	short loc_406C50
+jnz	short loc_406C00
 
-loc_406BD6:
+loc_406B86:
 sar	ebx, 2
 test	ebx, ebx
-jz	short loc_406C21
+jz	short loc_406BD1
 mov	esi, ds:dword_40AD70
 test	esi, esi
-jnz	short loc_406BFC
-jmp	loc_406C9D
+jnz	short loc_406BAC
+jmp	loc_406C4D
 align 10h
 
-loc_406BF0:
+loc_406BA0:
 sar	ebx, 1
-jz	short loc_406C21
+jz	short loc_406BD1
 
-loc_406BF4:
+loc_406BA4:
 mov	edx, [esi]
 test	edx, edx
-jz	short loc_406C30
+jz	short loc_406BE0
 mov	esi, edx
 
-loc_406BFC:
+loc_406BAC:
 test	bl, 1
-jz	short loc_406BF0
+jz	short loc_406BA0
 mov	[esp+1Ch+var_18], esi
 mov	[esp+1Ch+var_1C], edi
-call	sub_406A60
+call	sub_406A10
 test	eax, eax
 mov	ebp, eax
-jz	short loc_406C75
+jz	short loc_406C25
 mov	[esp+1Ch+var_1C], edi
 mov	edi, ebp
-call	sub_4068E0
+call	sub_406890
 sar	ebx, 1
-jnz	short loc_406BF4
+jnz	short loc_406BA4
 
-loc_406C21:
+loc_406BD1:
 add	esp, 1Ch
 mov	eax, edi
 pop	ebx
@@ -8936,31 +8869,31 @@ pop	ebp
 retn
 align 10h
 
-loc_406C30:
+loc_406BE0:
 mov	eax, 1
-call	sub_4066F0
+call	sub_4066A0
 mov	ebp, [esi]
 test	ebp, ebp
-jz	short loc_406C81
+jz	short loc_406C31
 
-loc_406C40:
+loc_406BF0:
 mov	eax, 1
 mov	esi, ebp
-call	sub_4067B0
-jmp	short loc_406BFC
+call	sub_406760
+jmp	short loc_406BAC
 align 10h
 
-loc_406C50:
+loc_406C00:
 mov	eax, ds:dword_4095E4[eax*4]
 mov	[esp+1Ch+var_1C], edi
 mov	[esp+1Ch+var_14], 0
 mov	[esp+1Ch+var_18], eax
-call	sub_406930
+call	sub_4068E0
 test	eax, eax
 mov	edi, eax
-jnz	loc_406BD6
+jnz	loc_406B86
 
-loc_406C75:
+loc_406C25:
 add	esp, 1Ch
 xor	edi, edi
 pop	ebx
@@ -8970,45 +8903,45 @@ pop	edi
 pop	ebp
 retn
 
-loc_406C81:
+loc_406C31:
 mov	[esp+1Ch+var_18], esi
 mov	[esp+1Ch+var_1C], esi
-call	sub_406A60
+call	sub_406A10
 test	eax, eax
 mov	ebp, eax
 mov	[esi], eax
-jz	short loc_406C75
+jz	short loc_406C25
 mov	dword ptr [eax], 0
-jmp	short loc_406C40
+jmp	short loc_406BF0
 
-loc_406C9D:
+loc_406C4D:
 mov	eax, 1
-call	sub_4066F0
+call	sub_4066A0
 mov	esi, ds:dword_40AD70
 test	esi, esi
-jz	short loc_406CC0
+jz	short loc_406C70
 
-loc_406CB1:
+loc_406C61:
 mov	eax, 1
-call	sub_4067B0
-jmp	loc_406BFC
+call	sub_406760
+jmp	loc_406BAC
 
-loc_406CC0:
+loc_406C70:
 mov	[esp+1Ch+var_1C], 271h
-call	sub_406A30
+call	sub_4069E0
 test	eax, eax
 mov	esi, eax
 mov	ds:dword_40AD70, eax
-jz	short loc_406C75
+jz	short loc_406C25
 mov	dword ptr [eax], 0
-jmp	short loc_406CB1
-sub_406BC0 endp
+jmp	short loc_406C61
+sub_406B70 endp
 
 align 10h
 
 
 
-sub_406CE0 proc	near
+sub_406C90 proc	near
 
 var_3C=	dword ptr -3Ch
 var_20=	dword ptr -20h
@@ -9036,48 +8969,48 @@ mov	[esp+3Ch+var_14], eax
 mov	eax, [ebp+8]
 add	edi, 1
 cmp	edi, eax
-jle	short loc_406D19
+jle	short loc_406CC9
 lea	esi, [esi+0]
 
-loc_406D10:
+loc_406CC0:
 add	eax, eax
 add	edx, 1
 cmp	edi, eax
-jg	short loc_406D10
+jg	short loc_406CC0
 
-loc_406D19:
+loc_406CC9:
 mov	[esp+3Ch+var_3C], edx
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
 mov	[esp+3Ch+var_20], eax
-jz	loc_406DB7
+jz	loc_406D67
 add	eax, 14h
 test	ebx, ebx
-jle	short loc_406D4C
+jle	short loc_406CFC
 xor	edx, edx
 
-loc_406D36:
+loc_406CE6:
 mov	dword ptr [eax+edx*4], 0
 add	edx, 1
 cmp	edx, ebx
-jnz	short loc_406D36
+jnz	short loc_406CE6
 mov	ecx, [esp+3Ch+var_20]
 lea	eax, [ecx+edx*4+14h]
 
-loc_406D4C:
+loc_406CFC:
 mov	ecx, [ebp+10h]
 and	esi, 1Fh
 lea	edx, [ebp+14h]
 mov	[esp+3Ch+var_1C], esi
 lea	ebx, [ebp+ecx*4+14h]
-jz	short loc_406DC3
+jz	short loc_406D73
 mov	[esp+3Ch+var_18], 20h
 mov	[esp+3Ch+var_10], ebp
 mov	ebp, ebx
 sub	[esp+3Ch+var_18], esi
 xor	esi, esi
 
-loc_406D73:
+loc_406D23:
 mov	ebx, [edx]
 movzx	ecx, byte ptr [esp+3Ch+var_1C]
 shl	ebx, cl
@@ -9089,7 +9022,7 @@ add	edx, 4
 add	eax, 4
 shr	esi, cl
 cmp	ebp, edx
-ja	short loc_406D73
+ja	short loc_406D23
 mov	[eax], esi
 mov	eax, [esp+3Ch+var_14]
 mov	ebp, [esp+3Ch+var_10]
@@ -9097,14 +9030,14 @@ add	eax, 2
 test	esi, esi
 cmovnz	edi, eax
 
-loc_406DA5:
+loc_406D55:
 mov	eax, [esp+3Ch+var_20]
 sub	edi, 1
 mov	[eax+10h], edi
 mov	[esp+3Ch+var_3C], ebp
-call	sub_4068E0
+call	sub_406890
 
-loc_406DB7:
+loc_406D67:
 mov	eax, [esp+3Ch+var_20]
 add	esp, 3Ch
 pop	ebx
@@ -9113,28 +9046,28 @@ pop	edi
 pop	ebp
 retn
 
-loc_406DC3:
+loc_406D73:
 mov	ecx, [edx]
 add	edx, 4
 mov	[eax], ecx
 add	eax, 4
 cmp	ebx, edx
-jbe	short loc_406DA5
+jbe	short loc_406D55
 mov	ecx, [edx]
 add	edx, 4
 mov	[eax], ecx
 add	eax, 4
 cmp	ebx, edx
-ja	short loc_406DC3
-jmp	short loc_406DA5
-sub_406CE0 endp
+ja	short loc_406D73
+jmp	short loc_406D55
+sub_406C90 endp
 
-jmp	short sub_406DF0
+jmp	short sub_406DA0
 align 10h
 
 
 
-sub_406DF0 proc	near
+sub_406DA0 proc	near
 
 var_C= dword ptr -0Ch
 var_8= dword ptr -8
@@ -9151,29 +9084,29 @@ mov	[esp+0Ch+var_4], edi
 mov	eax, [ecx+10h]
 mov	edx, [esi+10h]
 sub	eax, edx
-jnz	short loc_406E32
+jnz	short loc_406DE2
 lea	edi, ds:10h[edx*4]
 lea	ebx, [ecx+14h]
 lea	edx, [ecx+edi+4]
 lea	ecx, [esi+edi+4]
 
-loc_406E22:
+loc_406DD2:
 sub	ecx, 4
 sub	edx, 4
 mov	esi, [ecx]
 cmp	[edx], esi
-jnz	short loc_406E41
+jnz	short loc_406DF1
 cmp	ebx, edx
-jb	short loc_406E22
+jb	short loc_406DD2
 
-loc_406E32:
+loc_406DE2:
 mov	ebx, [esp+0Ch+var_C]
 mov	esi, [esp+0Ch+var_8]
 mov	edi, [esp+0Ch+var_4]
 add	esp, 0Ch
 retn
 
-loc_406E41:
+loc_406DF1:
 sbb	eax, eax
 mov	ebx, [esp+0Ch+var_C]
 or	eax, 1
@@ -9181,13 +9114,13 @@ mov	esi, [esp+0Ch+var_8]
 mov	edi, [esp+0Ch+var_4]
 add	esp, 0Ch
 retn
-sub_406DF0 endp
+sub_406DA0 endp
 
 align 10h
 
 
 
-sub_406E60 proc	near
+sub_406E10 proc	near
 
 var_3C=	dword ptr -3Ch
 var_38=	dword ptr -38h
@@ -9209,19 +9142,19 @@ mov	edi, [esp+3Ch+arg_0]
 mov	ebx, [esp+3Ch+arg_4]
 mov	[esp+3Ch+var_3C], edi
 mov	[esp+3Ch+var_38], ebx
-call	sub_406DF0
+call	sub_406DA0
 cmp	eax, 0
-jz	loc_406F95
-jl	loc_406FC7
+jz	loc_406F45
+jl	loc_406F77
 xor	esi, esi
 
-loc_406E8C:
+loc_406E3C:
 mov	eax, [edi+4]
 mov	[esp+3Ch+var_3C], eax
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
 mov	[esp+3Ch+var_18], eax
-jz	loc_406FD7
+jz	loc_406F87
 mov	ebp, [edi+10h]
 lea	edx, [ebx+14h]
 xor	ecx, ecx
@@ -9242,7 +9175,7 @@ mov	[esp+3Ch+var_20], edi
 nop
 lea	esi, [esi+0]
 
-loc_406EE0:
+loc_406E90:
 mov	esi, [esp+3Ch+var_24]
 xor	edx, edx
 xor	edi, edi
@@ -9263,16 +9196,16 @@ mov	[esi], eax
 add	esi, 4
 cmp	[esp+3Ch+var_1C], ebp
 mov	[esp+3Ch+var_20], esi
-ja	short loc_406EE0
+ja	short loc_406E90
 mov	esi, [esp+3Ch+var_24]
 cmp	[esp+3Ch+var_14], esi
 mov	edi, [esp+3Ch+var_20]
 mov	ebp, [esp+3Ch+var_10]
-jbe	short loc_406F6C
+jbe	short loc_406F1C
 mov	[esp+3Ch+var_1C], ebp
 mov	ebp, [esp+3Ch+var_14]
 
-loc_406F33:
+loc_406EE3:
 mov	eax, [esi]
 xor	edx, edx
 sub	eax, ecx
@@ -9285,7 +9218,7 @@ mov	edx, eax
 mov	[edi], eax
 add	edi, 4
 cmp	ebp, esi
-ja	short loc_406F33
+ja	short loc_406EE3
 mov	ebx, [esp+3Ch+var_24]
 mov	ecx, [esp+3Ch+var_14]
 mov	esi, [esp+3Ch+var_20]
@@ -9295,24 +9228,24 @@ lea	eax, [ebx+ecx]
 shr	eax, 2
 lea	edi, [esi+eax*4+4]
 
-loc_406F6C:
+loc_406F1C:
 test	edx, edx
-jnz	short loc_406F82
+jnz	short loc_406F32
 mov	eax, ebp
 neg	eax
 lea	eax, [edi+eax*4]
 
-loc_406F77:
+loc_406F27:
 sub	ebp, 1
 mov	edx, [eax+ebp*4-4]
 test	edx, edx
-jz	short loc_406F77
+jz	short loc_406F27
 
-loc_406F82:
+loc_406F32:
 mov	eax, [esp+3Ch+var_18]
 mov	[eax+10h], ebp
 
-loc_406F89:
+loc_406F39:
 mov	eax, [esp+3Ch+var_18]
 add	esp, 3Ch
 pop	ebx
@@ -9321,12 +9254,12 @@ pop	edi
 pop	ebp
 retn
 
-loc_406F95:
+loc_406F45:
 mov	[esp+3Ch+var_3C], 0
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
 mov	[esp+3Ch+var_18], eax
-jz	short loc_406FD7
+jz	short loc_406F87
 mov	eax, [esp+3Ch+var_18]
 mov	dword ptr [eax+10h], 1
 mov	dword ptr [eax+14h], 0
@@ -9338,24 +9271,24 @@ pop	edi
 pop	ebp
 retn
 
-loc_406FC7:
+loc_406F77:
 mov	eax, edi
 mov	esi, 1
 mov	edi, ebx
 mov	ebx, eax
-jmp	loc_406E8C
+jmp	loc_406E3C
 
-loc_406FD7:
+loc_406F87:
 mov	[esp+3Ch+var_18], 0
-jmp	short loc_406F89
-sub_406E60 endp
+jmp	short loc_406F39
+sub_406E10 endp
 
-jmp	short sub_406FF0
+jmp	short sub_406FA0
 align 10h
 
 
 
-sub_406FF0 proc	near
+sub_406FA0 proc	near
 
 var_24=	qword ptr -24h
 var_18=	dword ptr -18h
@@ -9385,7 +9318,7 @@ xor	eax, 1Fh
 sub	edx, eax
 cmp	eax, 0Ah
 mov	[ecx], edx
-jg	short loc_407080
+jg	short loc_407030
 mov	ecx, 0Bh
 mov	edx, ebx
 sub	ecx, eax
@@ -9395,17 +9328,17 @@ mov	dword ptr [esp+24h+var_24+4], edx
 xor	edx, edx
 cmp	[esp+24h+var_18], esi
 mov	dword ptr [esp+24h+var_24], 0
-jnb	short loc_40705C
+jnb	short loc_40700C
 mov	edx, [edi-8]
 shr	edx, cl
 
-loc_40705C:
+loc_40700C:
 lea	ecx, [eax+15h]
 shl	ebx, cl
 or	edx, ebx
 mov	dword ptr [esp+24h+var_24], edx
 
-loc_407066:
+loc_407016:
 fld	[esp+24h+var_24]
 mov	ebx, [esp+24h+var_10]
 mov	esi, [esp+24h+var_C]
@@ -9415,18 +9348,18 @@ add	esp, 24h
 retn
 align 10h
 
-loc_407080:
+loc_407030:
 xor	edx, edx
 mov	ebp, esi
 cmp	[esp+24h+var_18], esi
-jnb	short loc_407090
+jnb	short loc_407040
 mov	edx, [edi-8]
 sub	ebp, 4
 
-loc_407090:
+loc_407040:
 mov	edi, eax
 sub	edi, 0Bh
-jz	short loc_4070D3
+jz	short loc_407083
 mov	esi, 2Bh
 mov	ecx, edi
 sub	esi, eax
@@ -9440,23 +9373,23 @@ xor	eax, eax
 cmp	ebp, [esp+24h+var_18]
 mov	dword ptr [esp+24h+var_24], 0
 mov	dword ptr [esp+24h+var_24+4], ebx
-jbe	short loc_4070C8
+jbe	short loc_407078
 mov	eax, [ebp-4]
 shr	eax, cl
 
-loc_4070C8:
+loc_407078:
 mov	ecx, edi
 shl	edx, cl
 or	eax, edx
 mov	dword ptr [esp+24h+var_24], eax
-jmp	short loc_407066
+jmp	short loc_407016
 
-loc_4070D3:
+loc_407083:
 or	ebx, 3FF00000h
 mov	dword ptr [esp+24h+var_24+4], ebx
 mov	dword ptr [esp+24h+var_24], edx
-jmp	short loc_407066
-sub_406FF0 endp
+jmp	short loc_407016
+sub_406FA0 endp
 
 align 10h
 sub	esp, 3Ch
@@ -9467,9 +9400,9 @@ mov	[esp+2Ch], ebx
 mov	[esp+30h], esi
 mov	[esp+34h], edi
 mov	[esp+38h], ebp
-call	sub_406820
+call	sub_4067D0
 test	eax, eax
-jz	loc_4071A0
+jz	loc_407150
 mov	ebx, [esp+1Ch]
 mov	edi, [esp+18h]
 mov	edx, ebx
@@ -9481,12 +9414,12 @@ or	ecx, 100000h
 test	ebx, ebx
 cmovnz	edx, ecx
 test	edi, edi
-jz	short loc_4071B4
+jz	short loc_407164
 bsf	esi, edi
 mov	ecx, esi
 shr	edi, cl
 test	esi, esi
-jz	loc_4071F0
+jz	loc_4071A0
 mov	ecx, 20h
 mov	ebp, edx
 sub	ecx, esi
@@ -9497,16 +9430,16 @@ mov	[eax+14h], ecx
 mov	ecx, esi
 shr	edx, cl
 
-loc_40716E:
+loc_40711E:
 cmp	edx, 1
 mov	[eax+18h], edx
 sbb	edx, edx
 add	edx, 2
 test	ebx, ebx
 mov	[eax+10h], edx
-jnz	short loc_4071CF
+jnz	short loc_40717F
 
-loc_407180:
+loc_407130:
 bsr	ecx, [eax+edx*4+10h]
 sub	esi, 432h
 shl	edx, 5
@@ -9517,7 +9450,7 @@ mov	ecx, [esp+4Ch]
 mov	[ebp+0], esi
 mov	[ecx], edx
 
-loc_4071A0:
+loc_407150:
 mov	ebx, [esp+2Ch]
 mov	esi, [esp+30h]
 mov	edi, [esp+34h]
@@ -9525,7 +9458,7 @@ mov	ebp, [esp+38h]
 add	esp, 3Ch
 retn
 
-loc_4071B4:
+loc_407164:
 bsf	ecx, edx
 shr	edx, cl
 test	ebx, ebx
@@ -9533,9 +9466,9 @@ mov	[eax+14h], edx
 lea	esi, [ecx+20h]
 mov	edx, 1
 mov	dword ptr [eax+10h], 1
-jz	short loc_407180
+jz	short loc_407130
 
-loc_4071CF:
+loc_40717F:
 mov	ebp, [esp+48h]
 lea	edx, [esi+ebx-433h]
 mov	ecx, [esp+4Ch]
@@ -9543,33 +9476,33 @@ mov	[ebp+0], edx
 mov	edx, 35h
 sub	edx, esi
 mov	[ecx], edx
-jmp	short loc_4071A0
+jmp	short loc_407150
 align 10h
 
-loc_4071F0:
+loc_4071A0:
 mov	[eax+14h], edi
-jmp	loc_40716E
+jmp	loc_40711E
 align 10h
 mov	eax, [esp+4]
 mov	edx, [esp+8]
-jmp	short loc_407213
+jmp	short loc_4071C3
 align 10h
 
-loc_407210:
+loc_4071C0:
 add	eax, 1
 
-loc_407213:
+loc_4071C3:
 movzx	ecx, byte ptr [edx]
 add	edx, 1
 test	cl, cl
 mov	[eax], cl
-jnz	short loc_407210
+jnz	short loc_4071C0
 rep retn
 align 10h
 
 
 
-sub_407230 proc	near
+sub_4071E0 proc	near
 
 var_14=	dword ptr -14h
 var_10=	dword ptr -10h
@@ -9592,7 +9525,7 @@ mov	[esp+14h+var_10], eax
 mov	eax, ecx
 sar	eax, 5
 cmp	eax, edx
-jge	loc_4072E0
+jge	loc_407290
 add	eax, 4
 and	ecx, 1Fh
 lea	edi, [ebp+edx*4+14h]
@@ -9600,7 +9533,7 @@ lea	edx, [ebp+eax*4+0]
 lea	ebx, [edx+4]
 mov	[esp+14h+var_C], ebx
 mov	[esp+14h+var_14], ecx
-jz	loc_4072F6
+jz	loc_4072A6
 mov	ecx, [esp+14h+var_14]
 add	edx, 8
 mov	ebx, [ebp+eax*4+4]
@@ -9608,12 +9541,12 @@ mov	[esp+14h+var_8], 20h
 sub	[esp+14h+var_8], ecx
 shr	ebx, cl
 cmp	edi, edx
-jbe	loc_407333
+jbe	loc_4072E3
 mov	[esp+14h+var_4], ebp
 mov	esi, [esp+14h+var_10]
 mov	ebp, [esp+14h+var_8]
 
-loc_4072A0:
+loc_407250:
 mov	eax, [edx]
 mov	ecx, ebp
 shl	eax, cl
@@ -9625,26 +9558,26 @@ add	edx, 4
 add	esi, 4
 shr	ebx, cl
 cmp	edi, edx
-ja	short loc_4072A0
+ja	short loc_407250
 sub	edi, [esp+14h+var_C]
 mov	ebp, [esp+14h+var_4]
 lea	eax, [edi-5]
 shr	eax, 2
 lea	eax, [ebp+eax*4+18h]
 
-loc_4072CE:
+loc_40727E:
 test	ebx, ebx
 mov	[eax], ebx
-jz	short loc_40731D
+jz	short loc_4072CD
 add	eax, 4
 sub	eax, [esp+14h+var_10]
 sar	eax, 2
-jmp	short loc_407324
+jmp	short loc_4072D4
 
-loc_4072E0:
+loc_407290:
 mov	dword ptr [ebp+10h], 0
 
-loc_4072E7:
+loc_407297:
 mov	dword ptr [ebp+14h], 0
 add	esp, 14h
 pop	ebx
@@ -9653,33 +9586,33 @@ pop	edi
 pop	ebp
 retn
 
-loc_4072F6:
+loc_4072A6:
 cmp	edi, ebx
 mov	edx, [esp+14h+var_10]
 mov	eax, ebx
-jbe	short loc_4072E0
+jbe	short loc_407290
 
-loc_407300:
+loc_4072B0:
 mov	ecx, [eax]
 add	eax, 4
 mov	[edx], ecx
 add	edx, 4
 cmp	edi, eax
-ja	short loc_407300
+ja	short loc_4072B0
 mov	eax, [esp+14h+var_C]
 not	eax
 add	eax, edi
 shr	eax, 2
 lea	eax, [ebp+eax*4+18h]
 
-loc_40731D:
+loc_4072CD:
 sub	eax, [esp+14h+var_10]
 sar	eax, 2
 
-loc_407324:
+loc_4072D4:
 test	eax, eax
 mov	[ebp+10h], eax
-jz	short loc_4072E7
+jz	short loc_407297
 add	esp, 14h
 pop	ebx
 pop	esi
@@ -9687,16 +9620,16 @@ pop	edi
 pop	ebp
 retn
 
-loc_407333:
+loc_4072E3:
 mov	eax, [esp+14h+var_10]
-jmp	short loc_4072CE
-sub_407230 endp
+jmp	short loc_40727E
+sub_4071E0 endp
 
 align 10h
 
 
 
-sub_407340 proc	near
+sub_4072F0 proc	near
 
 arg_0= dword ptr  8
 
@@ -9706,42 +9639,42 @@ mov	ecx, [eax+10h]
 lea	edx, [eax+14h]
 lea	ebx, [eax+ecx*4+14h]
 cmp	edx, ebx
-jnb	short loc_407379
+jnb	short loc_407329
 mov	ecx, [eax+14h]
 xor	eax, eax
 test	ecx, ecx
-jz	short loc_407366
-jmp	short loc_407372
+jz	short loc_407316
+jmp	short loc_407322
 align 10h
 
-loc_407360:
+loc_407310:
 mov	ecx, [edx]
 test	ecx, ecx
-jnz	short loc_407372
+jnz	short loc_407322
 
-loc_407366:
+loc_407316:
 add	edx, 4
 add	eax, 20h
 cmp	ebx, edx
-ja	short loc_407360
+ja	short loc_407310
 pop	ebx
 retn
 
-loc_407372:
+loc_407322:
 bsf	ecx, ecx
 add	eax, ecx
 pop	ebx
 retn
 
-loc_407379:
+loc_407329:
 xor	eax, eax
 pop	ebx
 retn
-sub_407340 endp
+sub_4072F0 endp
 
 align 10h
 
-loc_407380:
+loc_407330:
 mov	eax, ds:dword_40AD80
 mov	eax, [eax]
 retn
@@ -9749,7 +9682,7 @@ align 10h
 
 
 
-sub_407390 proc	near
+sub_407340 proc	near
 
 var_1C=	dword ptr -1Ch
 var_18=	dword ptr -18h
@@ -9764,21 +9697,21 @@ call	strchr
 mov	edx, eax
 xor	eax, eax
 test	edx, edx
-jz	short loc_4073CA
+jz	short loc_40737A
 add	edx, 1
 mov	[esp+1Ch+var_1C], edx
 call	atoi
 
-loc_4073CA:
+loc_40737A:
 add	esp, 1Ch
 retn
-sub_407390 endp
+sub_407340 endp
 
 align 10h
 
 
 
-sub_4073D0 proc	near
+sub_407380 proc	near
 
 var_1C=	dword ptr -1Ch
 var_18=	dword ptr -18h
@@ -9790,10 +9723,10 @@ var_4= dword ptr -4
 sub	esp, 1Ch	; hModule
 mov	[esp+1Ch+var_8], ebx
 mov	[esp+1Ch+var_4], esi
-call	sub_402210
+call	sub_4021C0
 test	eax, eax
 mov	ebx, eax
-jz	short loc_407412
+jz	short loc_4073C2
 mov	esi, ds:GetProcAddress
 mov	[esp+1Ch+var_18], offset a___lc_codepage ; "___lc_codepage_func"
 mov	[esp+1Ch+var_1C], eax
@@ -9801,35 +9734,35 @@ call	esi ; GetProcAddress
 sub	esp, 8
 test	eax, eax
 mov	off_408040, eax
-jz	short loc_407430
+jz	short loc_4073E0
 mov	ebx, [esp+1Ch+var_8]
 mov	esi, [esp+1Ch+var_4]
 add	esp, 1Ch
 jmp	eax
 
-loc_407412:
+loc_4073C2:
 mov	ebx, [esp+1Ch+var_8]
 mov	esi, [esp+1Ch+var_4]
-mov	off_408040, offset sub_407390
+mov	off_408040, offset sub_407340
 add	esp, 1Ch
-jmp	sub_407390
+jmp	sub_407340
 align 10h
 
-loc_407430:		; "__lc_codepage"
+loc_4073E0:		; "__lc_codepage"
 mov	[esp+1Ch+var_18], offset a__lc_codepage
 mov	[esp+1Ch+var_1C], ebx
 call	esi
 sub	esp, 8
 test	eax, eax
 mov	ds:dword_40AD80, eax
-jz	short loc_407412
+jz	short loc_4073C2
 mov	eax, [eax]
-mov	off_408040, offset loc_407380
+mov	off_408040, offset loc_407330
 mov	ebx, [esp+24h+var_10]
 mov	esi, [esp+24h+var_C]
 add	esp, 1Ch
 retn
-sub_4073D0 endp	; sp = -8
+sub_407380 endp	; sp = -8
 
 align 10h
 ; [00000006 BYTES: COLLAPSED FUNCTION __getmainargs. PRESS KEYPAD "+" TO EXPAND]
@@ -9860,11 +9793,11 @@ align 10h
 align 4
 ; [00000006 BYTES: COLLAPSED FUNCTION signal. PRESS KEYPAD "+" TO EXPAND]
 align 10h
-; START	OF FUNCTION CHUNK FOR sub_401960
+; START	OF FUNCTION CHUNK FOR sub_401910
 
-loc_4074E0:
+loc_407490:
 jmp	ds:__setusermatherr
-; END OF FUNCTION CHUNK	FOR sub_401960
+; END OF FUNCTION CHUNK	FOR sub_401910
 align 4
 ; [00000006 BYTES: COLLAPSED FUNCTION abort. PRESS KEYPAD "+" TO EXPAND]
 align 10h
@@ -9895,7 +9828,7 @@ align 10h
 
 
 
-sub_407550 proc	near
+sub_407500 proc	near
 
 var_28=	dword ptr -28h
 var_24=	dword ptr -24h
@@ -9923,16 +9856,16 @@ mov	edi, ecx
 mov	ebp, eax
 mov	[esp+2Ch+var_24], eax
 mov	edx, ebx
-jnz	short loc_4075A0
+jnz	short loc_407550
 cmp	ecx, ebx
-jbe	short loc_4075C2
+jbe	short loc_407572
 div	ecx
 
-loc_407587:
+loc_407537:
 mov	eax, edx
 xor	edx, edx
 
-loc_40758B:
+loc_40753B:
 mov	ebx, [esp+2Ch+var_10]
 mov	esi, [esp+2Ch+var_C]
 mov	edi, [esp+2Ch+var_8]
@@ -9941,45 +9874,45 @@ add	esp, 2Ch
 retn
 align 10h
 
-loc_4075A0:
+loc_407550:
 cmp	esi, ebx
-ja	short loc_4075E0
+ja	short loc_407590
 bsr	eax, esi
 xor	eax, 1Fh
 mov	[esp+2Ch+var_28], eax
-jnz	short loc_4075E4
+jnz	short loc_407594
 cmp	ecx, ebp
-ja	loc_407678
+ja	loc_407628
 
-loc_4075B8:
+loc_407568:
 mov	edx, ebx
 sub	ebp, ecx
 sbb	edx, esi
 mov	eax, ebp
-jmp	short loc_40758B
+jmp	short loc_40753B
 
-loc_4075C2:
+loc_407572:
 test	ecx, ecx
-jnz	short loc_4075D1
+jnz	short loc_407581
 mov	eax, 1
 xor	edx, edx
 div	ecx
 mov	ecx, eax
 
-loc_4075D1:
+loc_407581:
 mov	eax, ebx
 xor	edx, edx
 div	ecx
 mov	eax, ebp
 div	ecx
-jmp	short loc_407587
+jmp	short loc_407537
 align 10h
 
-loc_4075E0:
+loc_407590:
 mov	edx, ebx
-jmp	short loc_40758B
+jmp	short loc_40753B
 
-loc_4075E4:
+loc_407594:
 movzx	ecx, byte ptr [esp+2Ch+var_28]
 mov	eax, esi
 mov	esi, 20h
@@ -10011,11 +9944,11 @@ mul	edi
 cmp	ebx, edx
 mov	edi, eax
 mov	ecx, edx
-jb	short loc_40766C
+jb	short loc_40761C
 cmp	[esp+2Ch+var_24], eax
-jb	short loc_407668
+jb	short loc_407618
 
-loc_407643:
+loc_4075F3:
 mov	eax, [esp+2Ch+var_24]
 sub	eax, edi
 sbb	ebx, ecx
@@ -10028,31 +9961,31 @@ movzx	ecx, byte ptr [esp+2Ch+var_28]
 or	eax, edx
 mov	edx, ebx
 shr	edx, cl
-jmp	loc_40758B
+jmp	loc_40753B
 
-loc_407668:
+loc_407618:
 cmp	ebx, edx
-jnz	short loc_407643
+jnz	short loc_4075F3
 
-loc_40766C:
+loc_40761C:
 mov	ecx, edx
 mov	edi, eax
 sub	edi, [esp+2Ch+var_20]
 sbb	ecx, ebp
-jmp	short loc_407643
+jmp	short loc_4075F3
 
-loc_407678:
+loc_407628:
 cmp	esi, ebx
-jb	loc_4075B8
+jb	loc_407568
 mov	eax, ebp
-jmp	loc_40758B
-sub_407550 endp
+jmp	loc_40753B
+sub_407500 endp
 
 align 10h
 
 
 
-sub_407690 proc	near
+sub_407640 proc	near
 
 var_24=	dword ptr -24h
 var_20=	dword ptr -20h
@@ -10077,17 +10010,17 @@ mov	[esp+2Ch+var_C], esi
 mov	esi, ecx
 mov	[esp+2Ch+var_4], ebp
 mov	ebp, edi
-jnz	short loc_4076E0
+jnz	short loc_407690
 cmp	ecx, ebx
-ja	short loc_407718
+ja	short loc_4076C8
 test	ecx, ecx
-jnz	short loc_4076CE
+jnz	short loc_40767E
 mov	eax, 1
 xor	edx, edx
 div	ecx
 mov	ecx, eax
 
-loc_4076CE:
+loc_40767E:
 mov	eax, ebx
 xor	edx, edx
 div	ecx
@@ -10095,26 +10028,26 @@ mov	ebx, eax
 mov	eax, edi
 div	ecx
 mov	edx, ebx
-jmp	short loc_407704
+jmp	short loc_4076B4
 align 10h
 
-loc_4076E0:
+loc_407690:
 cmp	edx, ebx
-ja	short loc_407700
+ja	short loc_4076B0
 bsr	edi, edx
 xor	edi, 1Fh
-jnz	short loc_407722
+jnz	short loc_4076D2
 cmp	ecx, ebp
-jbe	loc_407783
+jbe	loc_407733
 cmp	edx, ebx
-jb	loc_407783
+jb	loc_407733
 lea	esi, [esi+0]
 
-loc_407700:
+loc_4076B0:
 xor	edx, edx
 xor	eax, eax
 
-loc_407704:
+loc_4076B4:
 mov	ebx, [esp+2Ch+var_10]
 mov	esi, [esp+2Ch+var_C]
 mov	edi, [esp+2Ch+var_8]
@@ -10122,14 +10055,14 @@ mov	ebp, [esp+2Ch+var_4]
 add	esp, 2Ch
 retn
 
-loc_407718:
+loc_4076C8:
 mov	eax, edi
 mov	edx, ebx
 div	ecx
 xor	edx, edx
-jmp	short loc_407704
+jmp	short loc_4076B4
 
-loc_407722:
+loc_4076D2:
 mov	ecx, edi
 mov	eax, 20h
 sub	eax, edi
@@ -10161,36 +10094,36 @@ mov	esi, edx
 mov	ebx, eax
 mul	[esp+2Ch+var_20]
 cmp	esi, edx
-jb	short loc_407790
+jb	short loc_407740
 mov	ecx, edi
 shl	ebp, cl
 cmp	ebp, eax
-jnb	short loc_40777D
+jnb	short loc_40772D
 cmp	esi, edx
-jz	short loc_407790
+jz	short loc_407740
 
-loc_40777D:
+loc_40772D:
 mov	eax, ebx
 xor	edx, edx
-jmp	short loc_407704
+jmp	short loc_4076B4
 
-loc_407783:
+loc_407733:
 xor	edx, edx
 mov	eax, 1
-jmp	loc_407704
+jmp	loc_4076B4
 align 10h
 
-loc_407790:
+loc_407740:
 lea	eax, [ebx-1]
 xor	edx, edx
-jmp	loc_407704
-sub_407690 endp
+jmp	loc_4076B4
+sub_407640 endp
 
 align 10h
-dword_4077A0 dd	0FFFFFFFFh
+dword_407750 dd	0FFFFFFFFh
 align 8
 dd 0FFFFFFFFh
-dword_4077AC dd	15h dup(0)
+dword_40775C dd	29h dup(0)
 _text ends
 
 ; Section 2. (virtual address 00008000)
@@ -10218,7 +10151,7 @@ db 0FFh
 db 0FFh
 db 0FFh
 db 0FFh
-off_408010 dd offset dword_4077AC
+off_408010 dd offset dword_40775C
 dword_408014 dd	2
 dword_408018 dd	0FFFFFFFFh
 unk_40801C db  40h ; @
@@ -10248,7 +10181,7 @@ db    0
 dword_408034 dd	1
 dword_408038 dd	1
 off_40803C dd offset unk_40A420
-off_408040 dd offset sub_4073D0
+off_408040 dd offset sub_407380
 dword_408044 dd	0BB40E64Eh
 dword_408048 dd	44BF19B1h
 align 200h
@@ -10269,15 +10202,14 @@ assume cs:_rdata
 ;org 409000h
 a_set_invalid_p	db '_set_invalid_parameter_handler',0
 align 10h
-aAddD db 'add: %d',0
-aSubD db 'sub: %d',0
-aMulD db 'mul: %d',0
-off_409038 dd offset TlsCallback_0
+aIterationD db 'Iteration %d',0
+align 10h
+off_409030 dd offset TlsCallback_0
 aUnknownError db 'Unknown error',0
 align 4
 a_matherrSInSGG	db '_matherr(): %s in %s(%g, %g)  (retv'
 db 'al=%g)',0Ah,0
-align 4
+align 10h
 aArgumentDomain	db 'Argument domain error (DOMAIN)',0
 aArgumentSingul	db 'Argument singularity (SIGN)',0
 align 4
@@ -10286,11 +10218,11 @@ aTheResultIsToo	db 'The result is too small to be repre'
 db 'sented (UNDERFLOW)',0
 align 4
 aTotalLossOfSig	db 'Total loss of significance (TLOSS)',0
-align 10h
+align 4
 aPartialLossOfS	db 'Partial loss of significance (PLOSS'
 db ')',0
-align 4
-off_409158 dd offset aArgumentDomain ; "Argument domain	error (DOMAIN)"
+align 10h
+off_409150 dd offset aArgumentDomain ; "Argument domain	error (DOMAIN)"
 dd offset aArgumentSingul ; "Argument singularity (SIGN)"
 dd offset aOverflowRangeE ; "Overflow range error (OVERFLOW)"
 dd offset aTheResultIsToo ; "The result	is too small to	be represent"...
@@ -10300,26 +10232,26 @@ aMingwW64Runtim	db 'Mingw-w64 runtime failure:',0Ah,0
 aAddressPHasNoI	db 'Address %p has no image-section',0
 aVirtualqueryFa	db '  VirtualQuery failed for %d bytes '
 db 'at address %p',0
-align 10h
+align 4
 aVirtualprotect	db '  VirtualProtect failed with code 0'
 db 'x%x',0
-align 4
+align 10h
 aUnknownPseud_0	db '  Unknown pseudo relocation protoco'
 db 'l version %d.',0Ah,0
 align 4
 aUnknownPseudoR	db '  Unknown pseudo relocation bit siz'
 db 'e %d.',0Ah,0
-align 4
+align 10h
 aMsvcrt_dll:
 unicode	0, <msvcrt.dll>,0
-align 10h
-off_409280 dd offset dword_40A340
+align 4
+off_409278 dd offset dword_40A340
 dd offset unk_40A060
-unk_409288 db  4Eh ; N
+unk_409280 db  4Eh ; N
 db  61h	; a
 db  4Eh	; N
 db    0
-unk_40928C db  49h ; I
+unk_409284 db  49h ; I
 db  6Eh	; n
 db  66h	; f
 db    0
@@ -10327,121 +10259,130 @@ aNull_0:
 unicode	0, <(null)>,0
 aNull db '(null)',0
 aPrintf_exponen	db 'PRINTF_EXPONENT_DIGITS',0
-off_4092BC dd offset loc_4045D0
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_4045B3
-dd offset loc_403FA4
-dd offset loc_4045A5
-dd offset loc_403FA4
-dd offset loc_404540
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_404500
-dd offset loc_4044E0
-dd offset loc_403FA4
-dd offset loc_4044C0
-dd offset loc_4044A0
-dd offset loc_403FA4
-dd offset loc_404484
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_404460
-dd offset loc_403FA4
-dd offset loc_404430
-dd offset loc_403FA4
-dd offset loc_404408
-dd offset loc_4043E4
-dd offset loc_4043C0
-dd offset loc_403FA4
-dd offset loc_404385
-dd offset loc_403FA4
-dd offset loc_403FA4
+off_4092B4 dd offset loc_404580
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_404563
+dd offset loc_403F54
+dd offset loc_404555
+dd offset loc_403F54
+dd offset loc_4044F0
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_4044B0
+dd offset loc_404490
+dd offset loc_403F54
+dd offset loc_404470
+dd offset loc_404450
+dd offset loc_403F54
+dd offset loc_404434
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_404410
+dd offset loc_403F54
+dd offset loc_4043E0
+dd offset loc_403F54
+dd offset loc_4043B8
+dd offset loc_404394
 dd offset loc_404370
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_4045F8
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_404100
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_4040D0
-dd offset loc_403FA4
-dd offset loc_404090
-dd offset loc_4041F0
-dd offset loc_4041C0
-dd offset loc_404190
-dd offset loc_404160
-dd offset loc_404340
-dd offset loc_4041F0
-dd offset loc_404325
-dd offset loc_403FA4
-dd offset loc_4042F5
-dd offset loc_4042D0
-dd offset loc_404292
-dd offset loc_404100
-dd offset loc_404250
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_404055
+dd offset loc_403F54
+dd offset loc_404335
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_404320
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_4045A8
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_4040B0
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_404080
+dd offset loc_403F54
 dd offset loc_404040
-dd offset loc_404100
-dd offset loc_403FA4
-dd offset loc_403FA4
-dd offset loc_404100
-dd offset loc_403FA4
-dd offset loc_404040
+dd offset loc_4041A0
+dd offset loc_404170
+dd offset loc_404140
+dd offset loc_404110
+dd offset loc_4042F0
+dd offset loc_4041A0
+dd offset loc_4042D5
+dd offset loc_403F54
+dd offset loc_4042A5
+dd offset loc_404280
+dd offset loc_404242
+dd offset loc_4040B0
+dd offset loc_404200
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_404005
+dd offset loc_403FF0
+dd offset loc_4040B0
+dd offset loc_403F54
+dd offset loc_403F54
+dd offset loc_4040B0
+dd offset loc_403F54
+dd offset loc_403FF0
 aInfinity db 'Infinity',0
 aNan db	'NaN',0
 a0 db '0',0
-align 4
-off_409438 dd offset loc_404969	; jump table for switch	statement
-dd offset loc_4048B0
-dd offset loc_4048B0
-dd offset loc_4049E0
-dd offset loc_4049A4
-flt_40944C dd 1.5
-dbl_409450 dq 2.89529654602168e-1
-dbl_409458 dq 1.760912590558e-1
-dbl_409460 dq 3.01029995663981e-1
-dbl_409468 dq 7.0e-17
-dbl_409470 dq 3.0103e-1
-flt_409478 dd 1.0
-flt_40947C dd 1.0e1
-flt_409480 dd 3.0
-flt_409484 dd 7.0
-flt_409488 dd 5.0
-flt_40948C dd 5.0e-1
+align 10h
+off_409430 dd offset loc_404919	; jump table for switch	statement
+dd offset loc_404860
+dd offset loc_404860
+dd offset loc_404990
+dd offset loc_404954
+flt_409444 dd 1.5
+dbl_409448 dq 2.89529654602168e-1
+dbl_409450 dq 1.760912590558e-1
+dbl_409458 dq 3.01029995663981e-1
+dbl_409460 dq 7.0e-17
+dbl_409468 dq 3.0103e-1
+flt_409470 dd 1.0
+flt_409474 dd 1.0e1
+flt_409478 dd 3.0
+flt_40947C dd 7.0
+flt_409480 dd 5.0
+flt_409484 dd 5.0e-1
 a_set_output_fo	db '_set_output_format',0
 a_get_output_fo	db '_get_output_format',0
-align 4
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
 dbl_4094B8 dq 0.0
 dbl_4094C0 dq 1.0
 db    0
@@ -14758,7 +14699,7 @@ db  60h	; `
 db  10h
 db  40h	; @
 db    0
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
@@ -15857,7 +15798,7 @@ db    0
 db    0
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  15h
 db  40h	; @
 db    0
@@ -15889,7 +15830,7 @@ db    0
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
@@ -15921,7 +15862,7 @@ db    0
 db    0
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  16h
 db  40h	; @
 db    0
@@ -15977,7 +15918,7 @@ db    0
 db    0
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  16h
 db  40h	; @
 db    0
@@ -16033,7 +15974,7 @@ db    0
 db    0
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  17h
 db  40h	; @
 db    0
@@ -16089,8 +16030,8 @@ db    0
 db    0
 db    0
 db    0
-db  10h
-db  19h
+db 0C0h	; ¿
+db  18h
 db  40h	; @
 db    0
 db 0BBh	; ª
@@ -16121,7 +16062,7 @@ db    0
 db    0
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  19h
 db  40h	; @
 db    0
@@ -16153,7 +16094,7 @@ db    0
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  19h
 db  40h	; @
 db    0
@@ -16185,8 +16126,8 @@ db    0
 db    0
 db    0
 db    0
-db  30h	; 0
-db  1Fh
+db 0E0h	; ‡
+db  1Eh
 db  40h	; @
 db    0
 db  98h	; ò
@@ -16217,7 +16158,7 @@ db    0
 db    0
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  22h	; "
 db  40h	; @
 db    0
@@ -16249,7 +16190,7 @@ db    0
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
@@ -16281,7 +16222,7 @@ db    0
 db    0
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  23h	; #
 db  40h	; @
 db    0
@@ -16337,7 +16278,7 @@ db    0
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  24h	; $
 db  40h	; @
 db    0
@@ -16393,8 +16334,8 @@ db    0
 db    0
 db    0
 db    0
-db  20h
-db  27h	; '
+db 0D0h	; –
+db  26h	; &
 db  40h	; @
 db    0
 db  2Ah	; *
@@ -16473,7 +16414,7 @@ db    0
 db    0
 db    0
 db    0
-db  60h	; `
+db  10h
 db  27h	; '
 db  40h	; @
 db    0
@@ -16505,7 +16446,7 @@ db    0
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  27h	; '
 db  40h	; @
 db    0
@@ -16537,7 +16478,7 @@ db    0
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  27h	; '
 db  40h	; @
 db    0
@@ -16569,8 +16510,8 @@ db    0
 db    0
 db    0
 db    0
-db  20h
-db  28h	; (
+db 0D0h	; –
+db  27h	; '
 db  40h	; @
 db    0
 db 0B2h	; ≤
@@ -16601,7 +16542,7 @@ db    0
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  47h	; G
 db  40h	; @
 db    0
@@ -16633,7 +16574,7 @@ db    0
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  5Dh	; ]
 db  40h	; @
 db    0
@@ -16665,7 +16606,7 @@ db    0
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  5Fh	; _
 db  40h	; @
 db    0
@@ -16697,7 +16638,7 @@ db    0
 db    0
 db    0
 db    0
-db  50h	; P
+db    0
 db  63h	; c
 db  40h	; @
 db    0
@@ -16729,8 +16670,8 @@ db    0
 db    0
 db    0
 db    0
-db  20h
-db  66h	; f
+db 0D0h	; –
+db  65h	; e
 db  40h	; @
 db    0
 db 0C7h	; «
@@ -16761,7 +16702,7 @@ db    0
 db    0
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  66h	; f
 db  40h	; @
 db    0
@@ -16793,8 +16734,8 @@ db    0
 db    0
 db    0
 db    0
-db  30h	; 0
-db  72h	; r
+db 0E0h	; ‡
+db  71h	; q
 db  40h	; @
 db    0
 db  4Dh	; M
@@ -16825,7 +16766,7 @@ db    0
 db    0
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  73h	; s
 db  40h	; @
 db    0
@@ -16857,7 +16798,7 @@ db    0
 db    0
 db    0
 db    0
-db  50h	; P
+db    0
 db  75h	; u
 db  40h	; @
 db    0
@@ -16889,7 +16830,7 @@ db    0
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  76h	; v
 db  40h	; @
 db    0
@@ -26827,11 +26768,11 @@ db  70h	; p
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  15h
 db  40h	; @
 db    0
-db  93h	; ì
+db  43h	; C
 db  16h
 db  40h	; @
 db    0
@@ -27621,12 +27562,12 @@ db  12h
 db    1
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  15h
 db  40h	; @
 db    0
-db    3
-db  16h
+db 0B3h	; ≥
+db  15h
 db  40h	; @
 db    0
 db  88h	; à
@@ -27681,7 +27622,7 @@ db    2
 db  91h	; ë
 db    8
 db  11h
-db 0F8h	; ¯
+db 0A8h	; ®
 db  15h
 db  40h	; @
 db    0
@@ -27738,11 +27679,11 @@ db  40h	; @
 db  31h	; 1
 db  32h	; 2
 db    0
-db  10h
-db  16h
+db 0C0h	; ¿
+db  15h
 db  40h	; @
 db    0
-db  8Eh	; é
+db  3Eh	; >
 db  16h
 db  40h	; @
 db    0
@@ -27794,11 +27735,11 @@ db 0F9h	; ˘
 db    2
 db    0
 db    0
-db  41h	; A
-db  16h
+db 0F1h	; Ò
+db  15h
 db  40h	; @
 db    0
-db  63h	; c
+db  13h
 db  16h
 db  40h	; @
 db    0
@@ -27828,11 +27769,11 @@ db    3
 db    0
 db    0
 db  19h
-db  41h	; A
-db  16h
+db 0F1h	; Ò
+db  15h
 db  40h	; @
 db    0
-db  63h	; c
+db  13h
 db  16h
 db  40h	; @
 db    0
@@ -27857,7 +27798,7 @@ db    0
 db    0
 db    0
 db  11h
-db  8Ch	; å
+db  3Ch	; <
 db  16h
 db  40h	; @
 db    0
@@ -27910,11 +27851,11 @@ db  76h	; v
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  16h
 db  40h	; @
 db    0
-db  93h	; ì
+db  43h	; C
 db  16h
 db  40h	; @
 db    0
@@ -28177,7 +28118,7 @@ db    0
 db    1
 db    5
 db    3
-db  38h	; 8
+db  30h	; 0
 db  90h	; ê
 db  40h	; @
 db    0
@@ -28470,11 +28411,11 @@ db  78h	; x
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
-db 0A7h	; ß
+db  57h	; W
 db  16h
 db  40h	; @
 db    0
@@ -29409,11 +29350,11 @@ db  77h	; w
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
-db 0A7h	; ß
+db  57h	; W
 db  16h
 db  40h	; @
 db    0
@@ -29426,7 +29367,7 @@ db    4
 db    0
 db    0
 db    9
-db 0A7h	; ß
+db  57h	; W
 db  16h
 db  40h	; @
 db    0
@@ -29605,11 +29546,11 @@ db  73h	; s
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  16h
 db  40h	; @
 db    0
-db 0C5h	; ≈
+db  75h	; u
 db  16h
 db  40h	; @
 db    0
@@ -30524,11 +30465,11 @@ db 0E9h	; È
 db    0
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  16h
 db  40h	; @
 db    0
-db 0B5h	; µ
+db  65h	; e
 db  16h
 db  40h	; @
 db    0
@@ -30585,11 +30526,11 @@ db 0E9h	; È
 db    0
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  16h
 db  40h	; @
 db    0
-db 0C5h	; ≈
+db  75h	; u
 db  16h
 db  40h	; @
 db    0
@@ -30847,11 +30788,11 @@ db  74h	; t
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  16h
 db  40h	; @
 db    0
-db 0A8h	; ®
+db  58h	; X
 db  17h
 db  40h	; @
 db    0
@@ -31813,11 +31754,11 @@ db  25h	; %
 db    1
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  16h
 db  40h	; @
 db    0
-db  86h	; Ü
+db  36h	; 6
 db  17h
 db  40h	; @
 db    0
@@ -31908,7 +31849,7 @@ db    5
 db    0
 db    0
 db  0Dh
-db 0E1h	; ·
+db  91h	; ë
 db  16h
 db  40h	; @
 db    0
@@ -31917,7 +31858,7 @@ db    5
 db    0
 db    0
 db  0Eh
-db 0FAh	; ˙
+db 0AAh	; ™
 db  16h
 db  40h	; @
 db    0
@@ -31937,8 +31878,8 @@ db    1
 db  38h	; 8
 db    0
 db  0Dh
-db    7
-db  17h
+db 0B7h	; ∑
+db  16h
 db  40h	; @
 db    0
 db 0ADh	; ≠
@@ -31946,8 +31887,8 @@ db    5
 db    0
 db    0
 db  0Dh
-db  18h
-db  17h
+db 0C8h	; »
+db  16h
 db  40h	; @
 db    0
 db 0ADh	; ≠
@@ -31955,8 +31896,8 @@ db    5
 db    0
 db    0
 db  0Eh
-db  38h	; 8
-db  17h
+db 0E8h	; Ë
+db  16h
 db  40h	; @
 db    0
 db 0E7h	; Á
@@ -31991,8 +31932,8 @@ db  91h	; ë
 db  6Ch	; l
 db    0
 db  0Dh
-db  46h	; F
-db  17h
+db 0F6h	; ˆ
+db  16h
 db  40h	; @
 db    0
 db  17h
@@ -32000,7 +31941,7 @@ db    6
 db    0
 db    0
 db  0Dh
-db  57h	; W
+db    7
 db  17h
 db  40h	; @
 db    0
@@ -32009,7 +31950,7 @@ db    6
 db    0
 db    0
 db  0Eh
-db  68h	; h
+db  18h
 db  17h
 db  40h	; @
 db    0
@@ -32029,7 +31970,7 @@ db    1
 db  38h	; 8
 db    0
 db  10h
-db  7Dh	; }
+db  2Dh	; -
 db  17h
 db  40h	; @
 db    0
@@ -32066,11 +32007,11 @@ db  78h	; x
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  17h
 db  40h	; @
 db    0
-db 0A8h	; ®
+db  58h	; X
 db  17h
 db  40h	; @
 db    0
@@ -32099,7 +32040,7 @@ db    2
 db  91h	; ë
 db    0
 db  12h
-db  9Fh	; ü
+db  4Fh	; O
 db  17h
 db  40h	; @
 db    0
@@ -33676,12 +33617,12 @@ db  72h	; r
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  17h
 db  40h	; @
 db    0
-db    6
-db  19h
+db 0B6h	; ∂
+db  18h
 db  40h	; @
 db    0
 db  6Ch	; l
@@ -35981,12 +35922,12 @@ db  98h	; ò
 db    0
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  17h
 db  40h	; @
 db    0
-db    6
-db  19h
+db 0B6h	; ∂
+db  18h
 db  40h	; @
 db    0
 db  82h	; Ç
@@ -36544,11 +36485,11 @@ db  72h	; r
 db  2Eh	; .
 db  63h	; c
 db    0
-db  10h
-db  19h
+db 0C0h	; ¿
+db  18h
 db  40h	; @
 db    0
-db 0CBh	; À
+db  7Bh	; {
 db  19h
 db  40h	; @
 db    0
@@ -37788,11 +37729,11 @@ db    0
 db    3
 db  83h	; É
 db    1
-db  10h
-db  19h
+db 0C0h	; ¿
+db  18h
 db  40h	; @
 db    0
-db  5Bh	; [
+db  0Bh
 db  19h
 db  40h	; @
 db    0
@@ -37889,8 +37830,8 @@ db    2
 db  91h	; ë
 db  50h	; P
 db  0Fh
-db  4Fh	; O
-db  19h
+db 0FFh
+db  18h
 db  40h	; @
 db    0
 db  10h
@@ -37930,11 +37871,11 @@ db    0
 db    3
 db  85h	; Ö
 db    1
-db  60h	; `
+db  10h
 db  19h
 db  40h	; @
 db    0
-db  6Eh	; n
+db  1Eh
 db  19h
 db  40h	; @
 db    0
@@ -37959,7 +37900,7 @@ db    2
 db  91h	; ë
 db    0
 db  12h
-db  6Eh	; n
+db  1Eh
 db  19h
 db  40h	; @
 db    0
@@ -37996,11 +37937,11 @@ db  74h	; t
 db    0
 db    0
 db    0
-db  70h	; p
+db  20h
 db  19h
 db  40h	; @
 db    0
-db 0CBh	; À
+db  7Bh	; {
 db  19h
 db  40h	; @
 db    0
@@ -38048,7 +37989,7 @@ db    6
 db    0
 db    0
 db  15h
-db 0C5h	; ≈
+db  75h	; u
 db  19h
 db  40h	; @
 db    0
@@ -38062,7 +38003,7 @@ db  74h	; t
 db    4
 db    5
 db    3
-db  4Ch	; L
+db  44h	; D
 db  90h	; ê
 db  40h	; @
 db    0
@@ -38297,11 +38238,11 @@ db  76h	; v
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  19h
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  19h
 db  40h	; @
 db    0
@@ -38547,11 +38488,11 @@ db  77h	; w
 db    0
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  19h
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  19h
 db  40h	; @
 db    0
@@ -38648,12 +38589,12 @@ db  63h	; c
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  19h
 db  40h	; @
 db    0
-db  27h	; '
-db  1Fh
+db 0D7h	; ◊
+db  1Eh
 db  40h	; @
 db    0
 db 0E4h	; ‰
@@ -41230,12 +41171,12 @@ db    0
 db    1
 db  53h	; S
 db    1
-db 0E0h	; ‡
+db  90h	; ê
 db  19h
 db  40h	; @
 db    0
-db  21h	; !
-db  1Ah
+db 0D1h	; —
+db  19h
 db  40h	; @
 db    0
 db  87h	; á
@@ -41277,8 +41218,8 @@ db    0
 db    1
 db  53h	; S
 db  1Eh
-db    0
-db  1Ah
+db 0B0h	; ∞
+db  19h
 db  40h	; @
 db    0
 db 0EFh	; Ô
@@ -41295,14 +41236,14 @@ db  74h	; t
 db    4
 db    5
 db    3
-db  70h	; p
+db  68h	; h
 db  91h	; ë
 db  40h	; @
 db    0
 db    0
 db  1Eh
-db  1Ch
-db  1Ah
+db 0CCh	; Ã
+db  19h
 db  40h	; @
 db    0
 db  1Fh
@@ -41330,8 +41271,8 @@ db  73h	; s
 db    0
 db    0
 db  20h
-db  21h	; !
-db  1Ah
+db 0D1h	; —
+db  19h
 db  40h	; @
 db    0
 db  4Eh	; N
@@ -41426,11 +41367,11 @@ db  2Bh	; +
 db    9
 db    0
 db    0
-db  30h	; 0
-db  1Ah
+db 0E0h	; ‡
+db  19h
 db  40h	; @
 db    0
-db  7Fh	; 
+db  2Fh	; /
 db  1Ch
 db  40h	; @
 db    0
@@ -41501,8 +41442,8 @@ db 0E6h	; Ê
 db  0Ah
 db    0
 db    0
-db  3Dh	; =
-db  1Ah
+db 0EDh	; Ì
+db  19h
 db  40h	; @
 db    0
 db 0A8h	; ®
@@ -41557,7 +41498,7 @@ db    9
 db    0
 db    0
 db  1Eh
-db  7Eh	; ~
+db  2Eh	; .
 db  1Ah
 db  40h	; @
 db    0
@@ -41578,7 +41519,7 @@ db  76h	; v
 db    0
 db    0
 db  20h
-db 0A8h	; ®
+db  58h	; X
 db  1Ah
 db  40h	; @
 db    0
@@ -41587,7 +41528,7 @@ db  10h
 db    0
 db    0
 db  2Bh	; +
-db 0D6h	; ÷
+db  86h	; Ü
 db  1Ah
 db  40h	; @
 db    0
@@ -41613,8 +41554,8 @@ db    1
 db  4Ch	; L
 db    0
 db  2Ch	; ,
-db    6
-db  1Ch
+db 0B6h	; ∂
+db  1Bh
 db  40h	; @
 db    0
 db 0FDh	; ˝
@@ -41630,8 +41571,8 @@ db    8
 db  40h	; @
 db    0
 db  1Eh
-db  2Bh	; +
-db  1Ch
+db 0DBh	; €
+db  1Bh
 db  40h	; @
 db    0
 db  5Bh	; [
@@ -41648,13 +41589,13 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0E0h	; ‡
+db 0D8h	; ÿ
 db  91h	; ë
 db  40h	; @
 db    0
 db    0
 db  1Eh
-db  57h	; W
+db    7
 db  1Ch
 db  40h	; @
 db    0
@@ -41672,13 +41613,13 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0ACh	; ¨
+db 0A4h	; §
 db  91h	; ë
 db  40h	; @
 db    0
 db    0
 db  2Dh	; -
-db  67h	; g
+db  17h
 db  1Ch
 db  40h	; @
 db    0
@@ -41692,7 +41633,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db  8Ch	; å
+db  84h	; Ñ
 db  91h	; ë
 db  40h	; @
 db    0
@@ -41707,8 +41648,8 @@ db    0
 db    0
 db    0
 db  2Ch	; ,
-db  0Ah
-db  1Bh
+db 0BAh	; ∫
+db  1Ah
 db  40h	; @
 db    0
 db  61h	; a
@@ -41730,8 +41671,8 @@ db    1
 db  4Ch	; L
 db    0
 db  1Eh
-db  36h	; 6
-db  1Bh
+db 0E6h	; Ê
+db  1Ah
 db  40h	; @
 db    0
 db 0A6h	; ¶
@@ -41769,7 +41710,7 @@ db  7Fh	; 
 db    6
 db    0
 db  2Bh	; +
-db  7Ch	; |
+db  2Ch	; ,
 db  1Bh
 db  40h	; @
 db    0
@@ -41796,7 +41737,7 @@ db  75h	; u
 db    0
 db    0
 db  1Eh
-db  97h	; ó
+db  47h	; G
 db  1Bh
 db  40h	; @
 db    0
@@ -41835,7 +41776,7 @@ db  7Fh	; 
 db    6
 db    0
 db  2Bh	; +
-db 0C2h	; ¬
+db  72h	; r
 db  1Bh
 db  40h	; @
 db    0
@@ -41855,7 +41796,7 @@ db  75h	; u
 db    0
 db    0
 db  2Dh	; -
-db  7Fh	; 
+db  2Fh	; /
 db  1Ch
 db  40h	; @
 db    0
@@ -41869,7 +41810,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0ACh	; ¨
+db 0A4h	; §
 db  91h	; ë
 db  40h	; @
 db    0
@@ -41989,12 +41930,12 @@ db    1
 db 0C7h	; «
 db    1
 db    1
-db  80h	; Ä
+db  30h	; 0
 db  1Ch
 db  40h	; @
 db    0
-db  27h	; '
-db  1Fh
+db 0D7h	; ◊
+db  1Eh
 db  40h	; @
 db    0
 db 0E5h	; Â
@@ -42052,7 +41993,7 @@ db  9Bh	; õ
 db    9
 db    0
 db    0
-db 0D2h	; “
+db  82h	; Ç
 db  1Ch
 db  40h	; @
 db    0
@@ -42133,11 +42074,11 @@ db    9
 db    0
 db    0
 db  32h	; 2
-db  8Eh	; é
+db  3Eh	; >
 db  1Dh
 db  40h	; @
 db    0
-db 0C7h	; «
+db  77h	; w
 db  1Dh
 db  40h	; @
 db    0
@@ -42171,7 +42112,7 @@ db    0
 db    0
 db    0
 db  1Eh
-db  81h	; Å
+db  31h	; 1
 db  1Dh
 db  40h	; @
 db    0
@@ -42189,7 +42130,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db  3Ch	; <
+db  34h	; 4
 db  92h	; í
 db  40h	; @
 db    0
@@ -42202,8 +42143,8 @@ db  76h	; v
 db    0
 db    0
 db  2Dh	; -
-db  27h	; '
-db  1Fh
+db 0D7h	; ◊
+db  1Eh
 db  40h	; @
 db    0
 db  5Bh	; [
@@ -42216,7 +42157,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db    8
+db    0
 db  92h	; í
 db  40h	; @
 db    0
@@ -42228,7 +42169,7 @@ db    0
 db  0Dh
 db    0
 db    0
-db 0C7h	; «
+db  77h	; w
 db  1Dh
 db  40h	; @
 db    0
@@ -42274,8 +42215,8 @@ db    2
 db  91h	; ë
 db  40h	; @
 db  2Ch	; ,
-db    7
-db  1Eh
+db 0B7h	; ∑
+db  1Dh
 db  40h	; @
 db    0
 db  98h	; ò
@@ -42297,8 +42238,8 @@ db    1
 db  4Ch	; L
 db    0
 db  2Ch	; ,
-db  38h	; 8
-db  1Eh
+db 0E8h	; Ë
+db  1Dh
 db  40h	; @
 db    0
 db 0A9h	; ©
@@ -42314,8 +42255,8 @@ db  75h	; u
 db  48h	; H
 db    0
 db  2Dh	; -
-db  17h
-db  1Fh
+db 0C7h	; «
+db  1Eh
 db  40h	; @
 db    0
 db  5Bh	; [
@@ -42328,7 +42269,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0ACh	; ¨
+db 0A4h	; §
 db  91h	; ë
 db  40h	; @
 db    0
@@ -42336,7 +42277,7 @@ db    0
 db    0
 db    0
 db  20h
-db 0A8h	; ®
+db  58h	; X
 db  1Ch
 db  40h	; @
 db    0
@@ -42345,7 +42286,7 @@ db  10h
 db    0
 db    0
 db  1Eh
-db 0BAh	; ∫
+db  6Ah	; j
 db  1Dh
 db  40h	; @
 db    0
@@ -42370,7 +42311,7 @@ db    1
 db  34h	; 4
 db    0
 db  1Eh
-db  94h	; î
+db  44h	; D
 db  1Eh
 db  40h	; @
 db    0
@@ -42395,7 +42336,7 @@ db    1
 db  32h	; 2
 db    0
 db  1Eh
-db 0D3h	; ”
+db  83h	; É
 db  1Eh
 db  40h	; @
 db    0
@@ -42420,7 +42361,7 @@ db    1
 db  31h	; 1
 db    0
 db  2Dh	; -
-db 0F2h	; Ú
+db 0A2h	; ¢
 db  1Eh
 db  40h	; @
 db    0
@@ -42975,11 +42916,11 @@ db  74h	; t
 db  2Eh	; .
 db  63h	; c
 db    0
-db  30h	; 0
-db  1Fh
+db 0E0h	; ‡
+db  1Eh
 db  40h	; @
 db    0
-db 0C8h	; »
+db  78h	; x
 db  22h	; "
 db  40h	; @
 db    0
@@ -46183,11 +46124,11 @@ db  79h	; y
 db  0Ch
 db    0
 db    0
-db  30h	; 0
-db  1Fh
+db 0E0h	; ‡
+db  1Eh
 db  40h	; @
 db    0
-db  57h	; W
+db    7
 db  1Fh
 db  40h	; @
 db    0
@@ -46232,11 +46173,11 @@ db  79h	; y
 db  0Ch
 db    0
 db    0
-db  40h	; @
-db  1Fh
+db 0F0h	; 
+db  1Eh
 db  40h	; @
 db    0
-db  56h	; V
+db    6
 db  1Fh
 db  40h	; @
 db    0
@@ -46252,11 +46193,11 @@ db  0Ch
 db    0
 db    0
 db  1Bh
-db  40h	; @
-db  1Fh
+db 0F0h	; 
+db  1Eh
 db  40h	; @
 db    0
-db  56h	; V
+db    6
 db  1Fh
 db  40h	; @
 db    0
@@ -46308,11 +46249,11 @@ db 0FEh	; ˛
 db  0Ah
 db    0
 db    0
-db  60h	; `
+db  10h
 db  1Fh
 db  40h	; @
 db    0
-db  9Dh	; ù
+db  4Dh	; M
 db  1Fh
 db  40h	; @
 db    0
@@ -46430,12 +46371,12 @@ db 0FEh	; ˛
 db  0Ah
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  1Fh
 db  40h	; @
 db    0
-db  2Ch	; ,
-db  20h
+db 0DCh	; ‹
+db  1Fh
 db  40h	; @
 db    0
 db 0FFh
@@ -46520,7 +46461,7 @@ db  0Eh
 db    0
 db    0
 db  22h	; "
-db 0B3h	; ≥
+db  63h	; c
 db  1Fh
 db  40h	; @
 db    0
@@ -46541,7 +46482,7 @@ db  77h	; w
 db    0
 db    0
 db  22h	; "
-db 0C4h	; ƒ
+db  74h	; t
 db  1Fh
 db  40h	; @
 db    0
@@ -46559,8 +46500,8 @@ db  74h	; t
 db    0
 db    0
 db  25h	; %
-db  0Eh
-db  20h
+db 0BEh	; æ
+db  1Fh
 db  40h	; @
 db    0
 db  22h	; "
@@ -46638,11 +46579,11 @@ db 0FEh	; ˛
 db  0Ah
 db    0
 db    0
-db  30h	; 0
-db  20h
+db 0E0h	; ‡
+db  1Fh
 db  40h	; @
 db    0
-db  64h	; d
+db  14h
 db  20h
 db  40h	; @
 db    0
@@ -46694,8 +46635,8 @@ db  0Eh
 db    0
 db    0
 db  22h	; "
-db  3Fh	; ?
-db  20h
+db 0EFh	; Ô
+db  1Fh
 db  40h	; @
 db    0
 db  79h	; y
@@ -46712,7 +46653,7 @@ db  74h	; t
 db    0
 db    0
 db  25h	; %
-db  60h	; `
+db  10h
 db  20h
 db  40h	; @
 db    0
@@ -46763,11 +46704,11 @@ db  85h	; Ö
 db    0
 db    0
 db    0
-db  70h	; p
+db  20h
 db  20h
 db  40h	; @
 db    0
-db  97h	; ó
+db  47h	; G
 db  20h
 db  40h	; @
 db    0
@@ -46803,7 +46744,7 @@ db    9
 db    0
 db    0
 db  25h	; %
-db  7Fh	; 
+db  2Fh	; /
 db  20h
 db  40h	; @
 db    0
@@ -46845,11 +46786,11 @@ db 0FEh	; ˛
 db  0Ah
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  20h
 db  40h	; @
 db    0
-db 0FEh	; ˛
+db 0AEh	; Æ
 db  20h
 db  40h	; @
 db    0
@@ -46934,7 +46875,7 @@ db  0Fh
 db    0
 db    0
 db  25h	; %
-db 0B4h	; ¥
+db  64h	; d
 db  20h
 db  40h	; @
 db    0
@@ -46973,12 +46914,12 @@ db  30h	; 0
 db    1
 db    0
 db    0
-db    0
-db  21h	; !
+db 0B0h	; ∞
+db  20h
 db  40h	; @
 db    0
-db  21h	; !
-db  21h	; !
+db 0D1h	; —
+db  20h
 db  40h	; @
 db    0
 db  36h	; 6
@@ -47002,8 +46943,8 @@ db    1
 db    0
 db    0
 db  25h	; %
-db  0Fh
-db  21h	; !
+db 0BFh	; ø
+db  20h
 db  40h	; @
 db    0
 db  79h	; y
@@ -47054,11 +46995,11 @@ db 0F3h	; Û
 db    0
 db    0
 db    0
-db  30h	; 0
-db  21h	; !
+db 0E0h	; ‡
+db  20h
 db  40h	; @
 db    0
-db  7Ch	; |
+db  2Ch	; ,
 db  21h	; !
 db  40h	; @
 db    0
@@ -47137,8 +47078,8 @@ db  0Fh
 db    0
 db    0
 db  22h	; "
-db  42h	; B
-db  21h	; !
+db 0F2h	; Ú
+db  20h
 db  40h	; @
 db    0
 db  79h	; y
@@ -47155,7 +47096,7 @@ db  74h	; t
 db    0
 db    0
 db  25h	; %
-db  69h	; i
+db  19h
 db  21h	; !
 db  40h	; @
 db    0
@@ -47216,12 +47157,12 @@ db  70h	; p
 db  0Eh
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  21h	; !
 db  40h	; @
 db    0
-db  0Bh
-db  22h	; "
+db 0BBh	; ª
+db  21h	; !
 db  40h	; @
 db    0
 db 0F0h	; 
@@ -47333,7 +47274,7 @@ db  10h
 db    0
 db    0
 db  22h	; "
-db  96h	; ñ
+db  46h	; F
 db  21h	; !
 db  40h	; @
 db    0
@@ -47351,7 +47292,7 @@ db  74h	; t
 db    0
 db    0
 db  25h	; %
-db 0BBh	; ª
+db  6Bh	; k
 db  21h	; !
 db  40h	; @
 db    0
@@ -47407,11 +47348,11 @@ db  51h	; Q
 db  0Ch
 db    0
 db    0
-db  10h
-db  22h	; "
+db 0C0h	; ¿
+db  21h	; !
 db  40h	; @
 db    0
-db 0C8h	; »
+db  78h	; x
 db  22h	; "
 db  40h	; @
 db    0
@@ -47654,11 +47595,11 @@ db  30h	; 0
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  22h	; "
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  22h	; "
 db  40h	; @
 db    0
@@ -47680,11 +47621,11 @@ db    0
 db    1
 db    9
 db    1
-db 0D0h	; –
+db  80h	; Ä
 db  22h	; "
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  22h	; "
 db  40h	; @
 db    0
@@ -47776,11 +47717,11 @@ db  6Eh	; n
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
-db  7Ch	; |
+db  2Ch	; ,
 db  23h	; #
 db  40h	; @
 db    0
@@ -48741,12 +48682,12 @@ db    0
 db    1
 db  14h
 db    1
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
-db  0Ch
-db  23h	; #
+db 0BCh	; º
+db  22h	; "
 db  40h	; @
 db    0
 db  6Ch	; l
@@ -48803,11 +48744,11 @@ db    0
 db    1
 db  20h
 db    1
-db  10h
-db  23h	; #
+db 0C0h	; ¿
+db  22h	; "
 db  40h	; @
 db    0
-db  59h	; Y
+db    9
 db  23h	; #
 db  40h	; @
 db    0
@@ -48851,8 +48792,8 @@ db  11h
 db    0
 db    0
 db  0Ch
-db  3Eh	; >
-db  23h	; #
+db 0EEh	; Ó
+db  22h	; "
 db  40h	; @
 db    0
 db  13h
@@ -48865,7 +48806,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
@@ -48883,11 +48824,11 @@ db    0
 db    1
 db  35h	; 5
 db    1
-db  60h	; `
+db  10h
 db  23h	; #
 db  40h	; @
 db    0
-db  7Ch	; |
+db  2Ch	; ,
 db  23h	; #
 db  40h	; @
 db    0
@@ -48900,7 +48841,7 @@ db    4
 db    0
 db    0
 db  0Fh
-db  7Ch	; |
+db  2Ch	; ,
 db  23h	; #
 db  40h	; @
 db    0
@@ -49103,11 +49044,11 @@ db  74h	; t
 db  2Eh	; .
 db  63h	; c
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  23h	; #
 db  40h	; @
 db    0
-db 0D7h	; ◊
+db  87h	; á
 db  24h	; $
 db  40h	; @
 db    0
@@ -50937,12 +50878,12 @@ db    0
 db    1
 db  32h	; 2
 db    1
-db  80h	; Ä
+db  30h	; 0
 db  23h	; #
 db  40h	; @
 db    0
-db  4Ch	; L
-db  24h	; $
+db 0FCh	; ¸
+db  23h	; #
 db  40h	; @
 db    0
 db  26h	; &
@@ -51009,7 +50950,7 @@ db    2
 db  91h	; ë
 db  58h	; X
 db  17h
-db 0DDh	; ›
+db  8Dh	; ç
 db  23h	; #
 db  40h	; @
 db    0
@@ -51026,8 +50967,8 @@ db  91h	; ë
 db  50h	; P
 db    0
 db  19h
-db  11h
-db  24h	; $
+db 0C1h	; ¡
+db  23h	; #
 db  40h	; @
 db    0
 db  18h
@@ -51063,11 +51004,11 @@ db    0
 db    1
 db  67h	; g
 db    1
-db  50h	; P
+db    0
 db  24h	; $
 db  40h	; @
 db    0
-db 0D7h	; ◊
+db  87h	; á
 db  24h	; $
 db  40h	; @
 db    0
@@ -51120,7 +51061,7 @@ db    2
 db  91h	; ë
 db  68h	; h
 db  17h
-db 0A5h	; •
+db  55h	; U
 db  24h	; $
 db  40h	; @
 db    0
@@ -51136,7 +51077,7 @@ db    1
 db  30h	; 0
 db    0
 db  17h
-db 0B5h	; µ
+db  65h	; e
 db  24h	; $
 db  40h	; @
 db    0
@@ -51150,13 +51091,13 @@ db  74h	; t
 db    0
 db    5
 db    3
-db  80h	; Ä
+db  78h	; x
 db  92h	; í
 db  40h	; @
 db    0
 db    0
 db  17h
-db 0CFh	; œ
+db  7Fh	; 
 db  24h	; $
 db  40h	; @
 db    0
@@ -51177,7 +51118,7 @@ db  80h	; Ä
 db  7Ch	; |
 db    0
 db  1Bh
-db 0D7h	; ◊
+db  87h	; á
 db  24h	; $
 db  40h	; @
 db    0
@@ -51299,7 +51240,7 @@ db    0
 db    0
 db    5
 db    3
-db  80h	; Ä
+db  78h	; x
 db  92h	; í
 db  40h	; @
 db    0
@@ -51597,12 +51538,12 @@ db  64h	; d
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  24h	; $
 db  40h	; @
 db    0
-db  19h
-db  27h	; '
+db 0C9h	; …
+db  26h	; &
 db  40h	; @
 db    0
 db    2
@@ -52749,12 +52690,12 @@ db  90h	; ê
 db    4
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  24h	; $
 db  40h	; @
 db    0
-db  4Dh	; M
-db  25h	; %
+db 0FDh	; ˝
+db  24h	; $
 db  40h	; @
 db    0
 db  87h	; á
@@ -52776,12 +52717,12 @@ db  14h
 db    0
 db    0
 db  13h
-db  10h
-db  25h	; %
+db 0C0h	; ¿
+db  24h	; $
 db  40h	; @
 db    0
-db  31h	; 1
-db  25h	; %
+db 0E1h	; ·
+db  24h	; $
 db  40h	; @
 db    0
 db  11h
@@ -52798,8 +52739,8 @@ db  14h
 db    0
 db    0
 db  14h
-db  2Eh	; .
-db  25h	; %
+db 0DEh	; ﬁ
+db  24h	; $
 db  40h	; @
 db    0
 db  15h
@@ -52812,7 +52753,7 @@ db    0
 db    0
 db    0
 db  16h
-db 0F4h	; Ù
+db 0A4h	; §
 db  24h	; $
 db  40h	; @
 db    0
@@ -52832,8 +52773,8 @@ db  40h	; @
 db    0
 db    0
 db  14h
-db  42h	; B
-db  25h	; %
+db 0F2h	; Ú
+db  24h	; $
 db  40h	; @
 db    0
 db  15h
@@ -52886,11 +52827,11 @@ db  86h	; Ü
 db    0
 db    0
 db    0
-db  50h	; P
+db    0
 db  25h	; %
 db  40h	; @
 db    0
-db 0DEh	; ﬁ
+db  8Eh	; é
 db  25h	; %
 db  40h	; @
 db    0
@@ -52952,7 +52893,7 @@ db  15h
 db    0
 db    0
 db  1Ah
-db  88h	; à
+db  38h	; 8
 db  25h	; %
 db  40h	; @
 db    0
@@ -52978,7 +52919,7 @@ db    1
 db  3Ch	; <
 db    0
 db  16h
-db 0A8h	; ®
+db  58h	; X
 db  25h	; %
 db  40h	; @
 db    0
@@ -52998,7 +52939,7 @@ db  40h	; @
 db    0
 db    0
 db  14h
-db 0C6h	; ∆
+db  76h	; v
 db  25h	; %
 db  40h	; @
 db    0
@@ -53061,11 +53002,11 @@ db  86h	; Ü
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  25h	; %
 db  40h	; @
 db    0
-db  72h	; r
+db  22h	; "
 db  26h	; &
 db  40h	; @
 db    0
@@ -53132,8 +53073,8 @@ db  16h
 db    0
 db    0
 db  16h
-db    5
-db  26h	; &
+db 0B5h	; µ
+db  25h	; %
 db  40h	; @
 db    0
 db  65h	; e
@@ -53152,8 +53093,8 @@ db  40h	; @
 db    0
 db    0
 db  16h
-db  3Ch	; <
-db  26h	; &
+db 0ECh	; Ï
+db  25h	; %
 db  40h	; @
 db    0
 db  79h	; y
@@ -53172,7 +53113,7 @@ db  40h	; @
 db    0
 db    0
 db  1Bh
-db  54h	; T
+db    4
 db  26h	; &
 db  40h	; @
 db    0
@@ -53181,7 +53122,7 @@ db    7
 db    0
 db    0
 db  14h
-db  61h	; a
+db  11h
 db  26h	; &
 db  40h	; @
 db    0
@@ -53226,12 +53167,12 @@ db 0F4h	; Ù
 db    0
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  26h	; &
 db  40h	; @
 db    0
-db  19h
-db  27h	; '
+db 0C9h	; …
+db  26h	; &
 db  40h	; @
 db    0
 db  71h	; q
@@ -53305,11 +53246,11 @@ db  90h	; ê
 db    4
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  26h	; &
 db  40h	; @
 db    0
-db 0A9h	; ©
+db  59h	; Y
 db  26h	; &
 db  40h	; @
 db    0
@@ -53320,11 +53261,11 @@ db    7
 db    0
 db    0
 db  1Dh
-db 0A0h	; †
+db  50h	; P
 db  26h	; &
 db  40h	; @
 db    0
-db 0A9h	; ©
+db  59h	; Y
 db  26h	; &
 db  40h	; @
 db    0
@@ -53340,12 +53281,12 @@ db  90h	; ê
 db    4
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  26h	; &
 db  40h	; @
 db    0
-db    0
-db  27h	; '
+db 0B0h	; ∞
+db  26h	; &
 db  40h	; @
 db    0
 db    1
@@ -53355,12 +53296,12 @@ db    7
 db    0
 db    0
 db  1Dh
-db 0F0h	; 
+db 0A0h	; †
 db  26h	; &
 db  40h	; @
 db    0
-db    0
-db  27h	; '
+db 0B0h	; ∞
+db  26h	; &
 db  40h	; @
 db    0
 db  1Eh
@@ -53371,7 +53312,7 @@ db    0
 db    0
 db    0
 db  16h
-db 0CAh	;  
+db  7Ah	; z
 db  26h	; &
 db  40h	; @
 db    0
@@ -53391,7 +53332,7 @@ db  40h	; @
 db    0
 db    0
 db  1Bh
-db 0FEh	; ˛
+db 0AEh	; Æ
 db  26h	; &
 db  40h	; @
 db    0
@@ -53400,8 +53341,8 @@ db    4
 db    0
 db    0
 db  16h
-db  0Dh
-db  27h	; '
+db 0BDh	; Ω
+db  26h	; &
 db  40h	; @
 db    0
 db  71h	; q
@@ -53420,8 +53361,8 @@ db  40h	; @
 db    0
 db    0
 db  1Bh
-db  17h
-db  27h	; '
+db 0C7h	; «
+db  26h	; &
 db  40h	; @
 db    0
 db 0CEh	; Œ
@@ -53786,12 +53727,12 @@ db 0FBh	; ˚
 db  15h
 db    0
 db    0
-db  20h
-db  27h	; '
+db 0D0h	; –
+db  26h	; &
 db  40h	; @
 db    0
-db  4Ah	; J
-db  27h	; '
+db 0FAh	; ˙
+db  26h	; &
 db  40h	; @
 db    0
 db  2Eh	; .
@@ -56516,7 +56457,7 @@ db    0
 db    1
 db    5
 db    3
-db 0A0h	; †
+db  50h	; P
 db  77h	; w
 db  40h	; @
 db    0
@@ -56545,7 +56486,7 @@ db    0
 db    1
 db    5
 db    3
-db 0A8h	; ®
+db  58h	; X
 db  77h	; w
 db  40h	; @
 db    0
@@ -56785,11 +56726,11 @@ db  68h	; h
 db  2Eh	; .
 db  63h	; c
 db    0
-db  60h	; `
+db  10h
 db  27h	; '
 db  40h	; @
 db    0
-db  93h	; ì
+db  43h	; C
 db  27h	; '
 db  40h	; @
 db    0
@@ -57081,11 +57022,11 @@ db  19h
 db    1
 db    0
 db    0
-db  60h	; `
+db  10h
 db  27h	; '
 db  40h	; @
 db    0
-db  71h	; q
+db  21h	; !
 db  27h	; '
 db  40h	; @
 db    0
@@ -57195,11 +57136,11 @@ db  9Bh	; õ
 db    0
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  27h	; '
 db  40h	; @
 db    0
-db  93h	; ì
+db  43h	; C
 db  27h	; '
 db  40h	; @
 db    0
@@ -57254,11 +57195,11 @@ db  19h
 db    1
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  27h	; '
 db  40h	; @
 db    0
-db  90h	; ê
+db  40h	; @
 db  27h	; '
 db  40h	; @
 db    0
@@ -57289,11 +57230,11 @@ db    2
 db  91h	; ë
 db    0
 db  0Eh
-db  80h	; Ä
+db  30h	; 0
 db  27h	; '
 db  40h	; @
 db    0
-db  90h	; ê
+db  40h	; @
 db  27h	; '
 db  40h	; @
 db    0
@@ -57399,11 +57340,11 @@ db  66h	; f
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0A0h	; †
+db  50h	; P
 db  27h	; '
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  27h	; '
 db  40h	; @
 db    0
@@ -57798,11 +57739,11 @@ db 0BCh	; º
 db    0
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  27h	; '
 db  40h	; @
 db    0
-db 0D3h	; ”
+db  83h	; É
 db  27h	; '
 db  40h	; @
 db    0
@@ -57880,7 +57821,7 @@ db  17h
 db    0
 db    0
 db  0Dh
-db 0CFh	; œ
+db  7Fh	; 
 db  27h	; '
 db  40h	; @
 db    0
@@ -58095,12 +58036,12 @@ db  66h	; f
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  27h	; '
 db  40h	; @
 db    0
-db  13h
-db  28h	; (
+db 0C3h	; √
+db  27h	; '
 db  40h	; @
 db    0
 db  6Ah	; j
@@ -58495,12 +58436,12 @@ db 0BDh	; Ω
 db    0
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  27h	; '
 db  40h	; @
 db    0
-db  13h
-db  28h	; (
+db 0C3h	; √
+db  27h	; '
 db  40h	; @
 db    0
 db  49h	; I
@@ -58559,8 +58500,8 @@ db    2
 db  91h	; ë
 db    8
 db  0Ah
-db  0Fh
-db  28h	; (
+db 0BFh	; ø
+db  27h	; '
 db  40h	; @
 db    0
 db  6Dh	; m
@@ -58774,11 +58715,11 @@ db  74h	; t
 db  2Eh	; .
 db  63h	; c
 db    0
-db  20h
-db  28h	; (
+db 0D0h	; –
+db  27h	; '
 db  40h	; @
 db    0
-db 0D2h	; “
+db  82h	; Ç
 db  47h	; G
 db  40h	; @
 db    0
@@ -61641,12 +61582,12 @@ db  15h
 db    1
 db    0
 db    0
-db  20h
-db  28h	; (
+db 0D0h	; –
+db  27h	; '
 db  40h	; @
 db    0
-db  1Eh
-db  29h	; )
+db 0CEh	; Œ
+db  28h	; (
 db  40h	; @
 db    0
 db  75h	; u
@@ -61796,8 +61737,8 @@ db  18h
 db  0Ah
 db    0
 db    0
-db  42h	; B
-db  28h	; (
+db 0F2h	; Ú
+db  27h	; '
 db  40h	; @
 db    0
 db  98h	; ò
@@ -61837,7 +61778,7 @@ db    0
 db    0
 db    0
 db  2Bh	; +
-db 0CCh	; Ã
+db  7Ch	; |
 db  28h	; (
 db  40h	; @
 db    0
@@ -61922,11 +61863,11 @@ db    1
 db    5
 db    1
 db    1
-db  20h
-db  29h	; )
+db 0D0h	; –
+db  28h	; (
 db  40h	; @
 db    0
-db  74h	; t
+db  24h	; $
 db  29h	; )
 db  40h	; @
 db    0
@@ -61970,7 +61911,7 @@ db  19h
 db    0
 db    0
 db  2Bh	; +
-db  62h	; b
+db  12h
 db  29h	; )
 db  40h	; @
 db    0
@@ -62013,11 +61954,11 @@ db    1
 db  86h	; Ü
 db    1
 db    1
-db  80h	; Ä
+db  30h	; 0
 db  29h	; )
 db  40h	; @
 db    0
-db  74h	; t
+db  24h	; $
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -62125,12 +62066,12 @@ db  1Ah
 db    0
 db    0
 db  30h	; 0
-db 0FEh	; ˛
+db 0AEh	; Æ
 db  29h	; )
 db  40h	; @
 db    0
-db  1Ch
-db  2Ah	; *
+db 0CCh	; Ã
+db  29h	; )
 db  40h	; @
 db    0
 db  9Fh	; ü
@@ -62152,8 +62093,8 @@ db  1Ah
 db    0
 db    0
 db  2Bh	; +
-db  11h
-db  2Ah	; *
+db 0C1h	; ¡
+db  29h	; )
 db  40h	; @
 db    0
 db  93h	; ì
@@ -62171,7 +62112,7 @@ db    6
 db    0
 db    0
 db  31h	; 1
-db 0A9h	; ©
+db  59h	; Y
 db  29h	; )
 db  40h	; @
 db    0
@@ -62205,7 +62146,7 @@ db  91h	; ë
 db  4Ch	; L
 db    0
 db  31h	; 1
-db 0F5h	; ı
+db 0A5h	; •
 db  29h	; )
 db  40h	; @
 db    0
@@ -62233,8 +62174,8 @@ db  91h	; ë
 db  4Ch	; L
 db    0
 db  31h	; 1
-db  32h	; 2
-db  2Ah	; *
+db 0E2h	; ‚
+db  29h	; )
 db  40h	; @
 db    0
 db  93h	; ì
@@ -62259,7 +62200,7 @@ db  73h	; s
 db    0
 db    0
 db  2Bh	; +
-db  62h	; b
+db  12h
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -62321,12 +62262,12 @@ db    1
 db  1Eh
 db    1
 db    1
-db  80h	; Ä
+db  30h	; 0
 db  2Ah	; *
 db  40h	; @
 db    0
-db  19h
-db  2Bh	; +
+db 0C9h	; …
+db  2Ah	; *
 db  40h	; @
 db    0
 db 0FCh	; ¸
@@ -62387,7 +62328,7 @@ db  1Bh
 db    0
 db    0
 db  31h	; 1
-db 0BDh	; Ω
+db  6Dh	; m
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -62413,7 +62354,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db 0DDh	; ›
+db  8Dh	; ç
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -62433,7 +62374,7 @@ db  73h	; s
 db    0
 db    0
 db  2Bh	; +
-db 0FCh	; ¸
+db 0ACh	; ¨
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -62486,11 +62427,11 @@ db    1
 db 0E6h	; Ê
 db    3
 db    1
-db  20h
-db  2Bh	; +
+db 0D0h	; –
+db  2Ah	; *
 db  40h	; @
 db    0
-db 0BFh	; ø
+db  6Fh	; o
 db  2Bh	; +
 db  40h	; @
 db    0
@@ -62595,7 +62536,7 @@ db  1Ch
 db    0
 db    0
 db  2Bh	; +
-db  71h	; q
+db  21h	; !
 db  2Bh	; +
 db  40h	; @
 db    0
@@ -62657,11 +62598,11 @@ db    1
 db 0EEh	; Ó
 db    1
 db    1
-db 0C0h	; ¿
+db  70h	; p
 db  2Bh	; +
 db  40h	; @
 db    0
-db  76h	; v
+db  26h	; &
 db  2Eh	; .
 db  40h	; @
 db    0
@@ -62767,7 +62708,7 @@ db  4Bh	; K
 db  0Ah
 db    0
 db    0
-db 0C7h	; «
+db  77h	; w
 db  2Bh	; +
 db  40h	; @
 db    0
@@ -62808,7 +62749,7 @@ db    0
 db    1
 db    0
 db  31h	; 1
-db  61h	; a
+db  11h
 db  2Dh	; -
 db  40h	; @
 db    0
@@ -62834,7 +62775,7 @@ db  77h	; w
 db    0
 db    0
 db  31h	; 1
-db  90h	; ê
+db  40h	; @
 db  2Dh	; -
 db  40h	; @
 db    0
@@ -62854,7 +62795,7 @@ db  77h	; w
 db    0
 db    0
 db  2Bh	; +
-db 0ADh	; ≠
+db  5Dh	; ]
 db  2Dh	; -
 db  40h	; @
 db    0
@@ -62920,11 +62861,11 @@ db    1
 db  6Fh	; o
 db    2
 db    1
-db  80h	; Ä
+db  30h	; 0
 db  2Eh	; .
 db  40h	; @
 db    0
-db  84h	; Ñ
+db  34h	; 4
 db  31h	; 1
 db  40h	; @
 db    0
@@ -63080,7 +63021,7 @@ db  4Bh	; K
 db  0Ah
 db    0
 db    0
-db 0B2h	; ≤
+db  62h	; b
 db  2Eh	; .
 db  40h	; @
 db    0
@@ -63145,8 +63086,8 @@ db    0
 db    0
 db    0
 db  31h	; 1
-db  24h	; $
-db  30h	; 0
+db 0D4h	; ‘
+db  2Fh	; /
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63165,8 +63106,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  44h	; D
-db  30h	; 0
+db 0F4h	; Ù
+db  2Fh	; /
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63191,7 +63132,7 @@ db  73h	; s
 db    0
 db    0
 db  2Bh	; +
-db  87h	; á
+db  37h	; 7
 db  30h	; 0
 db  40h	; @
 db    0
@@ -63269,11 +63210,11 @@ db    1
 db  89h	; â
 db    3
 db    1
-db  90h	; ê
+db  40h	; @
 db  31h	; 1
 db  40h	; @
 db    0
-db  6Ah	; j
+db  1Ah
 db  32h	; 2
 db  40h	; @
 db    0
@@ -63360,11 +63301,11 @@ db  25h	; %
 db    0
 db    0
 db  30h	; 0
-db 0E6h	; Ê
+db  96h	; ñ
 db  31h	; 1
 db  40h	; @
 db    0
-db 0FAh	; ˙
+db 0AAh	; ™
 db  31h	; 1
 db  40h	; @
 db    0
@@ -63387,7 +63328,7 @@ db  25h	; %
 db    0
 db    0
 db  2Bh	; +
-db 0F3h	; Û
+db 0A3h	; £
 db  31h	; 1
 db  40h	; @
 db    0
@@ -63404,7 +63345,7 @@ db    0
 db    0
 db    0
 db  31h	; 1
-db 0DFh	; ﬂ
+db  8Fh	; è
 db  31h	; 1
 db  40h	; @
 db    0
@@ -63432,8 +63373,8 @@ db  91h	; ë
 db  5Ch	; \
 db    0
 db  2Bh	; +
-db  22h	; "
-db  32h	; 2
+db 0D2h	; “
+db  31h	; 1
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63465,11 +63406,11 @@ db  25h	; %
 db    0
 db    0
 db  30h	; 0
-db  24h	; $
-db  32h	; 2
+db 0D4h	; ‘
+db  31h	; 1
 db  40h	; @
 db    0
-db  6Ah	; j
+db  1Ah
 db  32h	; 2
 db  40h	; @
 db    0
@@ -63526,8 +63467,8 @@ db  25h	; %
 db    0
 db    0
 db  38h	; 8
-db  30h	; 0
-db  32h	; 2
+db 0E0h	; ‡
+db  31h	; 1
 db  40h	; @
 db    0
 db  40h	; @
@@ -63535,7 +63476,7 @@ db  23h	; #
 db    0
 db    0
 db  2Bh	; +
-db  50h	; P
+db    0
 db  32h	; 2
 db  40h	; @
 db    0
@@ -63566,8 +63507,8 @@ db  5Ch	; \
 db    0
 db    0
 db  2Bh	; +
-db  0Eh
-db  32h	; 2
+db 0BEh	; æ
+db  31h	; 1
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63638,11 +63579,11 @@ db    1
 db  16h
 db    4
 db    1
-db  70h	; p
+db  20h
 db  32h	; 2
 db  40h	; @
 db    0
-db  81h	; Å
+db  31h	; 1
 db  35h	; 5
 db  40h	; @
 db    0
@@ -63719,12 +63660,12 @@ db    2
 db  91h	; ë
 db    0
 db  30h	; 0
-db 0D9h	; Ÿ
+db  89h	; â
 db  33h	; 3
 db  40h	; @
 db    0
-db  27h	; '
-db  34h	; 4
+db 0D7h	; ◊
+db  33h	; 3
 db  40h	; @
 db    0
 db 0CAh	;  
@@ -63750,7 +63691,7 @@ db    0
 db    0
 db    0
 db  31h	; 1
-db  55h	; U
+db    5
 db  33h	; 3
 db  40h	; @
 db    0
@@ -63770,7 +63711,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  70h	; p
+db  20h
 db  33h	; 3
 db  40h	; @
 db    0
@@ -63790,7 +63731,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  99h	; ô
+db  49h	; I
 db  33h	; 3
 db  40h	; @
 db    0
@@ -63810,8 +63751,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
+db 0E3h	; „
 db  33h	; 3
-db  34h	; 4
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63836,7 +63777,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  54h	; T
+db    4
 db  34h	; 4
 db  40h	; @
 db    0
@@ -63862,7 +63803,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  9Ch	; ú
+db  4Ch	; L
 db  34h	; 4
 db  40h	; @
 db    0
@@ -63894,7 +63835,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db 0DCh	; ‹
+db  8Ch	; å
 db  34h	; 4
 db  40h	; @
 db    0
@@ -63920,8 +63861,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  0Ch
-db  35h	; 5
+db 0BCh	; º
+db  34h	; 4
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63946,8 +63887,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  23h	; #
-db  35h	; 5
+db 0D3h	; ”
+db  34h	; 4
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63972,8 +63913,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  44h	; D
-db  35h	; 5
+db 0F4h	; Ù
+db  34h	; 4
 db  40h	; @
 db    0
 db  93h	; ì
@@ -63998,7 +63939,7 @@ db  73h	; s
 db    0
 db    0
 db  2Bh	; +
-db  5Ch	; \
+db  0Ch
 db  35h	; 5
 db  40h	; @
 db    0
@@ -64047,11 +63988,11 @@ db    1
 db 0B9h	; π
 db    4
 db    1
-db  90h	; ê
+db  40h	; @
 db  35h	; 5
 db  40h	; @
 db    0
-db  57h	; W
+db    7
 db  36h	; 6
 db  40h	; @
 db    0
@@ -64154,8 +64095,8 @@ db    5
 db    0
 db    0
 db  31h	; 1
-db  12h
-db  36h	; 6
+db 0C2h	; ¬
+db  35h	; 5
 db  40h	; @
 db    0
 db  41h	; A
@@ -64193,8 +64134,8 @@ db  77h	; w
 db    0
 db    0
 db  31h	; 1
-db  33h	; 3
-db  36h	; 6
+db 0E3h	; „
+db  35h	; 5
 db  40h	; @
 db    0
 db  93h	; ì
@@ -64213,8 +64154,8 @@ db  77h	; w
 db    0
 db    0
 db  2Bh	; +
-db  45h	; E
-db  36h	; 6
+db 0F5h	; ı
+db  35h	; 5
 db  40h	; @
 db    0
 db  73h	; s
@@ -64335,12 +64276,12 @@ db    1
 db 0F9h	; ˘
 db    4
 db    1
-db  60h	; `
+db  10h
 db  36h	; 6
 db  40h	; @
 db    0
-db  3Dh	; =
-db  37h	; 7
+db 0EDh	; Ì
+db  36h	; 6
 db  40h	; @
 db    0
 db 0CBh	; À
@@ -64432,7 +64373,7 @@ db 0AAh	; ™
 db  15h
 db    0
 db    0
-db  73h	; s
+db  23h	; #
 db  36h	; 6
 db  40h	; @
 db    0
@@ -64497,7 +64438,7 @@ db    2
 db  91h	; ë
 db  60h	; `
 db  2Bh	; +
-db 0B8h	; ∏
+db  68h	; h
 db  36h	; 6
 db  40h	; @
 db    0
@@ -64528,7 +64469,7 @@ db    0
 db    0
 db    0
 db  31h	; 1
-db 0D4h	; ‘
+db  84h	; Ñ
 db  36h	; 6
 db  40h	; @
 db    0
@@ -64555,7 +64496,7 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db 0EDh	; Ì
+db  9Dh	; ù
 db  36h	; 6
 db  40h	; @
 db    0
@@ -64581,8 +64522,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db    2
-db  37h	; 7
+db 0B2h	; ≤
+db  36h	; 6
 db  40h	; @
 db    0
 db  81h	; Å
@@ -64602,8 +64543,8 @@ db  77h	; w
 db    0
 db    0
 db  31h	; 1
-db  2Eh	; .
-db  37h	; 7
+db 0DEh	; ﬁ
+db  36h	; 6
 db  40h	; @
 db    0
 db 0BCh	; º
@@ -64628,8 +64569,8 @@ db  73h	; s
 db    0
 db    0
 db  2Bh	; +
+db 0E6h	; Ê
 db  36h	; 6
-db  37h	; 7
 db  40h	; @
 db    0
 db  81h	; Å
@@ -64752,11 +64693,11 @@ db    1
 db  4Bh	; K
 db    5
 db    1
-db  40h	; @
-db  37h	; 7
+db 0F0h	; 
+db  36h	; 6
 db  40h	; @
 db    0
-db 0B6h	; ∂
+db  66h	; f
 db  38h	; 8
 db  40h	; @
 db    0
@@ -64849,7 +64790,7 @@ db  4Ah	; J
 db  17h
 db    0
 db    0
-db  5Ah	; Z
+db  0Ah
 db  37h	; 7
 db  40h	; @
 db    0
@@ -64914,7 +64855,7 @@ db    2
 db  91h	; ë
 db  60h	; `
 db  2Bh	; +
-db  9Fh	; ü
+db  4Fh	; O
 db  37h	; 7
 db  40h	; @
 db    0
@@ -64945,7 +64886,7 @@ db    0
 db    0
 db    0
 db  31h	; 1
-db 0CFh	; œ
+db  7Fh	; 
 db  37h	; 7
 db  40h	; @
 db    0
@@ -64966,7 +64907,7 @@ db  77h	; w
 db    0
 db    0
 db  31h	; 1
-db 0ECh	; Ï
+db  9Ch	; ú
 db  37h	; 7
 db  40h	; @
 db    0
@@ -64999,8 +64940,8 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  0Ch
-db  38h	; 8
+db 0BCh	; º
+db  37h	; 7
 db  40h	; @
 db    0
 db  93h	; ì
@@ -65025,2123 +64966,16 @@ db  73h	; s
 db    0
 db    0
 db  31h	; 1
-db  21h	; !
-db  38h	; 8
-db  40h	; @
-db    0
-db  81h	; Å
-db  23h	; #
-db    0
-db    0
-db 0DAh	; ⁄
-db  18h
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db    0
-db  31h	; 1
-db  36h	; 6
-db  38h	; 8
-db  40h	; @
-db    0
-db  9Ch	; ú
-db  23h	; #
-db    0
-db    0
-db 0EFh	; Ô
-db  18h
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db    0
-db  31h	; 1
-db  4Ch	; L
-db  38h	; 8
-db  40h	; @
-db    0
-db 0D9h	; Ÿ
-db  14h
-db    0
-db    0
-db  10h
-db  19h
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  77h	; w
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  76h	; v
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db    0
-db  31h	; 1
-db  54h	; T
-db  38h	; 8
-db  40h	; @
-db    0
-db  81h	; Å
-db  23h	; #
-db    0
-db    0
-db  25h	; %
-db  19h
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db    0
-db  2Bh	; +
-db  9Fh	; ü
-db  38h	; 8
-db  40h	; @
-db    0
-db 0BCh	; º
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  77h	; w
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  73h	; s
-db    0
-db    0
-db    0
-db  1Dh
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  65h	; e
-db  6Dh	; m
-db  69h	; i
-db  74h	; t
-db  5Fh	; _
-db  6Eh	; n
-db  75h	; u
-db  6Dh	; m
-db  65h	; e
-db  72h	; r
-db  69h	; i
-db  63h	; c
-db  5Fh	; _
-db  76h	; v
-db  61h	; a
-db  6Ch	; l
-db  75h	; u
-db  65h	; e
-db    0
-db    1
-db 0CEh	; Œ
-db    3
-db    1
-db    1
-db  88h	; à
-db  19h
-db    0
-db    0
-db  19h
-db  63h	; c
-db    0
-db    1
-db 0CEh	; Œ
-db    3
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  1Ch
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db 0CEh	; Œ
-db    3
-db  95h	; ï
-db  0Ah
-db    0
-db    0
-db  20h
-db  1Ah
-db  77h	; w
-db  63h	; c
-db  73h	; s
-db    0
-db    1
-db 0DBh	; €
-db    3
-db 0D2h	; “
-db    0
-db    0
-db    0
-db    0
-db    0
-db  2Dh	; -
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  78h	; x
-db  6Ch	; l
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    1
-db 0C3h	; √
-db    6
-db    1
-db 0C0h	; ¿
-db  38h	; 8
-db  40h	; @
-db    0
-db 0DEh	; ﬁ
-db  3Dh	; =
-db  40h	; @
-db    0
-db  0Dh
-db  2Eh	; .
-db    0
-db    0
-db    1
-db  6Fh	; o
-db  1Ch
-db    0
-db    0
-db  23h	; #
-db  78h	; x
-db    0
-db    1
-db 0C3h	; √
-db    6
-db  0Eh
-db    4
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db  2Eh	; .
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db 0C3h	; √
-db    6
-db  95h	; ï
-db  0Ah
-db    0
-db    0
-db 0A7h	; ß
-db  2Eh	; .
-db    0
-db    0
-db  25h	; %
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  5Fh	; _
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db    0
-db    1
-db 0C8h	; »
-db    6
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db 0DEh	; ﬁ
-db  2Eh	; .
-db    0
-db    0
-db  26h	; &
-db  7Ah	; z
-db    0
-db    1
-db 0C9h	; …
-db    6
-db  2Fh	; /
-db    8
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0B8h	; ∏
-db  7Fh	; 
-db  3Ah	; :
-db  48h	; H
-db  0Bh
-db    0
-db    0
-db 0D3h	; ”
-db  38h	; 8
-db  40h	; @
-db    0
-db 0DCh	; ‹
-db  38h	; 8
-db  40h	; @
-db    0
-db    1
-db 0CDh	; Õ
-db    6
-db  22h	; "
-db  1Ah
-db    0
-db    0
-db  28h	; (
-db  60h	; `
-db  0Bh
-db    0
-db    0
-db  7Dh	; }
-db  2Fh	; /
-db    0
-db    0
-db  3Bh	; ;
-db 0D3h	; ”
-db  38h	; 8
-db  40h	; @
-db    0
-db 0D8h	; ÿ
-db  38h	; 8
-db  40h	; @
-db    0
-db  2Ah	; *
-db  6Bh	; k
-db  0Bh
-db    0
-db    0
-db 0CAh	;  
-db  2Fh	; /
-db    0
-db    0
-db    0
-db    0
-db  3Ah	; :
-db  18h
-db  0Ah
-db    0
-db    0
-db 0F9h	; ˘
-db  38h	; 8
-db  40h	; @
-db    0
-db    4
-db  39h	; 9
-db  40h	; @
-db    0
-db    1
-db 0D9h	; Ÿ
-db    6
-db  53h	; S
-db  1Ah
-db    0
-db    0
-db  28h	; (
-db  35h	; 5
-db  0Ah
-db    0
-db    0
-db 0DDh	; ›
-db  2Fh	; /
-db    0
-db    0
-db  3Bh	; ;
-db 0F9h	; ˘
-db  38h	; 8
-db  40h	; @
-db    0
-db    0
-db  39h	; 9
-db  40h	; @
-db    0
-db  2Ah	; *
-db  3Fh	; ?
-db  0Ah
-db    0
-db    0
-db  20h
-db  30h	; 0
-db    0
-db    0
-db    0
-db    0
-db  27h	; '
-db  9Bh	; õ
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db  39h	; 9
-db  40h	; @
-db    0
-db 0B8h	; ∏
-db    2
-db    0
-db    0
-db    1
-db    2
-db    7
-db  2Dh	; -
-db  1Ch
-db    0
-db    0
-db  28h	; (
-db 0C7h	; «
-db  0Ah
-db    0
-db    0
-db  33h	; 3
-db  30h	; 0
-db    0
-db    0
-db  29h	; )
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db  39h	; 9
-db 0D3h	; ”
-db  0Ah
-db    0
-db    0
-db    2
-db  91h	; ë
-db  48h	; H
-db  2Ah	; *
-db 0DFh	; ﬂ
-db  0Ah
-db    0
-db    0
-db  72h	; r
-db  30h	; 0
-db    0
-db    0
-db  3Ch	; <
-db 0E9h	; È
-db  0Ah
-db    0
-db    0
-db  2Ah	; *
-db 0F5h	; ı
-db  0Ah
-db    0
-db    0
-db 0FBh	; ˚
-db  30h	; 0
-db    0
-db    0
-db  37h	; 7
-db  38h	; 8
-db    3
-db    0
-db    0
-db 0A7h	; ß
-db  1Ah
-db    0
-db    0
-db  2Ah	; *
-db    6
-db  0Bh
-db    0
-db    0
-db  56h	; V
-db  31h	; 1
-db    0
-db    0
-db    0
-db  37h	; 7
-db  60h	; `
-db    3
-db    0
-db    0
-db 0D9h	; Ÿ
-db  1Ah
-db    0
-db    0
-db  2Ah	; *
-db  12h
-db  0Bh
-db    0
-db    0
-db  99h	; ô
-db  31h	; 1
-db    0
-db    0
-db  2Ah	; *
-db  24h	; $
-db  0Bh
-db    0
-db    0
-db 0D8h	; ÿ
-db  31h	; 1
-db    0
-db    0
-db  2Bh	; +
 db 0D1h	; —
-db  3Bh	; ;
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  20h
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  27h	; '
-db  3Ch	; <
-db  19h
-db    0
-db    0
-db  80h	; Ä
-db  3Ch	; <
-db  40h	; @
-db    0
-db  88h	; à
-db    3
-db    0
-db    0
-db    1
-db 0AAh	; ™
-db    6
-db  57h	; W
-db  1Bh
-db    0
-db    0
-db  28h	; (
-db  6Dh	; m
-db  19h
-db    0
-db    0
-db  4Fh	; O
-db  32h	; 2
-db    0
-db    0
-db  28h	; (
-db  63h	; c
-db  19h
-db    0
-db    0
-db  78h	; x
-db  32h	; 2
-db    0
-db    0
-db  30h	; 0
-db  80h	; Ä
-db  3Ch	; <
-db  40h	; @
-db    0
-db 0A0h	; †
-db  3Ch	; <
-db  40h	; @
-db    0
-db  32h	; 2
-db  1Bh
-db    0
-db    0
-db  2Ah	; *
-db  7Ah	; z
-db  19h
-db    0
-db    0
-db 0C7h	; «
-db  32h	; 2
-db    0
-db    0
-db  2Bh	; +
-db  9Eh	; û
-db  3Ch	; <
-db  40h	; @
-db    0
-db 0E9h	; È
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B6h	; ∂
-db  7Fh	; 
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    1
-db  31h	; 1
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  31h	; 1
-db 0BBh	; ª
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  46h	; F
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  2Bh	; +
-db  17h
-db  3Dh	; =
-db  40h	; @
-db    0
-db 0CAh	;  
-db  11h
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  31h	; 1
-db 0FCh	; ¸
-db  3Bh	; ;
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  71h	; q
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  2Dh	; -
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db  33h	; 3
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  8Bh	; ã
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  30h	; 0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db  43h	; C
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  9Fh	; ü
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db  62h	; b
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db 0B9h	; π
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  30h	; 0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db 0CCh	; Ã
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db 0D3h	; ”
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  30h	; 0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db 0E9h	; È
-db  3Ch	; <
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db 0E7h	; Á
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db    3
-db  3Dh	; =
-db  40h	; @
-db    0
-db  73h	; s
-db  0Fh
-db    0
-db    0
-db 0FBh	; ˚
-db  1Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db  3Eh	; >
-db  3Dh	; =
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  15h
-db  1Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  2Bh	; +
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db  2Bh	; +
-db  4Fh	; O
-db  3Dh	; =
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  20h
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db    0
-db  31h	; 1
-db  6Ch	; l
-db  3Dh	; =
-db  40h	; @
-db    0
-db 0BCh	; º
-db  0Eh
-db    0
-db    0
-db  4Fh	; O
-db  1Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    1
-db  30h	; 0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    5
-db    3
-db  88h	; à
-db  92h	; í
-db  40h	; @
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  76h	; v
-db    0
-db    0
-db  2Bh	; +
-db  7Ch	; |
-db  3Dh	; =
-db  40h	; @
-db    0
-db 0BCh	; º
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db  73h	; s
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    5
-db    3
-db  8Ch	; å
-db  92h	; í
-db  40h	; @
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  2Dh	; -
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  65h	; e
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    1
-db  26h	; &
-db    5
-db    1
-db 0E0h	; ‡
-db  3Dh	; =
-db  40h	; @
-db    0
-db  8Bh	; ã
-db  3Eh	; >
-db  40h	; @
-db    0
-db 0F4h	; Ù
-db  32h	; 2
-db    0
-db    0
-db    1
-db 0A1h	; °
-db  1Dh
-db    0
-db    0
-db  23h	; #
-db  78h	; x
-db    0
-db    1
-db  26h	; &
-db    5
-db  0Eh
-db    4
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db  2Eh	; .
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db  26h	; &
-db    5
-db  95h	; ï
-db  0Ah
-db    0
-db    0
-db  82h	; Ç
-db  33h	; 3
-db    0
-db    0
-db  34h	; 4
-db  16h
-db    3
-db    0
-db    0
-db    1
-db  2Eh	; .
-db    5
-db 0CBh	; À
-db    0
-db    0
-db    0
-db 0C7h	; «
-db  33h	; 3
-db    0
-db    0
-db  34h	; 4
-db  1Bh
-db    3
-db    0
-db    0
-db    1
-db  2Eh	; .
-db    5
-db 0CBh	; À
-db    0
-db    0
-db    0
-db 0E7h	; Á
-db  33h	; 3
-db    0
-db    0
-db  2Fh	; /
-db  28h	; (
-db    3
-db    0
-db    0
-db    1
-db  2Eh	; .
-db    5
-db  15h
-db    1
-db    0
-db    0
-db    1
-db  56h	; V
-db  27h	; '
-db  4Ah	; J
-db  17h
-db    0
-db    0
-db 0F1h	; Ò
-db  3Dh	; =
-db  40h	; @
-db    0
-db 0A8h	; ®
-db    3
-db    0
-db    0
-db    1
-db  38h	; 8
-db    5
-db  45h	; E
-db  1Dh
-db    0
-db    0
-db  28h	; (
-db  88h	; à
-db  17h
-db    0
-db    0
-db    7
-db  34h	; 4
-db    0
-db    0
-db  28h	; (
-db  7Dh	; }
-db  17h
-db    0
-db    0
-db  4Dh	; M
-db  34h	; 4
-db    0
-db    0
-db  28h	; (
-db  71h	; q
-db  17h
-db    0
-db    0
-db  87h	; á
-db  34h	; 4
-db    0
-db    0
-db  28h	; (
-db  67h	; g
-db  17h
-db    0
-db    0
-db 0A6h	; ¶
-db  34h	; 4
-db    0
-db    0
-db  29h	; )
-db 0C0h	; ¿
-db    3
-db    0
-db    0
-db  39h	; 9
-db  94h	; î
-db  17h
-db    0
-db    0
-db    2
-db  91h	; ë
-db  60h	; `
-db  2Bh	; +
-db  36h	; 6
-db  3Eh	; >
-db  40h	; @
-db    0
-db  77h	; w
-db  0Bh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    1
-db  32h	; 2
-db  2Ch	; ,
-db    2
-db  74h	; t
-db  14h
-db    2
-db  91h	; ë
-db  5Ch	; \
-db  2Ch	; ,
-db    2
-db  74h	; t
-db  18h
-db    2
-db  91h	; ë
-db  58h	; X
-db    0
-db    0
-db    0
-db  31h	; 1
-db  52h	; R
-db  3Eh	; >
-db  40h	; @
-db    0
-db 0D9h	; Ÿ
-db  14h
-db    0
-db    0
-db  60h	; `
-db  1Dh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db    0
-db  31h	; 1
-db  5Ah	; Z
-db  3Eh	; >
-db  40h	; @
-db    0
-db  81h	; Å
-db  23h	; #
-db    0
-db    0
-db  75h	; u
-db  1Dh
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db    0
-db    0
-db  31h	; 1
-db  7Dh	; }
-db  3Eh	; >
-db  40h	; @
-db    0
-db 0BCh	; º
-db  0Eh
-db    0
-db    0
-db  8Fh	; è
-db  1Dh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    2
-db  76h	; v
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    2
-db  73h	; s
-db    0
-db    0
-db  2Bh	; +
-db  85h	; Ö
-db  3Eh	; >
-db  40h	; @
-db    0
-db  81h	; Å
-db  23h	; #
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  3Dh	; =
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  65h	; e
-db  78h	; x
-db  70h	; p
-db  6Fh	; o
-db  6Eh	; n
-db  65h	; e
-db  6Eh	; n
-db  74h	; t
-db  5Fh	; _
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db 0ACh	; ¨
-db    1
-db 0CBh	; À
-db    0
-db    0
-db    0
-db    1
-db 0E0h	; ‡
-db  1Dh
-db    0
-db    0
-db  3Eh	; >
-db  65h	; e
-db  78h	; x
-db  70h	; p
-db  6Fh	; o
-db  6Eh	; n
-db  65h	; e
-db  6Eh	; n
-db  74h	; t
-db  5Fh	; _
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db 0AEh	; Æ
-db  15h
-db    1
-db    0
-db    0
-db    0
-db  1Dh
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  77h	; w
-db  63h	; c
-db  70h	; p
-db  75h	; u
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db 0CCh	; Ã
-db    1
-db    1
-db    1
-db  12h
-db  1Eh
-db    0
-db    0
-db  19h
-db  73h	; s
-db    0
-db    1
-db 0CCh	; Ã
-db    1
-db  1Dh
-db    4
-db    0
-db    0
-db  1Ch
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db 0CCh	; Ã
-db    1
-db  95h	; ï
-db  0Ah
-db    0
-db    0
-db    0
-db  1Dh
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  70h	; p
-db  75h	; u
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  73h	; s
-db    1
-db    1
-db    1
-db  42h	; B
-db  1Eh
-db    0
-db    0
-db  19h
-db  73h	; s
-db    0
-db    1
-db  73h	; s
-db    1
-db  3Ah	; :
-db    4
-db    0
-db    0
-db  1Ch
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db  73h	; s
-db    1
-db  95h	; ï
-db  0Ah
-db    0
-db    0
-db    0
-db  3Fh	; ?
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  5Fh	; _
-db  70h	; p
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db    0
-db    1
-db    8
-db    7
-db    1
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  90h	; ê
-db  3Eh	; >
-db  40h	; @
-db    0
-db 0D2h	; “
-db  47h	; G
-db  40h	; @
-db    0
-db 0C6h	; ∆
-db  34h	; 4
-db    0
-db    0
-db    1
-db  9Ch	; ú
-db  22h	; "
-db    0
-db    0
-db  23h	; #
-db  66h	; f
-db  6Ch	; l
-db  61h	; a
-db  67h	; g
-db  73h	; s
-db    0
-db    1
-db    8
-db    7
-db 0CBh	; À
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db  23h	; #
-db  64h	; d
-db  65h	; e
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db    8
-db    7
-db  2Dh	; -
-db    5
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db  23h	; #
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    1
-db    8
-db    7
-db 0CBh	; À
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db  22h	; "
-db  66h	; f
-db  6Dh	; m
-db  74h	; t
-db    0
-db    1
-db    8
-db    7
-db  3Ah	; :
-db    4
-db    0
-db    0
-db  60h	; `
-db  35h	; 5
-db    0
-db    0
-db  22h	; "
-db  61h	; a
-db  72h	; r
-db  67h	; g
-db  76h	; v
-db    0
-db    1
-db    8
-db    7
-db  9Dh	; ù
-db    0
-db    0
-db    0
-db 0EDh	; Ì
-db  35h	; 5
-db    0
-db    0
-db  25h	; %
-db  63h	; c
-db    0
-db    1
-db  0Ah
-db    7
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  9Ch	; ú
-db  38h	; 8
-db    0
-db    0
-db  25h	; %
-db  73h	; s
-db  61h	; a
-db  76h	; v
-db  65h	; e
-db  64h	; d
-db  5Fh	; _
-db  65h	; e
-db  72h	; r
-db  72h	; r
-db  6Eh	; n
-db  6Fh	; o
-db    0
-db    1
-db  0Bh
-db    7
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  27h	; '
-db  3Ah	; :
-db    0
-db    0
-db  2Fh	; /
-db  0Fh
-db    3
-db    0
-db    0
-db    1
-db  0Dh
-db    7
-db  2Bh	; +
-db    7
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db  40h	; @
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db  5Fh	; _
-db  73h	; s
-db  63h	; c
-db  61h	; a
-db  6Eh	; n
-db    0
-db    1
-db  1Fh
-db    7
-db  27h	; '
-db 0A1h	; °
-db  1Dh
-db    0
-db    0
-db 0B7h	; ∑
-db  3Eh	; >
-db  40h	; @
-db    0
-db 0D8h	; ÿ
-db    3
-db    0
-db    0
-db    1
-db  1Ch
-db    7
-db  49h	; I
-db  1Fh
-db    0
-db    0
-db  29h	; )
-db 0F0h	; 
-db    3
-db    0
-db    0
-db  2Ah	; *
-db 0C8h	; »
-db  1Dh
-db    0
-db    0
-db  47h	; G
-db  3Ah	; :
-db    0
-db    0
-db  31h	; 1
-db  1Eh
-db  3Fh	; ?
-db  40h	; @
-db    0
-db 0B7h	; ∑
-db  23h	; #
-db    0
-db    0
-db  3Eh	; >
-db  1Fh
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    5
-db    3
-db 0A5h	; •
-db  92h	; í
-db  40h	; @
-db    0
-db    0
-db  38h	; 8
 db  37h	; 7
-db  3Fh	; ?
 db  40h	; @
-db    0
-db 0D3h	; ”
-db  23h	; #
-db    0
-db    0
-db    0
-db    0
-db  37h	; 7
-db    8
-db    4
-db    0
 db    0
 db  81h	; Å
-db  22h	; "
-db    0
-db    0
-db  26h	; &
-db  61h	; a
-db  72h	; r
-db  67h	; g
-db  76h	; v
-db  61h	; a
-db  6Ch	; l
-db    0
-db    1
-db  2Ah	; *
-db    7
-db  2Fh	; /
-db    5
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db  34h	; 4
-db  22h	; "
-db    3
-db    0
-db    0
-db    1
-db  2Bh	; +
-db    7
-db 0B3h	; ≥
-db    5
-db    0
-db    0
-db  5Ah	; Z
-db  3Ah	; :
-db    0
-db    0
-db  25h	; %
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db  67h	; g
-db  74h	; t
-db  68h	; h
-db    0
-db    1
-db  2Ch	; ,
-db    7
-db  44h	; D
-db    6
-db    0
-db    0
-db  29h	; )
-db  3Ch	; <
-db    0
-db    0
-db  25h	; %
-db  62h	; b
-db  61h	; a
-db  63h	; c
-db  6Bh	; k
-db  74h	; t
-db  72h	; r
-db  61h	; a
-db  63h	; c
-db  6Bh	; k
-db    0
-db    1
-db  31h	; 1
-db    7
-db  3Ah	; :
-db    4
-db    0
-db    0
-db  11h
-db  3Dh	; =
-db    0
-db    0
-db  25h	; %
-db  77h	; w
-db  69h	; i
-db  64h	; d
-db  74h	; t
-db  68h	; h
-db  5Fh	; _
-db  73h	; s
-db  70h	; p
-db  65h	; e
-db  63h	; c
-db    0
-db    1
-db  35h	; 5
-db    7
-db  21h	; !
-db    1
-db    0
-db    0
-db  3Ah	; :
-db  3Dh	; =
-db    0
-db    0
-db  3Ah	; :
-db  12h
-db  1Eh
-db    0
-db    0
-db  6Ch	; l
-db  40h	; @
-db  40h	; @
-db    0
-db  74h	; t
-db  40h	; @
-db  40h	; @
-db    0
-db    1
-db  92h	; í
-db    7
-db 0DCh	; ‹
-db  1Fh
-db    0
-db    0
-db  28h	; (
-db  35h	; 5
-db  1Eh
-db    0
-db    0
-db  77h	; w
-db  3Dh	; =
-db    0
-db    0
-db  28h	; (
-db  2Bh	; +
-db  1Eh
-db    0
-db    0
-db  8Dh	; ç
-db  3Dh	; =
-db    0
-db    0
-db    0
-db  27h	; '
-db  12h
-db  1Eh
-db    0
-db    0
-db  74h	; t
-db  40h	; @
-db  40h	; @
-db    0
-db  20h
-db    4
-db    0
-db    0
-db    1
-db  95h	; ï
-db    7
-db  2Fh	; /
-db  20h
-db    0
-db    0
-db  28h	; (
-db  35h	; 5
-db  1Eh
-db    0
-db    0
-db 0A0h	; †
-db  3Dh	; =
-db    0
-db    0
-db  28h	; (
-db  2Bh	; +
-db  1Eh
-db    0
-db    0
-db 0B6h	; ∂
-db  3Dh	; =
-db    0
-db    0
-db  31h	; 1
-db  7Ch	; |
-db  40h	; @
-db  40h	; @
-db    0
-db  9Ch	; ú
 db  23h	; #
 db    0
-db    0
-db  17h
-db  20h
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db    0
-db  2Bh	; +
-db  89h	; â
-db  40h	; @
-db  40h	; @
-db    0
-db  1Eh
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db  73h	; s
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db    0
-db  30h	; 0
-db  38h	; 8
-db  44h	; D
-db  40h	; @
-db    0
-db  64h	; d
-db  44h	; D
-db  40h	; @
-db    0
-db  6Eh	; n
-db  20h
-db    0
-db    0
-db  26h	; &
-db  69h	; i
-db  61h	; a
-db  72h	; r
-db  67h	; g
-db  76h	; v
-db  61h	; a
-db  6Ch	; l
-db    0
-db    1
-db  72h	; r
-db    7
-db 0D2h	; “
-db    0
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0A2h	; ¢
-db  7Fh	; 
-db  2Bh	; +
-db  56h	; V
-db  44h	; D
-db  40h	; @
-db    0
-db 0E9h	; È
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0A2h	; ¢
-db  7Fh	; 
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    1
-db  31h	; 1
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db    0
-db  30h	; 0
-db  48h	; H
-db  45h	; E
-db  40h	; @
-db    0
-db  9Eh	; û
-db  45h	; E
-db  40h	; @
 db    0
 db 0DAh	; ⁄
-db  20h
-db    0
-db    0
-db  25h	; %
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    1
-db  8Eh	; é
-db    9
-db 0CBh	; À
-db    0
-db    0
-db    0
-db 0D4h	; ‘
-db  3Dh	; =
-db    0
-db    0
-db  26h	; &
-db  72h	; r
-db  70h	; p
-db  63h	; c
-db  68h	; h
-db  72h	; r
-db    0
-db    1
-db  8Eh	; é
-db    9
-db 0D2h	; “
-db    0
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0A2h	; ¢
-db  7Fh	; 
-db  26h	; &
-db  63h	; c
-db  73h	; s
-db  74h	; t
-db  61h	; a
-db  74h	; t
-db  65h	; e
-db    0
-db    1
-db  8Eh	; é
-db    9
-db  28h	; (
-db    4
-db    0
-db    0
-db    3
-db  91h	; ë
-db 0A4h	; §
-db  7Fh	; 
-db  38h	; 8
-db  61h	; a
-db  45h	; E
-db  40h	; @
-db    0
-db  40h	; @
-db  23h	; #
-db    0
-db    0
-db  2Bh	; +
-db  84h	; Ñ
-db  45h	; E
-db  40h	; @
-db    0
-db  55h	; U
-db  23h	; #
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db 0A2h	; ¢
-db  7Fh	; 
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    8
-db    1
-db  40h	; @
-db  2Ch	; ,
-db    2
-db  74h	; t
-db  0Ch
-db    3
-db  91h	; ë
-db 0A4h	; §
-db  7Fh	; 
-db    0
-db    0
-db  27h	; '
-db 0E0h	; ‡
-db  1Dh
-db    0
-db    0
-db 0FAh	; ˙
-db  45h	; E
-db  40h	; @
-db    0
-db  40h	; @
-db    4
-db    0
-db    0
-db    1
-db  8Ch	; å
-db    7
-db  2Dh	; -
-db  21h	; !
-db    0
-db    0
-db  28h	; (
-db    5
-db  1Eh
-db    0
-db    0
-db 0E7h	; Á
-db  3Dh	; =
-db    0
-db    0
-db  28h	; (
-db 0FBh	; ˚
-db  1Dh
-db    0
-db    0
-db 0FDh	; ˝
-db  3Dh	; =
-db    0
-db    0
-db  31h	; 1
-db  11h
-db  46h	; F
-db  40h	; @
-db    0
-db 0F8h	; ¯
-db  23h	; #
-db    0
-db    0
-db  15h
-db  21h	; !
+db  18h
 db    0
 db    0
 db  2Ch	; ,
@@ -67149,8420 +64983,10527 @@ db    2
 db  74h	; t
 db    0
 db    2
-db  73h	; s
+db  77h	; w
 db    0
-db    0
-db  2Bh	; +
-db  1Eh
-db  46h	; F
-db  40h	; @
-db    0
-db 0E9h	; È
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db  73h	; s
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db    0
-db  31h	; 1
-db 0C5h	; ≈
-db  40h	; @
-db  40h	; @
-db    0
-db  1Eh
-db  0Eh
-db    0
-db    0
-db  4Eh	; N
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    1
-db  31h	; 1
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db 0F6h	; ˆ
-db  40h	; @
-db  40h	; @
-db    0
-db  88h	; à
-db  19h
-db    0
-db    0
-db  63h	; c
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  58h	; X
-db  41h	; A
-db  40h	; @
-db    0
-db  79h	; y
-db  10h
-db    0
-db    0
-db  79h	; y
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  86h	; Ü
-db  41h	; A
-db  40h	; @
-db    0
-db  9Fh	; ü
-db  17h
-db    0
-db    0
-db  8Eh	; é
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db 0B6h	; ∂
-db  41h	; A
-db  40h	; @
-db    0
-db 0FFh
-db  15h
-db    0
-db    0
-db 0A3h	; £
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
 db    0
 db  31h	; 1
 db 0E6h	; Ê
-db  41h	; A
+db  37h	; 7
 db  40h	; @
 db    0
-db  6Fh	; o
-db  1Ch
-db    0
-db    0
-db 0B8h	; ∏
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  49h	; I
-db  42h	; B
-db  40h	; @
-db    0
-db  73h	; s
-db  0Fh
-db    0
-db    0
-db 0CDh	; Õ
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  51h	; Q
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  8Dh	; ç
-db  42h	; B
-db  40h	; @
-db    0
-db  79h	; y
-db  10h
-db    0
-db    0
-db 0E9h	; È
-db  21h	; !
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    2
-db    8
-db  78h	; x
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db 0DCh	; ‹
-db  42h	; B
-db  40h	; @
-db    0
-db  13h
-db  24h	; $
-db    0
-db    0
-db    0
-db  22h	; "
-db    0
-db    0
-db  2Ch	; ,
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
 db  9Ch	; ú
-db  7Fh	; 
-db    6
-db    0
-db  31h	; 1
-db 0DFh	; ﬂ
-db  43h	; C
-db  40h	; @
-db    0
-db  9Fh	; ü
-db  17h
+db  23h	; #
 db    0
 db    0
-db  15h
-db  22h	; "
+db 0EFh	; Ô
+db  18h
 db    0
 db    0
 db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
 db    0
 db  31h	; 1
-db    3
-db  44h	; D
+db 0FCh	; ¸
+db  37h	; 7
 db  40h	; @
 db    0
-db 0FFh
-db  15h
+db 0D9h	; Ÿ
+db  14h
 db    0
 db    0
-db  2Ah	; *
-db  22h	; "
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  27h	; '
-db  44h	; D
-db  40h	; @
-db    0
-db  6Fh	; o
-db  1Ch
-db    0
-db    0
-db  3Fh	; ?
-db  22h	; "
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db  7Fh	; 
-db  44h	; D
-db  40h	; @
-db    0
-db  88h	; à
+db  10h
 db  19h
 db    0
 db    0
-db  54h	; T
-db  22h	; "
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  31h	; 1
-db 0AEh	; Æ
-db  45h	; E
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  69h	; i
-db  22h	; "
-db    0
-db    0
 db  2Ch	; ,
 db    1
 db  52h	; R
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db  2Bh	; +
-db  21h	; !
-db  47h	; G
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  50h	; P
 db    2
-db    8
-db  25h	; %
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db    0
-db  38h	; 8
-db 0AAh	; ™
-db  3Eh	; >
-db  40h	; @
-db    0
-db  30h	; 0
-db  24h	; $
-db    0
-db    0
-db  2Bh	; +
-db  2Bh	; +
-db  40h	; @
-db  40h	; @
-db    0
-db  93h	; ì
-db  0Ch
-db    0
-db    0
-db  2Ch	; ,
-db    1
-db  52h	; R
-db    3
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    0
-db    0
-db  41h	; A
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  67h	; g
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db    0
-db    8
-db  66h	; f
-db    1
-db  15h
-db    1
-db    0
-db    0
-db    1
-db 0DBh	; €
-db  22h	; "
-db    0
-db    0
-db  42h	; B
-db 0DBh	; €
-db  22h	; "
-db    0
-db    0
-db  42h	; B
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  42h	; B
-db 0E1h	; ·
-db  22h	; "
-db    0
-db    0
-db  42h	; B
-db  21h	; !
-db    1
-db    0
-db    0
-db  42h	; B
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  42h	; B
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  42h	; B
-db  21h	; !
-db    1
-db    0
-db    0
-db  42h	; B
-db 0E7h	; Á
-db  22h	; "
-db    0
-db    0
-db    0
-db    6
-db    4
-db 0C2h	; ¬
-db    9
-db    0
-db    0
-db    6
-db    4
-db  49h	; I
-db    8
-db    0
-db    0
-db    6
-db    4
-db  15h
-db    1
-db    0
-db    0
-db  43h	; C
-db    1
-db  66h	; f
-db  70h	; p
-db  75h	; u
-db  74h	; t
-db  63h	; c
-db    0
-db    6
-db 0CCh	; Ã
-db    1
-db    1
-db 0CBh	; À
-db    0
-db    0
-db    0
-db    1
-db  0Dh
-db  23h	; #
-db    0
-db    0
-db  42h	; B
-db 0CBh	; À
-db    0
-db    0
-db    0
-db  42h	; B
-db  0Dh
-db  23h	; #
-db    0
-db    0
-db    0
-db    6
-db    4
-db 0B9h	; π
-db    3
-db    0
-db    0
-db  43h	; C
-db    1
 db  77h	; w
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  6Dh	; m
-db  62h	; b
 db    0
-db    7
-db 0AFh	; Ø
-db    3
+db  2Ch	; ,
 db    1
-db 0ACh	; ¨
-db    0
-db    0
-db    0
-db    1
-db  3Ah	; :
-db  23h	; #
-db    0
-db    0
-db  42h	; B
-db  15h
-db    1
-db    0
-db    0
-db  42h	; B
-db 0D2h	; “
-db    0
-db    0
-db    0
-db  42h	; B
-db  3Ah	; :
-db  23h	; #
-db    0
-db    0
-db    0
-db    6
-db    4
-db  28h	; (
-db    4
-db    0
-db    0
-db  44h	; D
-db    1
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  61h	; a
-db  6Ch	; l
-db  65h	; e
-db  63h	; c
-db  6Fh	; o
-db  6Eh	; n
+db  51h	; Q
+db    2
 db  76h	; v
 db    0
-db    5
-db  51h	; Q
-db    1
-db  0Bh
-db    3
-db    0
-db    0
-db    1
-db  43h	; C
-db    1
-db  6Dh	; m
-db  62h	; b
-db  72h	; r
+db  2Ch	; ,
+db    2
 db  74h	; t
-db  6Fh	; o
-db  77h	; w
-db  63h	; c
 db    0
-db    7
-db 0ADh	; ≠
-db    3
-db    1
-db 0ACh	; ¨
+db    2
+db  73h	; s
 db    0
 db    0
+db  31h	; 1
+db    4
+db  38h	; 8
+db  40h	; @
 db    0
-db    1
 db  81h	; Å
 db  23h	; #
 db    0
 db    0
-db  42h	; B
-db  1Bh
-db    1
-db    0
-db    0
-db  42h	; B
-db  3Ah	; :
-db    4
-db    0
-db    0
-db  42h	; B
-db 0ACh	; ¨
-db    0
-db    0
-db    0
-db  42h	; B
-db  3Ah	; :
-db  23h	; #
-db    0
-db    0
-db    0
-db  45h	; E
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  66h	; f
-db  72h	; r
-db  65h	; e
-db  65h	; e
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db    0
-db    8
-db  68h	; h
-db    1
-db    1
-db  9Ch	; ú
-db  23h	; #
-db    0
-db    0
-db  42h	; B
-db  15h
-db    1
-db    0
-db    0
-db    0
-db  41h	; A
-db    1
-db  73h	; s
-db  74h	; t
-db  72h	; r
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    9
-db  36h	; 6
-db    1
-db 0ACh	; ¨
-db    0
-db    0
-db    0
-db    1
-db 0B7h	; ∑
-db  23h	; #
-db    0
-db    0
-db  42h	; B
-db  3Ah	; :
-db    4
-db    0
-db    0
-db    0
-db  43h	; C
-db    1
-db  67h	; g
-db  65h	; e
-db  74h	; t
-db  65h	; e
-db  6Eh	; n
-db  76h	; v
-db    0
-db  0Ah
-db  63h	; c
-db    1
-db    1
-db  15h
-db    1
-db    0
-db    0
-db    1
-db 0D3h	; ”
-db  23h	; #
-db    0
-db    0
-db  42h	; B
-db  3Ah	; :
-db    4
-db    0
-db    0
-db    0
-db  46h	; F
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  5Fh	; _
-db  67h	; g
-db  65h	; e
-db  74h	; t
-db  5Fh	; _
-db  6Fh	; o
-db  75h	; u
-db  74h	; t
-db  70h	; p
-db  75h	; u
-db  74h	; t
-db  5Fh	; _
-db  66h	; f
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  74h	; t
-db    0
-db    6
-db  15h
-db    2
-db    1
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db    1
-db  41h	; A
-db    1
-db  77h	; w
-db  63h	; c
-db  73h	; s
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    9
-db  7Bh	; {
-db    1
-db 0ACh	; ¨
-db    0
-db    0
-db    0
-db    1
-db  13h
-db  24h	; $
-db    0
-db    0
-db  42h	; B
-db  1Dh
-db    4
-db    0
-db    0
-db    0
-db  41h	; A
-db    1
-db  73h	; s
-db  74h	; t
-db  72h	; r
-db  65h	; e
-db  72h	; r
-db  72h	; r
-db  6Fh	; o
-db  72h	; r
-db    0
-db    9
-db  48h	; H
-db    1
-db  15h
-db    1
-db    0
-db    0
-db    1
-db  30h	; 0
-db  24h	; $
-db    0
-db    0
-db  42h	; B
-db 0CBh	; À
-db    0
-db    0
-db    0
-db    0
-db  44h	; D
-db    1
-db  5Fh	; _
-db  65h	; e
-db  72h	; r
-db  72h	; r
-db  6Eh	; n
-db  6Fh	; o
-db    0
-db  0Bh
-db  12h
-db    1
-db  21h	; !
-db    1
-db    0
-db    0
-db    1
-db    0
-db 0B6h	; ∂
-db  10h
-db    0
-db    0
-db    2
-db    0
-db  5Dh	; ]
-db  1Dh
-db    0
-db    0
-db    4
-db    1
-db  47h	; G
-db  4Eh	; N
-db  55h	; U
-db  20h
-db  43h	; C
-db  20h
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db    0
-db    1
-db  63h	; c
-db  3Ah	; :
-db  2Fh	; /
-db  63h	; c
-db  72h	; r
-db  6Fh	; o
-db  73h	; s
-db  73h	; s
-db  64h	; d
-db  65h	; e
-db  76h	; v
-db  2Fh	; /
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  73h	; s
-db  76h	; v
-db  6Eh	; n
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  2Fh	; /
-db  67h	; g
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db  2Fh	; /
-db  67h	; g
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db  2Eh	; .
-db  63h	; c
-db    0
-db 0E0h	; ‡
-db  47h	; G
-db  40h	; @
-db    0
-db  97h	; ó
-db  5Dh	; ]
-db  40h	; @
-db    0
-db 0B5h	; µ
-db  24h	; $
-db    0
-db    0
-db    2
-db    8
-db    4
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    4
-db    5
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    6
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    4
-db    7
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    2
-db    7
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db    4
-db  70h	; p
-db    0
-db    0
-db    0
-db    3
-db    4
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db    4
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    8
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    4
-db  55h	; U
-db  4Ch	; L
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db    0
-db    3
-db  35h	; 5
-db 0D3h	; ”
-db    0
-db    0
-db    0
-db    5
-db    4
-db    3
-db  3Bh	; ;
-db 0F7h	; ˜
-db    1
-db    0
-db    0
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  5Ah	; Z
-db  65h	; e
-db  72h	; r
-db  6Fh	; o
-db    0
-db    0
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Eh	; N
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  6Ch	; l
-db    0
-db    1
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  44h	; D
-db  65h	; e
-db  6Eh	; n
-db  6Fh	; o
-db  72h	; r
-db  6Dh	; m
-db  61h	; a
-db  6Ch	; l
-db    0
-db    2
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  49h	; I
-db  6Eh	; n
-db  66h	; f
-db  69h	; i
-db  6Eh	; n
-db  69h	; i
-db  74h	; t
-db  65h	; e
-db    0
-db    3
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Eh	; N
-db  61h	; a
-db  4Eh	; N
-db    0
-db    4
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Eh	; N
-db  61h	; a
-db  4Eh	; N
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    5
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Eh	; N
-db  6Fh	; o
-db  4Eh	; N
-db  75h	; u
-db  6Dh	; m
-db  62h	; b
-db  65h	; e
-db  72h	; r
-db    0
-db    6
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  52h	; R
-db  65h	; e
-db  74h	; t
-db  6Dh	; m
-db  61h	; a
-db  73h	; s
-db  6Bh	; k
-db    0
-db    7
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Eh	; N
-db  65h	; e
-db  67h	; g
-db    0
-db    8
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  49h	; I
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db  6Ch	; l
-db  6Fh	; o
-db    0
-db  10h
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  49h	; I
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db  68h	; h
-db  69h	; i
-db    0
-db  20h
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  49h	; I
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db  61h	; a
-db  63h	; c
-db  74h	; t
-db    0
-db  30h	; 0
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  55h	; U
-db  6Eh	; n
-db  64h	; d
-db  65h	; e
-db  72h	; r
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  77h	; w
-db    0
-db 0C0h	; ¿
-db    0
-db    6
-db  53h	; S
-db  54h	; T
-db  52h	; R
-db  54h	; T
-db  4Fh	; O
-db  47h	; G
-db  5Fh	; _
-db  4Fh	; O
-db  76h	; v
-db  65h	; e
-db  72h	; r
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  77h	; w
-db    0
-db  80h	; Ä
-db    1
-db    0
-db    7
-db  46h	; F
-db  50h	; P
-db  49h	; I
-db    0
-db  18h
-db    3
-db  50h	; P
-db  72h	; r
-db    2
-db    0
-db    0
-db    8
-db  6Eh	; n
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    3
-db  51h	; Q
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    0
-db    8
-db  65h	; e
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db    0
-db    3
-db  52h	; R
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    4
-db    8
-db  65h	; e
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    3
-db  53h	; S
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    8
-db    8
-db  72h	; r
-db  6Fh	; o
-db  75h	; u
-db  6Eh	; n
-db  64h	; d
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db    0
-db    3
-db  54h	; T
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  0Ch
-db    8
-db  73h	; s
-db  75h	; u
-db  64h	; d
-db  64h	; d
-db  65h	; e
-db  6Eh	; n
-db  5Fh	; _
-db  75h	; u
-db  6Eh	; n
-db  64h	; d
-db  65h	; e
-db  72h	; r
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  77h	; w
-db    0
-db    3
-db  55h	; U
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  10h
-db    8
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    3
-db  56h	; V
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  14h
-db    0
-db    4
-db  46h	; F
-db  50h	; P
-db  49h	; I
-db    0
-db    3
-db  57h	; W
-db 0F7h	; ˜
-db    1
-db    0
-db    0
-db    2
-db    4
-db    4
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  0Ch
-db    4
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    8
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    9
-db  5Fh	; _
-db  64h	; d
-db  62h	; b
-db  6Ch	; l
-db  5Fh	; _
-db  75h	; u
-db  6Eh	; n
-db  69h	; i
-db  6Fh	; o
-db  6Eh	; n
-db    0
-db    8
-db    2
-db  19h
-db    1
-db 0D8h	; ÿ
-db    2
-db    0
-db    0
-db  0Ah
-db  64h	; d
-db    0
-db    2
-db  19h
-db    1
-db  5Fh	; _
-db    0
-db    0
-db    0
-db  0Ah
-db  4Ch	; L
-db    0
-db    2
-db  19h
-db    1
-db 0D8h	; ÿ
-db    2
-db    0
-db    0
-db    0
-db  0Bh
-db 0F9h	; ˘
-db    0
-db    0
-db    0
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db  0Ch
-db 0C7h	; «
-db    0
-db    0
-db    0
-db    1
-db    0
-db  0Dh
-db  37h	; 7
-db    3
-db    0
-db    0
-db  18h
-db    2
-db 0D5h	; ’
-db    1
-db  51h	; Q
-db    3
-db    0
-db    0
-db  0Eh
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db  74h	; t
-db    0
-db    2
-db 0D6h	; ÷
-db    1
-db  51h	; Q
-db    3
-db    0
-db    0
-db    2
-db  23h	; #
-db    0
-db  0Eh
-db  6Bh	; k
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    4
-db  0Eh
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db  77h	; w
-db  64h	; d
-db  73h	; s
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    8
-db  0Eh
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  0Ch
-db  0Eh
-db  77h	; w
-db  64h	; d
-db  73h	; s
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  10h
-db  0Eh
-db  78h	; x
-db    0
-db    2
-db 0D8h	; ÿ
-db    1
-db  57h	; W
-db    3
-db    0
-db    0
-db    2
-db  23h	; #
-db  14h
-db    0
-db    3
-db    4
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db  0Bh
-db 0F9h	; ˘
-db    0
-db    0
-db    0
-db  67h	; g
-db    3
-db    0
-db    0
-db  0Ch
-db 0C7h	; «
-db    0
-db    0
-db    0
-db    0
-db    0
-db  0Fh
-db  37h	; 7
-db    3
-db    0
-db    0
-db    2
-db 0DAh	; ⁄
-db    1
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db  10h
-db  5Fh	; _
-db  5Fh	; _
-db  68h	; h
-db  69h	; i
-db  30h	; 0
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db 0F0h	; 
-db    1
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    3
-db  9Ah	; ö
-db    3
-db    0
-db    0
-db  11h
-db  79h	; y
-db    0
-db    2
-db 0F0h	; 
-db    1
-db 0F9h	; ˘
-db    0
-db    0
-db    0
-db    0
-db  12h
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db  74h	; t
-db  6Fh	; o
-db  62h	; b
-db    0
-db    1
-db  22h	; "
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db  15h
-db    4
-db    0
-db    0
-db  13h
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  22h	; "
-db  1Bh
-db    4
-db    0
-db    0
-db  13h
-db  6Eh	; n
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  22h	; "
-db  69h	; i
-db    0
-db    0
-db    0
-db  13h
-db  62h	; b
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  22h	; "
-db 0C1h	; ¡
-db    0
-db    0
-db    0
-db  14h
-db  69h	; i
-db    0
-db    1
-db  24h	; $
-db  69h	; i
-db    0
-db    0
-db    0
-db  14h
-db  6Bh	; k
-db    0
-db    1
-db  24h	; $
-db  69h	; i
-db    0
-db    0
-db    0
-db  14h
-db  62h	; b
-db    0
-db    1
 db  25h	; %
-db  15h
-db    4
+db  19h
 db    0
 db    0
-db  14h
-db  62h	; b
-db  65h	; e
-db    0
-db    1
-db  26h	; &
-db  1Bh
-db    4
-db    0
-db    0
-db  14h
-db  78h	; x
-db    0
-db    1
-db  26h	; &
-db  1Bh
-db    4
-db    0
-db    0
-db  14h
-db  78h	; x
-db  30h	; 0
-db    0
-db    1
-db  26h	; &
-db  1Bh
-db    4
-db    0
-db    0
-db  15h
-db  72h	; r
-db  65h	; e
+db  2Ch	; ,
+db    2
 db  74h	; t
-db    0
-db    1
-db  44h	; D
-db    0
-db    3
-db    4
-db  67h	; g
-db    3
-db    0
-db    0
-db    3
-db    4
-db 0F9h	; ˘
-db    0
-db    0
-db    0
-db  16h
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  67h	; g
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db    0
-db    1
-db  6Ah	; j
-db    1
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db 0E0h	; ‡
-db  47h	; G
-db  40h	; @
-db    0
-db  97h	; ó
-db  5Dh	; ]
-db  40h	; @
-db    0
-db  10h
-db  3Eh	; >
-db    0
-db    0
-db    1
-db  12h
-db  0Eh
-db    0
-db    0
-db  17h
-db  66h	; f
-db  70h	; p
-db  69h	; i
-db    0
-db    1
-db  6Ah	; j
-db  12h
-db  0Eh
-db    0
 db    0
 db    2
-db  91h	; ë
+db  77h	; w
 db    0
-db  18h
-db  62h	; b
-db  65h	; e
 db    0
-db    1
-db  6Ah	; j
-db  69h	; i
-db    0
-db    0
-db    0
-db  85h	; Ö
-db  3Fh	; ?
-db    0
-db    0
-db  17h
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  6Ah	; j
-db  1Bh
-db    4
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db  17h
-db  6Bh	; k
-db  69h	; i
-db  6Eh	; n
-db  64h	; d
-db  70h	; p
-db    0
-db    1
-db  6Ah	; j
-db 0C1h	; ¡
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db  18h
-db  6Dh	; m
-db  6Fh	; o
-db  64h	; d
-db  65h	; e
-db    0
-db    1
-db  6Ah	; j
-db  69h	; i
-db    0
-db    0
-db    0
-db    8
-db  40h	; @
-db    0
-db    0
-db  18h
-db  6Eh	; n
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  6Ah	; j
-db  69h	; i
-db    0
-db    0
-db    0
-db  34h	; 4
-db  40h	; @
-db    0
-db    0
-db  17h
-db  64h	; d
-db  65h	; e
-db  63h	; c
-db  70h	; p
-db  74h	; t
-db    0
-db    1
-db  6Bh	; k
-db 0C1h	; ¡
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db  18h
-db  17h
-db  72h	; r
-db  76h	; v
-db  65h	; e
-db    0
-db    1
-db  6Bh	; k
-db  18h
-db  0Eh
-db    0
-db    0
-db    2
-db  91h	; ë
-db  1Ch
-db  19h
-db  62h	; b
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  54h	; T
-db  40h	; @
-db    0
-db    0
-db  19h
-db  62h	; b
-db  32h	; 2
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db 0A7h	; ß
-db  40h	; @
-db    0
-db    0
-db  19h
-db  62h	; b
-db  35h	; 5
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  1Bh
-db  42h	; B
-db    0
-db    0
-db  19h
-db  62h	; b
-db  65h	; e
-db  30h	; 0
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  93h	; ì
-db  42h	; B
-db    0
-db    0
-db  19h
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db 0CBh	; À
-db  42h	; B
-db    0
-db    0
-db  19h
-db  69h	; i
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db 0E2h	; ‚
-db  43h	; C
-db    0
-db    0
-db  19h
-db  69h	; i
-db  65h	; e
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  47h	; G
-db  44h	; D
-db    0
-db    0
-db  19h
-db  69h	; i
-db  6Ch	; l
-db  69h	; i
-db  6Dh	; m
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  97h	; ó
-db  44h	; D
-db    0
-db    0
-db  19h
-db  69h	; i
-db  6Ch	; l
-db  69h	; i
-db  6Dh	; m
-db  30h	; 0
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db 0B1h	; ±
-db  46h	; F
-db    0
-db    0
-db  19h
-db  69h	; i
-db  6Ch	; l
-db  69h	; i
-db  6Dh	; m
-db  31h	; 1
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db  14h
-db  47h	; G
-db    0
-db    0
-db  19h
-db  69h	; i
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db    0
-db    1
-db  90h	; ê
-db  69h	; i
-db    0
-db    0
-db    0
-db 0C4h	; ƒ
-db  47h	; G
-db    0
-db    0
-db  19h
-db  6Ah	; j
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  97h	; ó
-db  49h	; I
-db    0
-db    0
-db  19h
-db  6Ah	; j
-db  32h	; 2
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db 0C1h	; ¡
-db  4Bh	; K
-db    0
-db    0
-db  19h
-db  6Bh	; k
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  3Eh	; >
-db  4Ch	; L
-db    0
-db    0
-db  19h
-db  6Bh	; k
-db  30h	; 0
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db 0BFh	; ø
-db  4Dh	; M
-db    0
-db    0
-db  19h
-db  6Bh	; k
-db  5Fh	; _
-db  63h	; c
-db  68h	; h
-db  65h	; e
-db  63h	; c
-db  6Bh	; k
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  1Bh
-db  4Eh	; N
-db    0
-db    0
-db  19h
-db  6Bh	; k
-db  69h	; i
-db  6Eh	; n
-db  64h	; d
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  7Ch	; |
-db  4Eh	; N
-db    0
-db    0
-db  19h
-db  6Ch	; l
-db  65h	; e
-db  66h	; f
-db  74h	; t
-db  72h	; r
-db  69h	; i
-db  67h	; g
-db  68h	; h
-db  74h	; t
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  59h	; Y
+db  2Bh	; +
 db  4Fh	; O
-db    0
-db    0
-db  19h
-db  6Dh	; m
-db  32h	; 2
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db 0ECh	; Ï
-db  4Fh	; O
-db    0
-db    0
-db  19h
-db  6Dh	; m
-db  35h	; 5
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db 0E5h	; Â
-db  50h	; P
-db    0
-db    0
-db  19h
-db  6Eh	; n
-db  62h	; b
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  91h	; ë
-db  69h	; i
-db    0
-db    0
-db    0
-db  64h	; d
-db  51h	; Q
-db    0
-db    0
-db  19h
-db  72h	; r
-db  64h	; d
-db  69h	; i
-db  72h	; r
-db    0
-db    1
-db  92h	; í
-db  69h	; i
-db    0
-db    0
-db    0
-db    6
-db  52h	; R
-db    0
-db    0
-db  19h
-db  73h	; s
-db  32h	; 2
-db    0
-db    1
-db  92h	; í
-db  69h	; i
-db    0
-db    0
-db    0
-db  72h	; r
-db  52h	; R
-db    0
-db    0
-db  19h
-db  73h	; s
-db  35h	; 5
-db    0
-db    1
-db  92h	; í
-db  69h	; i
-db    0
-db    0
-db    0
-db  7Bh	; {
-db  53h	; S
-db    0
-db    0
-db  19h
-db  73h	; s
-db  70h	; p
-db  65h	; e
-db  63h	; c
-db  5Fh	; _
-db  63h	; c
-db  61h	; a
-db  73h	; s
-db  65h	; e
-db    0
-db    1
-db  92h	; í
-db  69h	; i
-db    0
-db    0
-db    0
-db 0DBh	; €
-db  53h	; S
-db    0
-db    0
-db  19h
-db  74h	; t
-db  72h	; r
-db  79h	; y
-db  5Fh	; _
-db  71h	; q
-db  75h	; u
-db  69h	; i
-db  63h	; c
-db  6Bh	; k
-db    0
-db    1
-db  92h	; í
-db  69h	; i
-db    0
-db    0
-db    0
-db 0A3h	; £
-db  54h	; T
-db    0
-db    0
-db  19h
-db  4Ch	; L
-db    0
-db    1
-db  93h	; ì
-db  9Eh	; û
-db    0
-db    0
-db    0
-db 0C3h	; √
-db  54h	; T
-db    0
-db    0
-db  19h
-db  62h	; b
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db 0DBh	; €
-db  55h	; U
-db    0
-db    0
-db  19h
-db  62h	; b
-db  31h	; 1
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db  64h	; d
-db  57h	; W
-db    0
-db    0
-db  19h
-db  64h	; d
-db  65h	; e
-db  6Ch	; l
-db  74h	; t
-db  61h	; a
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db  82h	; Ç
-db  57h	; W
-db    0
-db    0
-db  19h
-db  6Dh	; m
-db  6Ch	; l
-db  6Fh	; o
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db 0A0h	; †
-db  57h	; W
-db    0
-db    0
-db  19h
-db  6Dh	; m
-db  68h	; h
-db  69h	; i
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db  39h	; 9
-db  59h	; Y
-db    0
-db    0
-db  19h
-db  6Dh	; m
-db  68h	; h
-db  69h	; i
-db  31h	; 1
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
+db  38h	; 8
+db  40h	; @
 db    0
 db 0BCh	; º
-db  5Bh	; [
-db    0
-db    0
-db  19h
-db  53h	; S
-db    0
-db    1
-db  94h	; î
-db  15h
-db    4
-db    0
-db    0
-db 0CFh	; œ
-db  5Bh	; [
-db    0
-db    0
-db  19h
-db  64h	; d
-db  32h	; 2
-db    0
-db    1
-db  95h	; ï
-db  5Fh	; _
-db    0
-db    0
-db    0
-db  51h	; Q
-db  5Dh	; ]
-db    0
-db    0
-db  19h
-db  64h	; d
-db  73h	; s
-db    0
-db    1
-db  95h	; ï
-db  5Fh	; _
-db    0
-db    0
-db    0
-db 0BFh	; ø
-db  5Dh	; ]
-db    0
-db    0
-db  19h
-db  73h	; s
-db    0
-db    1
-db  96h	; ñ
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db  38h	; 8
-db  5Fh	; _
-db    0
-db    0
-db  19h
-db  73h	; s
-db  30h	; 0
-db    0
-db    1
-db  96h	; ñ
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db 0F3h	; Û
-db  61h	; a
-db    0
-db    0
-db  1Ah
-db  64h	; d
-db    0
-db    1
-db  97h	; ó
-db 0AFh	; Ø
-db    2
-db    0
-db    0
-db    2
-db  74h	; t
-db  38h	; 8
-db  1Ah
-db  65h	; e
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  97h	; ó
-db 0AFh	; Ø
-db    2
-db    0
-db    0
-db    3
-db  74h	; t
-db 0F0h	; 
-db    0
-db  1Bh
-db  72h	; r
-db  65h	; e
-db  74h	; t
-db  5Fh	; _
-db  7Ah	; z
-db  65h	; e
-db  72h	; r
-db  6Fh	; o
-db    0
-db    1
-db 0B9h	; π
-db  69h	; i
-db  49h	; I
-db  40h	; @
-db    0
-db  1Ch
-db  66h	; f
-db  61h	; a
-db  73h	; s
-db  74h	; t
-db  5Fh	; _
-db  66h	; f
-db  61h	; a
-db  69h	; i
-db  6Ch	; l
-db  65h	; e
-db  64h	; d
-db    0
-db    1
-db  94h	; î
-db    1
-db 0B9h	; π
-db  4Eh	; N
-db  40h	; @
-db    0
-db  1Ch
-db  6Fh	; o
-db  6Eh	; n
-db  65h	; e
-db  5Fh	; _
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db  69h	; i
-db  74h	; t
-db    0
-db    1
-db  37h	; 7
-db    2
-db  38h	; 8
-db  4Fh	; O
-db  40h	; @
-db    0
-db  1Ch
-db  6Eh	; n
-db  6Fh	; o
-db  5Fh	; _
-db  64h	; d
-db  69h	; i
-db  67h	; g
-db  69h	; i
-db  74h	; t
-db  73h	; s
-db    0
-db    1
-db  32h	; 2
-db    2
-db 0C2h	; ¬
-db  51h	; Q
-db  40h	; @
-db    0
-db  1Ch
-db  72h	; r
-db  65h	; e
-db  74h	; t
-db  31h	; 1
-db    0
-db    1
-db 0D5h	; ’
-db    2
-db  64h	; d
-db  48h	; H
-db  40h	; @
-db    0
-db  1Ch
-db  62h	; b
-db  75h	; u
-db  6Dh	; m
-db  70h	; p
-db  5Fh	; _
-db  75h	; u
-db  70h	; p
-db    0
-db    1
-db 0C1h	; ¡
-db    1
-db  44h	; D
-db  5Dh	; ]
-db  40h	; @
-db    0
-db  1Ch
-db  63h	; c
-db  6Ch	; l
-db  65h	; e
-db  61h	; a
-db  72h	; r
-db  5Fh	; _
-db  74h	; t
-db  72h	; r
-db  61h	; a
-db  69h	; i
-db  6Ch	; l
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  30h	; 0
-db    0
-db    1
-db 0CDh	; Õ
-db    1
-db  43h	; C
-db  58h	; X
-db  40h	; @
-db    0
-db  1Ch
-db  73h	; s
-db  6Dh	; m
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  5Fh	; _
-db  69h	; i
-db  6Ch	; l
-db  69h	; i
-db  6Dh	; m
-db    0
-db    1
-db 0E3h	; „
-db    1
 db  0Eh
-db  54h	; T
-db  40h	; @
 db    0
-db  1Ch
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  77h	; w
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  73h	; s
+db    0
+db    0
+db    0
+db  1Dh
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
 db  72h	; r
-db  65h	; e
+db  6Dh	; m
+db  61h	; a
 db  74h	; t
+db  5Fh	; _
+db  65h	; e
+db  6Dh	; m
+db  69h	; i
+db  74h	; t
+db  5Fh	; _
+db  6Eh	; n
+db  75h	; u
+db  6Dh	; m
+db  65h	; e
+db  72h	; r
+db  69h	; i
+db  63h	; c
+db  5Fh	; _
+db  76h	; v
+db  61h	; a
+db  6Ch	; l
+db  75h	; u
+db  65h	; e
 db    0
 db    1
 db 0CEh	; Œ
-db    2
-db  48h	; H
-db  4Fh	; O
-db  40h	; @
+db    3
+db    1
+db    1
+db  88h	; à
+db  19h
 db    0
-db  1Ch
-db  72h	; r
-db  6Fh	; o
-db  75h	; u
-db  6Eh	; n
-db  64h	; d
-db  5Fh	; _
-db  39h	; 9
-db  5Fh	; _
-db  75h	; u
-db  70h	; p
+db    0
+db  19h
+db  63h	; c
 db    0
 db    1
-db  91h	; ë
-db    2
-db 0DEh	; ﬁ
-db  5Bh	; [
-db  40h	; @
+db 0CEh	; Œ
+db    3
+db 0CBh	; À
+db    0
+db    0
 db    0
 db  1Ch
-db  61h	; a
-db  63h	; c
-db  63h	; c
-db  65h	; e
-db  70h	; p
-db  74h	; t
+db  0Fh
+db    3
+db    0
 db    0
 db    1
-db  8Bh	; ã
-db    2
-db  4Ch	; L
-db  59h	; Y
-db  40h	; @
+db 0CEh	; Œ
+db    3
+db  95h	; ï
+db  0Ah
 db    0
-db  1Ch
-db  72h	; r
-db  6Fh	; o
-db  75h	; u
-db  6Eh	; n
-db  64h	; d
-db  6Fh	; o
-db  66h	; f
-db  66h	; f
 db    0
-db    1
-db 0BDh	; Ω
-db    2
-db 0A1h	; °
-db  55h	; U
-db  40h	; @
-db    0
-db  1Ch
+db  20h
+db  1Ah
+db  77h	; w
 db  63h	; c
-db  68h	; h
-db  6Fh	; o
-db  70h	; p
-db  7Ah	; z
-db  65h	; e
-db  72h	; r
-db  6Fh	; o
 db  73h	; s
 db    0
 db    1
-db 0C8h	; »
-db    2
-db 0AAh	; ™
-db  59h	; Y
-db  40h	; @
-db    0
-db  1Dh
-db  9Ah	; ö
+db 0DBh	; €
 db    3
+db 0D2h	; “
 db    0
 db    0
-db 0B7h	; ∑
-db  48h	; H
-db  40h	; @
 db    0
-db  58h	; X
-db    4
-db    0
-db    0
-db    1
-db 0B0h	; ∞
-db  97h	; ó
-db    8
-db    0
-db    0
-db  1Eh
-db 0C8h	; »
-db    3
-db    0
-db    0
-db  7Eh	; ~
-db  63h	; c
-db    0
-db    0
-db  1Eh
-db 0BBh	; ª
-db    3
-db    0
-db    0
-db  64h	; d
-db  51h	; Q
-db    0
-db    0
-db  1Eh
-db 0AFh	; Ø
-db    3
-db    0
-db    0
-db 0B6h	; ∂
-db  63h	; c
-db    0
-db    0
-db  1Fh
-db  78h	; x
-db    4
-db    0
-db    0
-db  20h
-db 0D5h	; ’
-db    3
-db    0
-db    0
-db 0EDh	; Ì
-db  63h	; c
-db    0
-db    0
-db  20h
-db 0DEh	; ﬁ
-db    3
-db    0
-db    0
-db  4Bh	; K
-db  64h	; d
-db    0
-db    0
-db  20h
-db 0E7h	; Á
-db    3
-db    0
-db    0
-db  6Ah	; j
-db  64h	; d
-db    0
-db    0
-db  20h
-db 0F0h	; 
-db    3
-db    0
-db    0
-db  9Ch	; ú
-db  66h	; f
-db    0
-db    0
-db  20h
-db 0FAh	; ˙
-db    3
-db    0
-db    0
-db 0D5h	; ’
-db  67h	; g
-db    0
-db    0
-db  20h
-db    3
-db    4
-db    0
-db    0
-db 0F3h	; Û
-db  67h	; g
-db    0
-db    0
-db  21h	; !
-db  0Dh
-db    4
-db    0
-db    0
-db  34h	; 4
-db  49h	; I
-db  40h	; @
-db    0
-db  1Dh
-db  73h	; s
-db    3
-db    0
-db    0
-db 0C1h	; ¡
-db  4Dh	; M
-db  40h	; @
-db    0
-db  98h	; ò
-db    4
-db    0
-db    0
-db    1
-db  43h	; C
-db  8Ch	; å
-db    8
-db    0
-db    0
-db  22h	; "
-db  8Fh	; è
-db    3
-db    0
-db    0
-db    0
-db  23h	; #
-db 0D6h	; ÷
-db  48h	; H
-db  40h	; @
-db    0
-db  60h	; `
-db  0Eh
-db    0
-db    0
-db    0
-db    0
-db  24h	; $
-db  73h	; s
-db    3
-db    0
-db    0
-db 0FAh	; ˙
-db  50h	; P
-db  40h	; @
-db    0
-db    2
-db  51h	; Q
-db  40h	; @
-db    0
-db    1
-db  20h
-db    2
-db 0B5h	; µ
-db    8
-db    0
-db    0
-db  1Eh
-db  8Fh	; è
-db    3
 db    0
 db    0
 db  2Dh	; -
-db  68h	; h
-db    0
-db    0
-db    0
-db  25h	; %
-db  6Ch	; l
-db  48h	; H
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db 0CAh	;  
-db    8
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db  3Ch	; <
-db  49h	; I
-db  40h	; @
-db    0
-db  9Fh	; ü
-db  0Eh
-db    0
-db    0
-db 0DFh	; ﬂ
-db    8
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db  69h	; i
-db  49h	; I
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db 0F4h	; Ù
-db    8
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db  95h	; ï
-db  49h	; I
-db  40h	; @
-db    0
-db 0C1h	; ¡
-db  0Eh
-db    0
-db    0
-db  1Ah
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    5
-db    3
-db  35h	; 5
-db  94h	; î
-db  40h	; @
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    3
-db  91h	; ë
-db  1Ch
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    1
-db  31h	; 1
-db    0
-db  25h	; %
-db 0D0h	; –
-db  49h	; I
-db  40h	; @
-db    0
-db 0C1h	; ¡
-db  0Eh
-db    0
-db    0
-db  40h	; @
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    5
-db    3
-db  31h	; 1
-db  94h	; î
-db  40h	; @
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    3
-db  91h	; ë
-db  1Ch
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    1
-db  33h	; 3
-db    0
-db  25h	; %
-db  0Ch
-db  4Ah	; J
-db  40h	; @
-db    0
-db 0C1h	; ¡
-db  0Eh
-db    0
-db    0
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
 db  66h	; f
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
 db  74h	; t
-db    0
-db    5
-db    3
-db  28h	; (
-db  94h	; î
-db  40h	; @
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    3
-db  91h	; ë
-db  1Ch
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    1
-db  38h	; 8
-db    0
-db  25h	; %
-db  33h	; 3
-db  4Ah	; J
-db  40h	; @
-db    0
-db 0F0h	; 
-db  0Eh
-db    0
-db    0
-db  82h	; Ç
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
+db  5Fh	; _
+db  78h	; x
+db  6Ch	; l
+db  64h	; d
+db  6Fh	; o
 db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  91h	; ë
-db  5Ch	; \
-db    0
-db  23h	; #
-db 0D4h	; ‘
-db  4Bh	; K
-db  40h	; @
-db    0
-db  14h
-db  0Fh
-db    0
-db    0
-db  25h	; %
-db 0A4h	; §
-db  4Dh	; M
-db  40h	; @
-db    0
-db  38h	; 8
-db  0Fh
-db    0
-db    0
-db 0A0h	; †
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db  54h	; T
-db  4Fh	; O
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db 0B5h	; µ
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db  7Ah	; z
-db  4Fh	; O
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db 0CCh	; Ã
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  24h	; $
-db  50h	; P
-db  40h	; @
-db    0
-db  5Bh	; [
-db  0Fh
-db    0
-db    0
-db 0E3h	; „
-db    9
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  84h	; Ñ
-db  50h	; P
-db  40h	; @
-db    0
-db  7Ah	; z
-db  0Fh
-db    0
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
 db    0
 db    1
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  76h	; v
-db    0
-db    0
-db  25h	; %
-db  94h	; î
-db  50h	; P
-db  40h	; @
-db    0
-db 0A3h	; £
-db  0Fh
-db    0
-db    0
-db  1Fh
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db  9Eh	; û
-db  50h	; P
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db  34h	; 4
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  25h	; %
-db 0B8h	; ∏
-db  50h	; P
-db  40h	; @
-db    0
-db  5Bh	; [
-db  0Fh
-db    0
-db    0
-db  4Bh	; K
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db 0D2h	; “
-db  50h	; P
-db  40h	; @
-db    0
-db  7Ah	; z
-db  0Fh
-db    0
-db    0
-db  69h	; i
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0B0h	; ∞
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  2Bh	; +
-db  51h	; Q
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db  8Ah	; ä
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    7
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db  76h	; v
-db    0
-db  22h	; "
-db    0
-db  25h	; %
-db  48h	; H
-db  51h	; Q
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db  9Fh	; ü
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db  90h	; ê
-db  51h	; Q
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
 db 0C3h	; √
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  35h	; 5
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
 db    6
-db    0
-db  25h	; %
-db  9Eh	; û
-db  51h	; Q
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db 0DFh	; ﬂ
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db  74h	; t
-db  52h	; R
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db 0FDh	; ˝
-db  0Ah
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  76h	; v
-db    0
-db    0
-db  23h	; #
-db 0BEh	; æ
-db  52h	; R
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db  25h	; %
-db  49h	; I
-db  53h	; S
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  2Ah	; *
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
 db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  6Bh	; k
-db  53h	; S
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  4Eh	; N
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  85h	; Ö
-db  53h	; S
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  72h	; r
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  77h	; w
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  9Fh	; ü
-db  53h	; S
-db  40h	; @
-db    0
-db  40h	; @
-db  10h
-db    0
-db    0
-db  90h	; ê
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db  84h	; Ñ
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db 0B6h	; ∂
-db  53h	; S
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db 0ACh	; ¨
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  73h	; s
-db    0
-db    0
-db  25h	; %
-db 0C8h	; »
-db  53h	; S
-db  40h	; @
-db    0
-db  67h	; g
-db  10h
-db    0
-db    0
-db 0CAh	;  
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  84h	; Ñ
-db  7Fh	; 
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db 0EAh	; Í
-db  53h	; S
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db 0DFh	; ﬂ
-db  0Bh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db    0
-db  23h	; #
-db 0F8h	; ¯
-db  53h	; S
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  23h	; #
-db  67h	; g
-db  54h	; T
-db  40h	; @
-db    0
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db  25h	; %
-db 0D0h	; –
-db  54h	; T
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db  0Dh
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db 0F5h	; ı
-db  54h	; T
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  31h	; 1
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  4Fh	; O
-db  55h	; U
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  55h	; U
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  65h	; e
-db  55h	; U
-db  40h	; @
-db    0
-db  40h	; @
-db  10h
-db    0
-db    0
-db  71h	; q
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  25h	; %
-db 0E7h	; Á
-db  56h	; V
-db  40h	; @
-db    0
-db  7Ah	; z
-db  0Fh
-db    0
-db    0
-db  8Fh	; è
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0ACh	; ¨
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  3Fh	; ?
-db  57h	; W
-db  40h	; @
-db    0
-db  7Ah	; z
-db  0Fh
-db    0
-db    0
-db 0B0h	; ∞
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    7
-db  91h	; ë
-db 0ACh	; ¨
-db  7Fh	; 
-db    6
-db  76h	; v
-db    0
-db  1Ch
-db    0
-db  25h	; %
-db 0D2h	; “
-db  58h	; X
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db 0D4h	; ‘
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db 0F3h	; Û
-db  58h	; X
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db 0F8h	; ¯
-db  0Ch
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db    5
-db  59h	; Y
-db  40h	; @
-db    0
-db  40h	; @
-db  10h
-db    0
-db    0
-db  16h
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0F0h	; 
-db  7Eh	; ~
-db    6
-db    0
-db  25h	; %
-db  22h	; "
-db  59h	; Y
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db  34h	; 4
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db 0F0h	; 
-db  7Eh	; ~
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  73h	; s
-db    0
-db    0
-db  25h	; %
-db  82h	; Ç
-db  59h	; Y
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db  52h	; R
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  90h	; ê
-db  59h	; Y
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db  6Eh	; n
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  23h	; #
-db    4
-db  5Ah	; Z
-db  40h	; @
-db    0
-db  60h	; `
-db  0Eh
-db    0
-db    0
-db  25h	; %
-db  2Ah	; *
-db  5Ah	; Z
-db  40h	; @
-db    0
-db  8Ch	; å
-db  10h
-db    0
-db    0
-db  97h	; ó
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db  0Ch
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    6
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db  23h	; #
-db  0Ch
-db    0
-db  25h	; %
-db  3Ah	; :
-db  5Ah	; Z
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db 0B5h	; µ
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  72h	; r
-db  5Bh	; [
-db  40h	; @
-db    0
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db 0D3h	; ”
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    4
-db  91h	; ë
-db 0B4h	; ¥
-db  7Fh	; 
-db    6
-db    0
-db  25h	; %
-db  80h	; Ä
-db  5Bh	; [
-db  40h	; @
-db    0
-db  1Ch
-db  10h
-db    0
-db    0
-db 0EFh	; Ô
-db  0Dh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    2
-db  77h	; w
-db    0
-db    0
-db  27h	; '
-db 0D5h	; ’
-db  5Ch	; \
-db  40h	; @
-db    0
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  26h	; &
-db    2
-db  74h	; t
-db    0
-db    4
-db  91h	; ë
-db  88h	; à
-db  7Fh	; 
-db    6
-db  26h	; &
-db    2
-db  74h	; t
-db    4
-db    1
-db  3Ah	; :
-db  26h	; &
-db    2
-db  74h	; t
-db    8
-db    4
-db  91h	; ë
-db 0A8h	; ®
-db  7Fh	; 
-db    6
-db    0
-db    0
-db    3
-db    4
-db  72h	; r
-db    2
-db    0
-db    0
-db    3
-db    4
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db  0Bh
-db  5Fh	; _
-db    0
-db    0
-db    0
-db  29h	; )
-db  0Eh
-db    0
-db    0
-db  28h	; (
-db    0
-db  29h	; )
-db  5Fh	; _
-db  5Fh	; _
-db  62h	; b
-db  69h	; i
-db  67h	; g
-db  74h	; t
-db  65h	; e
-db  6Eh	; n
-db  73h	; s
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  28h	; (
-db    2
-db  41h	; A
-db  0Eh
-db    0
-db    0
-db    1
-db    1
-db  2Ah	; *
-db  1Eh
-db  0Eh
-db    0
-db    0
-db  29h	; )
-db  5Fh	; _
-db  5Fh	; _
-db  74h	; t
-db  65h	; e
-db  6Eh	; n
-db  73h	; s
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  28h	; (
-db    2
-db  5Bh	; [
-db  0Eh
-db    0
-db    0
-db    1
-db    1
-db  2Ah	; *
-db  1Eh
-db  0Eh
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  42h	; B
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  2Bh	; +
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db  82h	; Ç
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Dh	; -
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  42h	; B
-db  66h	; f
-db  72h	; r
-db  65h	; e
-db  65h	; e
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  2Ch	; ,
-db    2
-db    1
-db    1
-db  9Fh	; ü
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  74h	; t
-db  72h	; r
-db  61h	; a
-db  69h	; i
-db  6Ch	; l
-db  7Ah	; z
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  4Fh	; O
-db    2
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    1
-db 0C1h	; ¡
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Eh	; n
-db  72h	; r
-db  76h	; v
-db  5Fh	; _
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  45h	; E
-db    2
-db    1
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db    1
-db 0F0h	; 
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db  2Ch	; ,
-db  18h
-db  0Eh
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  62h	; b
-db  32h	; 2
-db  64h	; d
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  34h	; 4
-db    2
-db    1
-db  5Fh	; _
-db    0
-db    0
-db    0
-db    1
-db  14h
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db 0C1h	; ¡
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  72h	; r
-db  76h	; v
-db  5Fh	; _
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  4Ah	; J
-db    2
-db    1
-db 0BBh	; ª
-db    0
-db    0
-db    0
-db    1
+db  70h	; p
 db  38h	; 8
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Dh	; -
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  72h	; r
-db  73h	; s
-db  68h	; h
-db  69h	; i
-db  66h	; f
-db  74h	; t
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  49h	; I
-db    2
-db    1
-db    1
-db  5Bh	; [
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  69h	; i
-db  32h	; 2
-db  62h	; b
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  3Eh	; >
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db  7Ah	; z
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  70h	; p
-db  6Fh	; o
-db  77h	; w
-db  35h	; 5
-db  6Dh	; m
-db  75h	; u
-db  6Ch	; l
-db  74h	; t
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  46h	; F
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db 0A3h	; £
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  75h	; u
-db  6Ch	; l
-db  74h	; t
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  43h	; C
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db 0C8h	; »
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Ch	; l
-db  73h	; s
-db  68h	; h
-db  69h	; i
-db  66h	; f
-db  74h	; t
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  41h	; A
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db 0EFh	; Ô
-db  0Fh
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  75h	; u
-db  6Ch	; l
-db  74h	; t
-db  61h	; a
-db  64h	; d
-db  64h	; d
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  44h	; D
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db  1Ch
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db  2Ch	; ,
-db  69h	; i
-db    0
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  63h	; c
-db  6Dh	; m
-db  70h	; p
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  35h	; 5
-db    2
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    1
-db  40h	; @
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  71h	; q
-db  75h	; u
-db  6Fh	; o
-db  72h	; r
-db  65h	; e
-db  6Dh	; m
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  47h	; G
-db    2
-db    1
-db  69h	; i
-db    0
-db    0
-db    0
-db    1
-db  67h	; g
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Bh	; +
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  64h	; d
-db  69h	; i
-db  66h	; f
-db  66h	; f
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    2
-db  39h	; 9
-db    2
-db    1
-db  15h
-db    4
-db    0
-db    0
-db    1
-db  8Ch	; å
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db  2Ch	; ,
-db  15h
-db    4
-db    0
-db    0
-db    0
-db  2Eh	; .
-db    1
-db  6Dh	; m
-db  65h	; e
-db  6Dh	; m
-db  63h	; c
-db  70h	; p
-db  79h	; y
-db    0
-db    1
-db 0B0h	; ∞
-db  10h
-db    0
-db    0
-db    1
-db    1
-db 0B0h	; ∞
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db 0B0h	; ∞
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db 0B2h	; ≤
-db  10h
-db    0
-db    0
-db  2Ch	; ,
-db 0C7h	; «
-db    0
-db    0
-db    0
-db    0
-db  2Fh	; /
-db    4
-db    3
-db    4
-db 0B8h	; ∏
-db  10h
-db    0
-db    0
-db  30h	; 0
-db    0
-db  68h	; h
-db    4
-db    0
-db    0
-db    2
-db    0
-db 0CCh	; Ã
-db  1Fh
-db    0
-db    0
-db    4
-db    1
-db  47h	; G
-db  4Eh	; N
-db  55h	; U
-db  20h
-db  43h	; C
-db  20h
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db    0
-db    1
-db  63h	; c
-db  3Ah	; :
-db  2Fh	; /
-db  63h	; c
-db  72h	; r
-db  6Fh	; o
-db  73h	; s
-db  73h	; s
-db  64h	; d
-db  65h	; e
-db  76h	; v
-db  2Fh	; /
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  73h	; s
-db  76h	; v
-db  6Eh	; n
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  73h	; s
-db  63h	; c
-db  2Fh	; /
-db  77h	; w
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  6Dh	; m
-db  62h	; b
-db  2Eh	; .
-db  63h	; c
-db    0
-db 0A0h	; †
-db  5Dh	; ]
 db  40h	; @
 db    0
-db  9Eh	; û
-db  5Fh	; _
-db  40h	; @
-db    0
-db 0FDh	; ˝
-db  29h	; )
-db    0
-db    0
-db    2
-db    1
-db    6
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    3
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  5Fh	; _
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db  77h	; w
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db  5Fh	; _
-db  74h	; t
-db    0
-db    2
-db 0ADh	; ≠
-db    1
-db  9Eh	; û
-db    0
-db    0
-db    0
-db    2
-db    2
-db    7
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    4
-db    4
-db  60h	; `
-db    0
-db    0
-db    0
-db    4
-db    4
-db  87h	; á
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db    4
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    8
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    2
-db    5
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db  6Dh	; m
-db  62h	; b
-db  73h	; s
-db  74h	; t
-db  61h	; a
-db  74h	; t
-db  65h	; e
-db  5Fh	; _
-db  74h	; t
-db    0
-db    3
-db 0A8h	; ®
-db    3
-db  87h	; á
-db    0
-db    0
-db    0
-db    2
-db    8
-db    4
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    4
-db    4
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  0Ch
-db    4
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    4
-db    4
-db  56h	; V
-db    1
-db    0
-db    0
-db    5
 db  8Eh	; é
-db    0
-db    0
-db    0
-db    2
-db    1
-db    6
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    8
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    6
-db  5Fh	; _
-db  5Fh	; _
-db  77h	; w
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  63h	; c
-db  70h	; p
-db    0
-db    1
-db  12h
-db    1
-db  87h	; á
-db    0
-db    0
-db    0
-db 0A0h	; †
-db  5Dh	; ]
-db  40h	; @
-db    0
-db  3Ch	; <
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  4Bh	; K
-db  68h	; h
-db    0
-db    0
-db    1
-db  62h	; b
-db    2
-db    0
-db    0
-db    7
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  12h
-db 0D1h	; —
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db    8
-db  77h	; w
-db  63h	; c
-db    0
-db    1
-db  12h
-db  8Eh	; é
-db    0
-db    0
-db    0
-db 0AAh	; ™
-db  68h	; h
-db    0
-db    0
-db    7
-db  63h	; c
-db  70h	; p
-db    0
-db    1
-db  12h
-db  62h	; b
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    7
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    1
-db  13h
-db  62h	; b
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db    9
-db 0D0h	; –
-db  5Dh	; ]
-db  40h	; @
-db    0
-db  38h	; 8
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  0Ah
-db  69h	; i
-db  6Eh	; n
-db  76h	; v
-db  61h	; a
-db  6Ch	; l
-db  69h	; i
-db  64h	; d
-db  5Fh	; _
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    1
-db  21h	; !
-db  87h	; á
-db    0
-db    0
-db    0
-db 0CAh	;  
-db  68h	; h
-db    0
-db    0
-db  0Ah
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db    0
-db    1
-db  23h	; #
-db  87h	; á
-db    0
-db    0
-db    0
-db 0EAh	; Í
-db  68h	; h
-db    0
-db    0
-db  0Bh
-db  19h
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  57h	; W
-db    2
-db    0
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db    8
-db    6
-db  0Ch
-db    2
-db  74h	; t
-db    4
-db    1
-db  30h	; 0
-db  0Ch
-db    2
-db  74h	; t
-db    8
-db    2
-db  91h	; ë
-db  5Ch	; \
-db  0Ch
-db    2
-db  74h	; t
-db  0Ch
-db    1
-db  31h	; 1
-db  0Ch
-db    2
-db  74h	; t
-db  10h
-db    3
-db  91h	; ë
-db    0
-db    6
-db  0Ch
-db    2
-db  74h	; t
-db  14h
-db    3
-db  91h	; ë
-db  0Ch
-db    6
-db  0Ch
-db    2
-db  74h	; t
-db  18h
-db    1
-db  30h	; 0
-db  0Ch
-db    2
-db  74h	; t
-db  1Ch
-db    2
-db  91h	; ë
-db  6Ch	; l
-db    0
-db  0Dh
-db  2Dh	; -
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  5Ah	; Z
-db    4
-db    0
-db    0
-db    0
-db    0
-db    5
-db  77h	; w
-db    0
-db    0
-db    0
-db  0Eh
-db    1
-db  77h	; w
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  6Dh	; m
-db  62h	; b
-db    0
-db    3
-db 0AFh	; Ø
-db    3
-db    1
-db  68h	; h
-db    0
-db    0
-db    0
-db  40h	; @
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  92h	; í
-db  5Eh	; ^
-db  40h	; @
-db    0
-db 0FDh	; ˝
-db  68h	; h
-db    0
-db    0
-db    1
-db 0F3h	; Û
-db    2
-db    0
-db    0
-db    7
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  30h	; 0
-db 0D1h	; —
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db    7
-db  77h	; w
-db  63h	; c
-db    0
-db    1
-db  30h	; 0
-db  8Eh	; é
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    7
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  30h	; 0
-db 0F3h	; Û
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db  0Fh
-db  40h	; @
-db    3
-db    0
-db    0
-db    1
-db  32h	; 2
-db 0F9h	; ˘
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  6Bh	; k
-db  0Ah
-db  74h	; t
-db  6Dh	; m
-db  70h	; p
-db  5Fh	; _
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  33h	; 3
-db 0D1h	; —
-db    0
-db    0
-db    0
-db  29h	; )
-db  69h	; i
-db    0
-db    0
-db  10h
-db  82h	; Ç
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  84h	; Ñ
-db    1
-db    0
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    0
-db    2
-db  73h	; s
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    4
-db    2
-db  76h	; v
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db  0Ch
-db    2
-db  77h	; w
-db    0
-db    0
-db    0
-db    4
-db    4
-db  1Ch
-db    1
-db    0
-db    0
-db  11h
-db  60h	; `
-db    0
-db    0
-db    0
-db    9
-db    3
-db    0
-db    0
-db  12h
-db 0DDh	; ›
-db    0
-db    0
-db    0
-db    4
-db    0
-db  0Eh
-db    1
-db  77h	; w
-db  63h	; c
-db  73h	; s
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  6Dh	; m
-db  62h	; b
-db  73h	; s
-db    0
-db    3
-db 0B0h	; ∞
-db    3
-db    1
-db  68h	; h
-db    0
-db    0
-db    0
-db 0A0h	; †
-db  5Eh	; ^
-db  40h	; @
-db    0
-db  9Eh	; û
-db  5Fh	; _
-db  40h	; @
-db    0
-db  56h	; V
-db  69h	; i
-db    0
-db    0
-db    1
-db  0Eh
-db    4
-db    0
-db    0
-db    8
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  38h	; 8
-db 0D1h	; —
-db    0
-db    0
-db    0
-db  82h	; Ç
-db  6Ah	; j
-db    0
-db    0
-db    7
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db    0
-db    1
-db  38h	; 8
-db  0Eh
-db    4
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    7
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    1
-db  38h	; 8
-db  68h	; h
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    7
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  39h	; 9
-db 0F3h	; Û
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db  0Ah
-db  72h	; r
-db  65h	; e
-db  74h	; t
-db    0
-db    1
-db  3Bh	; ;
-db  87h	; á
-db    0
-db    0
-db    0
-db 0CEh	; Œ
-db  6Ah	; j
-db    0
-db    0
-db  0Ah
-db  6Eh	; n
-db    0
-db    1
-db  3Ch	; <
-db  68h	; h
-db    0
-db    0
-db    0
-db  30h	; 0
-db  6Bh	; k
-db    0
-db    0
-db  0Ah
-db  63h	; c
-db  70h	; p
-db    0
-db    1
 db  3Dh	; =
-db  62h	; b
-db    2
-db    0
-db    0
-db 0AEh	; Æ
-db  6Bh	; k
-db    0
-db    0
-db  0Ah
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    1
-db  3Eh	; >
-db  62h	; b
-db    2
-db    0
-db    0
-db 0CDh	; Õ
-db  6Bh	; k
-db    0
-db    0
-db  0Ah
-db  70h	; p
-db  77h	; w
-db  63h	; c
-db    0
-db    1
-db  3Fh	; ?
-db  50h	; P
-db    1
-db    0
-db    0
-db  0Ch
-db  6Ch	; l
-db    0
-db    0
-db  13h
-db  50h	; P
-db  5Fh	; _
 db  40h	; @
-db    0
-db  9Eh	; û
-db  5Fh	; _
-db  40h	; @
-db    0
-db 0EDh	; Ì
-db    3
-db    0
-db    0
-db  0Fh
-db  40h	; @
-db    3
-db    0
-db    0
-db    1
-db  57h	; W
-db 0F9h	; ˘
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  5Bh	; [
-db  10h
-db  8Dh	; ç
-db  5Fh	; _
-db  40h	; @
-db    0
-db  84h	; Ñ
-db    1
-db    0
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    8
-db    3
-db  91h	; ë
-db  4Ch	; L
-db    6
-db  0Ch
-db    2
-db  74h	; t
-db  0Ch
-db    2
-db  77h	; w
-db    0
-db    0
-db    0
-db  10h
-db  0Eh
-db  5Fh	; _
-db  40h	; @
-db    0
-db  84h	; Ñ
-db    1
-db    0
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    0
-db  0Ch
-db    2
-db  74h	; t
-db    8
-db    3
-db  91h	; ë
-db  4Ch	; L
-db    6
-db  0Ch
-db    2
-db  74h	; t
-db  0Ch
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db    4
-db    4
-db  50h	; P
-db    1
-db    0
-db    0
-db  14h
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db  15h
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  5Fh	; _
-db  67h	; g
-db  65h	; e
-db  74h	; t
-db  5Fh	; _
-db  63h	; c
-db  6Fh	; o
-db  64h	; d
-db  65h	; e
-db  70h	; p
-db  61h	; a
-db  67h	; g
-db  65h	; e
-db    0
-db    4
-db    9
-db  38h	; 8
-db    4
-db    0
-db    0
-db    1
-db    1
-db    4
-db    4
-db  14h
-db    4
-db    0
-db    0
-db  15h
-db  5Fh	; _
-db  69h	; i
-db  6Dh	; m
-db  70h	; p
-db  5Fh	; _
-db  5Fh	; _
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  63h	; c
-db  75h	; u
-db  72h	; r
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    5
-db  65h	; e
-db 0D7h	; ◊
-db    0
-db    0
-db    0
-db    1
-db    1
-db  16h
-db    1
-db  5Fh	; _
-db  65h	; e
-db  72h	; r
-db  72h	; r
-db  6Eh	; n
-db  6Fh	; o
-db    0
-db    5
-db  8Ah	; ä
-db    1
-db 0D7h	; ◊
-db    0
-db    0
-db    0
-db    1
-db    0
-db 0E7h	; Á
-db    5
-db    0
-db    0
-db    2
-db    0
-db 0F8h	; ¯
-db  20h
-db    0
-db    0
-db    4
-db    1
-db  47h	; G
-db  4Eh	; N
-db  55h	; U
-db  20h
-db  43h	; C
-db  20h
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db    0
-db    1
-db  63h	; c
-db  3Ah	; :
-db  2Fh	; /
-db  63h	; c
-db  72h	; r
-db  6Fh	; o
-db  73h	; s
-db  73h	; s
-db  64h	; d
-db  65h	; e
-db  76h	; v
-db  2Fh	; /
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  73h	; s
-db  76h	; v
-db  6Eh	; n
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  73h	; s
-db  63h	; c
-db  2Fh	; /
-db  6Dh	; m
-db  62h	; b
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  77h	; w
-db  63h	; c
-db  2Eh	; .
-db  63h	; c
-db    0
-db 0A0h	; †
-db  5Fh	; _
-db  40h	; @
-db    0
-db  45h	; E
-db  63h	; c
-db  40h	; @
-db    0
-db  6Eh	; n
-db  2Bh	; +
-db    0
-db    0
-db    2
-db    1
-db    6
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    3
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  5Fh	; _
-db  74h	; t
-db    0
-db    2
-db  75h	; u
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db  77h	; w
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db  5Fh	; _
-db  74h	; t
-db    0
-db    2
-db 0ADh	; ≠
-db    1
-db  9Eh	; û
-db    0
-db    0
-db    0
-db    2
-db    2
-db    7
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    4
-db    4
-db  8Eh	; é
-db    0
-db    0
-db    0
-db    4
-db    4
-db  87h	; á
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db    4
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    8
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    2
-db    5
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db  6Dh	; m
-db  62h	; b
-db  73h	; s
-db  74h	; t
-db  61h	; a
-db  74h	; t
-db  65h	; e
-db  5Fh	; _
-db  74h	; t
-db    0
-db    3
-db 0A8h	; ®
-db    3
-db  87h	; á
-db    0
-db    0
-db    0
-db    2
-db    8
-db    4
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    4
-db    4
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  0Ch
-db    4
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    1
-db    6
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    8
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    5
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  62h	; b
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  77h	; w
-db  63h	; c
-db  5Fh	; _
-db  63h	; c
-db  70h	; p
-db    0
-db    1
-db  10h
-db    1
-db  87h	; á
-db    0
-db    0
-db    0
-db 0A0h	; †
-db  5Fh	; _
-db  40h	; @
-db    0
-db  39h	; 9
-db  61h	; a
-db  40h	; @
-db    0
-db  6Eh	; n
-db  6Ch	; l
-db    0
-db    0
-db    1
-db 0D7h	; ◊
-db    2
-db    0
-db    0
-db    6
-db  70h	; p
-db  77h	; w
-db  63h	; c
-db    0
-db    1
-db  10h
-db 0D1h	; —
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db    6
-db  73h	; s
-db    0
-db    1
-db  10h
-db 0D7h	; ◊
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    6
-db  6Eh	; n
-db    0
-db    1
-db  11h
-db  68h	; h
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    6
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  11h
-db 0E2h	; ‚
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db    6
-db  63h	; c
-db  70h	; p
-db    0
-db    1
-db  12h
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  10h
-db    6
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    1
-db  12h
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  14h
-db    7
-db    4
-db    1
-db  14h
-db  10h
-db    2
-db    0
-db    0
-db    8
-db  76h	; v
-db  61h	; a
-db  6Ch	; l
-db    0
-db    1
-db  15h
-db  1Ch
-db    1
-db    0
-db    0
-db    8
-db  6Dh	; m
-db  62h	; b
-db  63h	; c
-db  73h	; s
-db    0
-db    1
-db  16h
-db 0EDh	; Ì
-db    2
-db    0
-db    0
-db    0
-db    9
-db  73h	; s
-db  68h	; h
-db  69h	; i
-db  66h	; f
-db  74h	; t
-db  5Fh	; _
-db  73h	; s
-db  74h	; t
-db  61h	; a
-db  74h	; t
-db  65h	; e
-db    0
-db    1
-db  17h
-db 0F0h	; 
-db    1
-db    0
-db    0
-db    2
-db  91h	; ë
-db  6Ch	; l
-db  0Ah
-db 0FBh	; ˚
-db  5Fh	; _
-db  40h	; @
-db    0
-db  38h	; 8
-db    2
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db  10h
-db    6
-db    0
-db  0Ah
-db  3Eh	; >
-db  60h	; `
-db  40h	; @
-db    0
-db  6Bh	; k
-db    2
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db  10h
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db    4
-db    1
-db  38h	; 8
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    2
-db  73h	; s
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    1
-db  32h	; 2
-db  0Bh
-db    2
-db  74h	; t
-db  10h
-db    3
-db  91h	; ë
-db    0
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    1
-db  31h	; 1
-db    0
-db  0Ah
-db 0BAh	; ∫
-db  60h	; `
-db  40h	; @
-db    0
-db  9Eh	; û
-db    2
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    3
-db  91h	; ë
-db  10h
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db    4
-db    1
-db  38h	; 8
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    2
-db  91h	; ë
-db  6Ch	; l
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    1
-db  32h	; 2
-db  0Bh
-db    2
-db  74h	; t
-db  10h
-db    3
-db  91h	; ë
-db    0
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    1
-db  31h	; 1
-db    0
-db  0Ch
-db 0C6h	; ∆
-db  60h	; `
-db  40h	; @
-db    0
-db 0D9h	; Ÿ
-db    5
-db    0
 db    0
 db  0Dh
-db    4
-db  61h	; a
-db  40h	; @
+db  2Eh	; .
 db    0
-db  0Bh
-db    2
-db  74h	; t
 db    0
-db    3
-db  91h	; ë
-db  10h
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db    4
 db    1
-db  38h	; 8
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    2
-db  73h	; s
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    1
-db  31h	; 1
-db  0Bh
-db    2
-db  74h	; t
-db  10h
-db    3
-db  91h	; ë
-db    0
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    1
-db  31h	; 1
-db    0
-db    0
-db    4
-db    4
-db 0DDh	; ›
-db    2
-db    0
-db    0
-db  0Eh
-db  60h	; `
-db    0
-db    0
-db    0
-db    4
-db    4
+db  6Fh	; o
 db  1Ch
+db    0
+db    0
+db  23h	; #
+db  78h	; x
+db    0
 db    1
-db    0
-db    0
+db 0C3h	; √
+db    6
 db  0Eh
-db  77h	; w
+db    4
 db    0
 db    0
+db    2
+db  91h	; ë
 db    0
+db  2Eh	; .
 db  0Fh
-db  60h	; `
-db    0
-db    0
-db    0
-db 0FDh	; ˝
-db    2
-db    0
-db    0
-db  10h
-db 0DDh	; ›
-db    0
-db    0
-db    0
 db    3
-db    0
-db  11h
-db    1
-db  6Dh	; m
-db  62h	; b
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  77h	; w
-db  63h	; c
-db    0
-db    3
-db 0ADh	; ≠
-db    3
-db    1
-db  68h	; h
-db    0
-db    0
-db    0
-db  40h	; @
-db  61h	; a
-db  40h	; @
-db    0
-db 0B2h	; ≤
-db  61h	; a
-db  40h	; @
-db    0
-db 0CFh	; œ
-db  6Dh	; m
 db    0
 db    0
 db    1
-db 0B1h	; ±
-db    3
-db    0
-db    0
+db 0C3h	; √
 db    6
-db  70h	; p
-db  77h	; w
-db  63h	; c
+db  95h	; ï
+db  0Ah
 db    0
-db    1
-db  60h	; `
-db 0D1h	; —
 db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db    6
-db  73h	; s
-db    0
-db    1
-db  60h	; `
-db 0D7h	; ◊
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    6
-db  6Eh	; n
-db    0
-db    1
-db  61h	; a
-db  68h	; h
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    6
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  61h	; a
-db 0E2h	; ‚
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db  12h
-db  58h	; X
-db    3
-db    0
-db    0
-db    1
-db  63h	; c
-db  1Ch
-db    1
-db    0
-db    0
-db    5
-db    3
-db 0C4h	; ƒ
-db 0A3h	; £
-db  40h	; @
-db    0
-db  12h
-db  4Ch	; L
-db    3
-db    0
-db    0
-db    1
-db  64h	; d
-db  8Eh	; é
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db  6Eh	; n
-db  13h
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  65h	; e
-db 0D1h	; —
-db    0
-db    0
-db    0
-db 0FCh	; ¸
-db  6Dh	; m
-db    0
-db    0
-db  14h
-db 0A2h	; ¢
-db  61h	; a
-db  40h	; @
-db    0
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    4
-db    3
-db  91h	; ë
-db    4
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    3
-db  91h	; ë
-db    8
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    2
-db  73h	; s
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    2
-db  77h	; w
-db    0
-db    0
-db    0
-db  11h
-db    1
-db  6Dh	; m
-db  62h	; b
-db  73h	; s
-db  72h	; r
-db  74h	; t
-db  6Fh	; o
-db  77h	; w
-db  63h	; c
-db  73h	; s
-db    0
-db    3
-db 0AEh	; Æ
-db    3
-db    1
-db  68h	; h
-db    0
-db    0
-db    0
-db 0C0h	; ¿
-db  61h	; a
-db  40h	; @
-db    0
-db 0E8h	; Ë
-db  62h	; b
-db  40h	; @
-db    0
-db  29h	; )
-db  6Eh	; n
-db    0
-db    0
-db    1
-db 0F1h	; Ò
-db    4
-db    0
-db    0
-db  15h
-db  64h	; d
-db  73h	; s
-db  74h	; t
-db    0
-db    1
-db  6Dh	; m
-db 0D1h	; —
-db    0
-db    0
-db    0
-db  0Ch
-db  6Fh	; o
-db    0
-db    0
-db    6
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db    0
-db    1
-db  6Dh	; m
-db 0F1h	; Ò
-db    4
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    6
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    1
-db  6Eh	; n
-db  68h	; h
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    6
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  6Eh	; n
-db 0E2h	; ‚
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db  0Ch
-db  13h
-db  72h	; r
-db  65h	; e
-db  74h	; t
-db    0
-db    1
-db  70h	; p
-db  87h	; á
-db    0
-db    0
-db    0
-db  42h	; B
-db  6Fh	; o
-db    0
-db    0
-db  13h
-db  6Eh	; n
-db    0
-db    1
-db  71h	; q
-db  68h	; h
-db    0
-db    0
-db    0
-db  8Eh	; é
-db  6Fh	; o
-db    0
-db    0
-db  12h
-db  58h	; X
-db    3
-db    0
-db    0
-db    1
-db  72h	; r
-db  1Ch
-db    1
-db    0
-db    0
-db    5
-db    3
-db 0C8h	; »
-db 0A3h	; £
-db  40h	; @
-db    0
-db  13h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db  65h	; e
-db  72h	; r
-db  6Eh	; n
-db  61h	; a
-db  6Ch	; l
-db  5Fh	; _
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  73h	; s
-db 0E2h	; ‚
-db    2
-db    0
-db    0
-db 0C4h	; ƒ
-db  6Fh	; o
-db    0
-db    0
-db  13h
-db  63h	; c
-db  70h	; p
-db    0
-db    1
-db  74h	; t
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db 0E3h	; „
-db  6Fh	; o
-db    0
-db    0
-db  13h
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    1
-db  75h	; u
-db 0E8h	; Ë
-db    2
-db    0
-db    0
-db    2
-db  70h	; p
-db    0
-db    0
-db  16h
-db  90h	; ê
-db  62h	; b
-db  40h	; @
-db    0
-db 0E8h	; Ë
-db  62h	; b
-db  40h	; @
-db    0
-db 0BDh	; Ω
-db    4
-db    0
-db    0
-db  17h
-db  4Ch	; L
-db    3
-db    0
-db    0
-db    1
-db  8Bh	; ã
-db  8Eh	; é
-db    0
-db    0
-db    0
-db  43h	; C
-db  70h	; p
-db    0
-db    0
-db  14h
-db 0E2h	; ‚
-db  62h	; b
-db  40h	; @
-db    0
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    2
-db  91h	; ë
-db  5Eh	; ^
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    2
-db  75h	; u
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    3
-db  91h	; ë
-db  44h	; D
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  10h
-db    2
-db  77h	; w
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    2
-db  75h	; u
-db    0
-db    0
-db    0
-db  14h
-db  5Dh	; ]
-db  62h	; b
-db  40h	; @
-db    0
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    2
-db  76h	; v
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    5
-db  77h	; w
-db    0
-db  73h	; s
-db    0
-db  1Ch
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    3
-db  91h	; ë
-db  44h	; D
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  10h
-db    3
-db  91h	; ë
-db  4Ch	; L
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    3
-db  91h	; ë
-db  48h	; H
-db    6
-db    0
-db    0
-db    4
-db    4
-db 0D7h	; ◊
-db    2
-db    0
-db    0
-db  11h
-db    1
-db  6Dh	; m
-db  62h	; b
-db  72h	; r
-db  6Ch	; l
-db  65h	; e
-db  6Eh	; n
-db    0
-db    3
-db 0ACh	; ¨
-db    3
-db    1
-db  68h	; h
-db    0
-db    0
-db    0
-db 0F0h	; 
-db  62h	; b
-db  40h	; @
-db    0
-db  45h	; E
-db  63h	; c
-db  40h	; @
-db    0
-db  63h	; c
-db  70h	; p
-db    0
-db    0
-db    1
-db  93h	; ì
-db    5
-db    0
-db    0
-db    6
-db  73h	; s
-db    0
-db    1
-db  99h	; ô
-db 0D7h	; ◊
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db    6
-db  6Eh	; n
-db    0
-db    1
-db  99h	; ô
-db  68h	; h
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db    6
-db  70h	; p
-db  73h	; s
-db    0
-db    1
-db  9Ah	; ö
-db 0E2h	; ‚
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db    9
-db  73h	; s
-db  5Fh	; _
-db  6Dh	; m
-db  62h	; b
-db  73h	; s
-db  74h	; t
-db  61h	; a
-db  74h	; t
-db  65h	; e
-db    0
-db    1
-db  9Ch	; ú
-db  1Ch
-db    1
-db    0
-db    0
-db    5
-db    3
-db 0CCh	; Ã
-db 0A3h	; £
-db  40h	; @
-db    0
-db  12h
-db  4Ch	; L
-db    3
-db    0
-db    0
-db    1
-db  9Dh	; ù
-db  8Eh	; é
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db  6Eh	; n
-db  14h
-db  3Fh	; ?
-db  63h	; c
-db  40h	; @
-db    0
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db    0
-db    2
-db  91h	; ë
-db  6Eh	; n
-db  0Bh
-db    2
-db  74h	; t
-db    4
-db    3
-db  91h	; ë
-db    0
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db    8
-db    3
-db  91h	; ë
-db    4
-db    6
-db  0Bh
-db    2
-db  74h	; t
-db  0Ch
-db    2
-db  73h	; s
-db    0
-db  0Bh
-db    2
-db  74h	; t
-db  14h
-db    2
-db  76h	; v
-db    0
-db    0
-db    0
-db  18h
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db  19h
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  5Fh	; _
-db  67h	; g
-db  65h	; e
-db  74h	; t
-db  5Fh	; _
-db  63h	; c
-db  6Fh	; o
-db  64h	; d
-db  65h	; e
-db  70h	; p
-db  61h	; a
-db  67h	; g
-db  65h	; e
-db    0
-db    4
-db    9
-db 0B7h	; ∑
-db    5
-db    0
-db    0
-db    1
-db    1
-db    4
-db    4
-db  93h	; ì
-db    5
-db    0
-db    0
-db  19h
-db  5Fh	; _
-db  69h	; i
-db  6Dh	; m
-db  70h	; p
-db  5Fh	; _
-db  5Fh	; _
-db  5Fh	; _
-db  5Fh	; _
-db  6Dh	; m
-db  62h	; b
-db  5Fh	; _
-db  63h	; c
-db  75h	; u
-db  72h	; r
-db  5Fh	; _
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db    0
-db    5
-db  65h	; e
-db 0D7h	; ◊
-db    0
-db    0
-db    0
-db    1
-db    1
-db  1Ah
-db    1
-db  5Fh	; _
-db  65h	; e
-db  72h	; r
-db  72h	; r
-db  6Eh	; n
-db  6Fh	; o
-db    0
-db    5
-db  8Ah	; ä
-db    1
-db 0D7h	; ◊
-db    0
-db    0
-db    0
-db    1
-db    0
-db  56h	; V
-db    4
-db    0
-db    0
-db    2
-db    0
-db  5Ch	; \
-db  22h	; "
-db    0
-db    0
-db    4
-db    1
-db  47h	; G
-db  4Eh	; N
-db  55h	; U
-db  20h
-db  43h	; C
-db  20h
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db    0
-db    1
-db  63h	; c
-db  3Ah	; :
-db  2Fh	; /
-db  63h	; c
-db  72h	; r
-db  6Fh	; o
-db  73h	; s
-db  73h	; s
-db  64h	; d
-db  65h	; e
-db  76h	; v
-db  2Fh	; /
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  73h	; s
-db  76h	; v
-db  6Eh	; n
-db  2Fh	; /
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  63h	; c
-db  72h	; r
-db  74h	; t
-db  2Fh	; /
-db  67h	; g
-db  64h	; d
-db  74h	; t
-db  6Fh	; o
-db  61h	; a
-db  2Fh	; /
-db  64h	; d
-db  6Dh	; m
-db  69h	; i
-db  73h	; s
-db  63h	; c
-db  2Eh	; .
-db  63h	; c
-db    0
-db  50h	; P
-db  63h	; c
-db  40h	; @
-db    0
-db  1Bh
-db  66h	; f
-db  40h	; @
-db    0
-db  1Ah
-db  2Dh	; -
-db    0
-db    0
-db    2
-db    1
-db    6
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    4
-db    7
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    2
-db    7
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    3
-db    4
-db  5Fh	; _
-db    0
-db    0
-db    0
-db    3
-db    4
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db    4
-db    7
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db    4
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    8
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    4
-db  55h	; U
-db  4Ch	; L
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db    0
-db    3
-db  35h	; 5
-db 0C9h	; …
-db    0
-db    0
-db    0
-db    2
-db    8
-db    4
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    4
-db    4
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  0Ch
-db    4
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    8
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    5
-db  69h	; i
-db    3
-db    0
-db    0
-db  18h
-db    2
-db 0D5h	; ’
-db    1
-db 0A1h	; °
-db    1
-db    0
-db    0
-db    6
-db  6Eh	; n
-db  65h	; e
-db  78h	; x
-db  74h	; t
-db    0
-db    2
-db 0D6h	; ÷
-db    1
-db 0A1h	; °
-db    1
-db    0
-db    0
-db    2
-db  23h	; #
-db    0
-db    6
-db  6Bh	; k
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    4
-db    6
-db  6Dh	; m
-db  61h	; a
-db  78h	; x
-db  77h	; w
-db  64h	; d
-db  73h	; s
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db    8
-db    6
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  0Ch
-db    6
-db  77h	; w
-db  64h	; d
-db  73h	; s
-db    0
-db    2
-db 0D7h	; ◊
-db    1
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  23h	; #
-db  10h
-db    6
-db  78h	; x
-db    0
-db    2
-db 0D8h	; ÿ
-db    1
 db 0A7h	; ß
-db    1
+db  2Eh	; .
 db    0
 db    0
-db    2
-db  23h	; #
-db  14h
-db    0
-db    3
-db    4
-db  38h	; 8
-db    1
-db    0
-db    0
-db    7
-db 0EFh	; Ô
-db    0
-db    0
-db    0
-db 0B7h	; ∑
-db    1
-db    0
-db    0
-db    8
-db 0BDh	; Ω
-db    0
-db    0
-db    0
-db    0
-db    0
-db    9
-db  69h	; i
-db    3
-db    0
-db    0
-db    2
-db 0DAh	; ⁄
-db    1
-db  38h	; 8
-db    1
-db    0
-db    0
-db  0Ah
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  72h	; r
-db  76h	; v
-db  5Fh	; _
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    1
-db  26h	; &
-db    1
-db 0B1h	; ±
-db    0
-db    0
-db    0
-db  50h	; P
-db  63h	; c
-db  40h	; @
-db    0
-db  82h	; Ç
-db  63h	; c
-db  40h	; @
-db    0
-db 0C0h	; ¿
-db  70h	; p
-db    0
-db    0
-db    1
-db  31h	; 1
-db    2
-db    0
-db    0
-db  0Bh
-db  69h	; i
-db    0
-db    1
-db  26h	; &
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db  0Ch
-db  6Ah	; j
-db    0
-db    1
-db  28h	; (
-db  77h	; w
-db    0
-db    0
-db    0
-db    4
-db  71h	; q
-db    0
-db    0
-db  0Ch
-db  6Bh	; k
-db    0
-db    1
-db  28h	; (
-db  77h	; w
-db    0
-db    0
-db    0
-db  23h	; #
-db  71h	; q
-db    0
-db    0
-db  0Ch
-db  72h	; r
-db    0
-db    1
-db  28h	; (
-db 0B7h	; ∑
-db    0
-db    0
-db    0
-db  42h	; B
-db  71h	; q
-db    0
-db    0
-db  0Dh
-db  78h	; x
-db  63h	; c
-db  40h	; @
-db    0
-db 0FAh	; ˙
-db    3
-db    0
-db    0
-db  0Eh
-db    2
-db  74h	; t
-db    0
-db    2
+db  25h	; %
 db  73h	; s
-db    0
-db    0
-db    0
-db  0Ah
-db    1
-db  5Fh	; _
-db  5Fh	; _
+db  69h	; i
+db  67h	; g
 db  6Eh	; n
-db  72h	; r
-db  76h	; v
 db  5Fh	; _
-db  61h	; a
-db  6Ch	; l
-db  6Ch	; l
-db  6Fh	; o
-db  63h	; c
-db  5Fh	; _
-db  44h	; D
-db  32h	; 2
-db  41h	; A
-db    0
-db    1
-db  38h	; 8
-db    1
-db 0B1h	; ±
-db    0
-db    0
-db    0
-db  90h	; ê
-db  63h	; c
-db  40h	; @
-db    0
-db 0D2h	; “
-db  63h	; c
-db  40h	; @
-db    0
 db  62h	; b
-db  71h	; q
-db    0
-db    0
-db    1
-db 0AEh	; Æ
-db    2
-db    0
-db    0
-db  0Fh
-db  73h	; s
-db    0
-db    1
-db  38h	; 8
-db 0B1h	; ±
-db    0
-db    0
-db    0
-db 0BEh	; æ
-db  71h	; q
-db    0
-db    0
-db  0Bh
-db  72h	; r
-db  76h	; v
-db  65h	; e
-db    0
-db    1
-db  38h	; 8
-db 0AEh	; Æ
-db    2
-db    0
-db    0
-db    2
-db  91h	; ë
-db    4
-db  0Bh
-db  6Eh	; n
-db    0
-db    1
-db  38h	; 8
-db  77h	; w
-db    0
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db  10h
-db  72h	; r
-db  76h	; v
-db    0
-db    1
-db  3Ah	; :
-db 0B1h	; ±
-db    0
-db    0
-db    0
-db    1
-db  50h	; P
-db  0Ch
+db  69h	; i
 db  74h	; t
 db    0
 db    1
+db 0C8h	; »
+db    6
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db 0DEh	; ﬁ
+db  2Eh	; .
+db    0
+db    0
+db  26h	; &
+db  7Ah	; z
+db    0
+db    1
+db 0C9h	; …
+db    6
+db  2Fh	; /
+db    8
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0B8h	; ∏
+db  7Fh	; 
 db  3Ah	; :
-db 0B1h	; ±
+db  48h	; H
+db  0Bh
+db    0
+db    0
+db  83h	; É
+db  38h	; 8
+db  40h	; @
+db    0
+db  8Ch	; å
+db  38h	; 8
+db  40h	; @
+db    0
+db    1
+db 0CDh	; Õ
+db    6
+db  22h	; "
+db  1Ah
+db    0
+db    0
+db  28h	; (
+db  60h	; `
+db  0Bh
+db    0
+db    0
+db  7Dh	; }
+db  2Fh	; /
+db    0
+db    0
+db  3Bh	; ;
+db  83h	; É
+db  38h	; 8
+db  40h	; @
+db    0
+db  88h	; à
+db  38h	; 8
+db  40h	; @
+db    0
+db  2Ah	; *
+db  6Bh	; k
+db  0Bh
+db    0
+db    0
+db 0CAh	;  
+db  2Fh	; /
 db    0
 db    0
 db    0
-db 0E8h	; Ë
-db  71h	; q
+db    0
+db  3Ah	; :
+db  18h
+db  0Ah
 db    0
 db    0
-db  0Dh
 db 0A9h	; ©
+db  38h	; 8
+db  40h	; @
+db    0
+db 0B4h	; ¥
+db  38h	; 8
+db  40h	; @
+db    0
+db    1
+db 0D9h	; Ÿ
+db    6
+db  53h	; S
+db  1Ah
+db    0
+db    0
+db  28h	; (
+db  35h	; 5
+db  0Ah
+db    0
+db    0
+db 0DDh	; ›
+db  2Fh	; /
+db    0
+db    0
+db  3Bh	; ;
+db 0A9h	; ©
+db  38h	; 8
+db  40h	; @
+db    0
+db 0B0h	; ∞
+db  38h	; 8
+db  40h	; @
+db    0
+db  2Ah	; *
+db  3Fh	; ?
+db  0Ah
+db    0
+db    0
+db  20h
+db  30h	; 0
+db    0
+db    0
+db    0
+db    0
+db  27h	; '
+db  9Bh	; õ
+db  0Ah
+db    0
+db    0
+db 0D6h	; ÷
+db  38h	; 8
+db  40h	; @
+db    0
+db 0B8h	; ∏
+db    2
+db    0
+db    0
+db    1
+db    2
+db    7
+db  2Dh	; -
+db  1Ch
+db    0
+db    0
+db  28h	; (
+db 0C7h	; «
+db  0Ah
+db    0
+db    0
+db  33h	; 3
+db  30h	; 0
+db    0
+db    0
+db  29h	; )
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db  39h	; 9
+db 0D3h	; ”
+db  0Ah
+db    0
+db    0
+db    2
+db  91h	; ë
+db  48h	; H
+db  2Ah	; *
+db 0DFh	; ﬂ
+db  0Ah
+db    0
+db    0
+db  72h	; r
+db  30h	; 0
+db    0
+db    0
+db  3Ch	; <
+db 0E9h	; È
+db  0Ah
+db    0
+db    0
+db  2Ah	; *
+db 0F5h	; ı
+db  0Ah
+db    0
+db    0
+db 0FBh	; ˚
+db  30h	; 0
+db    0
+db    0
+db  37h	; 7
+db  38h	; 8
+db    3
+db    0
+db    0
+db 0A7h	; ß
+db  1Ah
+db    0
+db    0
+db  2Ah	; *
+db    6
+db  0Bh
+db    0
+db    0
+db  56h	; V
+db  31h	; 1
+db    0
+db    0
+db    0
+db  37h	; 7
+db  60h	; `
+db    3
+db    0
+db    0
+db 0D9h	; Ÿ
+db  1Ah
+db    0
+db    0
+db  2Ah	; *
+db  12h
+db  0Bh
+db    0
+db    0
+db  99h	; ô
+db  31h	; 1
+db    0
+db    0
+db  2Ah	; *
+db  24h	; $
+db  0Bh
+db    0
+db    0
+db 0D8h	; ÿ
+db  31h	; 1
+db    0
+db    0
+db  2Bh	; +
+db  81h	; Å
+db  3Bh	; ;
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  20h
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  27h	; '
+db  3Ch	; <
+db  19h
+db    0
+db    0
+db  30h	; 0
+db  3Ch	; <
+db  40h	; @
+db    0
+db  88h	; à
+db    3
+db    0
+db    0
+db    1
+db 0AAh	; ™
+db    6
+db  57h	; W
+db  1Bh
+db    0
+db    0
+db  28h	; (
+db  6Dh	; m
+db  19h
+db    0
+db    0
+db  4Fh	; O
+db  32h	; 2
+db    0
+db    0
+db  28h	; (
+db  63h	; c
+db  19h
+db    0
+db    0
+db  78h	; x
+db  32h	; 2
+db    0
+db    0
+db  30h	; 0
+db  30h	; 0
+db  3Ch	; <
+db  40h	; @
+db    0
+db  50h	; P
+db  3Ch	; <
+db  40h	; @
+db    0
+db  32h	; 2
+db  1Bh
+db    0
+db    0
+db  2Ah	; *
+db  7Ah	; z
+db  19h
+db    0
+db    0
+db 0C7h	; «
+db  32h	; 2
+db    0
+db    0
+db  2Bh	; +
+db  4Eh	; N
+db  3Ch	; <
+db  40h	; @
+db    0
+db 0E9h	; È
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B6h	; ∂
+db  7Fh	; 
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    1
+db  31h	; 1
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  31h	; 1
+db  6Bh	; k
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  46h	; F
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  2Bh	; +
+db 0C7h	; «
+db  3Ch	; <
+db  40h	; @
+db    0
+db 0CAh	;  
+db  11h
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  31h	; 1
+db 0ACh	; ¨
+db  3Bh	; ;
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  71h	; q
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  2Dh	; -
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db 0E3h	; „
+db  3Bh	; ;
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  8Bh	; ã
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  30h	; 0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db 0F3h	; Û
+db  3Bh	; ;
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  9Fh	; ü
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db  12h
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db 0B9h	; π
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  30h	; 0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db  7Ch	; |
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db 0D3h	; ”
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  30h	; 0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db  99h	; ô
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db 0E7h	; Á
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db 0B3h	; ≥
+db  3Ch	; <
+db  40h	; @
+db    0
+db  73h	; s
+db  0Fh
+db    0
+db    0
+db 0FBh	; ˚
+db  1Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db 0EEh	; Ó
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  15h
+db  1Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  2Bh	; +
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db  2Bh	; +
+db 0FFh
+db  3Ch	; <
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  20h
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db    0
+db  31h	; 1
+db  1Ch
+db  3Dh	; =
+db  40h	; @
+db    0
+db 0BCh	; º
+db  0Eh
+db    0
+db    0
+db  4Fh	; O
+db  1Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    1
+db  30h	; 0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    5
+db    3
+db  80h	; Ä
+db  92h	; í
+db  40h	; @
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  76h	; v
+db    0
+db    0
+db  2Bh	; +
+db  2Ch	; ,
+db  3Dh	; =
+db  40h	; @
+db    0
+db 0BCh	; º
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db  73h	; s
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    5
+db    3
+db  84h	; Ñ
+db  92h	; í
+db  40h	; @
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  2Dh	; -
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db  5Fh	; _
+db  65h	; e
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    1
+db  26h	; &
+db    5
+db    1
+db  90h	; ê
+db  3Dh	; =
+db  40h	; @
+db    0
+db  3Bh	; ;
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0F4h	; Ù
+db  32h	; 2
+db    0
+db    0
+db    1
+db 0A1h	; °
+db  1Dh
+db    0
+db    0
+db  23h	; #
+db  78h	; x
+db    0
+db    1
+db  26h	; &
+db    5
+db  0Eh
+db    4
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db  2Eh	; .
+db  0Fh
+db    3
+db    0
+db    0
+db    1
+db  26h	; &
+db    5
+db  95h	; ï
+db  0Ah
+db    0
+db    0
+db  82h	; Ç
+db  33h	; 3
+db    0
+db    0
+db  34h	; 4
+db  16h
+db    3
+db    0
+db    0
+db    1
+db  2Eh	; .
+db    5
+db 0CBh	; À
+db    0
+db    0
+db    0
+db 0C7h	; «
+db  33h	; 3
+db    0
+db    0
+db  34h	; 4
+db  1Bh
+db    3
+db    0
+db    0
+db    1
+db  2Eh	; .
+db    5
+db 0CBh	; À
+db    0
+db    0
+db    0
+db 0E7h	; Á
+db  33h	; 3
+db    0
+db    0
+db  2Fh	; /
+db  28h	; (
+db    3
+db    0
+db    0
+db    1
+db  2Eh	; .
+db    5
+db  15h
+db    1
+db    0
+db    0
+db    1
+db  56h	; V
+db  27h	; '
+db  4Ah	; J
+db  17h
+db    0
+db    0
+db 0A1h	; °
+db  3Dh	; =
+db  40h	; @
+db    0
+db 0A8h	; ®
+db    3
+db    0
+db    0
+db    1
+db  38h	; 8
+db    5
+db  45h	; E
+db  1Dh
+db    0
+db    0
+db  28h	; (
+db  88h	; à
+db  17h
+db    0
+db    0
+db    7
+db  34h	; 4
+db    0
+db    0
+db  28h	; (
+db  7Dh	; }
+db  17h
+db    0
+db    0
+db  4Dh	; M
+db  34h	; 4
+db    0
+db    0
+db  28h	; (
+db  71h	; q
+db  17h
+db    0
+db    0
+db  87h	; á
+db  34h	; 4
+db    0
+db    0
+db  28h	; (
+db  67h	; g
+db  17h
+db    0
+db    0
+db 0A6h	; ¶
+db  34h	; 4
+db    0
+db    0
+db  29h	; )
+db 0C0h	; ¿
+db    3
+db    0
+db    0
+db  39h	; 9
+db  94h	; î
+db  17h
+db    0
+db    0
+db    2
+db  91h	; ë
+db  60h	; `
+db  2Bh	; +
+db 0E6h	; Ê
+db  3Dh	; =
+db  40h	; @
+db    0
+db  77h	; w
+db  0Bh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    1
+db  32h	; 2
+db  2Ch	; ,
+db    2
+db  74h	; t
+db  14h
+db    2
+db  91h	; ë
+db  5Ch	; \
+db  2Ch	; ,
+db    2
+db  74h	; t
+db  18h
+db    2
+db  91h	; ë
+db  58h	; X
+db    0
+db    0
+db    0
+db  31h	; 1
+db    2
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0D9h	; Ÿ
+db  14h
+db    0
+db    0
+db  60h	; `
+db  1Dh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db    0
+db  31h	; 1
+db  0Ah
+db  3Eh	; >
+db  40h	; @
+db    0
+db  81h	; Å
+db  23h	; #
+db    0
+db    0
+db  75h	; u
+db  1Dh
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db    0
+db    0
+db  31h	; 1
+db  2Dh	; -
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0BCh	; º
+db  0Eh
+db    0
+db    0
+db  8Fh	; è
+db  1Dh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    2
+db  76h	; v
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    2
+db  73h	; s
+db    0
+db    0
+db  2Bh	; +
+db  35h	; 5
+db  3Eh	; >
+db  40h	; @
+db    0
+db  81h	; Å
+db  23h	; #
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  3Dh	; =
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db  5Fh	; _
+db  65h	; e
+db  78h	; x
+db  70h	; p
+db  6Fh	; o
+db  6Eh	; n
+db  65h	; e
+db  6Eh	; n
+db  74h	; t
+db  5Fh	; _
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db 0ACh	; ¨
+db    1
+db 0CBh	; À
+db    0
+db    0
+db    0
+db    1
+db 0E0h	; ‡
+db  1Dh
+db    0
+db    0
+db  3Eh	; >
+db  65h	; e
+db  78h	; x
+db  70h	; p
+db  6Fh	; o
+db  6Eh	; n
+db  65h	; e
+db  6Eh	; n
+db  74h	; t
+db  5Fh	; _
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db 0AEh	; Æ
+db  15h
+db    1
+db    0
+db    0
+db    0
+db  1Dh
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db  5Fh	; _
+db  77h	; w
+db  63h	; c
+db  70h	; p
+db  75h	; u
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db 0CCh	; Ã
+db    1
+db    1
+db    1
+db  12h
+db  1Eh
+db    0
+db    0
+db  19h
+db  73h	; s
+db    0
+db    1
+db 0CCh	; Ã
+db    1
+db  1Dh
+db    4
+db    0
+db    0
+db  1Ch
+db  0Fh
+db    3
+db    0
+db    0
+db    1
+db 0CCh	; Ã
+db    1
+db  95h	; ï
+db  0Ah
+db    0
+db    0
+db    0
+db  1Dh
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db  5Fh	; _
+db  70h	; p
+db  75h	; u
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  73h	; s
+db    1
+db    1
+db    1
+db  42h	; B
+db  1Eh
+db    0
+db    0
+db  19h
+db  73h	; s
+db    0
+db    1
+db  73h	; s
+db    1
+db  3Ah	; :
+db    4
+db    0
+db    0
+db  1Ch
+db  0Fh
+db    3
+db    0
+db    0
+db    1
+db  73h	; s
+db    1
+db  95h	; ï
+db  0Ah
+db    0
+db    0
+db    0
+db  3Fh	; ?
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  5Fh	; _
+db  70h	; p
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db    0
+db    1
+db    8
+db    7
+db    1
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  40h	; @
+db  3Eh	; >
+db  40h	; @
+db    0
+db  82h	; Ç
+db  47h	; G
+db  40h	; @
+db    0
+db 0C6h	; ∆
+db  34h	; 4
+db    0
+db    0
+db    1
+db  9Ch	; ú
+db  22h	; "
+db    0
+db    0
+db  23h	; #
+db  66h	; f
+db  6Ch	; l
+db  61h	; a
+db  67h	; g
+db  73h	; s
+db    0
+db    1
+db    8
+db    7
+db 0CBh	; À
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db  23h	; #
+db  64h	; d
+db  65h	; e
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db    8
+db    7
+db  2Dh	; -
+db    5
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db  23h	; #
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    1
+db    8
+db    7
+db 0CBh	; À
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db  22h	; "
+db  66h	; f
+db  6Dh	; m
+db  74h	; t
+db    0
+db    1
+db    8
+db    7
+db  3Ah	; :
+db    4
+db    0
+db    0
+db  60h	; `
+db  35h	; 5
+db    0
+db    0
+db  22h	; "
+db  61h	; a
+db  72h	; r
+db  67h	; g
+db  76h	; v
+db    0
+db    1
+db    8
+db    7
+db  9Dh	; ù
+db    0
+db    0
+db    0
+db 0EDh	; Ì
+db  35h	; 5
+db    0
+db    0
+db  25h	; %
+db  63h	; c
+db    0
+db    1
+db  0Ah
+db    7
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  9Ch	; ú
+db  38h	; 8
+db    0
+db    0
+db  25h	; %
+db  73h	; s
+db  61h	; a
+db  76h	; v
+db  65h	; e
+db  64h	; d
+db  5Fh	; _
+db  65h	; e
+db  72h	; r
+db  72h	; r
+db  6Eh	; n
+db  6Fh	; o
+db    0
+db    1
+db  0Bh
+db    7
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  27h	; '
+db  3Ah	; :
+db    0
+db    0
+db  2Fh	; /
+db  0Fh
+db    3
+db    0
+db    0
+db    1
+db  0Dh
+db    7
+db  2Bh	; +
+db    7
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db  40h	; @
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db  5Fh	; _
+db  73h	; s
+db  63h	; c
+db  61h	; a
+db  6Eh	; n
+db    0
+db    1
+db  1Fh
+db    7
+db  27h	; '
+db 0A1h	; °
+db  1Dh
+db    0
+db    0
+db  67h	; g
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0D8h	; ÿ
+db    3
+db    0
+db    0
+db    1
+db  1Ch
+db    7
+db  49h	; I
+db  1Fh
+db    0
+db    0
+db  29h	; )
+db 0F0h	; 
+db    3
+db    0
+db    0
+db  2Ah	; *
+db 0C8h	; »
+db  1Dh
+db    0
+db    0
+db  47h	; G
+db  3Ah	; :
+db    0
+db    0
+db  31h	; 1
+db 0CEh	; Œ
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0B7h	; ∑
+db  23h	; #
+db    0
+db    0
+db  3Eh	; >
+db  1Fh
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    5
+db    3
+db  9Dh	; ù
+db  92h	; í
+db  40h	; @
+db    0
+db    0
+db  38h	; 8
+db 0E7h	; Á
+db  3Eh	; >
+db  40h	; @
+db    0
+db 0D3h	; ”
+db  23h	; #
+db    0
+db    0
+db    0
+db    0
+db  37h	; 7
+db    8
+db    4
+db    0
+db    0
+db  81h	; Å
+db  22h	; "
+db    0
+db    0
+db  26h	; &
+db  61h	; a
+db  72h	; r
+db  67h	; g
+db  76h	; v
+db  61h	; a
+db  6Ch	; l
+db    0
+db    1
+db  2Ah	; *
+db    7
+db  2Fh	; /
+db    5
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db  34h	; 4
+db  22h	; "
+db    3
+db    0
+db    0
+db    1
+db  2Bh	; +
+db    7
+db 0B3h	; ≥
+db    5
+db    0
+db    0
+db  5Ah	; Z
+db  3Ah	; :
+db    0
+db    0
+db  25h	; %
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db  67h	; g
+db  74h	; t
+db  68h	; h
+db    0
+db    1
+db  2Ch	; ,
+db    7
+db  44h	; D
+db    6
+db    0
+db    0
+db  29h	; )
+db  3Ch	; <
+db    0
+db    0
+db  25h	; %
+db  62h	; b
+db  61h	; a
+db  63h	; c
+db  6Bh	; k
+db  74h	; t
+db  72h	; r
+db  61h	; a
+db  63h	; c
+db  6Bh	; k
+db    0
+db    1
+db  31h	; 1
+db    7
+db  3Ah	; :
+db    4
+db    0
+db    0
+db  11h
+db  3Dh	; =
+db    0
+db    0
+db  25h	; %
+db  77h	; w
+db  69h	; i
+db  64h	; d
+db  74h	; t
+db  68h	; h
+db  5Fh	; _
+db  73h	; s
+db  70h	; p
+db  65h	; e
+db  63h	; c
+db    0
+db    1
+db  35h	; 5
+db    7
+db  21h	; !
+db    1
+db    0
+db    0
+db  3Ah	; :
+db  3Dh	; =
+db    0
+db    0
+db  3Ah	; :
+db  12h
+db  1Eh
+db    0
+db    0
+db  1Ch
+db  40h	; @
+db  40h	; @
+db    0
+db  24h	; $
+db  40h	; @
+db  40h	; @
+db    0
+db    1
+db  92h	; í
+db    7
+db 0DCh	; ‹
+db  1Fh
+db    0
+db    0
+db  28h	; (
+db  35h	; 5
+db  1Eh
+db    0
+db    0
+db  77h	; w
+db  3Dh	; =
+db    0
+db    0
+db  28h	; (
+db  2Bh	; +
+db  1Eh
+db    0
+db    0
+db  8Dh	; ç
+db  3Dh	; =
+db    0
+db    0
+db    0
+db  27h	; '
+db  12h
+db  1Eh
+db    0
+db    0
+db  24h	; $
+db  40h	; @
+db  40h	; @
+db    0
+db  20h
+db    4
+db    0
+db    0
+db    1
+db  95h	; ï
+db    7
+db  2Fh	; /
+db  20h
+db    0
+db    0
+db  28h	; (
+db  35h	; 5
+db  1Eh
+db    0
+db    0
+db 0A0h	; †
+db  3Dh	; =
+db    0
+db    0
+db  28h	; (
+db  2Bh	; +
+db  1Eh
+db    0
+db    0
+db 0B6h	; ∂
+db  3Dh	; =
+db    0
+db    0
+db  31h	; 1
+db  2Ch	; ,
+db  40h	; @
+db  40h	; @
+db    0
+db  9Ch	; ú
+db  23h	; #
+db    0
+db    0
+db  17h
+db  20h
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db    0
+db  2Bh	; +
+db  39h	; 9
+db  40h	; @
+db  40h	; @
+db    0
+db  1Eh
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db  73h	; s
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db    0
+db  30h	; 0
+db 0E8h	; Ë
+db  43h	; C
+db  40h	; @
+db    0
+db  14h
+db  44h	; D
+db  40h	; @
+db    0
+db  6Eh	; n
+db  20h
+db    0
+db    0
+db  26h	; &
+db  69h	; i
+db  61h	; a
+db  72h	; r
+db  67h	; g
+db  76h	; v
+db  61h	; a
+db  6Ch	; l
+db    0
+db    1
+db  72h	; r
+db    7
+db 0D2h	; “
+db    0
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0A2h	; ¢
+db  7Fh	; 
+db  2Bh	; +
+db    6
+db  44h	; D
+db  40h	; @
+db    0
+db 0E9h	; È
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0A2h	; ¢
+db  7Fh	; 
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    1
+db  31h	; 1
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db    0
+db  30h	; 0
+db 0F8h	; ¯
+db  44h	; D
+db  40h	; @
+db    0
+db  4Eh	; N
+db  45h	; E
+db  40h	; @
+db    0
+db 0DAh	; ⁄
+db  20h
+db    0
+db    0
+db  25h	; %
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    1
+db  8Eh	; é
+db    9
+db 0CBh	; À
+db    0
+db    0
+db    0
+db 0D4h	; ‘
+db  3Dh	; =
+db    0
+db    0
+db  26h	; &
+db  72h	; r
+db  70h	; p
+db  63h	; c
+db  68h	; h
+db  72h	; r
+db    0
+db    1
+db  8Eh	; é
+db    9
+db 0D2h	; “
+db    0
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0A2h	; ¢
+db  7Fh	; 
+db  26h	; &
+db  63h	; c
+db  73h	; s
+db  74h	; t
+db  61h	; a
+db  74h	; t
+db  65h	; e
+db    0
+db    1
+db  8Eh	; é
+db    9
+db  28h	; (
+db    4
+db    0
+db    0
+db    3
+db  91h	; ë
+db 0A4h	; §
+db  7Fh	; 
+db  38h	; 8
+db  11h
+db  45h	; E
+db  40h	; @
+db    0
+db  40h	; @
+db  23h	; #
+db    0
+db    0
+db  2Bh	; +
+db  34h	; 4
+db  45h	; E
+db  40h	; @
+db    0
+db  55h	; U
+db  23h	; #
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db 0A2h	; ¢
+db  7Fh	; 
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    8
+db    1
+db  40h	; @
+db  2Ch	; ,
+db    2
+db  74h	; t
+db  0Ch
+db    3
+db  91h	; ë
+db 0A4h	; §
+db  7Fh	; 
+db    0
+db    0
+db  27h	; '
+db 0E0h	; ‡
+db  1Dh
+db    0
+db    0
+db 0AAh	; ™
+db  45h	; E
+db  40h	; @
+db    0
+db  40h	; @
+db    4
+db    0
+db    0
+db    1
+db  8Ch	; å
+db    7
+db  2Dh	; -
+db  21h	; !
+db    0
+db    0
+db  28h	; (
+db    5
+db  1Eh
+db    0
+db    0
+db 0E7h	; Á
+db  3Dh	; =
+db    0
+db    0
+db  28h	; (
+db 0FBh	; ˚
+db  1Dh
+db    0
+db    0
+db 0FDh	; ˝
+db  3Dh	; =
+db    0
+db    0
+db  31h	; 1
+db 0C1h	; ¡
+db  45h	; E
+db  40h	; @
+db    0
+db 0F8h	; ¯
+db  23h	; #
+db    0
+db    0
+db  15h
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db    0
+db  2Bh	; +
+db 0CEh	; Œ
+db  45h	; E
+db  40h	; @
+db    0
+db 0E9h	; È
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db  73h	; s
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db    0
+db  31h	; 1
+db  75h	; u
+db  40h	; @
+db  40h	; @
+db    0
+db  1Eh
+db  0Eh
+db    0
+db    0
+db  4Eh	; N
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    1
+db  31h	; 1
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db 0A6h	; ¶
+db  40h	; @
+db  40h	; @
+db    0
+db  88h	; à
+db  19h
+db    0
+db    0
+db  63h	; c
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db    8
+db  41h	; A
+db  40h	; @
+db    0
+db  79h	; y
+db  10h
+db    0
+db    0
+db  79h	; y
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  36h	; 6
+db  41h	; A
+db  40h	; @
+db    0
+db  9Fh	; ü
+db  17h
+db    0
+db    0
+db  8Eh	; é
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  66h	; f
+db  41h	; A
+db  40h	; @
+db    0
+db 0FFh
+db  15h
+db    0
+db    0
+db 0A3h	; £
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  96h	; ñ
+db  41h	; A
+db  40h	; @
+db    0
+db  6Fh	; o
+db  1Ch
+db    0
+db    0
+db 0B8h	; ∏
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db 0F9h	; ˘
+db  41h	; A
+db  40h	; @
+db    0
+db  73h	; s
+db  0Fh
+db    0
+db    0
+db 0CDh	; Õ
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  51h	; Q
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  3Dh	; =
+db  42h	; B
+db  40h	; @
+db    0
+db  79h	; y
+db  10h
+db    0
+db    0
+db 0E9h	; È
+db  21h	; !
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  78h	; x
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  8Ch	; å
+db  42h	; B
+db  40h	; @
+db    0
+db  13h
+db  24h	; $
+db    0
+db    0
+db    0
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  9Ch	; ú
+db  7Fh	; 
+db    6
+db    0
+db  31h	; 1
+db  8Fh	; è
+db  43h	; C
+db  40h	; @
+db    0
+db  9Fh	; ü
+db  17h
+db    0
+db    0
+db  15h
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db 0B3h	; ≥
+db  43h	; C
+db  40h	; @
+db    0
+db 0FFh
+db  15h
+db    0
+db    0
+db  2Ah	; *
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db 0D7h	; ◊
+db  43h	; C
+db  40h	; @
+db    0
+db  6Fh	; o
+db  1Ch
+db    0
+db    0
+db  3Fh	; ?
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  2Fh	; /
+db  44h	; D
+db  40h	; @
+db    0
+db  88h	; à
+db  19h
+db    0
+db    0
+db  54h	; T
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  31h	; 1
+db  5Eh	; ^
+db  45h	; E
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  69h	; i
+db  22h	; "
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db  2Bh	; +
+db 0D1h	; —
+db  46h	; F
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  50h	; P
+db    2
+db    8
+db  25h	; %
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db    0
+db  38h	; 8
+db  5Ah	; Z
+db  3Eh	; >
+db  40h	; @
+db    0
+db  30h	; 0
+db  24h	; $
+db    0
+db    0
+db  2Bh	; +
+db 0DBh	; €
+db  3Fh	; ?
+db  40h	; @
+db    0
+db  93h	; ì
+db  0Ch
+db    0
+db    0
+db  2Ch	; ,
+db    1
+db  52h	; R
+db    3
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    0
+db    0
+db  41h	; A
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  67h	; g
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db    0
+db    8
+db  66h	; f
+db    1
+db  15h
+db    1
+db    0
+db    0
+db    1
+db 0DBh	; €
+db  22h	; "
+db    0
+db    0
+db  42h	; B
+db 0DBh	; €
+db  22h	; "
+db    0
+db    0
+db  42h	; B
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  42h	; B
+db 0E1h	; ·
+db  22h	; "
+db    0
+db    0
+db  42h	; B
+db  21h	; !
+db    1
+db    0
+db    0
+db  42h	; B
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  42h	; B
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  42h	; B
+db  21h	; !
+db    1
+db    0
+db    0
+db  42h	; B
+db 0E7h	; Á
+db  22h	; "
+db    0
+db    0
+db    0
+db    6
+db    4
+db 0C2h	; ¬
+db    9
+db    0
+db    0
+db    6
+db    4
+db  49h	; I
+db    8
+db    0
+db    0
+db    6
+db    4
+db  15h
+db    1
+db    0
+db    0
+db  43h	; C
+db    1
+db  66h	; f
+db  70h	; p
+db  75h	; u
+db  74h	; t
+db  63h	; c
+db    0
+db    6
+db 0CCh	; Ã
+db    1
+db    1
+db 0CBh	; À
+db    0
+db    0
+db    0
+db    1
+db  0Dh
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db 0CBh	; À
+db    0
+db    0
+db    0
+db  42h	; B
+db  0Dh
+db  23h	; #
+db    0
+db    0
+db    0
+db    6
+db    4
+db 0B9h	; π
+db    3
+db    0
+db    0
+db  43h	; C
+db    1
+db  77h	; w
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  6Dh	; m
+db  62h	; b
+db    0
+db    7
+db 0AFh	; Ø
+db    3
+db    1
+db 0ACh	; ¨
+db    0
+db    0
+db    0
+db    1
+db  3Ah	; :
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db  15h
+db    1
+db    0
+db    0
+db  42h	; B
+db 0D2h	; “
+db    0
+db    0
+db    0
+db  42h	; B
+db  3Ah	; :
+db  23h	; #
+db    0
+db    0
+db    0
+db    6
+db    4
+db  28h	; (
+db    4
+db    0
+db    0
+db  44h	; D
+db    1
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  61h	; a
+db  6Ch	; l
+db  65h	; e
+db  63h	; c
+db  6Fh	; o
+db  6Eh	; n
+db  76h	; v
+db    0
+db    5
+db  51h	; Q
+db    1
+db  0Bh
+db    3
+db    0
+db    0
+db    1
+db  43h	; C
+db    1
+db  6Dh	; m
+db  62h	; b
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  77h	; w
+db  63h	; c
+db    0
+db    7
+db 0ADh	; ≠
+db    3
+db    1
+db 0ACh	; ¨
+db    0
+db    0
+db    0
+db    1
+db  81h	; Å
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db  1Bh
+db    1
+db    0
+db    0
+db  42h	; B
+db  3Ah	; :
+db    4
+db    0
+db    0
+db  42h	; B
+db 0ACh	; ¨
+db    0
+db    0
+db    0
+db  42h	; B
+db  3Ah	; :
+db  23h	; #
+db    0
+db    0
+db    0
+db  45h	; E
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  66h	; f
+db  72h	; r
+db  65h	; e
+db  65h	; e
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db    0
+db    8
+db  68h	; h
+db    1
+db    1
+db  9Ch	; ú
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db  15h
+db    1
+db    0
+db    0
+db    0
+db  41h	; A
+db    1
+db  73h	; s
+db  74h	; t
+db  72h	; r
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    9
+db  36h	; 6
+db    1
+db 0ACh	; ¨
+db    0
+db    0
+db    0
+db    1
+db 0B7h	; ∑
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db  3Ah	; :
+db    4
+db    0
+db    0
+db    0
+db  43h	; C
+db    1
+db  67h	; g
+db  65h	; e
+db  74h	; t
+db  65h	; e
+db  6Eh	; n
+db  76h	; v
+db    0
+db  0Ah
+db  63h	; c
+db    1
+db    1
+db  15h
+db    1
+db    0
+db    0
+db    1
+db 0D3h	; ”
+db  23h	; #
+db    0
+db    0
+db  42h	; B
+db  3Ah	; :
+db    4
+db    0
+db    0
+db    0
+db  46h	; F
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  5Fh	; _
+db  67h	; g
+db  65h	; e
+db  74h	; t
+db  5Fh	; _
+db  6Fh	; o
+db  75h	; u
+db  74h	; t
+db  70h	; p
+db  75h	; u
+db  74h	; t
+db  5Fh	; _
+db  66h	; f
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  74h	; t
+db    0
+db    6
+db  15h
+db    2
+db    1
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db    1
+db  41h	; A
+db    1
+db  77h	; w
+db  63h	; c
+db  73h	; s
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    9
+db  7Bh	; {
+db    1
+db 0ACh	; ¨
+db    0
+db    0
+db    0
+db    1
+db  13h
+db  24h	; $
+db    0
+db    0
+db  42h	; B
+db  1Dh
+db    4
+db    0
+db    0
+db    0
+db  41h	; A
+db    1
+db  73h	; s
+db  74h	; t
+db  72h	; r
+db  65h	; e
+db  72h	; r
+db  72h	; r
+db  6Fh	; o
+db  72h	; r
+db    0
+db    9
+db  48h	; H
+db    1
+db  15h
+db    1
+db    0
+db    0
+db    1
+db  30h	; 0
+db  24h	; $
+db    0
+db    0
+db  42h	; B
+db 0CBh	; À
+db    0
+db    0
+db    0
+db    0
+db  44h	; D
+db    1
+db  5Fh	; _
+db  65h	; e
+db  72h	; r
+db  72h	; r
+db  6Eh	; n
+db  6Fh	; o
+db    0
+db  0Bh
+db  12h
+db    1
+db  21h	; !
+db    1
+db    0
+db    0
+db    1
+db    0
+db 0B6h	; ∂
+db  10h
+db    0
+db    0
+db    2
+db    0
+db  5Dh	; ]
+db  1Dh
+db    0
+db    0
+db    4
+db    1
+db  47h	; G
+db  4Eh	; N
+db  55h	; U
+db  20h
+db  43h	; C
+db  20h
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db    0
+db    1
+db  63h	; c
+db  3Ah	; :
+db  2Fh	; /
+db  63h	; c
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db  73h	; s
+db  64h	; d
+db  65h	; e
+db  76h	; v
+db  2Fh	; /
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  73h	; s
+db  76h	; v
+db  6Eh	; n
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  2Fh	; /
+db  67h	; g
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db  2Fh	; /
+db  67h	; g
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db  2Eh	; .
+db  63h	; c
+db    0
+db  90h	; ê
+db  47h	; G
+db  40h	; @
+db    0
+db  47h	; G
+db  5Dh	; ]
+db  40h	; @
+db    0
+db 0B5h	; µ
+db  24h	; $
+db    0
+db    0
+db    2
+db    8
+db    4
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    4
+db    5
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    6
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    4
+db    7
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    2
+db    7
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db    4
+db  70h	; p
+db    0
+db    0
+db    0
+db    3
+db    4
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db    4
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    8
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    4
+db  55h	; U
+db  4Ch	; L
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db    0
+db    3
+db  35h	; 5
+db 0D3h	; ”
+db    0
+db    0
+db    0
+db    5
+db    4
+db    3
+db  3Bh	; ;
+db 0F7h	; ˜
+db    1
+db    0
+db    0
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  5Ah	; Z
+db  65h	; e
+db  72h	; r
+db  6Fh	; o
+db    0
+db    0
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Eh	; N
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  6Ch	; l
+db    0
+db    1
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  44h	; D
+db  65h	; e
+db  6Eh	; n
+db  6Fh	; o
+db  72h	; r
+db  6Dh	; m
+db  61h	; a
+db  6Ch	; l
+db    0
+db    2
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  49h	; I
+db  6Eh	; n
+db  66h	; f
+db  69h	; i
+db  6Eh	; n
+db  69h	; i
+db  74h	; t
+db  65h	; e
+db    0
+db    3
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Eh	; N
+db  61h	; a
+db  4Eh	; N
+db    0
+db    4
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Eh	; N
+db  61h	; a
+db  4Eh	; N
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    5
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Eh	; N
+db  6Fh	; o
+db  4Eh	; N
+db  75h	; u
+db  6Dh	; m
+db  62h	; b
+db  65h	; e
+db  72h	; r
+db    0
+db    6
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  52h	; R
+db  65h	; e
+db  74h	; t
+db  6Dh	; m
+db  61h	; a
+db  73h	; s
+db  6Bh	; k
+db    0
+db    7
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Eh	; N
+db  65h	; e
+db  67h	; g
+db    0
+db    8
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  49h	; I
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db  6Ch	; l
+db  6Fh	; o
+db    0
+db  10h
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  49h	; I
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db  68h	; h
+db  69h	; i
+db    0
+db  20h
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  49h	; I
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db  61h	; a
+db  63h	; c
+db  74h	; t
+db    0
+db  30h	; 0
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  55h	; U
+db  6Eh	; n
+db  64h	; d
+db  65h	; e
+db  72h	; r
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  77h	; w
+db    0
+db 0C0h	; ¿
+db    0
+db    6
+db  53h	; S
+db  54h	; T
+db  52h	; R
+db  54h	; T
+db  4Fh	; O
+db  47h	; G
+db  5Fh	; _
+db  4Fh	; O
+db  76h	; v
+db  65h	; e
+db  72h	; r
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  77h	; w
+db    0
+db  80h	; Ä
+db    1
+db    0
+db    7
+db  46h	; F
+db  50h	; P
+db  49h	; I
+db    0
+db  18h
+db    3
+db  50h	; P
+db  72h	; r
+db    2
+db    0
+db    0
+db    8
+db  6Eh	; n
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    3
+db  51h	; Q
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    0
+db    8
+db  65h	; e
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db    0
+db    3
+db  52h	; R
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    4
+db    8
+db  65h	; e
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    3
+db  53h	; S
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    8
+db    8
+db  72h	; r
+db  6Fh	; o
+db  75h	; u
+db  6Eh	; n
+db  64h	; d
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db    0
+db    3
+db  54h	; T
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  0Ch
+db    8
+db  73h	; s
+db  75h	; u
+db  64h	; d
+db  64h	; d
+db  65h	; e
+db  6Eh	; n
+db  5Fh	; _
+db  75h	; u
+db  6Eh	; n
+db  64h	; d
+db  65h	; e
+db  72h	; r
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  77h	; w
+db    0
+db    3
+db  55h	; U
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  10h
+db    8
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    3
+db  56h	; V
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  14h
+db    0
+db    4
+db  46h	; F
+db  50h	; P
+db  49h	; I
+db    0
+db    3
+db  57h	; W
+db 0F7h	; ˜
+db    1
+db    0
+db    0
+db    2
+db    4
+db    4
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  0Ch
+db    4
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    8
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    9
+db  5Fh	; _
+db  64h	; d
+db  62h	; b
+db  6Ch	; l
+db  5Fh	; _
+db  75h	; u
+db  6Eh	; n
+db  69h	; i
+db  6Fh	; o
+db  6Eh	; n
+db    0
+db    8
+db    2
+db  19h
+db    1
+db 0D8h	; ÿ
+db    2
+db    0
+db    0
+db  0Ah
+db  64h	; d
+db    0
+db    2
+db  19h
+db    1
+db  5Fh	; _
+db    0
+db    0
+db    0
+db  0Ah
+db  4Ch	; L
+db    0
+db    2
+db  19h
+db    1
+db 0D8h	; ÿ
+db    2
+db    0
+db    0
+db    0
+db  0Bh
+db 0F9h	; ˘
+db    0
+db    0
+db    0
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db  0Ch
+db 0C7h	; «
+db    0
+db    0
+db    0
+db    1
+db    0
+db  0Dh
+db  37h	; 7
+db    3
+db    0
+db    0
+db  18h
+db    2
+db 0D5h	; ’
+db    1
+db  51h	; Q
+db    3
+db    0
+db    0
+db  0Eh
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db  74h	; t
+db    0
+db    2
+db 0D6h	; ÷
+db    1
+db  51h	; Q
+db    3
+db    0
+db    0
+db    2
+db  23h	; #
+db    0
+db  0Eh
+db  6Bh	; k
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    4
+db  0Eh
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db  77h	; w
+db  64h	; d
+db  73h	; s
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    8
+db  0Eh
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  0Ch
+db  0Eh
+db  77h	; w
+db  64h	; d
+db  73h	; s
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  10h
+db  0Eh
+db  78h	; x
+db    0
+db    2
+db 0D8h	; ÿ
+db    1
+db  57h	; W
+db    3
+db    0
+db    0
+db    2
+db  23h	; #
+db  14h
+db    0
+db    3
+db    4
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db  0Bh
+db 0F9h	; ˘
+db    0
+db    0
+db    0
+db  67h	; g
+db    3
+db    0
+db    0
+db  0Ch
+db 0C7h	; «
+db    0
+db    0
+db    0
+db    0
+db    0
+db  0Fh
+db  37h	; 7
+db    3
+db    0
+db    0
+db    2
+db 0DAh	; ⁄
+db    1
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db  10h
+db  5Fh	; _
+db  5Fh	; _
+db  68h	; h
+db  69h	; i
+db  30h	; 0
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db 0F0h	; 
+db    1
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    3
+db  9Ah	; ö
+db    3
+db    0
+db    0
+db  11h
+db  79h	; y
+db    0
+db    2
+db 0F0h	; 
+db    1
+db 0F9h	; ˘
+db    0
+db    0
+db    0
+db    0
+db  12h
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db  74h	; t
+db  6Fh	; o
+db  62h	; b
+db    0
+db    1
+db  22h	; "
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db  15h
+db    4
+db    0
+db    0
+db  13h
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  22h	; "
+db  1Bh
+db    4
+db    0
+db    0
+db  13h
+db  6Eh	; n
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  22h	; "
+db  69h	; i
+db    0
+db    0
+db    0
+db  13h
+db  62h	; b
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  22h	; "
+db 0C1h	; ¡
+db    0
+db    0
+db    0
+db  14h
+db  69h	; i
+db    0
+db    1
+db  24h	; $
+db  69h	; i
+db    0
+db    0
+db    0
+db  14h
+db  6Bh	; k
+db    0
+db    1
+db  24h	; $
+db  69h	; i
+db    0
+db    0
+db    0
+db  14h
+db  62h	; b
+db    0
+db    1
+db  25h	; %
+db  15h
+db    4
+db    0
+db    0
+db  14h
+db  62h	; b
+db  65h	; e
+db    0
+db    1
+db  26h	; &
+db  1Bh
+db    4
+db    0
+db    0
+db  14h
+db  78h	; x
+db    0
+db    1
+db  26h	; &
+db  1Bh
+db    4
+db    0
+db    0
+db  14h
+db  78h	; x
+db  30h	; 0
+db    0
+db    1
+db  26h	; &
+db  1Bh
+db    4
+db    0
+db    0
+db  15h
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db    0
+db    1
+db  44h	; D
+db    0
+db    3
+db    4
+db  67h	; g
+db    3
+db    0
+db    0
+db    3
+db    4
+db 0F9h	; ˘
+db    0
+db    0
+db    0
+db  16h
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  67h	; g
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db    0
+db    1
+db  6Ah	; j
+db    1
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db  90h	; ê
+db  47h	; G
+db  40h	; @
+db    0
+db  47h	; G
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  10h
+db  3Eh	; >
+db    0
+db    0
+db    1
+db  12h
+db  0Eh
+db    0
+db    0
+db  17h
+db  66h	; f
+db  70h	; p
+db  69h	; i
+db    0
+db    1
+db  6Ah	; j
+db  12h
+db  0Eh
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db  18h
+db  62h	; b
+db  65h	; e
+db    0
+db    1
+db  6Ah	; j
+db  69h	; i
+db    0
+db    0
+db    0
+db  85h	; Ö
+db  3Fh	; ?
+db    0
+db    0
+db  17h
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  6Ah	; j
+db  1Bh
+db    4
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db  17h
+db  6Bh	; k
+db  69h	; i
+db  6Eh	; n
+db  64h	; d
+db  70h	; p
+db    0
+db    1
+db  6Ah	; j
+db 0C1h	; ¡
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db  18h
+db  6Dh	; m
+db  6Fh	; o
+db  64h	; d
+db  65h	; e
+db    0
+db    1
+db  6Ah	; j
+db  69h	; i
+db    0
+db    0
+db    0
+db    8
+db  40h	; @
+db    0
+db    0
+db  18h
+db  6Eh	; n
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  6Ah	; j
+db  69h	; i
+db    0
+db    0
+db    0
+db  34h	; 4
+db  40h	; @
+db    0
+db    0
+db  17h
+db  64h	; d
+db  65h	; e
+db  63h	; c
+db  70h	; p
+db  74h	; t
+db    0
+db    1
+db  6Bh	; k
+db 0C1h	; ¡
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db  18h
+db  17h
+db  72h	; r
+db  76h	; v
+db  65h	; e
+db    0
+db    1
+db  6Bh	; k
+db  18h
+db  0Eh
+db    0
+db    0
+db    2
+db  91h	; ë
+db  1Ch
+db  19h
+db  62h	; b
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  54h	; T
+db  40h	; @
+db    0
+db    0
+db  19h
+db  62h	; b
+db  32h	; 2
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db 0A7h	; ß
+db  40h	; @
+db    0
+db    0
+db  19h
+db  62h	; b
+db  35h	; 5
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  1Bh
+db  42h	; B
+db    0
+db    0
+db  19h
+db  62h	; b
+db  65h	; e
+db  30h	; 0
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  93h	; ì
+db  42h	; B
+db    0
+db    0
+db  19h
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db 0CBh	; À
+db  42h	; B
+db    0
+db    0
+db  19h
+db  69h	; i
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db 0E2h	; ‚
+db  43h	; C
+db    0
+db    0
+db  19h
+db  69h	; i
+db  65h	; e
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  47h	; G
+db  44h	; D
+db    0
+db    0
+db  19h
+db  69h	; i
+db  6Ch	; l
+db  69h	; i
+db  6Dh	; m
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  97h	; ó
+db  44h	; D
+db    0
+db    0
+db  19h
+db  69h	; i
+db  6Ch	; l
+db  69h	; i
+db  6Dh	; m
+db  30h	; 0
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db 0B1h	; ±
+db  46h	; F
+db    0
+db    0
+db  19h
+db  69h	; i
+db  6Ch	; l
+db  69h	; i
+db  6Dh	; m
+db  31h	; 1
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db  14h
+db  47h	; G
+db    0
+db    0
+db  19h
+db  69h	; i
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db    0
+db    1
+db  90h	; ê
+db  69h	; i
+db    0
+db    0
+db    0
+db 0C4h	; ƒ
+db  47h	; G
+db    0
+db    0
+db  19h
+db  6Ah	; j
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  97h	; ó
+db  49h	; I
+db    0
+db    0
+db  19h
+db  6Ah	; j
+db  32h	; 2
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db 0C1h	; ¡
+db  4Bh	; K
+db    0
+db    0
+db  19h
+db  6Bh	; k
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  3Eh	; >
+db  4Ch	; L
+db    0
+db    0
+db  19h
+db  6Bh	; k
+db  30h	; 0
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db 0BFh	; ø
+db  4Dh	; M
+db    0
+db    0
+db  19h
+db  6Bh	; k
+db  5Fh	; _
+db  63h	; c
+db  68h	; h
+db  65h	; e
+db  63h	; c
+db  6Bh	; k
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  1Bh
+db  4Eh	; N
+db    0
+db    0
+db  19h
+db  6Bh	; k
+db  69h	; i
+db  6Eh	; n
+db  64h	; d
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  7Ch	; |
+db  4Eh	; N
+db    0
+db    0
+db  19h
+db  6Ch	; l
+db  65h	; e
+db  66h	; f
+db  74h	; t
+db  72h	; r
+db  69h	; i
+db  67h	; g
+db  68h	; h
+db  74h	; t
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  59h	; Y
+db  4Fh	; O
+db    0
+db    0
+db  19h
+db  6Dh	; m
+db  32h	; 2
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db 0ECh	; Ï
+db  4Fh	; O
+db    0
+db    0
+db  19h
+db  6Dh	; m
+db  35h	; 5
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db 0E5h	; Â
+db  50h	; P
+db    0
+db    0
+db  19h
+db  6Eh	; n
+db  62h	; b
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  91h	; ë
+db  69h	; i
+db    0
+db    0
+db    0
+db  64h	; d
+db  51h	; Q
+db    0
+db    0
+db  19h
+db  72h	; r
+db  64h	; d
+db  69h	; i
+db  72h	; r
+db    0
+db    1
+db  92h	; í
+db  69h	; i
+db    0
+db    0
+db    0
+db    6
+db  52h	; R
+db    0
+db    0
+db  19h
+db  73h	; s
+db  32h	; 2
+db    0
+db    1
+db  92h	; í
+db  69h	; i
+db    0
+db    0
+db    0
+db  72h	; r
+db  52h	; R
+db    0
+db    0
+db  19h
+db  73h	; s
+db  35h	; 5
+db    0
+db    1
+db  92h	; í
+db  69h	; i
+db    0
+db    0
+db    0
+db  7Bh	; {
+db  53h	; S
+db    0
+db    0
+db  19h
+db  73h	; s
+db  70h	; p
+db  65h	; e
+db  63h	; c
+db  5Fh	; _
+db  63h	; c
+db  61h	; a
+db  73h	; s
+db  65h	; e
+db    0
+db    1
+db  92h	; í
+db  69h	; i
+db    0
+db    0
+db    0
+db 0DBh	; €
+db  53h	; S
+db    0
+db    0
+db  19h
+db  74h	; t
+db  72h	; r
+db  79h	; y
+db  5Fh	; _
+db  71h	; q
+db  75h	; u
+db  69h	; i
+db  63h	; c
+db  6Bh	; k
+db    0
+db    1
+db  92h	; í
+db  69h	; i
+db    0
+db    0
+db    0
+db 0A3h	; £
+db  54h	; T
+db    0
+db    0
+db  19h
+db  4Ch	; L
+db    0
+db    1
+db  93h	; ì
+db  9Eh	; û
+db    0
+db    0
+db    0
+db 0C3h	; √
+db  54h	; T
+db    0
+db    0
+db  19h
+db  62h	; b
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db 0DBh	; €
+db  55h	; U
+db    0
+db    0
+db  19h
+db  62h	; b
+db  31h	; 1
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db  64h	; d
+db  57h	; W
+db    0
+db    0
+db  19h
+db  64h	; d
+db  65h	; e
+db  6Ch	; l
+db  74h	; t
+db  61h	; a
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db  82h	; Ç
+db  57h	; W
+db    0
+db    0
+db  19h
+db  6Dh	; m
+db  6Ch	; l
+db  6Fh	; o
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db 0A0h	; †
+db  57h	; W
+db    0
+db    0
+db  19h
+db  6Dh	; m
+db  68h	; h
+db  69h	; i
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db  39h	; 9
+db  59h	; Y
+db    0
+db    0
+db  19h
+db  6Dh	; m
+db  68h	; h
+db  69h	; i
+db  31h	; 1
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db 0BCh	; º
+db  5Bh	; [
+db    0
+db    0
+db  19h
+db  53h	; S
+db    0
+db    1
+db  94h	; î
+db  15h
+db    4
+db    0
+db    0
+db 0CFh	; œ
+db  5Bh	; [
+db    0
+db    0
+db  19h
+db  64h	; d
+db  32h	; 2
+db    0
+db    1
+db  95h	; ï
+db  5Fh	; _
+db    0
+db    0
+db    0
+db  51h	; Q
+db  5Dh	; ]
+db    0
+db    0
+db  19h
+db  64h	; d
+db  73h	; s
+db    0
+db    1
+db  95h	; ï
+db  5Fh	; _
+db    0
+db    0
+db    0
+db 0BFh	; ø
+db  5Dh	; ]
+db    0
+db    0
+db  19h
+db  73h	; s
+db    0
+db    1
+db  96h	; ñ
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db  38h	; 8
+db  5Fh	; _
+db    0
+db    0
+db  19h
+db  73h	; s
+db  30h	; 0
+db    0
+db    1
+db  96h	; ñ
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db 0F3h	; Û
+db  61h	; a
+db    0
+db    0
+db  1Ah
+db  64h	; d
+db    0
+db    1
+db  97h	; ó
+db 0AFh	; Ø
+db    2
+db    0
+db    0
+db    2
+db  74h	; t
+db  38h	; 8
+db  1Ah
+db  65h	; e
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  97h	; ó
+db 0AFh	; Ø
+db    2
+db    0
+db    0
+db    3
+db  74h	; t
+db 0F0h	; 
+db    0
+db  1Bh
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db  5Fh	; _
+db  7Ah	; z
+db  65h	; e
+db  72h	; r
+db  6Fh	; o
+db    0
+db    1
+db 0B9h	; π
+db  19h
+db  49h	; I
+db  40h	; @
+db    0
+db  1Ch
+db  66h	; f
+db  61h	; a
+db  73h	; s
+db  74h	; t
+db  5Fh	; _
+db  66h	; f
+db  61h	; a
+db  69h	; i
+db  6Ch	; l
+db  65h	; e
+db  64h	; d
+db    0
+db    1
+db  94h	; î
+db    1
+db  69h	; i
+db  4Eh	; N
+db  40h	; @
+db    0
+db  1Ch
+db  6Fh	; o
+db  6Eh	; n
+db  65h	; e
+db  5Fh	; _
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db  69h	; i
+db  74h	; t
+db    0
+db    1
+db  37h	; 7
+db    2
+db 0E8h	; Ë
+db  4Eh	; N
+db  40h	; @
+db    0
+db  1Ch
+db  6Eh	; n
+db  6Fh	; o
+db  5Fh	; _
+db  64h	; d
+db  69h	; i
+db  67h	; g
+db  69h	; i
+db  74h	; t
+db  73h	; s
+db    0
+db    1
+db  32h	; 2
+db    2
+db  72h	; r
+db  51h	; Q
+db  40h	; @
+db    0
+db  1Ch
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db  31h	; 1
+db    0
+db    1
+db 0D5h	; ’
+db    2
+db  14h
+db  48h	; H
+db  40h	; @
+db    0
+db  1Ch
+db  62h	; b
+db  75h	; u
+db  6Dh	; m
+db  70h	; p
+db  5Fh	; _
+db  75h	; u
+db  70h	; p
+db    0
+db    1
+db 0C1h	; ¡
+db    1
+db 0F4h	; Ù
+db  5Ch	; \
+db  40h	; @
+db    0
+db  1Ch
+db  63h	; c
+db  6Ch	; l
+db  65h	; e
+db  61h	; a
+db  72h	; r
+db  5Fh	; _
+db  74h	; t
+db  72h	; r
+db  61h	; a
+db  69h	; i
+db  6Ch	; l
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  30h	; 0
+db    0
+db    1
+db 0CDh	; Õ
+db    1
+db 0F3h	; Û
+db  57h	; W
+db  40h	; @
+db    0
+db  1Ch
+db  73h	; s
+db  6Dh	; m
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  5Fh	; _
+db  69h	; i
+db  6Ch	; l
+db  69h	; i
+db  6Dh	; m
+db    0
+db    1
+db 0E3h	; „
+db    1
+db 0BEh	; æ
+db  53h	; S
+db  40h	; @
+db    0
+db  1Ch
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db    0
+db    1
+db 0CEh	; Œ
+db    2
+db 0F8h	; ¯
+db  4Eh	; N
+db  40h	; @
+db    0
+db  1Ch
+db  72h	; r
+db  6Fh	; o
+db  75h	; u
+db  6Eh	; n
+db  64h	; d
+db  5Fh	; _
+db  39h	; 9
+db  5Fh	; _
+db  75h	; u
+db  70h	; p
+db    0
+db    1
+db  91h	; ë
+db    2
+db  8Eh	; é
+db  5Bh	; [
+db  40h	; @
+db    0
+db  1Ch
+db  61h	; a
+db  63h	; c
+db  63h	; c
+db  65h	; e
+db  70h	; p
+db  74h	; t
+db    0
+db    1
+db  8Bh	; ã
+db    2
+db 0FCh	; ¸
+db  58h	; X
+db  40h	; @
+db    0
+db  1Ch
+db  72h	; r
+db  6Fh	; o
+db  75h	; u
+db  6Eh	; n
+db  64h	; d
+db  6Fh	; o
+db  66h	; f
+db  66h	; f
+db    0
+db    1
+db 0BDh	; Ω
+db    2
+db  51h	; Q
+db  55h	; U
+db  40h	; @
+db    0
+db  1Ch
+db  63h	; c
+db  68h	; h
+db  6Fh	; o
+db  70h	; p
+db  7Ah	; z
+db  65h	; e
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db    0
+db    1
+db 0C8h	; »
+db    2
+db  5Ah	; Z
+db  59h	; Y
+db  40h	; @
+db    0
+db  1Dh
+db  9Ah	; ö
+db    3
+db    0
+db    0
+db  67h	; g
+db  48h	; H
+db  40h	; @
+db    0
+db  58h	; X
+db    4
+db    0
+db    0
+db    1
+db 0B0h	; ∞
+db  97h	; ó
+db    8
+db    0
+db    0
+db  1Eh
+db 0C8h	; »
+db    3
+db    0
+db    0
+db  7Eh	; ~
+db  63h	; c
+db    0
+db    0
+db  1Eh
+db 0BBh	; ª
+db    3
+db    0
+db    0
+db  64h	; d
+db  51h	; Q
+db    0
+db    0
+db  1Eh
+db 0AFh	; Ø
+db    3
+db    0
+db    0
+db 0B6h	; ∂
+db  63h	; c
+db    0
+db    0
+db  1Fh
+db  78h	; x
+db    4
+db    0
+db    0
+db  20h
+db 0D5h	; ’
+db    3
+db    0
+db    0
+db 0EDh	; Ì
+db  63h	; c
+db    0
+db    0
+db  20h
+db 0DEh	; ﬁ
+db    3
+db    0
+db    0
+db  4Bh	; K
+db  64h	; d
+db    0
+db    0
+db  20h
+db 0E7h	; Á
+db    3
+db    0
+db    0
+db  6Ah	; j
+db  64h	; d
+db    0
+db    0
+db  20h
+db 0F0h	; 
+db    3
+db    0
+db    0
+db  9Ch	; ú
+db  66h	; f
+db    0
+db    0
+db  20h
+db 0FAh	; ˙
+db    3
+db    0
+db    0
+db 0D5h	; ’
+db  67h	; g
+db    0
+db    0
+db  20h
+db    3
+db    4
+db    0
+db    0
+db 0F3h	; Û
+db  67h	; g
+db    0
+db    0
+db  21h	; !
+db  0Dh
+db    4
+db    0
+db    0
+db 0E4h	; ‰
+db  48h	; H
+db  40h	; @
+db    0
+db  1Dh
+db  73h	; s
+db    3
+db    0
+db    0
+db  71h	; q
+db  4Dh	; M
+db  40h	; @
+db    0
+db  98h	; ò
+db    4
+db    0
+db    0
+db    1
+db  43h	; C
+db  8Ch	; å
+db    8
+db    0
+db    0
+db  22h	; "
+db  8Fh	; è
+db    3
+db    0
+db    0
+db    0
+db  23h	; #
+db  86h	; Ü
+db  48h	; H
+db  40h	; @
+db    0
+db  60h	; `
+db  0Eh
+db    0
+db    0
+db    0
+db    0
+db  24h	; $
+db  73h	; s
+db    3
+db    0
+db    0
+db 0AAh	; ™
+db  50h	; P
+db  40h	; @
+db    0
+db 0B2h	; ≤
+db  50h	; P
+db  40h	; @
+db    0
+db    1
+db  20h
+db    2
+db 0B5h	; µ
+db    8
+db    0
+db    0
+db  1Eh
+db  8Fh	; è
+db    3
+db    0
+db    0
+db  2Dh	; -
+db  68h	; h
+db    0
+db    0
+db    0
+db  25h	; %
+db  1Ch
+db  48h	; H
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db 0CAh	;  
+db    8
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db 0ECh	; Ï
+db  48h	; H
+db  40h	; @
+db    0
+db  9Fh	; ü
+db  0Eh
+db    0
+db    0
+db 0DFh	; ﬂ
+db    8
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db  19h
+db  49h	; I
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db 0F4h	; Ù
+db    8
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db  45h	; E
+db  49h	; I
+db  40h	; @
+db    0
+db 0C1h	; ¡
+db  0Eh
+db    0
+db    0
+db  1Ah
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    5
+db    3
+db  2Dh	; -
+db  94h	; î
+db  40h	; @
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    3
+db  91h	; ë
+db  1Ch
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    1
+db  31h	; 1
+db    0
+db  25h	; %
+db  80h	; Ä
+db  49h	; I
+db  40h	; @
+db    0
+db 0C1h	; ¡
+db  0Eh
+db    0
+db    0
+db  40h	; @
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    5
+db    3
+db  29h	; )
+db  94h	; î
+db  40h	; @
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    3
+db  91h	; ë
+db  1Ch
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    1
+db  33h	; 3
+db    0
+db  25h	; %
+db 0BCh	; º
+db  49h	; I
+db  40h	; @
+db    0
+db 0C1h	; ¡
+db  0Eh
+db    0
+db    0
+db  66h	; f
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    5
+db    3
+db  20h
+db  94h	; î
+db  40h	; @
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    3
+db  91h	; ë
+db  1Ch
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    1
+db  38h	; 8
+db    0
+db  25h	; %
+db 0E3h	; „
+db  49h	; I
+db  40h	; @
+db    0
+db 0F0h	; 
+db  0Eh
+db    0
+db    0
+db  82h	; Ç
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  91h	; ë
+db  5Ch	; \
+db    0
+db  23h	; #
+db  84h	; Ñ
+db  4Bh	; K
+db  40h	; @
+db    0
+db  14h
+db  0Fh
+db    0
+db    0
+db  25h	; %
+db  54h	; T
+db  4Dh	; M
+db  40h	; @
+db    0
+db  38h	; 8
+db  0Fh
+db    0
+db    0
+db 0A0h	; †
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db    4
+db  4Fh	; O
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db 0B5h	; µ
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db  2Ah	; *
+db  4Fh	; O
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db 0CCh	; Ã
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0D4h	; ‘
+db  4Fh	; O
+db  40h	; @
+db    0
+db  5Bh	; [
+db  0Fh
+db    0
+db    0
+db 0E3h	; „
+db    9
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  34h	; 4
+db  50h	; P
+db  40h	; @
+db    0
+db  7Ah	; z
+db  0Fh
+db    0
+db    0
+db    1
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  76h	; v
+db    0
+db    0
+db  25h	; %
+db  44h	; D
+db  50h	; P
+db  40h	; @
+db    0
+db 0A3h	; £
+db  0Fh
+db    0
+db    0
+db  1Fh
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db  4Eh	; N
+db  50h	; P
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db  34h	; 4
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  25h	; %
+db  68h	; h
+db  50h	; P
+db  40h	; @
+db    0
+db  5Bh	; [
+db  0Fh
+db    0
+db    0
+db  4Bh	; K
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  82h	; Ç
+db  50h	; P
+db  40h	; @
+db    0
+db  7Ah	; z
+db  0Fh
+db    0
+db    0
+db  69h	; i
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0B0h	; ∞
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0DBh	; €
+db  50h	; P
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db  8Ah	; ä
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    7
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db  76h	; v
+db    0
+db  22h	; "
+db    0
+db  25h	; %
+db 0F8h	; ¯
+db  50h	; P
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db  9Fh	; ü
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db  40h	; @
+db  51h	; Q
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db 0C3h	; √
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  35h	; 5
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  4Eh	; N
+db  51h	; Q
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db 0DFh	; ﬂ
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db  24h	; $
+db  52h	; R
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db 0FDh	; ˝
+db  0Ah
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  76h	; v
+db    0
+db    0
+db  23h	; #
+db  6Eh	; n
+db  52h	; R
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db  25h	; %
+db 0F9h	; ˘
+db  52h	; R
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  2Ah	; *
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  1Bh
+db  53h	; S
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  4Eh	; N
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  35h	; 5
+db  53h	; S
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  72h	; r
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  77h	; w
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  4Fh	; O
+db  53h	; S
+db  40h	; @
+db    0
+db  40h	; @
+db  10h
+db    0
+db    0
+db  90h	; ê
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db  84h	; Ñ
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  66h	; f
+db  53h	; S
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db 0ACh	; ¨
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  73h	; s
+db    0
+db    0
+db  25h	; %
+db  78h	; x
+db  53h	; S
+db  40h	; @
+db    0
+db  67h	; g
+db  10h
+db    0
+db    0
+db 0CAh	;  
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  84h	; Ñ
+db  7Fh	; 
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db  9Ah	; ö
+db  53h	; S
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db 0DFh	; ﬂ
+db  0Bh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db    0
+db  23h	; #
+db 0A8h	; ®
+db  53h	; S
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  23h	; #
+db  17h
+db  54h	; T
+db  40h	; @
+db    0
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db  25h	; %
+db  80h	; Ä
+db  54h	; T
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db  0Dh
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db 0A5h	; •
+db  54h	; T
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  31h	; 1
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0FFh
+db  54h	; T
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  55h	; U
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  15h
+db  55h	; U
+db  40h	; @
+db    0
+db  40h	; @
+db  10h
+db    0
+db    0
+db  71h	; q
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  25h	; %
+db  97h	; ó
+db  56h	; V
+db  40h	; @
+db    0
+db  7Ah	; z
+db  0Fh
+db    0
+db    0
+db  8Fh	; è
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0ACh	; ¨
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0EFh	; Ô
+db  56h	; V
+db  40h	; @
+db    0
+db  7Ah	; z
+db  0Fh
+db    0
+db    0
+db 0B0h	; ∞
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    7
+db  91h	; ë
+db 0ACh	; ¨
+db  7Fh	; 
+db    6
+db  76h	; v
+db    0
+db  1Ch
+db    0
+db  25h	; %
+db  82h	; Ç
+db  58h	; X
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db 0D4h	; ‘
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0A3h	; £
+db  58h	; X
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db 0F8h	; ¯
+db  0Ch
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db 0B5h	; µ
+db  58h	; X
+db  40h	; @
+db    0
+db  40h	; @
+db  10h
+db    0
+db    0
+db  16h
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0F0h	; 
+db  7Eh	; ~
+db    6
+db    0
+db  25h	; %
+db 0D2h	; “
+db  58h	; X
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db  34h	; 4
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db 0F0h	; 
+db  7Eh	; ~
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  73h	; s
+db    0
+db    0
+db  25h	; %
+db  32h	; 2
+db  59h	; Y
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db  52h	; R
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  40h	; @
+db  59h	; Y
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db  6Eh	; n
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  23h	; #
+db 0B4h	; ¥
+db  59h	; Y
+db  40h	; @
+db    0
+db  60h	; `
+db  0Eh
+db    0
+db    0
+db  25h	; %
+db 0DAh	; ⁄
+db  59h	; Y
+db  40h	; @
+db    0
+db  8Ch	; å
+db  10h
+db    0
+db    0
+db  97h	; ó
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db  0Ch
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    6
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db  23h	; #
+db  0Ch
+db    0
+db  25h	; %
+db 0EAh	; Í
+db  59h	; Y
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db 0B5h	; µ
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  22h	; "
+db  5Bh	; [
+db  40h	; @
+db    0
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db 0D3h	; ”
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    4
+db  91h	; ë
+db 0B4h	; ¥
+db  7Fh	; 
+db    6
+db    0
+db  25h	; %
+db  30h	; 0
+db  5Bh	; [
+db  40h	; @
+db    0
+db  1Ch
+db  10h
+db    0
+db    0
+db 0EFh	; Ô
+db  0Dh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    2
+db  77h	; w
+db    0
+db    0
+db  27h	; '
+db  85h	; Ö
+db  5Ch	; \
+db  40h	; @
+db    0
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  26h	; &
+db    2
+db  74h	; t
+db    0
+db    4
+db  91h	; ë
+db  88h	; à
+db  7Fh	; 
+db    6
+db  26h	; &
+db    2
+db  74h	; t
+db    4
+db    1
+db  3Ah	; :
+db  26h	; &
+db    2
+db  74h	; t
+db    8
+db    4
+db  91h	; ë
+db 0A8h	; ®
+db  7Fh	; 
+db    6
+db    0
+db    0
+db    3
+db    4
+db  72h	; r
+db    2
+db    0
+db    0
+db    3
+db    4
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db  0Bh
+db  5Fh	; _
+db    0
+db    0
+db    0
+db  29h	; )
+db  0Eh
+db    0
+db    0
+db  28h	; (
+db    0
+db  29h	; )
+db  5Fh	; _
+db  5Fh	; _
+db  62h	; b
+db  69h	; i
+db  67h	; g
+db  74h	; t
+db  65h	; e
+db  6Eh	; n
+db  73h	; s
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  28h	; (
+db    2
+db  41h	; A
+db  0Eh
+db    0
+db    0
+db    1
+db    1
+db  2Ah	; *
+db  1Eh
+db  0Eh
+db    0
+db    0
+db  29h	; )
+db  5Fh	; _
+db  5Fh	; _
+db  74h	; t
+db  65h	; e
+db  6Eh	; n
+db  73h	; s
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  28h	; (
+db    2
+db  5Bh	; [
+db  0Eh
+db    0
+db    0
+db    1
+db    1
+db  2Ah	; *
+db  1Eh
+db  0Eh
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  42h	; B
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  2Bh	; +
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db  82h	; Ç
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Dh	; -
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  42h	; B
+db  66h	; f
+db  72h	; r
+db  65h	; e
+db  65h	; e
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  2Ch	; ,
+db    2
+db    1
+db    1
+db  9Fh	; ü
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  74h	; t
+db  72h	; r
+db  61h	; a
+db  69h	; i
+db  6Ch	; l
+db  7Ah	; z
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  4Fh	; O
+db    2
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    1
+db 0C1h	; ¡
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Eh	; n
+db  72h	; r
+db  76h	; v
+db  5Fh	; _
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  45h	; E
+db    2
+db    1
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db    1
+db 0F0h	; 
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db  2Ch	; ,
+db  18h
+db  0Eh
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  62h	; b
+db  32h	; 2
+db  64h	; d
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  34h	; 4
+db    2
+db    1
+db  5Fh	; _
+db    0
+db    0
+db    0
+db    1
+db  14h
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db 0C1h	; ¡
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  72h	; r
+db  76h	; v
+db  5Fh	; _
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  4Ah	; J
+db    2
+db    1
+db 0BBh	; ª
+db    0
+db    0
+db    0
+db    1
+db  38h	; 8
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Dh	; -
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  72h	; r
+db  73h	; s
+db  68h	; h
+db  69h	; i
+db  66h	; f
+db  74h	; t
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  49h	; I
+db    2
+db    1
+db    1
+db  5Bh	; [
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  69h	; i
+db  32h	; 2
+db  62h	; b
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  3Eh	; >
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db  7Ah	; z
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  70h	; p
+db  6Fh	; o
+db  77h	; w
+db  35h	; 5
+db  6Dh	; m
+db  75h	; u
+db  6Ch	; l
+db  74h	; t
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  46h	; F
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db 0A3h	; £
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  75h	; u
+db  6Ch	; l
+db  74h	; t
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  43h	; C
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db 0C8h	; »
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Ch	; l
+db  73h	; s
+db  68h	; h
+db  69h	; i
+db  66h	; f
+db  74h	; t
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  41h	; A
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db 0EFh	; Ô
+db  0Fh
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  75h	; u
+db  6Ch	; l
+db  74h	; t
+db  61h	; a
+db  64h	; d
+db  64h	; d
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  44h	; D
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db  1Ch
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db  2Ch	; ,
+db  69h	; i
+db    0
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  63h	; c
+db  6Dh	; m
+db  70h	; p
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  35h	; 5
+db    2
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    1
+db  40h	; @
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  71h	; q
+db  75h	; u
+db  6Fh	; o
+db  72h	; r
+db  65h	; e
+db  6Dh	; m
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  47h	; G
+db    2
+db    1
+db  69h	; i
+db    0
+db    0
+db    0
+db    1
+db  67h	; g
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Bh	; +
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  64h	; d
+db  69h	; i
+db  66h	; f
+db  66h	; f
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    2
+db  39h	; 9
+db    2
+db    1
+db  15h
+db    4
+db    0
+db    0
+db    1
+db  8Ch	; å
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db  2Ch	; ,
+db  15h
+db    4
+db    0
+db    0
+db    0
+db  2Eh	; .
+db    1
+db  6Dh	; m
+db  65h	; e
+db  6Dh	; m
+db  63h	; c
+db  70h	; p
+db  79h	; y
+db    0
+db    1
+db 0B0h	; ∞
+db  10h
+db    0
+db    0
+db    1
+db    1
+db 0B0h	; ∞
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db 0B0h	; ∞
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db 0B2h	; ≤
+db  10h
+db    0
+db    0
+db  2Ch	; ,
+db 0C7h	; «
+db    0
+db    0
+db    0
+db    0
+db  2Fh	; /
+db    4
+db    3
+db    4
+db 0B8h	; ∏
+db  10h
+db    0
+db    0
+db  30h	; 0
+db    0
+db  68h	; h
+db    4
+db    0
+db    0
+db    2
+db    0
+db 0CCh	; Ã
+db  1Fh
+db    0
+db    0
+db    4
+db    1
+db  47h	; G
+db  4Eh	; N
+db  55h	; U
+db  20h
+db  43h	; C
+db  20h
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db    0
+db    1
+db  63h	; c
+db  3Ah	; :
+db  2Fh	; /
+db  63h	; c
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db  73h	; s
+db  64h	; d
+db  65h	; e
+db  76h	; v
+db  2Fh	; /
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  73h	; s
+db  76h	; v
+db  6Eh	; n
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  73h	; s
+db  63h	; c
+db  2Fh	; /
+db  77h	; w
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  6Dh	; m
+db  62h	; b
+db  2Eh	; .
+db  63h	; c
+db    0
+db  50h	; P
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  4Eh	; N
+db  5Fh	; _
+db  40h	; @
+db    0
+db 0FDh	; ˝
+db  29h	; )
+db    0
+db    0
+db    2
+db    1
+db    6
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    3
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  5Fh	; _
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db  77h	; w
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db  5Fh	; _
+db  74h	; t
+db    0
+db    2
+db 0ADh	; ≠
+db    1
+db  9Eh	; û
+db    0
+db    0
+db    0
+db    2
+db    2
+db    7
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    4
+db    4
+db  60h	; `
+db    0
+db    0
+db    0
+db    4
+db    4
+db  87h	; á
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db    4
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    8
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    2
+db    5
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db  6Dh	; m
+db  62h	; b
+db  73h	; s
+db  74h	; t
+db  61h	; a
+db  74h	; t
+db  65h	; e
+db  5Fh	; _
+db  74h	; t
+db    0
+db    3
+db 0A8h	; ®
+db    3
+db  87h	; á
+db    0
+db    0
+db    0
+db    2
+db    8
+db    4
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    4
+db    4
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  0Ch
+db    4
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    4
+db    4
+db  56h	; V
+db    1
+db    0
+db    0
+db    5
+db  8Eh	; é
+db    0
+db    0
+db    0
+db    2
+db    1
+db    6
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    8
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    6
+db  5Fh	; _
+db  5Fh	; _
+db  77h	; w
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  12h
+db    1
+db  87h	; á
+db    0
+db    0
+db    0
+db  50h	; P
+db  5Dh	; ]
+db  40h	; @
+db    0
+db 0ECh	; Ï
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  4Bh	; K
+db  68h	; h
+db    0
+db    0
+db    1
+db  62h	; b
+db    2
+db    0
+db    0
+db    7
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  12h
+db 0D1h	; —
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db    8
+db  77h	; w
+db  63h	; c
+db    0
+db    1
+db  12h
+db  8Eh	; é
+db    0
+db    0
+db    0
+db 0AAh	; ™
+db  68h	; h
+db    0
+db    0
+db    7
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  12h
+db  62h	; b
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    7
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    1
+db  13h
+db  62h	; b
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db    9
+db  80h	; Ä
+db  5Dh	; ]
+db  40h	; @
+db    0
+db 0E8h	; Ë
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  0Ah
+db  69h	; i
+db  6Eh	; n
+db  76h	; v
+db  61h	; a
+db  6Ch	; l
+db  69h	; i
+db  64h	; d
+db  5Fh	; _
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    1
+db  21h	; !
+db  87h	; á
+db    0
+db    0
+db    0
+db 0CAh	;  
+db  68h	; h
+db    0
+db    0
+db  0Ah
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db    0
+db    1
+db  23h	; #
+db  87h	; á
+db    0
+db    0
+db    0
+db 0EAh	; Í
+db  68h	; h
+db    0
+db    0
+db  0Bh
+db 0C9h	; …
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  57h	; W
+db    2
+db    0
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db    8
+db    6
+db  0Ch
+db    2
+db  74h	; t
+db    4
+db    1
+db  30h	; 0
+db  0Ch
+db    2
+db  74h	; t
+db    8
+db    2
+db  91h	; ë
+db  5Ch	; \
+db  0Ch
+db    2
+db  74h	; t
+db  0Ch
+db    1
+db  31h	; 1
+db  0Ch
+db    2
+db  74h	; t
+db  10h
+db    3
+db  91h	; ë
+db    0
+db    6
+db  0Ch
+db    2
+db  74h	; t
+db  14h
+db    3
+db  91h	; ë
+db  0Ch
+db    6
+db  0Ch
+db    2
+db  74h	; t
+db  18h
+db    1
+db  30h	; 0
+db  0Ch
+db    2
+db  74h	; t
+db  1Ch
+db    2
+db  91h	; ë
+db  6Ch	; l
+db    0
+db  0Dh
+db 0DDh	; ›
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  5Ah	; Z
+db    4
+db    0
+db    0
+db    0
+db    0
+db    5
+db  77h	; w
+db    0
+db    0
+db    0
+db  0Eh
+db    1
+db  77h	; w
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  6Dh	; m
+db  62h	; b
+db    0
+db    3
+db 0AFh	; Ø
+db    3
+db    1
+db  68h	; h
+db    0
+db    0
+db    0
+db 0F0h	; 
+db  5Dh	; ]
+db  40h	; @
+db    0
+db  42h	; B
+db  5Eh	; ^
+db  40h	; @
+db    0
+db 0FDh	; ˝
+db  68h	; h
+db    0
+db    0
+db    1
+db 0F3h	; Û
+db    2
+db    0
+db    0
+db    7
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  30h	; 0
+db 0D1h	; —
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db    7
+db  77h	; w
+db  63h	; c
+db    0
+db    1
+db  30h	; 0
+db  8Eh	; é
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    7
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  30h	; 0
+db 0F3h	; Û
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db  0Fh
+db  40h	; @
+db    3
+db    0
+db    0
+db    1
+db  32h	; 2
+db 0F9h	; ˘
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  6Bh	; k
+db  0Ah
+db  74h	; t
+db  6Dh	; m
+db  70h	; p
+db  5Fh	; _
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  33h	; 3
+db 0D1h	; —
+db    0
+db    0
+db    0
+db  29h	; )
+db  69h	; i
+db    0
+db    0
+db  10h
+db  32h	; 2
+db  5Eh	; ^
+db  40h	; @
+db    0
+db  84h	; Ñ
+db    1
+db    0
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    4
+db    2
+db  76h	; v
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db  0Ch
+db    2
+db  77h	; w
+db    0
+db    0
+db    0
+db    4
+db    4
+db  1Ch
+db    1
+db    0
+db    0
+db  11h
+db  60h	; `
+db    0
+db    0
+db    0
+db    9
+db    3
+db    0
+db    0
+db  12h
+db 0DDh	; ›
+db    0
+db    0
+db    0
+db    4
+db    0
+db  0Eh
+db    1
+db  77h	; w
+db  63h	; c
+db  73h	; s
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  6Dh	; m
+db  62h	; b
+db  73h	; s
+db    0
+db    3
+db 0B0h	; ∞
+db    3
+db    1
+db  68h	; h
+db    0
+db    0
+db    0
+db  50h	; P
+db  5Eh	; ^
+db  40h	; @
+db    0
+db  4Eh	; N
+db  5Fh	; _
+db  40h	; @
+db    0
+db  56h	; V
+db  69h	; i
+db    0
+db    0
+db    1
+db  0Eh
+db    4
+db    0
+db    0
+db    8
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  38h	; 8
+db 0D1h	; —
+db    0
+db    0
+db    0
+db  82h	; Ç
+db  6Ah	; j
+db    0
+db    0
+db    7
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db    0
+db    1
+db  38h	; 8
+db  0Eh
+db    4
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    7
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    1
+db  38h	; 8
+db  68h	; h
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    7
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  39h	; 9
+db 0F3h	; Û
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db  0Ah
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db    0
+db    1
+db  3Bh	; ;
+db  87h	; á
+db    0
+db    0
+db    0
+db 0CEh	; Œ
+db  6Ah	; j
+db    0
+db    0
+db  0Ah
+db  6Eh	; n
+db    0
+db    1
+db  3Ch	; <
+db  68h	; h
+db    0
+db    0
+db    0
+db  30h	; 0
+db  6Bh	; k
+db    0
+db    0
+db  0Ah
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  3Dh	; =
+db  62h	; b
+db    2
+db    0
+db    0
+db 0AEh	; Æ
+db  6Bh	; k
+db    0
+db    0
+db  0Ah
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    1
+db  3Eh	; >
+db  62h	; b
+db    2
+db    0
+db    0
+db 0CDh	; Õ
+db  6Bh	; k
+db    0
+db    0
+db  0Ah
+db  70h	; p
+db  77h	; w
+db  63h	; c
+db    0
+db    1
+db  3Fh	; ?
+db  50h	; P
+db    1
+db    0
+db    0
+db  0Ch
+db  6Ch	; l
+db    0
+db    0
+db  13h
+db    0
+db  5Fh	; _
+db  40h	; @
+db    0
+db  4Eh	; N
+db  5Fh	; _
+db  40h	; @
+db    0
+db 0EDh	; Ì
+db    3
+db    0
+db    0
+db  0Fh
+db  40h	; @
+db    3
+db    0
+db    0
+db    1
+db  57h	; W
+db 0F9h	; ˘
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  5Bh	; [
+db  10h
+db  3Dh	; =
+db  5Fh	; _
+db  40h	; @
+db    0
+db  84h	; Ñ
+db    1
+db    0
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    8
+db    3
+db  91h	; ë
+db  4Ch	; L
+db    6
+db  0Ch
+db    2
+db  74h	; t
+db  0Ch
+db    2
+db  77h	; w
+db    0
+db    0
+db    0
+db  10h
+db 0BEh	; æ
+db  5Eh	; ^
+db  40h	; @
+db    0
+db  84h	; Ñ
+db    1
+db    0
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    0
+db  0Ch
+db    2
+db  74h	; t
+db    8
+db    3
+db  91h	; ë
+db  4Ch	; L
+db    6
+db  0Ch
+db    2
+db  74h	; t
+db  0Ch
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db    4
+db    4
+db  50h	; P
+db    1
+db    0
+db    0
+db  14h
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db  15h
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  5Fh	; _
+db  67h	; g
+db  65h	; e
+db  74h	; t
+db  5Fh	; _
+db  63h	; c
+db  6Fh	; o
+db  64h	; d
+db  65h	; e
+db  70h	; p
+db  61h	; a
+db  67h	; g
+db  65h	; e
+db    0
+db    4
+db    9
+db  38h	; 8
+db    4
+db    0
+db    0
+db    1
+db    1
+db    4
+db    4
+db  14h
+db    4
+db    0
+db    0
+db  15h
+db  5Fh	; _
+db  69h	; i
+db  6Dh	; m
+db  70h	; p
+db  5Fh	; _
+db  5Fh	; _
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  63h	; c
+db  75h	; u
+db  72h	; r
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    5
+db  65h	; e
+db 0D7h	; ◊
+db    0
+db    0
+db    0
+db    1
+db    1
+db  16h
+db    1
+db  5Fh	; _
+db  65h	; e
+db  72h	; r
+db  72h	; r
+db  6Eh	; n
+db  6Fh	; o
+db    0
+db    5
+db  8Ah	; ä
+db    1
+db 0D7h	; ◊
+db    0
+db    0
+db    0
+db    1
+db    0
+db 0E7h	; Á
+db    5
+db    0
+db    0
+db    2
+db    0
+db 0F8h	; ¯
+db  20h
+db    0
+db    0
+db    4
+db    1
+db  47h	; G
+db  4Eh	; N
+db  55h	; U
+db  20h
+db  43h	; C
+db  20h
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db    0
+db    1
+db  63h	; c
+db  3Ah	; :
+db  2Fh	; /
+db  63h	; c
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db  73h	; s
+db  64h	; d
+db  65h	; e
+db  76h	; v
+db  2Fh	; /
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  73h	; s
+db  76h	; v
+db  6Eh	; n
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  73h	; s
+db  63h	; c
+db  2Fh	; /
+db  6Dh	; m
+db  62h	; b
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  77h	; w
+db  63h	; c
+db  2Eh	; .
+db  63h	; c
+db    0
+db  50h	; P
+db  5Fh	; _
+db  40h	; @
+db    0
+db 0F5h	; ı
+db  62h	; b
+db  40h	; @
+db    0
+db  6Eh	; n
+db  2Bh	; +
+db    0
+db    0
+db    2
+db    1
+db    6
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    3
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  5Fh	; _
+db  74h	; t
+db    0
+db    2
+db  75h	; u
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db  77h	; w
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db  5Fh	; _
+db  74h	; t
+db    0
+db    2
+db 0ADh	; ≠
+db    1
+db  9Eh	; û
+db    0
+db    0
+db    0
+db    2
+db    2
+db    7
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    4
+db    4
+db  8Eh	; é
+db    0
+db    0
+db    0
+db    4
+db    4
+db  87h	; á
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db    4
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    8
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    2
+db    5
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db  6Dh	; m
+db  62h	; b
+db  73h	; s
+db  74h	; t
+db  61h	; a
+db  74h	; t
+db  65h	; e
+db  5Fh	; _
+db  74h	; t
+db    0
+db    3
+db 0A8h	; ®
+db    3
+db  87h	; á
+db    0
+db    0
+db    0
+db    2
+db    8
+db    4
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    4
+db    4
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  0Ch
+db    4
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    1
+db    6
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    8
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    5
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  62h	; b
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  77h	; w
+db  63h	; c
+db  5Fh	; _
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  10h
+db    1
+db  87h	; á
+db    0
+db    0
+db    0
+db  50h	; P
+db  5Fh	; _
+db  40h	; @
+db    0
+db 0E9h	; È
+db  60h	; `
+db  40h	; @
+db    0
+db  6Eh	; n
+db  6Ch	; l
+db    0
+db    0
+db    1
+db 0D7h	; ◊
+db    2
+db    0
+db    0
+db    6
+db  70h	; p
+db  77h	; w
+db  63h	; c
+db    0
+db    1
+db  10h
+db 0D1h	; —
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db    6
+db  73h	; s
+db    0
+db    1
+db  10h
+db 0D7h	; ◊
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    6
+db  6Eh	; n
+db    0
+db    1
+db  11h
+db  68h	; h
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    6
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  11h
+db 0E2h	; ‚
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db    6
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  12h
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  10h
+db    6
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    1
+db  12h
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  14h
+db    7
+db    4
+db    1
+db  14h
+db  10h
+db    2
+db    0
+db    0
+db    8
+db  76h	; v
+db  61h	; a
+db  6Ch	; l
+db    0
+db    1
+db  15h
+db  1Ch
+db    1
+db    0
+db    0
+db    8
+db  6Dh	; m
+db  62h	; b
+db  63h	; c
+db  73h	; s
+db    0
+db    1
+db  16h
+db 0EDh	; Ì
+db    2
+db    0
+db    0
+db    0
+db    9
+db  73h	; s
+db  68h	; h
+db  69h	; i
+db  66h	; f
+db  74h	; t
+db  5Fh	; _
+db  73h	; s
+db  74h	; t
+db  61h	; a
+db  74h	; t
+db  65h	; e
+db    0
+db    1
+db  17h
+db 0F0h	; 
+db    1
+db    0
+db    0
+db    2
+db  91h	; ë
+db  6Ch	; l
+db  0Ah
+db 0ABh	; ´
+db  5Fh	; _
+db  40h	; @
+db    0
+db  38h	; 8
+db    2
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db  10h
+db    6
+db    0
+db  0Ah
+db 0EEh	; Ó
+db  5Fh	; _
+db  40h	; @
+db    0
+db  6Bh	; k
+db    2
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db  10h
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db    4
+db    1
+db  38h	; 8
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    2
+db  73h	; s
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    1
+db  32h	; 2
+db  0Bh
+db    2
+db  74h	; t
+db  10h
+db    3
+db  91h	; ë
+db    0
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    1
+db  31h	; 1
+db    0
+db  0Ah
+db  6Ah	; j
+db  60h	; `
+db  40h	; @
+db    0
+db  9Eh	; û
+db    2
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db  10h
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db    4
+db    1
+db  38h	; 8
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    2
+db  91h	; ë
+db  6Ch	; l
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    1
+db  32h	; 2
+db  0Bh
+db    2
+db  74h	; t
+db  10h
+db    3
+db  91h	; ë
+db    0
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    1
+db  31h	; 1
+db    0
+db  0Ch
+db  76h	; v
+db  60h	; `
+db  40h	; @
+db    0
+db 0D9h	; Ÿ
+db    5
+db    0
+db    0
+db  0Dh
+db 0B4h	; ¥
+db  60h	; `
+db  40h	; @
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    3
+db  91h	; ë
+db  10h
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db    4
+db    1
+db  38h	; 8
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    2
+db  73h	; s
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    1
+db  31h	; 1
+db  0Bh
+db    2
+db  74h	; t
+db  10h
+db    3
+db  91h	; ë
+db    0
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    1
+db  31h	; 1
+db    0
+db    0
+db    4
+db    4
+db 0DDh	; ›
+db    2
+db    0
+db    0
+db  0Eh
+db  60h	; `
+db    0
+db    0
+db    0
+db    4
+db    4
+db  1Ch
+db    1
+db    0
+db    0
+db  0Eh
+db  77h	; w
+db    0
+db    0
+db    0
+db  0Fh
+db  60h	; `
+db    0
+db    0
+db    0
+db 0FDh	; ˝
+db    2
+db    0
+db    0
+db  10h
+db 0DDh	; ›
+db    0
+db    0
+db    0
+db    3
+db    0
+db  11h
+db    1
+db  6Dh	; m
+db  62h	; b
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  77h	; w
+db  63h	; c
+db    0
+db    3
+db 0ADh	; ≠
+db    3
+db    1
+db  68h	; h
+db    0
+db    0
+db    0
+db 0F0h	; 
+db  60h	; `
+db  40h	; @
+db    0
+db  62h	; b
+db  61h	; a
+db  40h	; @
+db    0
+db 0CFh	; œ
+db  6Dh	; m
+db    0
+db    0
+db    1
+db 0B1h	; ±
+db    3
+db    0
+db    0
+db    6
+db  70h	; p
+db  77h	; w
+db  63h	; c
+db    0
+db    1
+db  60h	; `
+db 0D1h	; —
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db    6
+db  73h	; s
+db    0
+db    1
+db  60h	; `
+db 0D7h	; ◊
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    6
+db  6Eh	; n
+db    0
+db    1
+db  61h	; a
+db  68h	; h
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    6
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  61h	; a
+db 0E2h	; ‚
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db  12h
+db  58h	; X
+db    3
+db    0
+db    0
+db    1
+db  63h	; c
+db  1Ch
+db    1
+db    0
+db    0
+db    5
+db    3
+db 0C4h	; ƒ
+db 0A3h	; £
+db  40h	; @
+db    0
+db  12h
+db  4Ch	; L
+db    3
+db    0
+db    0
+db    1
+db  64h	; d
+db  8Eh	; é
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db  6Eh	; n
+db  13h
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  65h	; e
+db 0D1h	; —
+db    0
+db    0
+db    0
+db 0FCh	; ¸
+db  6Dh	; m
+db    0
+db    0
+db  14h
+db  52h	; R
+db  61h	; a
+db  40h	; @
+db    0
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    4
+db    3
+db  91h	; ë
+db    4
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    3
+db  91h	; ë
+db    8
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    2
+db  73h	; s
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    2
+db  77h	; w
+db    0
+db    0
+db    0
+db  11h
+db    1
+db  6Dh	; m
+db  62h	; b
+db  73h	; s
+db  72h	; r
+db  74h	; t
+db  6Fh	; o
+db  77h	; w
+db  63h	; c
+db  73h	; s
+db    0
+db    3
+db 0AEh	; Æ
+db    3
+db    1
+db  68h	; h
+db    0
+db    0
+db    0
+db  70h	; p
+db  61h	; a
+db  40h	; @
+db    0
+db  98h	; ò
+db  62h	; b
+db  40h	; @
+db    0
+db  29h	; )
+db  6Eh	; n
+db    0
+db    0
+db    1
+db 0F1h	; Ò
+db    4
+db    0
+db    0
+db  15h
+db  64h	; d
+db  73h	; s
+db  74h	; t
+db    0
+db    1
+db  6Dh	; m
+db 0D1h	; —
+db    0
+db    0
+db    0
+db  0Ch
+db  6Fh	; o
+db    0
+db    0
+db    6
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db    0
+db    1
+db  6Dh	; m
+db 0F1h	; Ò
+db    4
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    6
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    1
+db  6Eh	; n
+db  68h	; h
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    6
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  6Eh	; n
+db 0E2h	; ‚
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db  0Ch
+db  13h
+db  72h	; r
+db  65h	; e
+db  74h	; t
+db    0
+db    1
+db  70h	; p
+db  87h	; á
+db    0
+db    0
+db    0
+db  42h	; B
+db  6Fh	; o
+db    0
+db    0
+db  13h
+db  6Eh	; n
+db    0
+db    1
+db  71h	; q
+db  68h	; h
+db    0
+db    0
+db    0
+db  8Eh	; é
+db  6Fh	; o
+db    0
+db    0
+db  12h
+db  58h	; X
+db    3
+db    0
+db    0
+db    1
+db  72h	; r
+db  1Ch
+db    1
+db    0
+db    0
+db    5
+db    3
+db 0C8h	; »
+db 0A3h	; £
+db  40h	; @
+db    0
+db  13h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db  65h	; e
+db  72h	; r
+db  6Eh	; n
+db  61h	; a
+db  6Ch	; l
+db  5Fh	; _
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  73h	; s
+db 0E2h	; ‚
+db    2
+db    0
+db    0
+db 0C4h	; ƒ
+db  6Fh	; o
+db    0
+db    0
+db  13h
+db  63h	; c
+db  70h	; p
+db    0
+db    1
+db  74h	; t
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db 0E3h	; „
+db  6Fh	; o
+db    0
+db    0
+db  13h
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    1
+db  75h	; u
+db 0E8h	; Ë
+db    2
+db    0
+db    0
+db    2
+db  70h	; p
+db    0
+db    0
+db  16h
+db  40h	; @
+db  62h	; b
+db  40h	; @
+db    0
+db  98h	; ò
+db  62h	; b
+db  40h	; @
+db    0
+db 0BDh	; Ω
+db    4
+db    0
+db    0
+db  17h
+db  4Ch	; L
+db    3
+db    0
+db    0
+db    1
+db  8Bh	; ã
+db  8Eh	; é
+db    0
+db    0
+db    0
+db  43h	; C
+db  70h	; p
+db    0
+db    0
+db  14h
+db  92h	; í
+db  62h	; b
+db  40h	; @
+db    0
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    2
+db  91h	; ë
+db  5Eh	; ^
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    2
+db  75h	; u
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    3
+db  91h	; ë
+db  44h	; D
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  10h
+db    2
+db  77h	; w
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    2
+db  75h	; u
+db    0
+db    0
+db    0
+db  14h
+db  0Dh
+db  62h	; b
+db  40h	; @
+db    0
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    2
+db  76h	; v
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    5
+db  77h	; w
+db    0
+db  73h	; s
+db    0
+db  1Ch
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    3
+db  91h	; ë
+db  44h	; D
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  10h
+db    3
+db  91h	; ë
+db  4Ch	; L
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    3
+db  91h	; ë
+db  48h	; H
+db    6
+db    0
+db    0
+db    4
+db    4
+db 0D7h	; ◊
+db    2
+db    0
+db    0
+db  11h
+db    1
+db  6Dh	; m
+db  62h	; b
+db  72h	; r
+db  6Ch	; l
+db  65h	; e
+db  6Eh	; n
+db    0
+db    3
+db 0ACh	; ¨
+db    3
+db    1
+db  68h	; h
+db    0
+db    0
+db    0
+db 0A0h	; †
+db  62h	; b
+db  40h	; @
+db    0
+db 0F5h	; ı
+db  62h	; b
+db  40h	; @
+db    0
+db  63h	; c
+db  70h	; p
+db    0
+db    0
+db    1
+db  93h	; ì
+db    5
+db    0
+db    0
+db    6
+db  73h	; s
+db    0
+db    1
+db  99h	; ô
+db 0D7h	; ◊
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db    6
+db  6Eh	; n
+db    0
+db    1
+db  99h	; ô
+db  68h	; h
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db    6
+db  70h	; p
+db  73h	; s
+db    0
+db    1
+db  9Ah	; ö
+db 0E2h	; ‚
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db    9
+db  73h	; s
+db  5Fh	; _
+db  6Dh	; m
+db  62h	; b
+db  73h	; s
+db  74h	; t
+db  61h	; a
+db  74h	; t
+db  65h	; e
+db    0
+db    1
+db  9Ch	; ú
+db  1Ch
+db    1
+db    0
+db    0
+db    5
+db    3
+db 0CCh	; Ã
+db 0A3h	; £
+db  40h	; @
+db    0
+db  12h
+db  4Ch	; L
+db    3
+db    0
+db    0
+db    1
+db  9Dh	; ù
+db  8Eh	; é
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db  6Eh	; n
+db  14h
+db 0EFh	; Ô
+db  62h	; b
+db  40h	; @
+db    0
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db    0
+db    2
+db  91h	; ë
+db  6Eh	; n
+db  0Bh
+db    2
+db  74h	; t
+db    4
+db    3
+db  91h	; ë
+db    0
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db    8
+db    3
+db  91h	; ë
+db    4
+db    6
+db  0Bh
+db    2
+db  74h	; t
+db  0Ch
+db    2
+db  73h	; s
+db    0
+db  0Bh
+db    2
+db  74h	; t
+db  14h
+db    2
+db  76h	; v
+db    0
+db    0
+db    0
+db  18h
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db  19h
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  5Fh	; _
+db  67h	; g
+db  65h	; e
+db  74h	; t
+db  5Fh	; _
+db  63h	; c
+db  6Fh	; o
+db  64h	; d
+db  65h	; e
+db  70h	; p
+db  61h	; a
+db  67h	; g
+db  65h	; e
+db    0
+db    4
+db    9
+db 0B7h	; ∑
+db    5
+db    0
+db    0
+db    1
+db    1
+db    4
+db    4
+db  93h	; ì
+db    5
+db    0
+db    0
+db  19h
+db  5Fh	; _
+db  69h	; i
+db  6Dh	; m
+db  70h	; p
+db  5Fh	; _
+db  5Fh	; _
+db  5Fh	; _
+db  5Fh	; _
+db  6Dh	; m
+db  62h	; b
+db  5Fh	; _
+db  63h	; c
+db  75h	; u
+db  72h	; r
+db  5Fh	; _
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db    0
+db    5
+db  65h	; e
+db 0D7h	; ◊
+db    0
+db    0
+db    0
+db    1
+db    1
+db  1Ah
+db    1
+db  5Fh	; _
+db  65h	; e
+db  72h	; r
+db  72h	; r
+db  6Eh	; n
+db  6Fh	; o
+db    0
+db    5
+db  8Ah	; ä
+db    1
+db 0D7h	; ◊
+db    0
+db    0
+db    0
+db    1
+db    0
+db  56h	; V
+db    4
+db    0
+db    0
+db    2
+db    0
+db  5Ch	; \
+db  22h	; "
+db    0
+db    0
+db    4
+db    1
+db  47h	; G
+db  4Eh	; N
+db  55h	; U
+db  20h
+db  43h	; C
+db  20h
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db    0
+db    1
+db  63h	; c
+db  3Ah	; :
+db  2Fh	; /
+db  63h	; c
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db  73h	; s
+db  64h	; d
+db  65h	; e
+db  76h	; v
+db  2Fh	; /
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  73h	; s
+db  76h	; v
+db  6Eh	; n
+db  2Fh	; /
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  63h	; c
+db  72h	; r
+db  74h	; t
+db  2Fh	; /
+db  67h	; g
+db  64h	; d
+db  74h	; t
+db  6Fh	; o
+db  61h	; a
+db  2Fh	; /
+db  64h	; d
+db  6Dh	; m
+db  69h	; i
+db  73h	; s
+db  63h	; c
+db  2Eh	; .
+db  63h	; c
+db    0
+db    0
+db  63h	; c
+db  40h	; @
+db    0
+db 0CBh	; À
+db  65h	; e
+db  40h	; @
+db    0
+db  1Ah
+db  2Dh	; -
+db    0
+db    0
+db    2
+db    1
+db    6
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    4
+db    7
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    2
+db    7
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    3
+db    4
+db  5Fh	; _
+db    0
+db    0
+db    0
+db    3
+db    4
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db    4
+db    7
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db    4
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    8
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    4
+db  55h	; U
+db  4Ch	; L
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db    0
+db    3
+db  35h	; 5
+db 0C9h	; …
+db    0
+db    0
+db    0
+db    2
+db    8
+db    4
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    4
+db    4
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  0Ch
+db    4
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    8
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    5
+db  69h	; i
+db    3
+db    0
+db    0
+db  18h
+db    2
+db 0D5h	; ’
+db    1
+db 0A1h	; °
+db    1
+db    0
+db    0
+db    6
+db  6Eh	; n
+db  65h	; e
+db  78h	; x
+db  74h	; t
+db    0
+db    2
+db 0D6h	; ÷
+db    1
+db 0A1h	; °
+db    1
+db    0
+db    0
+db    2
+db  23h	; #
+db    0
+db    6
+db  6Bh	; k
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    4
+db    6
+db  6Dh	; m
+db  61h	; a
+db  78h	; x
+db  77h	; w
+db  64h	; d
+db  73h	; s
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db    8
+db    6
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  0Ch
+db    6
+db  77h	; w
+db  64h	; d
+db  73h	; s
+db    0
+db    2
+db 0D7h	; ◊
+db    1
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  23h	; #
+db  10h
+db    6
+db  78h	; x
+db    0
+db    2
+db 0D8h	; ÿ
+db    1
+db 0A7h	; ß
+db    1
+db    0
+db    0
+db    2
+db  23h	; #
+db  14h
+db    0
+db    3
+db    4
+db  38h	; 8
+db    1
+db    0
+db    0
+db    7
+db 0EFh	; Ô
+db    0
+db    0
+db    0
+db 0B7h	; ∑
+db    1
+db    0
+db    0
+db    8
+db 0BDh	; Ω
+db    0
+db    0
+db    0
+db    0
+db    0
+db    9
+db  69h	; i
+db    3
+db    0
+db    0
+db    2
+db 0DAh	; ⁄
+db    1
+db  38h	; 8
+db    1
+db    0
+db    0
+db  0Ah
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  72h	; r
+db  76h	; v
+db  5Fh	; _
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    1
+db  26h	; &
+db    1
+db 0B1h	; ±
+db    0
+db    0
+db    0
+db    0
+db  63h	; c
+db  40h	; @
+db    0
+db  32h	; 2
+db  63h	; c
+db  40h	; @
+db    0
+db 0C0h	; ¿
+db  70h	; p
+db    0
+db    0
+db    1
+db  31h	; 1
+db    2
+db    0
+db    0
+db  0Bh
+db  69h	; i
+db    0
+db    1
+db  26h	; &
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db  0Ch
+db  6Ah	; j
+db    0
+db    1
+db  28h	; (
+db  77h	; w
+db    0
+db    0
+db    0
+db    4
+db  71h	; q
+db    0
+db    0
+db  0Ch
+db  6Bh	; k
+db    0
+db    1
+db  28h	; (
+db  77h	; w
+db    0
+db    0
+db    0
+db  23h	; #
+db  71h	; q
+db    0
+db    0
+db  0Ch
+db  72h	; r
+db    0
+db    1
+db  28h	; (
+db 0B7h	; ∑
+db    0
+db    0
+db    0
+db  42h	; B
+db  71h	; q
+db    0
+db    0
+db  0Dh
+db  28h	; (
+db  63h	; c
+db  40h	; @
+db    0
+db 0FAh	; ˙
+db    3
+db    0
+db    0
+db  0Eh
+db    2
+db  74h	; t
+db    0
+db    2
+db  73h	; s
+db    0
+db    0
+db    0
+db  0Ah
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  6Eh	; n
+db  72h	; r
+db  76h	; v
+db  5Fh	; _
+db  61h	; a
+db  6Ch	; l
+db  6Ch	; l
+db  6Fh	; o
+db  63h	; c
+db  5Fh	; _
+db  44h	; D
+db  32h	; 2
+db  41h	; A
+db    0
+db    1
+db  38h	; 8
+db    1
+db 0B1h	; ±
+db    0
+db    0
+db    0
+db  40h	; @
+db  63h	; c
+db  40h	; @
+db    0
+db  82h	; Ç
+db  63h	; c
+db  40h	; @
+db    0
+db  62h	; b
+db  71h	; q
+db    0
+db    0
+db    1
+db 0AEh	; Æ
+db    2
+db    0
+db    0
+db  0Fh
+db  73h	; s
+db    0
+db    1
+db  38h	; 8
+db 0B1h	; ±
+db    0
+db    0
+db    0
+db 0BEh	; æ
+db  71h	; q
+db    0
+db    0
+db  0Bh
+db  72h	; r
+db  76h	; v
+db  65h	; e
+db    0
+db    1
+db  38h	; 8
+db 0AEh	; Æ
+db    2
+db    0
+db    0
+db    2
+db  91h	; ë
+db    4
+db  0Bh
+db  6Eh	; n
+db    0
+db    1
+db  38h	; 8
+db  77h	; w
+db    0
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db  10h
+db  72h	; r
+db  76h	; v
+db    0
+db    1
+db  3Ah	; :
+db 0B1h	; ±
+db    0
+db    0
+db    0
+db    1
+db  50h	; P
+db  0Ch
+db  74h	; t
+db    0
+db    1
+db  3Ah	; :
+db 0B1h	; ±
+db    0
+db    0
+db    0
+db 0E8h	; Ë
+db  71h	; q
+db    0
+db    0
+db  0Dh
+db  59h	; Y
 db  63h	; c
 db  40h	; @
 db    0
@@ -75602,11 +75543,11 @@ db    0
 db    1
 db  4Ah	; J
 db    1
-db 0E0h	; ‡
+db  90h	; ê
 db  63h	; c
 db  40h	; @
 db    0
-db 0FFh
+db 0AFh	; Ø
 db  63h	; c
 db  40h	; @
 db    0
@@ -75644,7 +75585,7 @@ db  72h	; r
 db    0
 db    0
 db  12h
-db 0FFh
+db 0AFh	; Ø
 db  63h	; c
 db  40h	; @
 db    0
@@ -75693,12 +75634,12 @@ db  77h	; w
 db    0
 db    0
 db    0
-db    0
-db  64h	; d
+db 0B0h	; ∞
+db  63h	; c
 db  40h	; @
 db    0
-db  1Bh
-db  66h	; f
+db 0CBh	; À
+db  65h	; e
 db  40h	; @
 db    0
 db  39h	; 9
@@ -75881,7 +75822,7 @@ db  75h	; u
 db    0
 db    0
 db  0Dh
-db  63h	; c
+db  13h
 db  65h	; e
 db  40h	; @
 db    0
@@ -76104,11 +76045,11 @@ db  74h	; t
 db  2Eh	; .
 db  63h	; c
 db    0
-db  20h
-db  66h	; f
+db 0D0h	; –
+db  65h	; e
 db  40h	; @
 db    0
-db 0E7h	; Á
+db  97h	; ó
 db  66h	; f
 db  40h	; @
 db    0
@@ -77199,11 +77140,11 @@ db  74h	; t
 db    0
 db    0
 db    0
-db  20h
-db  66h	; f
+db 0D0h	; –
+db  65h	; e
 db  40h	; @
 db    0
-db  8Ch	; å
+db  3Ch	; <
 db  66h	; f
 db  40h	; @
 db    0
@@ -77271,8 +77212,8 @@ db  44h	; D
 db    4
 db    0
 db    0
-db  43h	; C
-db  66h	; f
+db 0F3h	; Û
+db  65h	; e
 db  40h	; @
 db    0
 db 0B0h	; ∞
@@ -77304,8 +77245,8 @@ db  76h	; v
 db    0
 db    0
 db  16h
-db  48h	; H
-db  66h	; f
+db 0F8h	; ¯
+db  65h	; e
 db  40h	; @
 db    0
 db    6
@@ -77313,7 +77254,7 @@ db    6
 db    0
 db    0
 db  17h
-db  59h	; Y
+db    9
 db  66h	; f
 db  40h	; @
 db    0
@@ -77327,13 +77268,13 @@ db  74h	; t
 db    4
 db    5
 db    3
-db  90h	; ê
+db  88h	; à
 db  94h	; î
 db  40h	; @
 db    0
 db    0
 db  19h
-db  69h	; i
+db  19h
 db  66h	; f
 db  40h	; @
 db    0
@@ -77433,11 +77374,11 @@ db  74h	; t
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  66h	; f
 db  40h	; @
 db    0
-db 0E7h	; Á
+db  97h	; ó
 db  66h	; f
 db  40h	; @
 db    0
@@ -77474,7 +77415,7 @@ db  3Dh	; =
 db    5
 db    0
 db    0
-db 0A3h	; £
+db  53h	; S
 db  66h	; f
 db  40h	; @
 db    0
@@ -77499,7 +77440,7 @@ db  76h	; v
 db    0
 db    0
 db  16h
-db 0A8h	; ®
+db  58h	; X
 db  66h	; f
 db  40h	; @
 db    0
@@ -77508,7 +77449,7 @@ db    6
 db    0
 db    0
 db  19h
-db 0B9h	; π
+db  69h	; i
 db  66h	; f
 db  40h	; @
 db    0
@@ -77518,7 +77459,7 @@ db  74h	; t
 db    4
 db    5
 db    3
-db 0A3h	; £
+db  9Bh	; õ
 db  94h	; î
 db  40h	; @
 db    0
@@ -77669,12 +77610,12 @@ db  63h	; c
 db  2Eh	; .
 db  63h	; c
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  66h	; f
 db  40h	; @
 db    0
-db  21h	; !
-db  72h	; r
+db 0D1h	; —
+db  71h	; q
 db  40h	; @
 db    0
 db  12h
@@ -79125,11 +79066,11 @@ db    0
 db    1
 db  48h	; H
 db    1
-db 0F0h	; 
+db 0A0h	; †
 db  66h	; f
 db  40h	; @
 db    0
-db 0AEh	; Æ
+db  5Eh	; ^
 db  67h	; g
 db  40h	; @
 db    0
@@ -79180,12 +79121,12 @@ db 0F0h	; 
 db    4
 db    0
 db    0
-db    6
-db  67h	; g
+db 0B6h	; ∂
+db  66h	; f
 db  40h	; @
 db    0
-db  0Fh
-db  67h	; g
+db 0BFh	; ø
+db  66h	; f
 db  40h	; @
 db    0
 db    1
@@ -79214,12 +79155,12 @@ db    0
 db    0
 db    0
 db  22h	; "
-db  13h
-db  67h	; g
+db 0C3h	; √
+db  66h	; f
 db  40h	; @
 db    0
-db  47h	; G
-db  67h	; g
+db 0F7h	; ˜
+db  66h	; f
 db  40h	; @
 db    0
 db  23h	; #
@@ -79236,8 +79177,8 @@ db  78h	; x
 db    0
 db    0
 db  24h	; $
-db  22h	; "
-db  67h	; g
+db 0D2h	; “
+db  66h	; f
 db  40h	; @
 db    0
 db    2
@@ -79259,8 +79200,8 @@ db  40h	; @
 db    0
 db    0
 db  24h	; $
-db  2Eh	; .
-db  67h	; g
+db 0DEh	; ﬁ
+db  66h	; f
 db  40h	; @
 db    0
 db    2
@@ -79282,8 +79223,8 @@ db  40h	; @
 db    0
 db    0
 db  26h	; &
-db  3Dh	; =
-db  67h	; g
+db 0EDh	; Ì
+db  66h	; f
 db  40h	; @
 db    0
 db  93h	; ì
@@ -79296,7 +79237,7 @@ db  74h	; t
 db    0
 db    5
 db    3
-db 0E0h	; ‡
+db  90h	; ê
 db  67h	; g
 db  40h	; @
 db    0
@@ -79304,7 +79245,7 @@ db    0
 db    0
 db    0
 db  27h	; '
-db  5Ah	; Z
+db  0Ah
 db  67h	; g
 db  40h	; @
 db    0
@@ -79334,7 +79275,7 @@ db    0
 db  22h	; "
 db    0
 db  28h	; (
-db  89h	; â
+db  39h	; 9
 db  67h	; g
 db  40h	; @
 db    0
@@ -79362,11 +79303,11 @@ db    0
 db    1
 db  63h	; c
 db    1
-db 0B0h	; ∞
+db  60h	; `
 db  67h	; g
 db  40h	; @
 db    0
-db 0DDh	; ›
+db  8Dh	; ç
 db  67h	; g
 db  40h	; @
 db    0
@@ -79393,7 +79334,7 @@ db  79h	; y
 db    0
 db    0
 db  28h	; (
-db 0D6h	; ÷
+db  86h	; Ü
 db  67h	; g
 db  40h	; @
 db    0
@@ -79422,12 +79363,12 @@ db  3Ch	; <
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  67h	; g
 db  40h	; @
 db    0
-db  1Ah
-db  68h	; h
+db 0CAh	;  
+db  67h	; g
 db  40h	; @
 db    0
 db  33h	; 3
@@ -79449,11 +79390,11 @@ db 0F0h	; 
 db    4
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  67h	; g
 db  40h	; @
 db    0
-db 0ECh	; Ï
+db  9Ch	; ú
 db  67h	; g
 db  40h	; @
 db    0
@@ -79479,23 +79420,23 @@ db  3Ch	; <
 db    5
 db    0
 db    0
-db 0F7h	; ˜
+db 0A7h	; ß
 db  67h	; g
 db  40h	; @
 db    0
-db  15h
-db  68h	; h
+db 0C5h	; ≈
+db  67h	; g
 db  40h	; @
 db    0
 db    1
 db  3Eh	; >
 db  22h	; "
-db 0F7h	; ˜
+db 0A7h	; ß
 db  67h	; g
 db  40h	; @
 db    0
-db  15h
-db  68h	; h
+db 0C5h	; ≈
+db  67h	; g
 db  40h	; @
 db    0
 db  2Ah	; *
@@ -79504,12 +79445,12 @@ db    5
 db    0
 db    0
 db  22h	; "
-db 0F7h	; ˜
+db 0A7h	; ß
 db  67h	; g
 db  40h	; @
 db    0
-db  15h
-db  68h	; h
+db 0C5h	; ≈
+db  67h	; g
 db  40h	; @
 db    0
 db  2Ah	; *
@@ -79543,11 +79484,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db  20h
-db  68h	; h
+db 0D0h	; –
+db  67h	; g
 db  40h	; @
 db    0
-db 0DEh	; ﬁ
+db  8Eh	; é
 db  68h	; h
 db  40h	; @
 db    0
@@ -79615,8 +79556,8 @@ db  7Ah	; z
 db    0
 db    0
 db  2Fh	; /
-db  3Ah	; :
-db  68h	; h
+db 0EAh	; Í
+db  67h	; g
 db  40h	; @
 db    0
 db 0F4h	; Ù
@@ -79634,7 +79575,7 @@ db    1
 db  30h	; 0
 db    0
 db  30h	; 0
-db  73h	; s
+db  23h	; #
 db  68h	; h
 db  40h	; @
 db    0
@@ -79643,7 +79584,7 @@ db  12h
 db    0
 db    0
 db  26h	; &
-db  86h	; Ü
+db  36h	; 6
 db  68h	; h
 db  40h	; @
 db    0
@@ -79663,12 +79604,12 @@ db  6Eh	; n
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  68h	; h
 db  40h	; @
 db    0
-db  25h	; %
-db  69h	; i
+db 0D5h	; ’
+db  68h	; h
 db  40h	; @
 db    0
 db  8Ch	; å
@@ -79693,7 +79634,7 @@ db  6Eh	; n
 db    5
 db    0
 db    0
-db 0F2h	; Ú
+db 0A2h	; ¢
 db  68h	; h
 db  40h	; @
 db    0
@@ -79717,7 +79658,7 @@ db  7Bh	; {
 db    0
 db    0
 db  2Fh	; /
-db 0F9h	; ˘
+db 0A9h	; ©
 db  68h	; h
 db  40h	; @
 db    0
@@ -79736,8 +79677,8 @@ db    1
 db  30h	; 0
 db    0
 db  34h	; 4
-db  17h
-db  69h	; i
+db 0C7h	; «
+db  68h	; h
 db  40h	; @
 db    0
 db    1
@@ -79753,8 +79694,8 @@ db  30h	; 0
 db    0
 db    0
 db  35h	; 5
-db  20h
-db  69h	; i
+db 0D0h	; –
+db  68h	; h
 db  40h	; @
 db    0
 db    1
@@ -79786,12 +79727,12 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db  30h	; 0
-db  69h	; i
+db 0E0h	; ‡
+db  68h	; h
 db  40h	; @
 db    0
-db  2Ch	; ,
-db  6Ah	; j
+db 0DCh	; ‹
+db  69h	; i
 db  40h	; @
 db    0
 db  37h	; 7
@@ -79926,7 +79867,7 @@ db  7Dh	; }
 db    0
 db    0
 db  2Fh	; /
-db 0E2h	; ‚
+db  92h	; í
 db  69h	; i
 db  40h	; @
 db    0
@@ -79950,8 +79891,8 @@ db  23h	; #
 db    1
 db    0
 db  2Fh	; /
-db  10h
-db  6Ah	; j
+db 0C0h	; ¿
+db  69h	; i
 db  40h	; @
 db    0
 db 0E1h	; ·
@@ -79981,8 +79922,8 @@ db  23h	; #
 db  0Ch
 db    0
 db  26h	; &
-db  1Ch
-db  6Ah	; j
+db 0CCh	; Ã
+db  69h	; i
 db  40h	; @
 db    0
 db  6Eh	; n
@@ -80019,11 +79960,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db  30h	; 0
-db  6Ah	; j
+db 0E0h	; ‡
+db  69h	; i
 db  40h	; @
 db    0
-db  55h	; U
+db    5
 db  6Ah	; j
 db  40h	; @
 db    0
@@ -80062,8 +80003,8 @@ db    0
 db    1
 db  50h	; P
 db  26h	; &
-db  3Fh	; ?
-db  6Ah	; j
+db 0EFh	; Ô
+db  69h	; i
 db  40h	; @
 db    0
 db  8Eh	; é
@@ -80099,11 +80040,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db  60h	; `
+db  10h
 db  6Ah	; j
 db  40h	; @
 db    0
-db 0B8h	; ∏
+db  68h	; h
 db  6Bh	; k
 db  40h	; @
 db    0
@@ -80371,7 +80312,7 @@ db  80h	; Ä
 db    0
 db    0
 db  30h	; 0
-db 0A4h	; §
+db  54h	; T
 db  6Ah	; j
 db  40h	; @
 db    0
@@ -80405,11 +80346,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  6Bh	; k
 db  40h	; @
 db    0
-db 0DFh	; ﬂ
+db  8Fh	; è
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80529,8 +80470,8 @@ db  95h	; ï
 db  40h	; @
 db    0
 db  2Fh	; /
-db  0Dh
-db  6Ch	; l
+db 0BDh	; Ω
+db  6Bh	; k
 db  40h	; @
 db    0
 db 0BBh	; ª
@@ -80557,8 +80498,8 @@ db  76h	; v
 db    0
 db    0
 db  30h	; 0
-db  1Dh
-db  6Ch	; l
+db 0CDh	; Õ
+db  6Bh	; k
 db  40h	; @
 db    0
 db  6Eh	; n
@@ -80566,8 +80507,8 @@ db    5
 db    0
 db    0
 db  2Fh	; /
-db  3Ah	; :
-db  6Ch	; l
+db 0EAh	; Í
+db  6Bh	; k
 db  40h	; @
 db    0
 db 0F4h	; Ù
@@ -80585,8 +80526,8 @@ db    1
 db  31h	; 1
 db    0
 db  2Fh	; /
-db  4Ch	; L
-db  6Ch	; l
+db 0FCh	; ¸
+db  6Bh	; k
 db  40h	; @
 db    0
 db 0DFh	; ﬂ
@@ -80604,7 +80545,7 @@ db    1
 db  31h	; 1
 db    0
 db  2Fh	; /
-db  6Bh	; k
+db  1Bh
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80649,7 +80590,7 @@ db    1
 db  30h	; 0
 db    0
 db  2Fh	; /
-db  8Dh	; ç
+db  3Dh	; =
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80677,7 +80618,7 @@ db  76h	; v
 db    0
 db    0
 db  2Fh	; /
-db 0A7h	; ß
+db  57h	; W
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80696,7 +80637,7 @@ db    1
 db  31h	; 1
 db    0
 db  2Fh	; /
-db 0BBh	; ª
+db  6Bh	; k
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80715,7 +80656,7 @@ db    1
 db  31h	; 1
 db    0
 db  26h	; &
-db 0CCh	; Ã
+db  7Ch	; |
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -80777,11 +80718,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  6Ch	; l
 db  40h	; @
 db    0
-db 0E1h	; ·
+db  91h	; ë
 db  6Dh	; m
 db  40h	; @
 db    0
@@ -80953,8 +80894,8 @@ db  85h	; Ö
 db    0
 db    0
 db  30h	; 0
-db  21h	; !
-db  6Dh	; m
+db 0D1h	; —
+db  6Ch	; l
 db  40h	; @
 db    0
 db  8Eh	; é
@@ -80962,7 +80903,7 @@ db    7
 db    0
 db    0
 db  26h	; &
-db 0B7h	; ∑
+db  67h	; g
 db  6Dh	; m
 db  40h	; @
 db    0
@@ -80999,11 +80940,11 @@ db  85h	; Ö
 db    0
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  6Dh	; m
 db  40h	; @
 db    0
-db  55h	; U
+db    5
 db  6Eh	; n
 db  40h	; @
 db    0
@@ -81154,11 +81095,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db  60h	; `
+db  10h
 db  6Eh	; n
 db  40h	; @
 db    0
-db 0E1h	; ·
+db  91h	; ë
 db  6Fh	; o
 db  40h	; @
 db    0
@@ -81368,7 +81309,7 @@ db  8Ah	; ä
 db    0
 db    0
 db  2Fh	; /
-db  7Bh	; {
+db  2Bh	; +
 db  6Eh	; n
 db  40h	; @
 db    0
@@ -81396,7 +81337,7 @@ db  73h	; s
 db    0
 db    0
 db  30h	; 0
-db  97h	; ó
+db  47h	; G
 db  6Eh	; n
 db  40h	; @
 db    0
@@ -81405,7 +81346,7 @@ db    7
 db    0
 db    0
 db  26h	; &
-db 0A1h	; °
+db  51h	; Q
 db  6Fh	; o
 db  40h	; @
 db    0
@@ -81441,11 +81382,11 @@ db 0F3h	; Û
 db    3
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  6Fh	; o
 db  40h	; @
 db    0
-db 0E2h	; ‚
+db  92h	; í
 db  70h	; p
 db  40h	; @
 db    0
@@ -81590,7 +81531,7 @@ db    0
 db    1
 db 0C3h	; √
 db    2
-db  66h	; f
+db  16h
 db  70h	; p
 db  40h	; @
 db    0
@@ -81599,12 +81540,12 @@ db  94h	; î
 db    5
 db    0
 db    0
-db  24h	; $
-db  70h	; p
+db 0D4h	; ‘
+db  6Fh	; o
 db  40h	; @
 db    0
-db  2Ah	; *
-db  70h	; p
+db 0DAh	; ⁄
+db  6Fh	; o
 db  40h	; @
 db    0
 db    1
@@ -81641,11 +81582,11 @@ db  8Eh	; é
 db    5
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  70h	; p
 db  40h	; @
 db    0
-db 0F8h	; ¯
+db 0A8h	; ®
 db  71h	; q
 db  40h	; @
 db    0
@@ -81816,11 +81757,11 @@ db 0BBh	; ª
 db    5
 db    0
 db    0
-db  49h	; I
-db  71h	; q
+db 0F9h	; ˘
+db  70h	; p
 db  40h	; @
 db    0
-db  50h	; P
+db    0
 db  71h	; q
 db  40h	; @
 db    0
@@ -81841,11 +81782,11 @@ db  8Dh	; ç
 db    0
 db    0
 db  22h	; "
-db  49h	; I
-db  71h	; q
+db 0F9h	; ˘
+db  70h	; p
 db  40h	; @
 db    0
-db  50h	; P
+db    0
 db  71h	; q
 db  40h	; @
 db    0
@@ -81865,7 +81806,7 @@ db  94h	; î
 db    5
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  71h	; q
 db  40h	; @
 db    0
@@ -81891,7 +81832,7 @@ db 0BBh	; ª
 db    5
 db    0
 db    0
-db 0B4h	; ¥
+db  64h	; d
 db  71h	; q
 db  40h	; @
 db    0
@@ -81932,8 +81873,8 @@ db    0
 db    0
 db    0
 db  26h	; &
-db  17h
-db  71h	; q
+db 0C7h	; «
+db  70h	; p
 db  40h	; @
 db    0
 db  8Eh	; é
@@ -81970,12 +81911,12 @@ db 0BFh	; ø
 db    0
 db    0
 db    0
-db    0
-db  72h	; r
+db 0B0h	; ∞
+db  71h	; q
 db  40h	; @
 db    0
-db  21h	; !
-db  72h	; r
+db 0D1h	; —
+db  71h	; q
 db  40h	; @
 db    0
 db    2
@@ -82536,11 +82477,11 @@ db  63h	; c
 db  2Eh	; .
 db  63h	; c
 db    0
-db  30h	; 0
-db  72h	; r
+db 0E0h	; ‡
+db  71h	; q
 db  40h	; @
 db    0
-db  7Dh	; }
+db  2Dh	; -
 db  73h	; s
 db  40h	; @
 db    0
@@ -82967,12 +82908,12 @@ db    0
 db    1
 db  22h	; "
 db    1
-db  30h	; 0
-db  72h	; r
+db 0E0h	; ‡
+db  71h	; q
 db  40h	; @
 db    0
-db  39h	; 9
-db  73h	; s
+db 0E9h	; È
+db  72h	; r
 db  40h	; @
 db    0
 db  8Eh	; é
@@ -83105,11 +83046,11 @@ db  77h	; w
 db    0
 db    0
 db    0
-db  40h	; @
-db  73h	; s
+db 0F0h	; 
+db  72h	; r
 db  40h	; @
 db    0
-db  7Dh	; }
+db  2Dh	; -
 db  73h	; s
 db  40h	; @
 db    0
@@ -83189,11 +83130,11 @@ db 0B7h	; ∑
 db    1
 db    0
 db    0
-db  72h	; r
+db  22h	; "
 db  73h	; s
 db  40h	; @
 db    0
-db  75h	; u
+db  25h	; %
 db  73h	; s
 db  40h	; @
 db    0
@@ -83209,11 +83150,11 @@ db  92h	; í
 db    0
 db    0
 db  14h
-db  72h	; r
+db  22h	; "
 db  73h	; s
 db  40h	; @
 db    0
-db  75h	; u
+db  25h	; %
 db  73h	; s
 db  40h	; @
 db    0
@@ -83325,11 +83266,11 @@ db  65h	; e
 db  2Eh	; .
 db  63h	; c
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  73h	; s
 db  40h	; @
 db    0
-db  61h	; a
+db  11h
 db  74h	; t
 db  40h	; @
 db    0
@@ -84407,11 +84348,11 @@ db  72h	; r
 db    4
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  73h	; s
 db  40h	; @
 db    0
-db  88h	; à
+db  38h	; 8
 db  73h	; s
 db  40h	; @
 db    0
@@ -84451,11 +84392,11 @@ db  73h	; s
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  73h	; s
 db  40h	; @
 db    0
-db 0CEh	; Œ
+db  7Eh	; ~
 db  73h	; s
 db  40h	; @
 db    0
@@ -84487,7 +84428,7 @@ db  93h	; ì
 db    0
 db    0
 db  10h
-db 0A7h	; ß
+db  57h	; W
 db  73h	; s
 db  40h	; @
 db    0
@@ -84513,7 +84454,7 @@ db    1
 db  30h	; 0
 db    0
 db  10h
-db 0B7h	; ∑
+db  67h	; g
 db  73h	; s
 db  40h	; @
 db    0
@@ -84534,7 +84475,7 @@ db    8
 db  2Eh	; .
 db    0
 db  12h
-db 0CAh	;  
+db  7Ah	; z
 db  73h	; s
 db  40h	; @
 db    0
@@ -84559,11 +84500,11 @@ db  43h	; C
 db    4
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  73h	; s
 db  40h	; @
 db    0
-db  61h	; a
+db  11h
 db  74h	; t
 db  40h	; @
 db    0
@@ -84589,11 +84530,11 @@ db  43h	; C
 db    4
 db    0
 db    0
-db  49h	; I
-db  74h	; t
+db 0F9h	; ˘
+db  73h	; s
 db  40h	; @
 db    0
-db  55h	; U
+db    5
 db  74h	; t
 db  40h	; @
 db    0
@@ -84604,11 +84545,11 @@ db    5
 db    0
 db    0
 db  17h
-db  49h	; I
-db  74h	; t
+db 0F9h	; ˘
+db  73h	; s
 db  40h	; @
 db    0
-db  55h	; U
+db    5
 db  74h	; t
 db  40h	; @
 db    0
@@ -84622,12 +84563,12 @@ db  72h	; r
 db    4
 db    0
 db    0
-db  49h	; I
-db  74h	; t
+db 0F9h	; ˘
+db  73h	; s
 db  40h	; @
 db    0
-db  4Bh	; K
-db  74h	; t
+db 0FBh	; ˚
+db  73h	; s
 db  40h	; @
 db    0
 db    1
@@ -84635,7 +84576,7 @@ db  21h	; !
 db    0
 db    0
 db  12h
-db 0E0h	; ‡
+db  90h	; ê
 db  73h	; s
 db  40h	; @
 db    0
@@ -84644,7 +84585,7 @@ db    6
 db    0
 db    0
 db  1Ah
-db 0F9h	; ˘
+db 0A9h	; ©
 db  73h	; s
 db  40h	; @
 db    0
@@ -84674,8 +84615,8 @@ db  40h	; @
 db    0
 db    0
 db  1Bh
-db  2Ch	; ,
-db  74h	; t
+db 0DCh	; ‹
+db  73h	; s
 db  40h	; @
 db    0
 db    1
@@ -84684,8 +84625,8 @@ db    4
 db    0
 db    0
 db  1Ch
-db  3Dh	; =
-db  74h	; t
+db 0EDh	; Ì
+db  73h	; s
 db  40h	; @
 db    0
 db  11h
@@ -85085,1115 +85026,16 @@ db  67h	; g
 db  63h	; c
 db  63h	; c
 db    0
-db  50h	; P
+db    0
 db  75h	; u
 db  40h	; @
 db    0
-db  87h	; á
+db  37h	; 7
 db  76h	; v
 db  40h	; @
 db    0
 db 0F2h	; Ú
 db  36h	; 6
-db    0
-db    0
-db    2
-db    1
-db    6
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    4
-db    7
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    2
-db    7
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    4
-db    7
-db  73h	; s
-db  69h	; i
-db  7Ah	; z
-db  65h	; e
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db    4
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    8
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    2
-db    8
-db    4
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    4
-db    4
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  0Ch
-db    4
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db    2
-db    5
-db  73h	; s
-db  68h	; h
-db  6Fh	; o
-db  72h	; r
-db  74h	; t
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    1
-db    6
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  63h	; c
-db  68h	; h
-db  61h	; a
-db  72h	; r
-db    0
-db    3
-db  53h	; S
-db  49h	; I
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db  82h	; Ç
-db 0A4h	; §
-db    0
-db    0
-db    0
-db    3
-db  55h	; U
-db  53h	; S
-db  49h	; I
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db  83h	; É
-db  94h	; î
-db    0
-db    0
-db    0
-db    3
-db  44h	; D
-db  49h	; I
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db  86h	; Ü
-db 0CDh	; Õ
-db    0
-db    0
-db    0
-db    3
-db  55h	; U
-db  44h	; D
-db  49h	; I
-db  74h	; t
-db  79h	; y
-db  70h	; p
-db  65h	; e
-db    0
-db    2
-db  87h	; á
-db  88h	; à
-db    1
-db    0
-db    0
-db    2
-db    8
-db    7
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  75h	; u
-db  6Eh	; n
-db  73h	; s
-db  69h	; i
-db  67h	; g
-db  6Eh	; n
-db  65h	; e
-db  64h	; d
-db  20h
-db  69h	; i
-db  6Eh	; n
-db  74h	; t
-db    0
-db    2
-db    8
-db    3
-db  63h	; c
-db  6Fh	; o
-db  6Dh	; m
-db  70h	; p
-db  6Ch	; l
-db  65h	; e
-db  78h	; x
-db  20h
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db    0
-db    2
-db  10h
-db    3
-db  63h	; c
-db  6Fh	; o
-db  6Dh	; m
-db  70h	; p
-db  6Ch	; l
-db  65h	; e
-db  78h	; x
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db  18h
-db    3
-db  63h	; c
-db  6Fh	; o
-db  6Dh	; m
-db  70h	; p
-db  6Ch	; l
-db  65h	; e
-db  78h	; x
-db  20h
-db  6Ch	; l
-db  6Fh	; o
-db  6Eh	; n
-db  67h	; g
-db  20h
-db  64h	; d
-db  6Fh	; o
-db  75h	; u
-db  62h	; b
-db  6Ch	; l
-db  65h	; e
-db    0
-db    2
-db  10h
-db    4
-db  5Fh	; _
-db  5Fh	; _
-db  66h	; f
-db  6Ch	; l
-db  6Fh	; o
-db  61h	; a
-db  74h	; t
-db  31h	; 1
-db  32h	; 2
-db  38h	; 8
-db    0
-db    2
-db  20h
-db    3
-db  5Fh	; _
-db  5Fh	; _
-db  75h	; u
-db  6Eh	; n
-db  6Bh	; k
-db  6Eh	; n
-db  6Fh	; o
-db  77h	; w
-db  6Eh	; n
-db  5Fh	; _
-db  5Fh	; _
-db    0
-db    4
-db  44h	; D
-db  57h	; W
-db  73h	; s
-db  74h	; t
-db  72h	; r
-db  75h	; u
-db  63h	; c
-db  74h	; t
-db    0
-db    8
-db    2
-db 0E4h	; ‰
-db    1
-db  2Bh	; +
-db    2
-db    0
-db    0
-db    5
-db  6Ch	; l
-db  6Fh	; o
-db  77h	; w
-db    0
-db    2
-db 0E4h	; ‰
-db    1
-db  4Eh	; N
-db    1
-db    0
-db    0
-db    2
-db  23h	; #
-db    0
-db    5
-db  68h	; h
-db  69h	; i
-db  67h	; g
-db  68h	; h
-db    0
-db    2
-db 0E4h	; ‰
-db    1
-db  4Eh	; N
-db    1
-db    0
-db    0
-db    2
-db  23h	; #
-db    4
-db    0
-db    6
-db    8
-db    2
-db 0EBh	; Î
-db    1
-db  4Ah	; J
-db    2
-db    0
-db    0
-db    7
-db  73h	; s
-db    0
-db    2
-db 0EDh	; Ì
-db    1
-db 0F9h	; ˘
-db    1
-db    0
-db    0
-db    7
-db  6Ch	; l
-db  6Ch	; l
-db    0
-db    2
-db 0EEh	; Ó
-db    1
-db  6Bh	; k
-db    1
-db    0
-db    0
-db    0
-db    8
-db  44h	; D
-db  57h	; W
-db  75h	; u
-db  6Eh	; n
-db  69h	; i
-db  6Fh	; o
-db  6Eh	; n
-db    0
-db    2
-db 0EFh	; Ô
-db    1
-db  2Bh	; +
-db    2
-db    0
-db    0
-db    9
-db  5Fh	; _
-db  5Fh	; _
-db  75h	; u
-db  64h	; d
-db  69h	; i
-db  76h	; v
-db  6Dh	; m
-db  6Fh	; o
-db  64h	; d
-db  64h	; d
-db  69h	; i
-db  34h	; 4
-db    0
-db    1
-db  88h	; à
-db    3
-db    1
-db  79h	; y
-db    1
-db    0
-db    0
-db    3
-db  3Bh	; ;
-db    3
-db    0
-db    0
-db  0Ah
-db  6Eh	; n
-db    0
-db    1
-db  88h	; à
-db    3
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Ah
-db  64h	; d
-db    0
-db    1
-db  88h	; à
-db    3
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Ah
-db  72h	; r
-db  70h	; p
-db    0
-db    1
-db  88h	; à
-db    3
-db  3Bh	; ;
-db    3
-db    0
-db    0
-db  0Bh
-db  6Eh	; n
-db  6Eh	; n
-db    0
-db    1
-db  8Ah	; ä
-db    3
-db  41h	; A
-db    3
-db    0
-db    0
-db  0Bh
-db  64h	; d
-db  64h	; d
-db    0
-db    1
-db  8Bh	; ã
-db    3
-db  41h	; A
-db    3
-db    0
-db    0
-db  0Bh
-db  72h	; r
-db  72h	; r
-db    0
-db    1
-db  8Ch	; å
-db    3
-db  4Ah	; J
-db    2
-db    0
-db    0
-db  0Bh
-db  64h	; d
-db  30h	; 0
-db    0
-db    1
-db  8Dh	; ç
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  64h	; d
-db  31h	; 1
-db    0
-db    1
-db  8Dh	; ç
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  6Eh	; n
-db  30h	; 0
-db    0
-db    1
-db  8Dh	; ç
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  6Eh	; n
-db  31h	; 1
-db    0
-db    1
-db  8Dh	; ç
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  6Eh	; n
-db  32h	; 2
-db    0
-db    1
-db  8Dh	; ç
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  71h	; q
-db  30h	; 0
-db    0
-db    1
-db  8Eh	; é
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  71h	; q
-db  31h	; 1
-db    0
-db    1
-db  8Eh	; é
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  62h	; b
-db    0
-db    1
-db  8Fh	; è
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  62h	; b
-db  6Dh	; m
-db    0
-db    1
-db  8Fh	; è
-db    3
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  77h	; w
-db  77h	; w
-db    0
-db    1
-db  58h	; X
-db    4
-db  41h	; A
-db    3
-db    0
-db    0
-db  0Ch
-db  0Bh
-db  6Dh	; m
-db  31h	; 1
-db    0
-db    1
-db  36h	; 6
-db    4
-db  5Ch	; \
-db    1
-db    0
-db    0
-db  0Bh
-db  6Dh	; m
-db  30h	; 0
-db    0
-db    1
-db  36h	; 6
-db    4
-db  5Ch	; \
-db    1
-db    0
-db    0
-db    0
-db    0
-db  0Dh
-db    4
-db  79h	; y
-db    1
-db    0
-db    0
-db  0Eh
-db  4Ah	; J
-db    2
-db    0
-db    0
-db  0Fh
-db    1
-db  5Fh	; _
-db  5Fh	; _
-db  75h	; u
-db  6Dh	; m
-db  6Fh	; o
-db  64h	; d
-db  64h	; d
-db  69h	; i
-db  33h	; 3
-db    0
-db    1
-db  8Eh	; é
-db    4
-db    1
-db  79h	; y
-db    1
-db    0
-db    0
-db  50h	; P
-db  75h	; u
-db  40h	; @
-db    0
-db  87h	; á
-db  76h	; v
-db  40h	; @
-db    0
-db    1
-db  94h	; î
-db    0
-db    0
-db    1
-db  10h
-db  75h	; u
-db    0
-db    1
-db  8Eh	; é
-db    4
-db  79h	; y
-db    1
-db    0
-db    0
-db    2
-db  91h	; ë
-db    0
-db  10h
-db  76h	; v
-db    0
-db    1
-db  8Eh	; é
-db    4
-db  79h	; y
-db    1
-db    0
-db    0
-db    2
-db  91h	; ë
-db    8
-db  11h
-db  77h	; w
-db    0
-db    1
-db  90h	; ê
-db    4
-db  79h	; y
-db    1
-db    0
-db    0
-db  39h	; 9
-db  94h	; î
-db    0
-db    0
-db  12h
-db  5Ah	; Z
-db    2
-db    0
-db    0
-db  57h	; W
-db  75h	; u
-db  40h	; @
-db    0
-db 0A0h	; †
-db    5
-db    0
-db    0
-db    1
-db  92h	; í
-db    4
-db  13h
-db  89h	; â
-db    2
-db    0
-db    0
-db    6
-db 0F2h	; Ú
-db 0BFh	; ø
-db  0Bh
-db    1
-db    0
-db    0
-db  14h
-db  7Fh	; 
-db    2
-db    0
-db    0
-db  91h	; ë
-db  94h	; î
-db    0
-db    0
-db  14h
-db  75h	; u
-db    2
-db    0
-db    0
-db  3Eh	; >
-db  95h	; ï
-db    0
-db    0
-db  15h
-db 0C8h	; »
-db    5
-db    0
-db    0
-db  16h
-db  94h	; î
-db    2
-db    0
-db    0
-db  17h
-db  9Fh	; ü
-db    2
-db    0
-db    0
-db  5Fh	; _
-db  96h	; ñ
-db    0
-db    0
-db  16h
-db 0AAh	; ™
-db    2
-db    0
-db    0
-db  17h
-db 0B5h	; µ
-db    2
-db    0
-db    0
-db  97h	; ó
-db  96h	; ñ
-db    0
-db    0
-db  17h
-db 0C0h	; ¿
-db    2
-db    0
-db    0
-db 0EEh	; Ó
-db  96h	; ñ
-db    0
-db    0
-db  17h
-db 0CBh	; À
-db    2
-db    0
-db    0
-db  2Eh	; .
-db  97h	; ó
-db    0
-db    0
-db  17h
-db 0D6h	; ÷
-db    2
-db    0
-db    0
-db 0C0h	; ¿
-db  97h	; ó
-db    0
-db    0
-db  17h
-db 0E1h	; ·
-db    2
-db    0
-db    0
-db 0AAh	; ™
-db  98h	; ò
-db    0
-db    0
-db  17h
-db 0ECh	; Ï
-db    2
-db    0
-db    0
-db 0D1h	; —
-db  98h	; ò
-db    0
-db    0
-db  17h
-db 0F7h	; ˜
-db    2
-db    0
-db    0
-db 0FCh	; ¸
-db  98h	; ò
-db    0
-db    0
-db  17h
-db    2
-db    3
-db    0
-db    0
-db  34h	; 4
-db  99h	; ô
-db    0
-db    0
-db  17h
-db  0Ch
-db    3
-db    0
-db    0
-db  58h	; X
-db  99h	; ô
-db    0
-db    0
-db  16h
-db  17h
-db    3
-db    0
-db    0
-db  18h
-db 0E4h	; ‰
-db  75h	; u
-db  40h	; @
-db    0
-db  78h	; x
-db  76h	; v
-db  40h	; @
-db    0
-db  17h
-db  23h	; #
-db    3
-db    0
-db    0
-db  80h	; Ä
-db  99h	; ô
-db    0
-db    0
-db  17h
-db  2Eh	; .
-db    3
-db    0
-db    0
-db 0B4h	; ¥
-db  99h	; ô
-db    0
-db    0
-db    0
-db    0
-db    0
-db    0
-db    0
-db  33h	; 3
-db    4
-db    0
-db    0
-db    2
-db    0
-db  18h
-db  2Dh	; -
-db    0
-db    0
-db    4
-db    1
-db  47h	; G
-db  4Eh	; N
-db  55h	; U
-db  20h
-db  43h	; C
-db  20h
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db    0
-db    1
-db  2Eh	; .
-db  2Eh	; .
-db  2Fh	; /
-db  2Eh	; .
-db  2Eh	; .
-db  2Fh	; /
-db  2Eh	; .
-db  2Eh	; .
-db  2Fh	; /
-db  2Eh	; .
-db  2Eh	; .
-db  2Fh	; /
-db  2Eh	; .
-db  2Eh	; .
-db  2Fh	; /
-db  73h	; s
-db  72h	; r
-db  63h	; c
-db  2Fh	; /
-db  67h	; g
-db  63h	; c
-db  63h	; c
-db  2Dh	; -
-db  34h	; 4
-db  2Eh	; .
-db  37h	; 7
-db  2Eh	; .
-db  31h	; 1
-db  2Fh	; /
-db  6Ch	; l
-db  69h	; i
-db  62h	; b
-db  67h	; g
-db  63h	; c
-db  63h	; c
-db  2Fh	; /
-db  6Ch	; l
-db  69h	; i
-db  62h	; b
-db  67h	; g
-db  63h	; c
-db  63h	; c
-db  32h	; 2
-db  2Eh	; .
-db  63h	; c
-db    0
-db  63h	; c
-db  3Ah	; :
-db  5Ch	; \
-db  63h	; c
-db  72h	; r
-db  6Fh	; o
-db  73h	; s
-db  73h	; s
-db  64h	; d
-db  65h	; e
-db  76h	; v
-db  5Ch	; \
-db  62h	; b
-db  75h	; u
-db  69h	; i
-db  6Ch	; l
-db  64h	; d
-db  5Ch	; \
-db  67h	; g
-db  63h	; c
-db  63h	; c
-db  2Dh	; -
-db  74h	; t
-db  64h	; d
-db  6Dh	; m
-db  36h	; 6
-db  34h	; 4
-db  5Ch	; \
-db  78h	; x
-db  38h	; 8
-db  36h	; 6
-db  5Fh	; _
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  77h	; w
-db  36h	; 6
-db  34h	; 4
-db  2Dh	; -
-db  6Dh	; m
-db  69h	; i
-db  6Eh	; n
-db  67h	; g
-db  77h	; w
-db  33h	; 3
-db  32h	; 2
-db  5Ch	; \
-db  33h	; 3
-db  32h	; 2
-db  5Ch	; \
-db  6Ch	; l
-db  69h	; i
-db  62h	; b
-db  67h	; g
-db  63h	; c
-db  63h	; c
-db    0
-db  90h	; ê
-db  76h	; v
-db  40h	; @
-db    0
-db  9Ah	; ö
-db  77h	; w
-db  40h	; @
-db    0
-db 0C8h	; »
-db  37h	; 7
 db    0
 db    0
 db    2
@@ -86899,6 +85741,1105 @@ db    1
 db  5Fh	; _
 db  5Fh	; _
 db  75h	; u
+db  6Dh	; m
+db  6Fh	; o
+db  64h	; d
+db  64h	; d
+db  69h	; i
+db  33h	; 3
+db    0
+db    1
+db  8Eh	; é
+db    4
+db    1
+db  79h	; y
+db    1
+db    0
+db    0
+db    0
+db  75h	; u
+db  40h	; @
+db    0
+db  37h	; 7
+db  76h	; v
+db  40h	; @
+db    0
+db    1
+db  94h	; î
+db    0
+db    0
+db    1
+db  10h
+db  75h	; u
+db    0
+db    1
+db  8Eh	; é
+db    4
+db  79h	; y
+db    1
+db    0
+db    0
+db    2
+db  91h	; ë
+db    0
+db  10h
+db  76h	; v
+db    0
+db    1
+db  8Eh	; é
+db    4
+db  79h	; y
+db    1
+db    0
+db    0
+db    2
+db  91h	; ë
+db    8
+db  11h
+db  77h	; w
+db    0
+db    1
+db  90h	; ê
+db    4
+db  79h	; y
+db    1
+db    0
+db    0
+db  39h	; 9
+db  94h	; î
+db    0
+db    0
+db  12h
+db  5Ah	; Z
+db    2
+db    0
+db    0
+db    7
+db  75h	; u
+db  40h	; @
+db    0
+db 0A0h	; †
+db    5
+db    0
+db    0
+db    1
+db  92h	; í
+db    4
+db  13h
+db  89h	; â
+db    2
+db    0
+db    0
+db    6
+db 0F2h	; Ú
+db 0BFh	; ø
+db  0Bh
+db    1
+db    0
+db    0
+db  14h
+db  7Fh	; 
+db    2
+db    0
+db    0
+db  91h	; ë
+db  94h	; î
+db    0
+db    0
+db  14h
+db  75h	; u
+db    2
+db    0
+db    0
+db  3Eh	; >
+db  95h	; ï
+db    0
+db    0
+db  15h
+db 0C8h	; »
+db    5
+db    0
+db    0
+db  16h
+db  94h	; î
+db    2
+db    0
+db    0
+db  17h
+db  9Fh	; ü
+db    2
+db    0
+db    0
+db  5Fh	; _
+db  96h	; ñ
+db    0
+db    0
+db  16h
+db 0AAh	; ™
+db    2
+db    0
+db    0
+db  17h
+db 0B5h	; µ
+db    2
+db    0
+db    0
+db  97h	; ó
+db  96h	; ñ
+db    0
+db    0
+db  17h
+db 0C0h	; ¿
+db    2
+db    0
+db    0
+db 0EEh	; Ó
+db  96h	; ñ
+db    0
+db    0
+db  17h
+db 0CBh	; À
+db    2
+db    0
+db    0
+db  2Eh	; .
+db  97h	; ó
+db    0
+db    0
+db  17h
+db 0D6h	; ÷
+db    2
+db    0
+db    0
+db 0C0h	; ¿
+db  97h	; ó
+db    0
+db    0
+db  17h
+db 0E1h	; ·
+db    2
+db    0
+db    0
+db 0AAh	; ™
+db  98h	; ò
+db    0
+db    0
+db  17h
+db 0ECh	; Ï
+db    2
+db    0
+db    0
+db 0D1h	; —
+db  98h	; ò
+db    0
+db    0
+db  17h
+db 0F7h	; ˜
+db    2
+db    0
+db    0
+db 0FCh	; ¸
+db  98h	; ò
+db    0
+db    0
+db  17h
+db    2
+db    3
+db    0
+db    0
+db  34h	; 4
+db  99h	; ô
+db    0
+db    0
+db  17h
+db  0Ch
+db    3
+db    0
+db    0
+db  58h	; X
+db  99h	; ô
+db    0
+db    0
+db  16h
+db  17h
+db    3
+db    0
+db    0
+db  18h
+db  94h	; î
+db  75h	; u
+db  40h	; @
+db    0
+db  28h	; (
+db  76h	; v
+db  40h	; @
+db    0
+db  17h
+db  23h	; #
+db    3
+db    0
+db    0
+db  80h	; Ä
+db  99h	; ô
+db    0
+db    0
+db  17h
+db  2Eh	; .
+db    3
+db    0
+db    0
+db 0B4h	; ¥
+db  99h	; ô
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db    0
+db  33h	; 3
+db    4
+db    0
+db    0
+db    2
+db    0
+db  18h
+db  2Dh	; -
+db    0
+db    0
+db    4
+db    1
+db  47h	; G
+db  4Eh	; N
+db  55h	; U
+db  20h
+db  43h	; C
+db  20h
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db    0
+db    1
+db  2Eh	; .
+db  2Eh	; .
+db  2Fh	; /
+db  2Eh	; .
+db  2Eh	; .
+db  2Fh	; /
+db  2Eh	; .
+db  2Eh	; .
+db  2Fh	; /
+db  2Eh	; .
+db  2Eh	; .
+db  2Fh	; /
+db  2Eh	; .
+db  2Eh	; .
+db  2Fh	; /
+db  73h	; s
+db  72h	; r
+db  63h	; c
+db  2Fh	; /
+db  67h	; g
+db  63h	; c
+db  63h	; c
+db  2Dh	; -
+db  34h	; 4
+db  2Eh	; .
+db  37h	; 7
+db  2Eh	; .
+db  31h	; 1
+db  2Fh	; /
+db  6Ch	; l
+db  69h	; i
+db  62h	; b
+db  67h	; g
+db  63h	; c
+db  63h	; c
+db  2Fh	; /
+db  6Ch	; l
+db  69h	; i
+db  62h	; b
+db  67h	; g
+db  63h	; c
+db  63h	; c
+db  32h	; 2
+db  2Eh	; .
+db  63h	; c
+db    0
+db  63h	; c
+db  3Ah	; :
+db  5Ch	; \
+db  63h	; c
+db  72h	; r
+db  6Fh	; o
+db  73h	; s
+db  73h	; s
+db  64h	; d
+db  65h	; e
+db  76h	; v
+db  5Ch	; \
+db  62h	; b
+db  75h	; u
+db  69h	; i
+db  6Ch	; l
+db  64h	; d
+db  5Ch	; \
+db  67h	; g
+db  63h	; c
+db  63h	; c
+db  2Dh	; -
+db  74h	; t
+db  64h	; d
+db  6Dh	; m
+db  36h	; 6
+db  34h	; 4
+db  5Ch	; \
+db  78h	; x
+db  38h	; 8
+db  36h	; 6
+db  5Fh	; _
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  77h	; w
+db  36h	; 6
+db  34h	; 4
+db  2Dh	; -
+db  6Dh	; m
+db  69h	; i
+db  6Eh	; n
+db  67h	; g
+db  77h	; w
+db  33h	; 3
+db  32h	; 2
+db  5Ch	; \
+db  33h	; 3
+db  32h	; 2
+db  5Ch	; \
+db  6Ch	; l
+db  69h	; i
+db  62h	; b
+db  67h	; g
+db  63h	; c
+db  63h	; c
+db    0
+db  40h	; @
+db  76h	; v
+db  40h	; @
+db    0
+db  4Ah	; J
+db  77h	; w
+db  40h	; @
+db    0
+db 0C8h	; »
+db  37h	; 7
+db    0
+db    0
+db    2
+db    1
+db    6
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    4
+db    7
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    2
+db    7
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    4
+db    7
+db  73h	; s
+db  69h	; i
+db  7Ah	; z
+db  65h	; e
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db    4
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    8
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    2
+db    8
+db    4
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    4
+db    4
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  0Ch
+db    4
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db    2
+db    5
+db  73h	; s
+db  68h	; h
+db  6Fh	; o
+db  72h	; r
+db  74h	; t
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    1
+db    6
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  63h	; c
+db  68h	; h
+db  61h	; a
+db  72h	; r
+db    0
+db    3
+db  53h	; S
+db  49h	; I
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db  82h	; Ç
+db 0A4h	; §
+db    0
+db    0
+db    0
+db    3
+db  55h	; U
+db  53h	; S
+db  49h	; I
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db  83h	; É
+db  94h	; î
+db    0
+db    0
+db    0
+db    3
+db  44h	; D
+db  49h	; I
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db  86h	; Ü
+db 0CDh	; Õ
+db    0
+db    0
+db    0
+db    3
+db  55h	; U
+db  44h	; D
+db  49h	; I
+db  74h	; t
+db  79h	; y
+db  70h	; p
+db  65h	; e
+db    0
+db    2
+db  87h	; á
+db  88h	; à
+db    1
+db    0
+db    0
+db    2
+db    8
+db    7
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  75h	; u
+db  6Eh	; n
+db  73h	; s
+db  69h	; i
+db  67h	; g
+db  6Eh	; n
+db  65h	; e
+db  64h	; d
+db  20h
+db  69h	; i
+db  6Eh	; n
+db  74h	; t
+db    0
+db    2
+db    8
+db    3
+db  63h	; c
+db  6Fh	; o
+db  6Dh	; m
+db  70h	; p
+db  6Ch	; l
+db  65h	; e
+db  78h	; x
+db  20h
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db    0
+db    2
+db  10h
+db    3
+db  63h	; c
+db  6Fh	; o
+db  6Dh	; m
+db  70h	; p
+db  6Ch	; l
+db  65h	; e
+db  78h	; x
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db  18h
+db    3
+db  63h	; c
+db  6Fh	; o
+db  6Dh	; m
+db  70h	; p
+db  6Ch	; l
+db  65h	; e
+db  78h	; x
+db  20h
+db  6Ch	; l
+db  6Fh	; o
+db  6Eh	; n
+db  67h	; g
+db  20h
+db  64h	; d
+db  6Fh	; o
+db  75h	; u
+db  62h	; b
+db  6Ch	; l
+db  65h	; e
+db    0
+db    2
+db  10h
+db    4
+db  5Fh	; _
+db  5Fh	; _
+db  66h	; f
+db  6Ch	; l
+db  6Fh	; o
+db  61h	; a
+db  74h	; t
+db  31h	; 1
+db  32h	; 2
+db  38h	; 8
+db    0
+db    2
+db  20h
+db    3
+db  5Fh	; _
+db  5Fh	; _
+db  75h	; u
+db  6Eh	; n
+db  6Bh	; k
+db  6Eh	; n
+db  6Fh	; o
+db  77h	; w
+db  6Eh	; n
+db  5Fh	; _
+db  5Fh	; _
+db    0
+db    4
+db  44h	; D
+db  57h	; W
+db  73h	; s
+db  74h	; t
+db  72h	; r
+db  75h	; u
+db  63h	; c
+db  74h	; t
+db    0
+db    8
+db    2
+db 0E4h	; ‰
+db    1
+db  2Bh	; +
+db    2
+db    0
+db    0
+db    5
+db  6Ch	; l
+db  6Fh	; o
+db  77h	; w
+db    0
+db    2
+db 0E4h	; ‰
+db    1
+db  4Eh	; N
+db    1
+db    0
+db    0
+db    2
+db  23h	; #
+db    0
+db    5
+db  68h	; h
+db  69h	; i
+db  67h	; g
+db  68h	; h
+db    0
+db    2
+db 0E4h	; ‰
+db    1
+db  4Eh	; N
+db    1
+db    0
+db    0
+db    2
+db  23h	; #
+db    4
+db    0
+db    6
+db    8
+db    2
+db 0EBh	; Î
+db    1
+db  4Ah	; J
+db    2
+db    0
+db    0
+db    7
+db  73h	; s
+db    0
+db    2
+db 0EDh	; Ì
+db    1
+db 0F9h	; ˘
+db    1
+db    0
+db    0
+db    7
+db  6Ch	; l
+db  6Ch	; l
+db    0
+db    2
+db 0EEh	; Ó
+db    1
+db  6Bh	; k
+db    1
+db    0
+db    0
+db    0
+db    8
+db  44h	; D
+db  57h	; W
+db  75h	; u
+db  6Eh	; n
+db  69h	; i
+db  6Fh	; o
+db  6Eh	; n
+db    0
+db    2
+db 0EFh	; Ô
+db    1
+db  2Bh	; +
+db    2
+db    0
+db    0
+db    9
+db  5Fh	; _
+db  5Fh	; _
+db  75h	; u
+db  64h	; d
+db  69h	; i
+db  76h	; v
+db  6Dh	; m
+db  6Fh	; o
+db  64h	; d
+db  64h	; d
+db  69h	; i
+db  34h	; 4
+db    0
+db    1
+db  88h	; à
+db    3
+db    1
+db  79h	; y
+db    1
+db    0
+db    0
+db    3
+db  3Bh	; ;
+db    3
+db    0
+db    0
+db  0Ah
+db  6Eh	; n
+db    0
+db    1
+db  88h	; à
+db    3
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Ah
+db  64h	; d
+db    0
+db    1
+db  88h	; à
+db    3
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Ah
+db  72h	; r
+db  70h	; p
+db    0
+db    1
+db  88h	; à
+db    3
+db  3Bh	; ;
+db    3
+db    0
+db    0
+db  0Bh
+db  6Eh	; n
+db  6Eh	; n
+db    0
+db    1
+db  8Ah	; ä
+db    3
+db  41h	; A
+db    3
+db    0
+db    0
+db  0Bh
+db  64h	; d
+db  64h	; d
+db    0
+db    1
+db  8Bh	; ã
+db    3
+db  41h	; A
+db    3
+db    0
+db    0
+db  0Bh
+db  72h	; r
+db  72h	; r
+db    0
+db    1
+db  8Ch	; å
+db    3
+db  4Ah	; J
+db    2
+db    0
+db    0
+db  0Bh
+db  64h	; d
+db  30h	; 0
+db    0
+db    1
+db  8Dh	; ç
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  64h	; d
+db  31h	; 1
+db    0
+db    1
+db  8Dh	; ç
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  6Eh	; n
+db  30h	; 0
+db    0
+db    1
+db  8Dh	; ç
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  6Eh	; n
+db  31h	; 1
+db    0
+db    1
+db  8Dh	; ç
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  6Eh	; n
+db  32h	; 2
+db    0
+db    1
+db  8Dh	; ç
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  71h	; q
+db  30h	; 0
+db    0
+db    1
+db  8Eh	; é
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  71h	; q
+db  31h	; 1
+db    0
+db    1
+db  8Eh	; é
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  62h	; b
+db    0
+db    1
+db  8Fh	; è
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  62h	; b
+db  6Dh	; m
+db    0
+db    1
+db  8Fh	; è
+db    3
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  77h	; w
+db  77h	; w
+db    0
+db    1
+db  58h	; X
+db    4
+db  41h	; A
+db    3
+db    0
+db    0
+db  0Ch
+db  0Bh
+db  6Dh	; m
+db  31h	; 1
+db    0
+db    1
+db  36h	; 6
+db    4
+db  5Ch	; \
+db    1
+db    0
+db    0
+db  0Bh
+db  6Dh	; m
+db  30h	; 0
+db    0
+db    1
+db  36h	; 6
+db    4
+db  5Ch	; \
+db    1
+db    0
+db    0
+db    0
+db    0
+db  0Dh
+db    4
+db  79h	; y
+db    1
+db    0
+db    0
+db  0Eh
+db  4Ah	; J
+db    2
+db    0
+db    0
+db  0Fh
+db    1
+db  5Fh	; _
+db  5Fh	; _
+db  75h	; u
 db  64h	; d
 db  69h	; i
 db  76h	; v
@@ -86914,11 +86855,11 @@ db  79h	; y
 db    1
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  76h	; v
 db  40h	; @
 db    0
-db  9Ah	; ö
+db  4Ah	; J
 db  77h	; w
 db  40h	; @
 db    0
@@ -86958,7 +86899,7 @@ db  5Ah	; Z
 db    2
 db    0
 db    0
-db  93h	; ì
+db  43h	; C
 db  76h	; v
 db  40h	; @
 db    0
@@ -100902,7 +100843,7 @@ db    0
 db    0
 db    5
 db    2
-db 0C0h	; ¿
+db  70h	; p
 db  15h
 db  40h	; @
 db    0
@@ -101233,7 +101174,7 @@ db    0
 db    0
 db    5
 db    2
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
@@ -101464,7 +101405,7 @@ db    0
 db    0
 db    5
 db    2
-db 0B0h	; ∞
+db  60h	; `
 db  16h
 db  40h	; @
 db    0
@@ -101861,7 +101802,7 @@ db    0
 db    0
 db    5
 db    2
-db 0D0h	; –
+db  80h	; Ä
 db  16h
 db  40h	; @
 db    0
@@ -102460,7 +102401,7 @@ db    0
 db    0
 db    5
 db    2
-db 0B0h	; ∞
+db  60h	; `
 db  17h
 db  40h	; @
 db    0
@@ -102927,8 +102868,8 @@ db    0
 db    0
 db    5
 db    2
-db  10h
-db  19h
+db 0C0h	; ¿
+db  18h
 db  40h	; @
 db    0
 db    3
@@ -103058,7 +102999,7 @@ db    0
 db    0
 db    5
 db    2
-db 0D0h	; –
+db  80h	; Ä
 db  19h
 db  40h	; @
 db    0
@@ -103371,7 +103312,7 @@ db    0
 db    0
 db    5
 db    2
-db 0E0h	; ‡
+db  90h	; ê
 db  19h
 db  40h	; @
 db    0
@@ -103880,8 +103821,8 @@ db    0
 db    0
 db    5
 db    2
-db  30h	; 0
-db  1Fh
+db 0E0h	; ‡
+db  1Eh
 db  40h	; @
 db    0
 db    3
@@ -104173,7 +104114,7 @@ db    0
 db    0
 db    5
 db    2
-db 0D0h	; –
+db  80h	; Ä
 db  22h	; "
 db  40h	; @
 db    0
@@ -104422,7 +104363,7 @@ db    0
 db    0
 db    5
 db    2
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
@@ -104730,7 +104671,7 @@ db    0
 db    0
 db    5
 db    2
-db  80h	; Ä
+db  30h	; 0
 db  23h	; #
 db  40h	; @
 db    0
@@ -105166,7 +105107,7 @@ db    0
 db    0
 db    5
 db    2
-db 0E0h	; ‡
+db  90h	; ê
 db  24h	; $
 db  40h	; @
 db    0
@@ -105490,8 +105431,8 @@ db    0
 db    0
 db    5
 db    2
-db  20h
-db  27h	; '
+db 0D0h	; –
+db  26h	; &
 db  40h	; @
 db    0
 db    3
@@ -105991,7 +105932,7 @@ db    0
 db    0
 db    5
 db    2
-db  60h	; `
+db  10h
 db  27h	; '
 db  40h	; @
 db    0
@@ -106260,7 +106201,7 @@ db    0
 db    0
 db    5
 db    2
-db 0A0h	; †
+db  50h	; P
 db  27h	; '
 db  40h	; @
 db    0
@@ -106528,7 +106469,7 @@ db    0
 db    0
 db    5
 db    2
-db 0E0h	; ‡
+db  90h	; ê
 db  27h	; '
 db  40h	; @
 db    0
@@ -106926,8 +106867,8 @@ db    0
 db    0
 db    5
 db    2
-db  20h
-db  28h	; (
+db 0D0h	; –
+db  27h	; '
 db  40h	; @
 db    0
 db    3
@@ -109286,7 +109227,7 @@ db    0
 db    0
 db    5
 db    2
-db 0E0h	; ‡
+db  90h	; ê
 db  47h	; G
 db  40h	; @
 db    0
@@ -110774,7 +110715,7 @@ db    0
 db    0
 db    5
 db    2
-db 0A0h	; †
+db  50h	; P
 db  5Dh	; ]
 db  40h	; @
 db    0
@@ -111143,7 +111084,7 @@ db    0
 db    0
 db    5
 db    2
-db 0A0h	; †
+db  50h	; P
 db  5Fh	; _
 db  40h	; @
 db    0
@@ -111435,7 +111376,7 @@ db    0
 db    0
 db    5
 db    2
-db  50h	; P
+db    0
 db  63h	; c
 db  40h	; @
 db    0
@@ -112013,8 +111954,8 @@ db    0
 db    0
 db    5
 db    2
-db  20h
-db  66h	; f
+db 0D0h	; –
+db  65h	; e
 db  40h	; @
 db    0
 db    3
@@ -112374,7 +112315,7 @@ db    0
 db    0
 db    5
 db    2
-db 0F0h	; 
+db 0A0h	; †
 db  66h	; f
 db  40h	; @
 db    0
@@ -113381,8 +113322,8 @@ db    0
 db    0
 db    5
 db    2
-db  30h	; 0
-db  72h	; r
+db 0E0h	; ‡
+db  71h	; q
 db  40h	; @
 db    0
 db    3
@@ -113777,7 +113718,7 @@ db    0
 db    0
 db    5
 db    2
-db  80h	; Ä
+db  30h	; 0
 db  73h	; s
 db  40h	; @
 db    0
@@ -113931,7 +113872,7 @@ db    0
 db    0
 db    5
 db    2
-db  50h	; P
+db    0
 db  75h	; u
 db  40h	; @
 db    0
@@ -114145,7 +114086,7 @@ db    0
 db    0
 db    5
 db    2
-db  90h	; ê
+db  40h	; @
 db  76h	; v
 db  40h	; @
 db    0
@@ -114853,7 +114794,7 @@ db 0C0h	; ¿
 db    0
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  15h
 db  40h	; @
 db    0
@@ -114881,8 +114822,8 @@ db 0C0h	; ¿
 db    0
 db    0
 db    0
-db  10h
-db  16h
+db 0C0h	; ¿
+db  15h
 db  40h	; @
 db    0
 db  7Eh	; ~
@@ -114925,7 +114866,7 @@ db 0C0h	; ¿
 db    0
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  16h
 db  40h	; @
 db    0
@@ -114961,7 +114902,7 @@ db  2Ch	; ,
 db    1
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  16h
 db  40h	; @
 db    0
@@ -114997,7 +114938,7 @@ db  50h	; P
 db    1
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  16h
 db  40h	; @
 db    0
@@ -115013,7 +114954,7 @@ db  50h	; P
 db    1
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  16h
 db  40h	; @
 db    0
@@ -115049,7 +114990,7 @@ db  84h	; Ñ
 db    1
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  16h
 db  40h	; @
 db    0
@@ -115093,7 +115034,7 @@ db  84h	; Ñ
 db    1
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  17h
 db  40h	; @
 db    0
@@ -115137,7 +115078,7 @@ db 0DCh	; ‹
 db    1
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  17h
 db  40h	; @
 db    0
@@ -115221,8 +115162,8 @@ db  30h	; 0
 db    2
 db    0
 db    0
-db  10h
-db  19h
+db 0C0h	; ¿
+db  18h
 db  40h	; @
 db    0
 db  4Bh	; K
@@ -115245,7 +115186,7 @@ db  30h	; 0
 db    2
 db    0
 db    0
-db  60h	; `
+db  10h
 db  19h
 db  40h	; @
 db    0
@@ -115261,7 +115202,7 @@ db  30h	; 0
 db    2
 db    0
 db    0
-db  70h	; p
+db  20h
 db  19h
 db  40h	; @
 db    0
@@ -115305,7 +115246,7 @@ db  84h	; Ñ
 db    2
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  19h
 db  40h	; @
 db    0
@@ -115341,7 +115282,7 @@ db 0A8h	; ®
 db    2
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  19h
 db  40h	; @
 db    0
@@ -115365,8 +115306,8 @@ db 0A8h	; ®
 db    2
 db    0
 db    0
-db  30h	; 0
-db  1Ah
+db 0E0h	; ‡
+db  19h
 db  40h	; @
 db    0
 db  4Fh	; O
@@ -115481,7 +115422,7 @@ db 0A8h	; ®
 db    2
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  1Ch
 db  40h	; @
 db    0
@@ -115549,8 +115490,8 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  30h	; 0
-db  1Fh
+db 0E0h	; ‡
+db  1Eh
 db  40h	; @
 db    0
 db  27h	; '
@@ -115565,7 +115506,7 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  60h	; `
+db  10h
 db  1Fh
 db  40h	; @
 db    0
@@ -115601,7 +115542,7 @@ db  78h	; x
 db    3
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  1Fh
 db  40h	; @
 db    0
@@ -115685,8 +115626,8 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  30h	; 0
-db  20h
+db 0E0h	; ‡
+db  1Fh
 db  40h	; @
 db    0
 db  34h	; 4
@@ -115709,7 +115650,7 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  70h	; p
+db  20h
 db  20h
 db  40h	; @
 db    0
@@ -115733,7 +115674,7 @@ db  78h	; x
 db    3
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  20h
 db  40h	; @
 db    0
@@ -115765,8 +115706,8 @@ db  78h	; x
 db    3
 db    0
 db    0
-db    0
-db  21h	; !
+db 0B0h	; ∞
+db  20h
 db  40h	; @
 db    0
 db  21h	; !
@@ -115789,8 +115730,8 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  30h	; 0
-db  21h	; !
+db 0E0h	; ‡
+db  20h
 db  40h	; @
 db    0
 db  4Ch	; L
@@ -115833,7 +115774,7 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  21h	; !
 db  40h	; @
 db    0
@@ -115901,8 +115842,8 @@ db  78h	; x
 db    3
 db    0
 db    0
-db  10h
-db  22h	; "
+db 0C0h	; ¿
+db  21h	; !
 db  40h	; @
 db    0
 db 0B8h	; ∏
@@ -115965,7 +115906,7 @@ db  18h
 db    5
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  22h	; "
 db  40h	; @
 db    0
@@ -116001,7 +115942,7 @@ db  3Ch	; <
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  22h	; "
 db  40h	; @
 db    0
@@ -116025,8 +115966,8 @@ db  3Ch	; <
 db    5
 db    0
 db    0
-db  10h
-db  23h	; #
+db 0C0h	; ¿
+db  22h	; "
 db  40h	; @
 db    0
 db  49h	; I
@@ -116061,7 +116002,7 @@ db  3Ch	; <
 db    5
 db    0
 db    0
-db  60h	; `
+db  10h
 db  23h	; #
 db  40h	; @
 db    0
@@ -116097,7 +116038,7 @@ db  9Ch	; ú
 db    5
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  23h	; #
 db  40h	; @
 db    0
@@ -116149,7 +116090,7 @@ db  9Ch	; ú
 db    5
 db    0
 db    0
-db  50h	; P
+db    0
 db  24h	; $
 db  40h	; @
 db    0
@@ -116193,7 +116134,7 @@ db 0FCh	; ¸
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  24h	; $
 db  40h	; @
 db    0
@@ -116269,7 +116210,7 @@ db 0FCh	; ¸
 db    5
 db    0
 db    0
-db  50h	; P
+db    0
 db  25h	; %
 db  40h	; @
 db    0
@@ -116325,7 +116266,7 @@ db 0FCh	; ¸
 db    5
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  25h	; %
 db  40h	; @
 db    0
@@ -116389,7 +116330,7 @@ db 0FCh	; ¸
 db    5
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  26h	; &
 db  40h	; @
 db    0
@@ -116453,8 +116394,8 @@ db    0
 db    7
 db    0
 db    0
-db  20h
-db  27h	; '
+db 0D0h	; –
+db  26h	; &
 db  40h	; @
 db    0
 db  2Ah	; *
@@ -116509,7 +116450,7 @@ db  38h	; 8
 db    7
 db    0
 db    0
-db  60h	; `
+db  10h
 db  27h	; '
 db  40h	; @
 db    0
@@ -116525,7 +116466,7 @@ db  38h	; 8
 db    7
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  27h	; '
 db  40h	; @
 db    0
@@ -116561,7 +116502,7 @@ db  6Ch	; l
 db    7
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  27h	; '
 db  40h	; @
 db    0
@@ -116605,7 +116546,7 @@ db  98h	; ò
 db    7
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  27h	; '
 db  40h	; @
 db    0
@@ -116649,8 +116590,8 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  20h
-db  28h	; (
+db 0D0h	; –
+db  27h	; '
 db  40h	; @
 db    0
 db 0FEh	; ˛
@@ -116685,8 +116626,8 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  20h
-db  29h	; )
+db 0D0h	; –
+db  28h	; (
 db  40h	; @
 db    0
 db  54h	; T
@@ -116729,7 +116670,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  29h	; )
 db  40h	; @
 db    0
@@ -116793,7 +116734,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  2Ah	; *
 db  40h	; @
 db    0
@@ -116841,8 +116782,8 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  20h
-db  2Bh	; +
+db 0D0h	; –
+db  2Ah	; *
 db  40h	; @
 db    0
 db  9Fh	; ü
@@ -116881,7 +116822,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  2Bh	; +
 db  40h	; @
 db    0
@@ -116933,7 +116874,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  2Eh	; .
 db  40h	; @
 db    0
@@ -116985,7 +116926,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  31h	; 1
 db  40h	; @
 db    0
@@ -117045,7 +116986,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  70h	; p
+db  20h
 db  32h	; 2
 db  40h	; @
 db    0
@@ -117109,7 +117050,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  35h	; 5
 db  40h	; @
 db    0
@@ -117173,7 +117114,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  60h	; `
+db  10h
 db  36h	; 6
 db  40h	; @
 db    0
@@ -117241,8 +117182,8 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  40h	; @
-db  37h	; 7
+db 0F0h	; 
+db  36h	; 6
 db  40h	; @
 db    0
 db  76h	; v
@@ -117313,7 +117254,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  38h	; 8
 db  40h	; @
 db    0
@@ -117377,7 +117318,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  3Dh	; =
 db  40h	; @
 db    0
@@ -117433,7 +117374,7 @@ db 0C4h	; ƒ
 db    7
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  3Eh	; >
 db  40h	; @
 db    0
@@ -117517,7 +117458,7 @@ db  28h	; (
 db  0Bh
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  47h	; G
 db  40h	; @
 db    0
@@ -117669,7 +117610,7 @@ db 0C0h	; ¿
 db  0Bh
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  5Dh	; ]
 db  40h	; @
 db    0
@@ -117705,8 +117646,8 @@ db 0C0h	; ¿
 db  0Bh
 db    0
 db    0
-db  40h	; @
-db  5Eh	; ^
+db 0F0h	; 
+db  5Dh	; ]
 db  40h	; @
 db    0
 db  52h	; R
@@ -117741,7 +117682,7 @@ db 0C0h	; ¿
 db  0Bh
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  5Eh	; ^
 db  40h	; @
 db    0
@@ -117869,7 +117810,7 @@ db  88h	; à
 db  0Ch
 db    0
 db    0
-db 0A0h	; †
+db  50h	; P
 db  5Fh	; _
 db  40h	; @
 db    0
@@ -117981,8 +117922,8 @@ db  88h	; à
 db  0Ch
 db    0
 db    0
-db  40h	; @
-db  61h	; a
+db 0F0h	; 
+db  60h	; `
 db  40h	; @
 db    0
 db  72h	; r
@@ -118017,7 +117958,7 @@ db  88h	; à
 db  0Ch
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  61h	; a
 db  40h	; @
 db    0
@@ -118101,7 +118042,7 @@ db  88h	; à
 db  0Ch
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  62h	; b
 db  40h	; @
 db    0
@@ -118165,7 +118106,7 @@ db 0B0h	; ∞
 db  0Dh
 db    0
 db    0
-db  50h	; P
+db    0
 db  63h	; c
 db  40h	; @
 db    0
@@ -118197,7 +118138,7 @@ db 0B0h	; ∞
 db  0Dh
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  63h	; c
 db  40h	; @
 db    0
@@ -118237,7 +118178,7 @@ db 0B0h	; ∞
 db  0Dh
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  63h	; c
 db  40h	; @
 db    0
@@ -118253,8 +118194,8 @@ db 0B0h	; ∞
 db  0Dh
 db    0
 db    0
-db    0
-db  64h	; d
+db 0B0h	; ∞
+db  63h	; c
 db  40h	; @
 db    0
 db  1Bh
@@ -118333,8 +118274,8 @@ db  58h	; X
 db  0Eh
 db    0
 db    0
-db  20h
-db  66h	; f
+db 0D0h	; –
+db  65h	; e
 db  40h	; @
 db    0
 db  6Ch	; l
@@ -118385,7 +118326,7 @@ db  58h	; X
 db  0Eh
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  66h	; f
 db  40h	; @
 db    0
@@ -118441,7 +118382,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  66h	; f
 db  40h	; @
 db    0
@@ -118525,7 +118466,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0B0h	; ∞
+db  60h	; `
 db  67h	; g
 db  40h	; @
 db    0
@@ -118553,7 +118494,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  67h	; g
 db  40h	; @
 db    0
@@ -118597,8 +118538,8 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db  20h
-db  68h	; h
+db 0D0h	; –
+db  67h	; g
 db  40h	; @
 db    0
 db 0BEh	; æ
@@ -118637,7 +118578,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  68h	; h
 db  40h	; @
 db    0
@@ -118689,8 +118630,8 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db  30h	; 0
-db  69h	; i
+db 0E0h	; ‡
+db  68h	; h
 db  40h	; @
 db    0
 db 0FCh	; ¸
@@ -118753,8 +118694,8 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db  30h	; 0
-db  6Ah	; j
+db 0E0h	; ‡
+db  69h	; i
 db  40h	; @
 db    0
 db  25h	; %
@@ -118777,7 +118718,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db  60h	; `
+db  10h
 db  6Ah	; j
 db  40h	; @
 db    0
@@ -118837,7 +118778,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0C0h	; ¿
+db  70h	; p
 db  6Bh	; k
 db  40h	; @
 db    0
@@ -118925,7 +118866,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0E0h	; ‡
+db  90h	; ê
 db  6Ch	; l
 db  40h	; @
 db    0
@@ -118989,7 +118930,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  6Dh	; m
 db  40h	; @
 db    0
@@ -119033,7 +118974,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db  60h	; `
+db  10h
 db  6Eh	; n
 db  40h	; @
 db    0
@@ -119121,7 +119062,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  6Fh	; o
 db  40h	; @
 db    0
@@ -119161,7 +119102,7 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db 0F0h	; 
+db 0A0h	; †
 db  70h	; p
 db  40h	; @
 db    0
@@ -119201,8 +119142,8 @@ db 0C4h	; ƒ
 db  0Eh
 db    0
 db    0
-db    0
-db  72h	; r
+db 0B0h	; ∞
+db  71h	; q
 db  40h	; @
 db    0
 db  21h	; !
@@ -119237,8 +119178,8 @@ db 0E0h	; ‡
 db  11h
 db    0
 db    0
-db  30h	; 0
-db  72h	; r
+db 0E0h	; ‡
+db  71h	; q
 db  40h	; @
 db    0
 db    9
@@ -119321,8 +119262,8 @@ db 0E0h	; ‡
 db  11h
 db    0
 db    0
-db  40h	; @
-db  73h	; s
+db 0F0h	; 
+db  72h	; r
 db  40h	; @
 db    0
 db  3Dh	; =
@@ -119381,7 +119322,7 @@ db  70h	; p
 db  12h
 db    0
 db    0
-db  80h	; Ä
+db  30h	; 0
 db  73h	; s
 db  40h	; @
 db    0
@@ -119397,7 +119338,7 @@ db  70h	; p
 db  12h
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  73h	; s
 db  40h	; @
 db    0
@@ -119421,7 +119362,7 @@ db  70h	; p
 db  12h
 db    0
 db    0
-db 0D0h	; –
+db  80h	; Ä
 db  73h	; s
 db  40h	; @
 db    0
@@ -119501,7 +119442,7 @@ db 0E8h	; Ë
 db  12h
 db    0
 db    0
-db  50h	; P
+db    0
 db  75h	; u
 db  40h	; @
 db    0
@@ -119561,7 +119502,7 @@ db  24h	; $
 db  13h
 db    0
 db    0
-db  90h	; ê
+db  40h	; @
 db  76h	; v
 db  40h	; @
 db    0
