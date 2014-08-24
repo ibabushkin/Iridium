@@ -5,6 +5,15 @@ class Function:
         
     def __str__(self):
         return '\n'.join(self.code)
+        
+class Label:
+    def __init__(self, index, line):
+        self.name = line[:-1]
+        self.index = index
+
+class FunctionLabel(Label):
+    def __init__(self, name):
+        Label.__init__(self, 0, name+':')
 
 class Instruction:
     def __init__(self, address, size, mnemonic, operands):
