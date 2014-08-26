@@ -1,4 +1,4 @@
-from abstractions import Instruction, Function, Label, FunctionLabel
+from abstractions import Instruction, Function, Label, FunctionLabel, Jump
 
 class Parser:
     def __init__(self, filepath):
@@ -38,7 +38,8 @@ class FunctionParser:
     def __init__(self, function):
         self.code = function.code
         self.labels = []
-        self.last_label = FunctionLabel(function.name)
+        self.func_label = FunctionLabel(function.name)
+        self.last_label = self.func_label
         self.current_line = None
         self.current_line_index = None
         self.jump_mnemonics = ['jmp', 'jb', 'jnae', 'jc',
@@ -50,9 +51,13 @@ class FunctionParser:
                                  'jpe', 'jnp', 'jpo', 'js',
                                  'jns', 'jo', 'jno', 'jcxz',
                                  'jecxz']
+        self.back_jumps = []
+        self.forward_jumps = []
+        self.doloop_ends = {}
         self.insertions = {}
-        self.loop_beginnings = []
-        self.doloop_beginnings = []
+        #self.cursor = CPU()
+        #self.loop_beginnings = []
+        #self.doloop_beginnings = []
     
     def __str__(self):
         return '\n'.join(self.code)
@@ -69,10 +74,72 @@ class FunctionParser:
                 return i.index
         return None
     
+    def find_last_label(self, index):
+        while True:
+            l = self.find_label_by_index(index)
+            if l:
+                return l
+            index -= 1
+            if index == 0:
+                return None
+    
+    def find_next_label(self, index):
+        while True:
+            l = self.find_label_by_index(index)
+            if l:
+                return l
+            index += 1
+            if index == len(self.code):
+                return None
+    
+    #~ def parse(self):
+        #~ for self.current_line_index, self.current_line in enumerate(self.code):
+            #~ if self.current_line.endswith(':'):
+                #~ self.labels.append(Label(self.current_line_index, self.current_line))
+        #~ for self.current_line_index, self.current_line in enumerate(self.code):
+            #~ if self.current_line.endswith(':'):
+                #~ self.last_label = self.find_label_by_index(self.current_line_index)
+            #~ else:
+                #~ tokens = self.current_line.split()
+                #~ if len(tokens) > 0:
+                    #~ if tokens[0] in self.jump_mnemonics:
+                        #~ print 'to: ' + tokens[-1] + ' from block ' + self.last_label.name, 
+                        #~ if tokens[-1] <= self.last_label.name and self.last_label.name.startswith('loc'):
+                            #~ print 'jumping back'
+                            #~ if tokens[0] == 'jmp':
+                                #~ print 'non-conditional, end of loop (while/for)'
+                                #~ self.insertions[self.current_line_index] = '; end loop'
+                            #~ else:
+                                #~ print 'conditional, end of do-while or special loop'
+                                #~ self.insertions[self.current_line_index] = '; end doloop'
+                                #~ #self.doloop_beginnings.append(self.find_label_index_by_name(tokens[-1]))
+                        #~ else:
+                            #~ print 'jumping forward'
+                            #~ if tokens[0] == 'jmp':
+                                #~ print 'non-conditional, goto or special loop'
+                                #~ self.insertions[self.current_line_index] = '; begin doloop'
+                            #~ else:
+                                #~ print 'conditional jump out of loop (while/for)'
+                                #~ self.insertions[self.current_line_index] = '; end condition'
+        #~ for j, i in enumerate(sorted(self.insertions)):
+            #~ k = 1
+            #~ if j == 0: k = 0
+            #~ self.code.insert(i+j+k, self.insertions[i])
+        #~ for self.current_line_index, self.current_line in enumerate(self.code):
+            #~ if self.current_line == '; end doloop':
+                #~ self.doloop_beginnings.append(self.find_label_index_by_name(self.code[self.current_line_index-1].split()[-1]))
+        #~ for num, loop_beginning in enumerate(self.doloop_beginnings):
+            #~ offset = 1
+            #~ if num == 0:
+                #~ offset = 0
+            #~ if self.code[loop_beginning-2] != '; begin doloop':
+                #~ self.code.insert(loop_beginning+num+offset, '; begin doloop')
+                
     def parse(self):
         for self.current_line_index, self.current_line in enumerate(self.code):
             if self.current_line.endswith(':'):
                 self.labels.append(Label(self.current_line_index, self.current_line))
+        
         for self.current_line_index, self.current_line in enumerate(self.code):
             if self.current_line.endswith(':'):
                 self.last_label = self.find_label_by_index(self.current_line_index)
@@ -80,38 +147,34 @@ class FunctionParser:
                 tokens = self.current_line.split()
                 if len(tokens) > 0:
                     if tokens[0] in self.jump_mnemonics:
-                        print 'to: ' + tokens[-1] + ' from block ' + self.last_label.name, 
                         if tokens[-1] <= self.last_label.name and self.last_label.name.startswith('loc'):
-                            print 'jumping back'
-                            if tokens[0] == 'jmp':
-                                print 'non-conditional, end of loop (while/for)'
-                                self.insertions[self.current_line_index] = '; end loop'
-                            else:
-                                print 'conditional, end of do-while or special loop'
-                                self.insertions[self.current_line_index] = '; end doloop'
-                                #self.doloop_beginnings.append(self.find_label_index_by_name(tokens[-1]))
+                            self.back_jumps.append(Jump(self.current_line_index, tokens[0], tokens[-1]))
                         else:
-                            print 'jumping forward'
-                            if tokens[0] == 'jmp':
-                                print 'non-conditional, goto or special loop'
-                                self.insertions[self.current_line_index] = '; begin doloop'
-                            else:
-                                print 'conditional jump out of loop (while/for)'
-                                self.insertions[self.current_line_index] = '; end condition'
+                            self.forward_jumps.append(Jump(self.current_line_index, tokens[0], tokens[-1]))
+                            
+        for jump in self.back_jumps:
+            self.last_label = self.find_last_label(jump.index)
+            beginning = self.find_label_index_by_name(jump.destination)
+            if jump.mnemonic == 'jmp':
+                self.insertions[beginning] = '; begin loop'
+                self.insertions[jump.index+1] = '; end loop'
+            else:
+                self.insertions[beginning] = '; begin doloop'
+                self.insertions[jump.index+1] = '; end doloop'
+                print self.last_label
+                print jump
+                self.doloop_ends[self.last_label.index] = (beginning, jump.index+1)
+        for jump in self.forward_jumps:
+            dest = self.find_label_index_by_name(jump.destination)
+            if jump.mnemonic == 'jmp':
+                if dest in self.doloop_ends:
+                    indexes = self.doloop_ends[dest]
+                    self.insertions[indexes[0]] = '; begin loop'
+                    self.insertions[indexes[1]] = '; end loop'
+        print self.doloop_ends
         for j, i in enumerate(sorted(self.insertions)):
-            k = 1
-            if j == 0: k = 0
-            self.code.insert(i+j+k, self.insertions[i])
-        for self.current_line_index, self.current_line in enumerate(self.code):
-            if self.current_line == '; end doloop':
-                self.doloop_beginnings.append(self.find_label_index_by_name(self.code[self.current_line_index-1].split()[-1]))
-        for num, loop_beginning in enumerate(self.doloop_beginnings):
-            offset = 1
-            if num == 0:
-                offset = 0
-            if self.code[loop_beginning-2] != '; begin doloop':
-                self.code.insert(loop_beginning+num+offset, '; begin doloop')
-            
+            self.code.insert(i+j, self.insertions[i])
+                    
 
         
             

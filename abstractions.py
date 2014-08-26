@@ -10,6 +10,9 @@ class Label:
     def __init__(self, index, line):
         self.name = line[:-1]
         self.index = index
+    
+    def __str__(self):
+        return '%s at %i' % (self.name, self.index)
 
 class FunctionLabel(Label):
     def __init__(self, name):
@@ -56,3 +59,26 @@ class Instruction:
 
     def is_sub(self):
         return self.mnemonic == 'sub'
+
+class Jump:
+    def __init__(self, line_index, mnemonic, destination):
+        self.index = line_index
+        self.mnemonic = mnemonic
+        self.destination = destination
+    
+    def __str__(self):
+        return 'line %i: %s %s' % (self.index, self.mnemonic, self.destination)
+
+class CPU:
+    def __init__(self):
+        self.registers = {'eax':0, 'ebx':0, 'ecx':0, 'edx':0, 'esi':0, 'edi':0}
+        self.flags = {'cf':False, 'pf':False, 'af':False, 'zf':False, 'sf':False, 'of':False}
+        self.index = 0
+    
+    def execute(self, mnemonic, operands):
+        if operands[0] in self.registers: operand[0] = self.registers[operand[0]]
+        if operands[1] in self.registers: operand[1] = self.registers[operand[1]]
+        if mnemonic == 'cmp':
+            result = operands[0] - operands[1]
+            
+        
