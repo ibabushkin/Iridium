@@ -18,11 +18,11 @@ class Structure:
         return ''
     
     def get_code(self):
-		s = self.get_code_begin()
-		for i in self.children:
-			s += i.get_code()
-		s += self.get_code_end()
-		return s
+        s = self.get_code_begin()
+        for i in self.children:
+            s += i.get_code()
+        s += self.get_code_end()
+        return s
 
 class Function(Structure):
     # the abstraction of a function
@@ -84,6 +84,16 @@ class Loop(Structure):
     def get_code_end(self):
         # see class Structure
         return '}\n'
+    
+    def get_code(self):
+        s = self.get_code_begin()
+        s += self.condition.get_code()
+        s += '){\n'
+        for i in self.children:
+            if not i.corresponding_token == 'condition':
+                s += i.get_code()
+        s += self.get_code_end()
+        return s
         
 class DoLoop(Structure):
     # the abstraction of a do-while loop
@@ -95,11 +105,21 @@ class DoLoop(Structure):
     
     def get_code_begin(self):
         # see class Structure
-        return 'do{'
+        return 'do{\n'
     
     def get_code_end(self):
         # see class Structure
         return ');\n'
+    
+    def get_code(self):
+        s = self.get_code_begin()
+        for i in self.children:
+            if not i.corresponding_token == 'condition':
+                s += i.get_code()
+        s += '}('
+        s += self.condition.get_code()
+        s += self.get_code_end()
+        return s
         
 class If(Structure):
     # the abstraction of an if-block
@@ -116,6 +136,16 @@ class If(Structure):
     def get_code_end(self):
         # see class Structure
         return '}\n'
+    
+    def get_code(self):
+        s = self.get_code_begin()
+        s += self.condition.get_code()
+        s += '){\n'
+        for i in self.children:
+            if not i.corresponding_token == 'condition':
+                s += i.get_code()
+        s += self.get_code_end()
+        return s
 
 class ElseIf(Structure):
     # an else-if structure
@@ -132,6 +162,17 @@ class ElseIf(Structure):
     def get_code_end(self):
         # see class Structure
         return '}\n'
+        
+    def get_code(self):
+        s = self.get_code_begin()
+        s += self.condition.get_code()
+        s += '){\n'
+        for i in self.children:
+            if not i.corresponding_token == 'condition':
+                s += i.get_code()
+        s += self.get_code_end()
+        return s
+        return s
 
 class Else(Structure):
     # an else structure
@@ -151,27 +192,21 @@ class Else(Structure):
 class Condition(Structure):
     # the abstraction of a condition
     # similar to a CodeBlock
-    def __init__(self, first_line, do=False):
+    def __init__(self, first_line):
         Structure.__init__(self)
         self.content_lines = [] # a list of all lines that are part
                                 # of the condition
         self.first_line = first_line # index of the first line
         self.corresponding_token = 'condition' # see class Structure
-        self.do_while_loop = do # condition inside a do-while loop?
+        #self.do_while_loop = do # condition inside a do-while loop?
                                 # (important for rendering output)
     
     def code(self):
         # returns all lines as a string
         # @ret: string, C-code
         return '\n'.join(self.content_lines)
-        
-    def get_code_begin(self):
-        # see class Structure
-        return ''
     
-    def get_code_end(self):
+    def get_code(self):
         # see class Structure
         # more advanced output rendering, see top
-        if not self.do_while_loop:
-            return '/**'+ self.code() +'*/){\n'
-        return '}while(/**'+ self.code() +'**/'
+        return '/**'+ self.code() +'*/'

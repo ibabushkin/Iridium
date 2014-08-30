@@ -13,6 +13,7 @@ class MetaformatParser():
     def parse_structure(self, index, line):
         tokens = line.split(' ')
         if tokens[0] == 'begin':
+            condition_flag = False
             string = tokens[1]
             if string.startswith('func'):
                 arguments = string.split('(')[1][:-1].split(',')
@@ -33,12 +34,16 @@ class MetaformatParser():
             elif string.startswith('else'):
                 result = Else()
             elif string.startswith('condition'):
-                do_param = False
-                if self.tree.current_node.corresponding_token == 'doloop':
-                    do_param = True
-                result = Condition(index+1, do_param)    
+                #do_param = False
+                #if self.tree.current_node.corresponding_token == 'doloop':
+                #    do_param = True
+                #result = Condition(index+1, do_param)
+                result = Condition(index+1)
+                condition_flag = True
                 
             self.tree.current_node.children.append(result)
+            if condition_flag:
+                self.tree.current_node.condition = self.tree.current_node.children[-1]
             parent = self.tree.current_node
             self.tree.current_node = self.tree.current_node.children[-1]
             self.tree.current_node.parent = parent
