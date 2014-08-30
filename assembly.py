@@ -1,4 +1,4 @@
-#! /bin/env python
+#! /usr/bin/env python
 
 from defines.assembly.labels import Function, Label, FunctionLabel
 from defines.assembly.instructions import Instruction, Jump
@@ -58,9 +58,6 @@ class FunctionParser:
         self.forward_jumps = []
         self.doloop_ends = {}
         self.insertions = {}
-        #self.cursor = CPU()
-        #self.loop_beginnings = []
-        #self.doloop_beginnings = []
     
     def __str__(self):
         return '\n'.join(self.code)
