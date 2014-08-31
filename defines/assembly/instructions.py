@@ -6,7 +6,7 @@ class Instruction:
         self.operands = operands
 
     def __str__(self):
-        return '0x%x:\t%s\t%s' % (self.address, self.mnemonic, self.operands)
+        return '%i: %s %s' % (self.address, self.mnemonic, self.operands)
 
     def is_jump(self):
         return self.mnemonic in ['jmp', 'jb', 'jnae', 'jc',
@@ -17,7 +17,7 @@ class Instruction:
                                  'jz', 'jne', 'jnz', 'jp',
                                  'jpe', 'jnp', 'jpo', 'js',
                                  'jns', 'jo', 'jno', 'jcxz',
-                                 'jecxz', 'call']
+                                 'jecxz']
 
     def is_call(self):
         return self.mnemonic == 'call'

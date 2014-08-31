@@ -20,7 +20,7 @@ class Parser:
                     self.current_function_beginning_index = index
             else:
                 if 'endp' in line:
-                    self.functions[-1].code = self.get_code(self.current_function_beginning_index, index+1)
+                    self.functions[-1].set_code(self.get_code(self.current_function_beginning_index, index+1))
                     self.current_function_beginning_index = None
                     self.in_function = False
 
@@ -40,6 +40,7 @@ class Parser:
 class FunctionParser:
     def __init__(self, function):
         self.code = function.code
+        #self.instructions = function.instructions
         self.labels = []
         self.func_label = FunctionLabel(function.name)
         self.last_label = self.func_label
