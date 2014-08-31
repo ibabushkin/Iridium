@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 from defines.assembly.labels import Function, Label, FunctionLabel
-from defines.assembly.instructions import Instruction, Jump
+from defines.assembly.instructions import Jump
 
 class Parser:
     def __init__(self, filepath):
@@ -114,27 +114,64 @@ class FunctionParser:
             self.last_label = self.find_last_label(jump.index)
             beginning = self.find_label_index_by_name(jump.destination)
             if jump.mnemonic == 'jmp':
-                self.insertions[beginning] = '; begin loop'
-                self.insertions[jump.index+1] = '; end loop'
+                self.append_to_insertions(beginning, '; begin loop')
+                self.append_to_insertions(jump.index+1, '; end loop')
             else:
-                self.insertions[beginning] = '; begin doloop'
-                self.insertions[jump.index+1] = '; end doloop'
-                print self.last_label
-                print jump
+                self.find_condition(jump)
+                self.append_to_insertions(beginning, '; begin doloop')
+                self.append_to_insertions(jump.index+1, '; end doloop')
+                #print self.last_label
+                #print jump
                 self.doloop_ends[self.last_label.index] = (beginning, jump.index+1)
         for jump in self.forward_jumps:
             dest = self.find_label_index_by_name(jump.destination)
             if jump.mnemonic == 'jmp':
                 if dest in self.doloop_ends:
                     indexes = self.doloop_ends[dest]
-                    self.insertions[indexes[0]] = '; begin loop'
-                    self.insertions[indexes[1]] = '; end loop'
-        print self.doloop_ends
-        for j, i in enumerate(sorted(self.insertions)):
-            self.code.insert(i+j, self.insertions[i])
+                    self.replace_insertion(indexes[0], '; begin doloop', '; begin loop')
+                    self.replace_insertion(indexes[1], '; end doloop', '; end loop')
+            else:
+                self.find_condition(jump)
                     
+        #print self.doloop_ends
+        for j, i in enumerate(sorted(self.insertions)):
+            for k, l in enumerate(self.insertions[i]):
+                self.code.insert(i+j+k, l)
 
-        
+
+    def find_condition(self, jump):
+        relevant_data = []
+        self.append_to_insertions(jump.index+1, '; end condition')
+        for i in range(len(self.code[:jump.index]), 0, -1):
+            tokens = self.code[i].split()
+            if tokens[0] in ['cmp', 'test']:
+                relevant_data = tokens[1:]
+            elif len(relevant_data) > 0:
+                relevant = False
+                for j in relevant_data:
+                    if j in tokens:
+                        relevant = True
+                if not relevant:
+                    self.append_to_insertions(i+1, '; begin condition')
+                    break
+    
+    def append_to_insertions(self, index, content):
+        if index in self.insertions:
+            self.insertions[index].append(content)
+        else:
+            self.insertions[index] = [content]
+    
+    def replace_insertion(self, index, old, new):
+        index_2 = -1
+        if index in self.insertions:
+            l = self.insertions[index]
+            for j, i in enumerate(l):
+                if i == old:
+                    index_2 = j
+                    break
+            l[index_2] = new
+            self.insertions[index] = l
+                    
             
 if __name__ == '__main__':
     p = Parser('tests/3.asm')
