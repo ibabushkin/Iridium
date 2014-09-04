@@ -56,16 +56,25 @@ class Graph:
                 destination = self.find_node_by_label(destination)
                 self.edges.append(Edge(current_edge_id, node.id, destination.id))
                 current_edge_id += 1
-            if node.code[-1].is_conditional_jump():
-                #try:
-                print node.code[-1].mnemonic, node.code[-1].operands
-                destination = self.nodes[node.id+1]
-                self.edges.append(Edge(current_edge_id, node.id, destination.id))
-                current_edge_id += 1
-                #except:
-                 #   pass
+            if node.code[-1].is_conditional_jump() or not node.code[-1].is_jump():
+                if node.id != len(self.nodes) -1:
+                    #print node.code[-1].mnemonic, node.code[-1].operands
+                    destination = self.nodes[node.id+1]
+                    self.edges.append(Edge(current_edge_id, node.id, destination.id))
+                    current_edge_id += 1
         for i in self.nodes:
             print i
+        for i in self.edges:
+            print i
+    
+    def get_next_nodes(self, node_id):
+        ret = []
+        for edge in self.edges:
+            if edge.start == node_id:
+                ret.append(edge.end)
+        return ret
+    
+    
                 
 class Node:
     def __init__(self, id, code, first, last):
@@ -90,9 +99,12 @@ class Node:
 
 class Edge:
     def __init__(self, id, start, end):
-        self.id = None
-        self.start = None
-        self.end = None
+        self.id = id
+        self.start = start
+        self.end = end
+    
+    def __str__(self):
+        return str(self.id) +' '+ str(self.start) +' '+ str(self.end)
 
 if __name__ == '__main__':
     l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
