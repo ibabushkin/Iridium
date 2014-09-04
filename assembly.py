@@ -75,6 +75,18 @@ class FunctionParser:
                 return i.index
         return None
     
+    def find_forward_jump_by_line_index(self, index):
+        for i in self.forward_jumps:
+            if i.index == index:
+                return i
+        return None
+    
+    def find_back_jump_by_line_index(self, index):
+        for i in self.back_jumps:
+            if i.index == index:
+                return i
+        return None
+    
     def find_last_label(self, index):
         while True:
             l = self.find_label_by_index(index)
@@ -130,8 +142,6 @@ class FunctionParser:
                     indexes = self.doloop_ends[dest]
                     self.replace_insertion(indexes[0], '; begin doloop', '; begin loop')
                     self.replace_insertion(indexes[1], '; end doloop', '; end loop')
-            else:
-                self.find_condition(jump)
                     
         #print self.doloop_ends
         for j, i in enumerate(sorted(self.insertions)):
@@ -171,8 +181,18 @@ class FunctionParser:
                     break
             l[index_2] = new
             self.insertions[index] = l
+    
+    #def find_parallel_execution_paths(self):
+        #list_of_nodes = []
+        #for self.current_line_index, self.current_line in enumerate(self.code):
+            #jump = self.find_forward_jump_by_line_index(self.current_line_index)
+            #if jump:
+                #if jump.mnemonic != 'jmp':
+                    #list_of_nodes.append(self.current_line_index)
                     
-            
+
+
+
 if __name__ == '__main__':
-    p = Parser('tests/3.asm')
+    p = Parser('tests/conditions.asm')
     p.print_results()

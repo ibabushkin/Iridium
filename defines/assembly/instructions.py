@@ -39,6 +39,23 @@ class Instruction:
 
     def is_sub(self):
         return self.mnemonic == 'sub'
+    
+    def is_unconditional_jump(self):
+        return self.mnemonic == 'jmp'
+    
+    def is_conditional_jump(self):
+        return self.mnemonic in ['jb', 'jnae', 'jc', 'jecxz',
+                                 'jae', 'jnb', 'jnc', 'jbe',
+                                 'jna', 'ja', 'jnbe', 'jl',
+                                 'jnge', 'jge', 'jnl', 'jle',
+                                 'jng', 'jg', 'jnle', 'je',
+                                 'jz', 'jne', 'jnz', 'jp',
+                                 'jpe', 'jnp', 'jpo', 'js',
+                                 'jns', 'jo', 'jno', 'jcxz']
+    
+    def get_destination(self):
+        if self.is_jump():
+            return self.operands.split(' ')[-1]
 
 class Jump:
     def __init__(self, line_index, mnemonic, destination):
