@@ -7,9 +7,10 @@ class Graph:
         self.delimiter_lines = []
         self.nodes = []
         self.edges = []
-        self.start = None
-        self.end = None
+        self.start_node_index = None
+        self.end_node_index = None
         self.generate_graph()
+        self.traverse()
     
     def get_code_from_text(self):
         # Instruction(self, address, size, mnemonic, operands)
@@ -62,6 +63,8 @@ class Graph:
                     destination = self.nodes[node.id+1]
                     self.edges.append(Edge(current_edge_id, node.id, destination.id))
                     current_edge_id += 1
+        self.start_node_index = 0
+        self.end_node_index = len(self.nodes) - 1
         for i in self.nodes:
             print i
         for i in self.edges:
@@ -74,14 +77,50 @@ class Graph:
                 ret.append(edge.end)
         return ret
     
+    def get_previous_nodes(self, node_id):
+        ret = []
+        for edge in self.edges:
+            if edge.end == node_id:
+                ret.append(edge.start)
+        return ret
     
-                
+    def traverse(self):
+        current_node_index = self.start_node_index
+        self.visit(current_node_index)
+        for i in self.nodes:
+            print i.id, i.flags
+    
+    def visit(self, node_index):
+        self.nodes[node_index].flags['visited'] = True
+        next_nodes = self.get_next_nodes(node_index)
+        for next_node in next_nodes:
+            if next_node <= node_index:
+                self.nodes[next_node].flags['loop_beginning'] = True
+                self.nodes[next_node].flags['reached_multiple'] = True
+                self.nodes[node_index].flags['loop_end'] = True
+                if self.nodes[node_index].code[-1].is_conditional_jump():
+                    self.nodes[node_index].flags['condition'] = True
+                else:
+                    self.nodes[next_node].flags['condition'] = True
+            if not self.nodes[next_node].flags['visited']:
+                self.visit(next_node)
+            else:
+                self.nodes[next_node].flags['reached_multiple'] = True
+                prev_nodes = self.get_previous_nodes(next_node)
+                        
+                        
+
 class Node:
     def __init__(self, id, code, first, last):
         self.id = id
         self.code = code
         self.first_index = first
         self.last_index = last
+        self.flags = None
+        self.reset_flags()
+    
+    def reset_flags(self):
+        self.flags = {'visited':False, 'reached_multiple':False}
     
     def get_label_if_present(self):
         if isinstance(self.code[0], Label):
