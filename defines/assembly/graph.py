@@ -13,6 +13,8 @@ class Graph:
         self.generate_graph()
         self.tree = None
         self.generate_depth_first_spanning_tree()
+        print self.tree.edges
+        print self.tree.nodes
         #self.traverse()
     
     def get_code_from_text(self):
@@ -82,8 +84,8 @@ class Graph:
         cur_node = self.tree.current_node
         for i in self.get_next_nodes(node_id):
             if not 'traversed' in self.nodes[i].flags:
-                self.visit_depth_first(i)
                 self.tree.append(self.nodes[i])
+                self.visit_depth_first(i)
             self.tree.current_node = cur_node
         
     
