@@ -1,5 +1,6 @@
 from instructions import Instruction
 from labels import Label
+from tree import Tree
 class Graph:
     def __init__(self, text):
         self.text = text
@@ -10,7 +11,9 @@ class Graph:
         self.start_node_index = None
         self.end_node_index = None
         self.generate_graph()
-        self.traverse()
+        self.tree = None
+        self.generate_depth_first_spanning_tree()
+        #self.traverse()
     
     def get_code_from_text(self):
         # Instruction(self, address, size, mnemonic, operands)
@@ -70,6 +73,20 @@ class Graph:
         for i in self.edges:
             print i
     
+    def generate_depth_first_spanning_tree(self):
+        self.tree = Tree(self.nodes[self.start_node_index])
+        self.visit_depth_first(self.start_node_index)
+    
+    def visit_depth_first(self, node_id):
+        self.nodes[node_id].flags['traversed'] = True
+        cur_node = self.tree.current_node
+        for i in self.get_next_nodes(node_id):
+            if not 'traversed' in self.nodes[i].flags:
+                self.visit_depth_first(i)
+                self.tree.append(self.nodes[i])
+            self.tree.current_node = cur_node
+        
+    
     def get_next_nodes(self, node_id):
         ret = []
         for edge in self.edges:
@@ -99,16 +116,15 @@ class Graph:
                 self.nodes[next_node].flags['reached_multiple'] = True
                 self.nodes[node_index].flags['loop_end'] = True
                 if self.nodes[node_index].code[-1].is_conditional_jump():
-                    self.nodes[node_index].flags['condition'] = True
+                    self.nodes[node_index].flags['loop_condition'] = True
                 else:
-                    self.nodes[next_node].flags['condition'] = True
+                    self.nodes[next_node].flags['loop_condition'] = True
             if not self.nodes[next_node].flags['visited']:
                 self.visit(next_node)
             else:
                 self.nodes[next_node].flags['reached_multiple'] = True
                 prev_nodes = self.get_previous_nodes(next_node)
-                        
-                        
+            
 
 class Node:
     def __init__(self, id, code, first, last):
