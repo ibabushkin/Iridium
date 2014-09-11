@@ -13,10 +13,15 @@ class Graph:
         self.generate_graph()
         self.tree = None
         self.generate_depth_first_spanning_tree()
-        p = self.tree.postorder()
-        for i in p:
+        self.p = self.tree.postorder()
+        for i in self.p:
             print i
             print self.nodes[i]
+            
+        self.structof = {}
+        self.structype = {}
+        self.structures = []
+        self.strucnodes = {}
         #self.traverse()
     
     def get_code_from_text(self):
@@ -72,10 +77,10 @@ class Graph:
                     current_edge_id += 1
         self.start_node_index = 0
         self.end_node_index = len(self.nodes) - 1
-        for i in self.nodes:
-            print i
-        for i in self.edges:
-            print i
+        #for i in self.nodes:
+            #print i
+        #for i in self.edges:
+            #print i
     
     def generate_depth_first_spanning_tree(self):
         self.tree = Tree(self.nodes[self.start_node_index])
@@ -89,7 +94,60 @@ class Graph:
                 self.tree.append(self.nodes[i])
                 self.visit_depth_first(i)
             self.tree.current_node = cur_node
-        
+    
+    def simple_acyclic(self, node):
+        return self.is_block(node) or self.is_if_then(node) or self.is_if_then_else(node)
+    
+    def group_nodes(self, id_list):
+        pass
+        ####################
+        ####################
+        ####################
+        ####################
+        WORK HERE!!
+    
+    def is_block(self, node):
+        return self.get_next_nodes(node.id)
+    
+    def is_if_then(self, node):
+        n = self.get_next_nodes(node.id)
+        if len(n) == 2:
+            n1 = n[0]
+            n2 = n[1]
+            n1_next = self.get_next_nodes(n1)
+            n2_next = self.get_next_nodes(n2)
+            if n2 in n1_next:
+                return len(n1_next) == 1
+            elif n1 in n2_next:
+                return len(n2_next) == 1
+        return False
+    
+    def is_if_then_else(self, node):
+        n = self.get_next_nodes(node.id)
+        if len(n) == 2:
+            n1 = n[0]
+            n2 = n[1]
+            n1_next = self.get_next_nodes(n1)
+            n2_next = self.get_next_nodes(n2)
+            return len(n1_next) == 1 and n1_next == n2_next
+        return False
+    
+    def is_target_of_back_edge(self, node):
+        prev = self.get_pre(node.id)
+        for i in prev:
+            if i.id > node.id:
+                return True
+        return False
+    
+    def analyze_tree(self):
+        for i in self.p:
+            n = self.nodes[i]
+            if self.simple_acyclic(n):
+                pass
+                # insert new node Sx
+            elif self.is_target_of_back_edge(n):
+                pass
+                # stuff halt
     
     def get_next_nodes(self, node_id):
         ret = []
