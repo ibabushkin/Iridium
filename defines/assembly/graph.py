@@ -13,8 +13,10 @@ class Graph:
         self.generate_graph()
         self.tree = None
         self.generate_depth_first_spanning_tree()
-        print self.tree.edges
-        print self.tree.nodes
+        p = self.tree.postorder()
+        for i in p:
+            print i
+            print self.nodes[i]
         #self.traverse()
     
     def get_code_from_text(self):
@@ -161,7 +163,7 @@ class Edge:
         self.end = end
     
     def __str__(self):
-        return str(self.id) +' '+ str(self.start) +' '+ str(self.end)
+        return str(self.start) +' '+ str(self.end)
 
 if __name__ == '__main__':
     l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
