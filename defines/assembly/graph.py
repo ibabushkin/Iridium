@@ -98,13 +98,29 @@ class Graph:
     def simple_acyclic(self, node):
         return self.is_block(node) or self.is_if_then(node) or self.is_if_then_else(node)
     
-    def group_nodes(self, id_list):
-        pass
-        ####################
-        ####################
-        ####################
-        ####################
-        WORK HERE!!
+    def remove_nodes(self, id_list):
+        nodes = [self.nodes[i] for i in id_list]
+        self.nodes = filter(lambda x: x not in id_list, self.nodes)
+    
+    def get_edges_for_subgraph(self, nodes):
+        id_list = [i.id for i in nodes]
+        edges = []
+        for i in self.edges:
+            if i.start in id_list and i.end in id_list:
+                edges.append(i)
+        self.edges = filter(lambda x: x not in edges, self.edges)
+        return edges
+    
+    def replace_edges(self, new_id, id_list):
+        for index, edge in enumerate(self.edges):
+            if edge.end in id_list:
+                self.edges[index].end = new_id
+            elif edge.start in id_list:
+                self.edges[index].start = new_id
+    
+    def insert_structure_as_node(self, nodes, structtype):
+        edges = self.get_edges_for_subgraph(nodes)
+        self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype))
     
     def is_block(self, node):
         return self.get_next_nodes(node.id)
@@ -213,6 +229,14 @@ class Node:
     
     def __str__(self):
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
+
+class StructureNode:
+    def __init__(self, id, nodes, edges, structtype):
+        self.id = id
+        self.nodes = nodes
+        self.edges = edges
+        self.structtype = structtype
+        
 
 class Edge:
     def __init__(self, id, start, end):
