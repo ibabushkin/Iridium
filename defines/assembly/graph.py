@@ -17,12 +17,22 @@ class Graph:
         self.end_node_index = None            # node determining the end of execution
         self.generate_graph()
         self.tree = None
-        # debug :
         self.generate_depth_first_spanning_tree()
         self.p = self.tree.postorder()
-        for i in self.p:
+        #for i in self.p:
+            #print i
+            #print self.nodes[i]
+        #self.insert_structure_as_node(self.nodes[4:8], 'if-else')
+        #for i in self.nodes:
+            #print self.is_if_then_else(i)
+            #print i
+        self.analyze_tree()
+        for i in self.nodes:
             print i
-            print self.nodes[i]
+        for i in self.edges:
+            print i
+        #print self.is_if_then_else(self.nodes[4])
+        
         
         # experimental, not used yet
         self.structof = {}
@@ -122,6 +132,7 @@ class Graph:
         # @param id_list: a list of int's
         nodes = [self.nodes[i] for i in id_list]
         self.nodes = filter(lambda x: x not in id_list, self.nodes)
+        return nodes
     
     def get_edges_for_subgraph(self, nodes):
         # returns all edges between the given nodes
@@ -161,7 +172,7 @@ class Graph:
     
     def is_block(self, node):
         # is a given node (part of) a block?
-        return self.get_next_nodes(node.id)
+        return False #self.get_next_nodes(node.id)
     
     def is_if_then(self, node):
         # is a given node beginning of an if-block?
@@ -190,26 +201,48 @@ class Graph:
     
     def is_target_of_back_edge(self, node):
         # is there a back-edge targeting given node?
-        prev = self.get_pre(node.id)
+        prev = self.get_previous_nodes(node.id)
         for i in prev:
-            if i.id > node.id:
+            if i > node.id:
                 return True
         return False
     
     def get_node_list_for_replacement(self, start, structtype):
         # returns a list of Node-instances that are reachable from start
         # under certain conditions
-        pass
+        ret = [start.id]
+        if structtype == 'if-then':
+            ret += self.get_next_nodes(start.id)
+        elif structtype == 'if-then-else':
+            ret += self.get_next_nodes(start.id)
+            ret += self.get_next_nodes(ret[-1])
+        return filter(lambda x: x.id in ret, self.nodes)
     
     def analyze_tree(self):
         # parsing algorithm for the dfs-tree, rudimental
         for i in self.p:
             n = self.nodes[i]
             if self.is_simple_acyclic(n):
-                pass
+                if self.is_if_then(n):
+                    print str(i) +':'+ 'if-then'
+                    nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then')
+                    self.insert_structure_as_node(nodes_to_replace, 'if-then')
+                elif self.is_if_then_else(n):
+                    print str(i) +':'+ 'if-then-else'
+                    nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then-else')
+                    self.insert_structure_as_node(nodes_to_replace, 'if-then-else')
             elif self.is_target_of_back_edge(n):
-                pass
-                # stuff halt
+                prevs = self.get_previous_nodes(n.id)
+                if n.id in prevs:
+                    print str(i) +':'+ 'self-loop'
+                    self.insert_structure_as_node([n], 'self-loop')
+                else:
+                    nexts = self.get_next_nodes(n.id)
+                    for j in nexts:
+                        if n.id in self.get_next_nodes(j):
+                            print str(i) +':'+ 'while-loop'
+                            self.insert_structure_as_node([n, j], 'while-loop')
+                        
     
     def get_next_nodes(self, node_id):
         # returns a list of all node-id's
@@ -290,13 +323,16 @@ class Node:
         # pretty printing
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
 
-class StructureNode:
+class StructNode:
     # a representaton of a structure inside a graph, placeholder for all nodes inside
     def __init__(self, id, nodes, edges, structtype):
         self.id = id
         self.nodes = nodes
         self.edges = edges
         self.structtype = structtype
+    
+    def __str__(self):
+        return str(self.id) +' '+ self.structtype
         
 
 class Edge:
@@ -312,5 +348,5 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
     g = Graph(l)

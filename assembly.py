@@ -30,10 +30,10 @@ class Parser:
     def print_results(self):
         for i in self.functions:
             if i.name == 'main':
-                f = FunctionParser(i)
-                f.parse()
+                #f = FunctionParser(i)
+                #f.parse()
                 print '==========================='
-                print f
+                print i
                 print '==========================='
 
             
@@ -194,5 +194,5 @@ class FunctionParser:
 
 
 if __name__ == '__main__':
-    p = Parser('tests/conditions.asm')
+    p = Parser('tests/conditions2.asm')
     p.print_results()
