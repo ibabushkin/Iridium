@@ -110,7 +110,7 @@ class Graph:
                 self.visit_depth_first(i)
             self.tree.current_node = cur_node
     
-    def simple_acyclic(self, node):
+    def is_simple_acyclic(self, node):
         # determines, wether given node is the beginning
         # of a simple acyclic structure (block, if-else of if-then)
         # @ret: boolean value determining result
@@ -153,10 +153,11 @@ class Graph:
         # by a special object in the graph that contains them all.
         # @param nodes: list of Node-instances
         # @param structtype: str determining the type of structure inserted
-        
-        #STUB!
         edges = self.get_edges_for_subgraph(nodes)
+        id_list = [i.id for i in nodes]
         self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype))
+        self.replace_edges(len(self.nodes)-1, id_list)
+        self.remove_nodes(id_list)
     
     def is_block(self, node):
         # is a given node (part of) a block?
@@ -195,13 +196,17 @@ class Graph:
                 return True
         return False
     
+    def get_node_list_for_replacement(self, start, structtype):
+        # returns a list of Node-instances that are reachable from start
+        # under certain conditions
+        pass
+    
     def analyze_tree(self):
-        # parsingalgorithm for the dfs-tree, rudimental
+        # parsing algorithm for the dfs-tree, rudimental
         for i in self.p:
             n = self.nodes[i]
-            if self.simple_acyclic(n):
+            if self.is_simple_acyclic(n):
                 pass
-                # insert new node Sx
             elif self.is_target_of_back_edge(n):
                 pass
                 # stuff halt
