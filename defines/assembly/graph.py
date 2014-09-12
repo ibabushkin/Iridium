@@ -1,32 +1,39 @@
 from instructions import Instruction
 from labels import Label
 from tree import Tree
+
+
 class Graph:
+    # the representation of a CFG
     def __init__(self, text):
+        # @param text: list of code-lines
         self.text = text
-        self.code = self.get_code_from_text()
-        self.delimiter_lines = []
+        self.code = self.get_code_from_text() # generating a list of Instruction-
+                                              # and Label-instances
+        self.delimiter_lines = []             # "borders" of the nodes
         self.nodes = []
         self.edges = []
-        self.start_node_index = None
-        self.end_node_index = None
+        self.start_node_index = None          # node to be entered first by CPU
+        self.end_node_index = None            # node determining the end of execution
         self.generate_graph()
         self.tree = None
+        # debug :
         self.generate_depth_first_spanning_tree()
         self.p = self.tree.postorder()
         for i in self.p:
             print i
             print self.nodes[i]
-            
+        
+        # experimental, not used yet
         self.structof = {}
         self.structype = {}
         self.structures = []
         self.strucnodes = {}
-        #self.traverse()
     
     def get_code_from_text(self):
-        # Instruction(self, address, size, mnemonic, operands)
-        # Label(self, index, line)
+        # creates a list of objects carifieing the working of the
+        # corresponding line
+        # @ret: list of objects
         l = []
         index = 0
         for line in self.text:
@@ -42,6 +49,10 @@ class Graph:
         return l
     
     def find_node_by_label(self, label_name):
+        # returns the node, that begins with a label
+        # having the given name
+        # @param label_name: label's name
+        # @ret: node-object
         for node in self.nodes:
             if isinstance(node.code[0], Label):
                 if node.code[0].name == label_name:
@@ -49,6 +60,8 @@ class Graph:
         return None
     
     def generate_graph(self):
+        # generates a graph from a list of Instruction- and
+        # Label-instances
         current_node_id = 0
         current_edge_id = 0
         for index, instruction in enumerate(self.code):
@@ -71,22 +84,24 @@ class Graph:
                 current_edge_id += 1
             if node.code[-1].is_conditional_jump() or not node.code[-1].is_jump():
                 if node.id != len(self.nodes) -1:
-                    #print node.code[-1].mnemonic, node.code[-1].operands
                     destination = self.nodes[node.id+1]
                     self.edges.append(Edge(current_edge_id, node.id, destination.id))
                     current_edge_id += 1
         self.start_node_index = 0
         self.end_node_index = len(self.nodes) - 1
-        #for i in self.nodes:
-            #print i
-        #for i in self.edges:
-            #print i
     
     def generate_depth_first_spanning_tree(self):
+        # generates a dfs-tree for the graph
+        # helper-function, uses self.visit_depth_first and
+        # sets the tree up
         self.tree = Tree(self.nodes[self.start_node_index])
         self.visit_depth_first(self.start_node_index)
     
     def visit_depth_first(self, node_id):
+        # df-traversal of the graph
+        # @param node_id: id of node from
+        # which the traversal should start
+        # working recursively
         self.nodes[node_id].flags['traversed'] = True
         cur_node = self.tree.current_node
         for i in self.get_next_nodes(node_id):
@@ -96,13 +111,23 @@ class Graph:
             self.tree.current_node = cur_node
     
     def simple_acyclic(self, node):
-        return self.is_block(node) or self.is_if_then(node) or self.is_if_then_else(node)
+        # determines, wether given node is the beginning
+        # of a simple acyclic structure (block, if-else of if-then)
+        # @ret: boolean value determining result
+        return self.is_block(node) or self.is_if_then(node)\
+                or self.is_if_then_else(node)
     
     def remove_nodes(self, id_list):
+        # removes all nodes, whose id is in id_list from the graph
+        # @param id_list: a list of int's
         nodes = [self.nodes[i] for i in id_list]
         self.nodes = filter(lambda x: x not in id_list, self.nodes)
     
     def get_edges_for_subgraph(self, nodes):
+        # returns all edges between the given nodes
+        # removes these edges from graph afterwards.
+        # @param nodes: a list of Node-instances
+        # @ret: a list of Edge-instances
         id_list = [i.id for i in nodes]
         edges = []
         for i in self.edges:
@@ -112,6 +137,11 @@ class Graph:
         return edges
     
     def replace_edges(self, new_id, id_list):
+        # replaces all edges, that are adjacent to a node
+        # identified by an id in id_list, by the value of 
+        # new_id
+        # @param new_id: int, the new id to be inserted int the edge
+        # @param id_list: all nodes, whose edges are to be processed
         for index, edge in enumerate(self.edges):
             if edge.end in id_list:
                 self.edges[index].end = new_id
@@ -119,13 +149,21 @@ class Graph:
                 self.edges[index].start = new_id
     
     def insert_structure_as_node(self, nodes, structtype):
+        # used to replace a group of nodes that are identified as a structure
+        # by a special object in the graph that contains them all.
+        # @param nodes: list of Node-instances
+        # @param structtype: str determining the type of structure inserted
+        
+        #STUB!
         edges = self.get_edges_for_subgraph(nodes)
         self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype))
     
     def is_block(self, node):
+        # is a given node (part of) a block?
         return self.get_next_nodes(node.id)
     
     def is_if_then(self, node):
+        # is a given node beginning of an if-block?
         n = self.get_next_nodes(node.id)
         if len(n) == 2:
             n1 = n[0]
@@ -139,6 +177,7 @@ class Graph:
         return False
     
     def is_if_then_else(self, node):
+        # is a given node begnning of an if-else-block?
         n = self.get_next_nodes(node.id)
         if len(n) == 2:
             n1 = n[0]
@@ -149,6 +188,7 @@ class Graph:
         return False
     
     def is_target_of_back_edge(self, node):
+        # is there a back-edge targeting given node?
         prev = self.get_pre(node.id)
         for i in prev:
             if i.id > node.id:
@@ -156,6 +196,7 @@ class Graph:
         return False
     
     def analyze_tree(self):
+        # parsingalgorithm for the dfs-tree, rudimental
         for i in self.p:
             n = self.nodes[i]
             if self.simple_acyclic(n):
@@ -166,6 +207,8 @@ class Graph:
                 # stuff halt
     
     def get_next_nodes(self, node_id):
+        # returns a list of all node-id's
+        # that can be reached directly from a given node
         ret = []
         for edge in self.edges:
             if edge.start == node_id:
@@ -173,6 +216,8 @@ class Graph:
         return ret
     
     def get_previous_nodes(self, node_id):
+        # returns a list of alll node-id's that are direct
+        # predecessos of a given node
         ret = []
         for edge in self.edges:
             if edge.end == node_id:
@@ -180,12 +225,17 @@ class Graph:
         return ret
     
     def traverse(self):
+        # traversing-algorithm for the graph
+        # uses self.visit recursively
+        # deprecated
         current_node_index = self.start_node_index
         self.visit(current_node_index)
         for i in self.nodes:
             print i.id, i.flags
     
     def visit(self, node_index):
+        # recursive visiting and flag-setting of graph nodes
+        # deprecated
         self.nodes[node_index].flags['visited'] = True
         next_nodes = self.get_next_nodes(node_index)
         for next_node in next_nodes:
@@ -205,6 +255,7 @@ class Graph:
             
 
 class Node:
+    # a representation of a one-entry, one-exit sequence of code
     def __init__(self, id, code, first, last):
         self.id = id
         self.code = code
@@ -217,20 +268,25 @@ class Node:
         self.flags = {'visited':False, 'reached_multiple':False}
     
     def get_label_if_present(self):
+        # returns a label's name at the beginning of
+        # the code-sequence, if present
         if isinstance(self.code[0], Label):
             return self.code[0].name
         return ''
     
     def get_code_representation(self):
+        # returns own code as string
         ret = ''
         for instruction in self.code:
             ret += instruction.__str__() +'\n'
         return ret
     
     def __str__(self):
+        # pretty printing
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
 
 class StructureNode:
+    # a representaton of a structure inside a graph, placeholder for all nodes inside
     def __init__(self, id, nodes, edges, structtype):
         self.id = id
         self.nodes = nodes
@@ -239,14 +295,17 @@ class StructureNode:
         
 
 class Edge:
+    # a graph-edge
     def __init__(self, id, start, end):
         self.id = id
         self.start = start
         self.end = end
     
     def __str__(self):
+        # not so pretty printing
         return str(self.start) +' '+ str(self.end)
 
 if __name__ == '__main__':
+    # test stuff
     l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
     g = Graph(l)
