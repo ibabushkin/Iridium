@@ -1,5 +1,5 @@
 main proc near
-var_20=	dword ptr -20h
+var_20= dword ptr -20h
 var_8= dword ptr -8
 var_4= dword ptr -4
 push ebp

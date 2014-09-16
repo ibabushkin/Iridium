@@ -19,26 +19,13 @@ class Graph:
         self.tree = None
         self.generate_depth_first_spanning_tree()
         self.p = self.tree.postorder()
-        #for i in self.p:
-            #print i
-            #print self.nodes[i]
-        #self.insert_structure_as_node(self.nodes[4:8], 'if-else')
-        #for i in self.nodes:
-            #print self.is_if_then_else(i)
-            #print i
+        self.ways = []
+        #print self.is_target_of_back_edge(self.nodes[8])
         self.analyze_tree()
         for i in self.nodes:
             print i
         for i in self.edges:
             print i
-        #print self.is_if_then_else(self.nodes[4])
-        
-        
-        # experimental, not used yet
-        self.structof = {}
-        self.structype = {}
-        self.structures = []
-        self.strucnodes = {}
     
     def get_code_from_text(self):
         # creates a list of objects carifieing the working of the
@@ -132,7 +119,7 @@ class Graph:
         # @param id_list: a list of int's
         nodes = [self.nodes[i] for i in id_list]
         self.nodes = filter(lambda x: x not in id_list, self.nodes)
-        return nodes
+        print self.nodes
     
     def get_edges_for_subgraph(self, nodes):
         # returns all edges between the given nodes
@@ -158,6 +145,7 @@ class Graph:
                 self.edges[index].end = new_id
             elif edge.start in id_list:
                 self.edges[index].start = new_id
+        self.edges = list(set(self.edges))
     
     def insert_structure_as_node(self, nodes, structtype):
         # used to replace a group of nodes that are identified as a structure
@@ -168,7 +156,8 @@ class Graph:
         id_list = [i.id for i in nodes]
         self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype))
         self.replace_edges(len(self.nodes)-1, id_list)
-        self.remove_nodes(id_list)
+        #print id_list
+        #self.remove_nodes(id_list)
     
     def is_block(self, node):
         # is a given node (part of) a block?
@@ -198,12 +187,29 @@ class Graph:
             n2_next = self.get_next_nodes(n2)
             return len(n1_next) == 1 and n1_next == n2_next
         return False
+
+    def _find_all_ways(self, s=0, e=0, w=[]):
+        w.append(s)
+        if s == e:
+            self.ways.append(w)
+        else:
+            for i in self.get_next_nodes(s):
+                if i not in w:
+                    self._find_all_ways(i, e, w)
+    
+    def _check_dominance(self, a):
+        l = map(lambda x: a in x, self.ways)
+        return not (False in l)
+    
+    def is_dominator(self, a, b):
+        self.ways = []
+        self._find_all_ways(0, b, [])
+        return self._check_dominance(a)
     
     def is_target_of_back_edge(self, node):
         # is there a back-edge targeting given node?
-        prev = self.get_previous_nodes(node.id)
-        for i in prev:
-            if i > node.id:
+        for i in self.get_previous_nodes(node.id): 
+            if self.is_dominator(node.id, i):
                 return True
         return False
     
@@ -216,6 +222,7 @@ class Graph:
         elif structtype == 'if-then-else':
             ret += self.get_next_nodes(start.id)
             ret += self.get_next_nodes(ret[-1])
+        print ret
         return filter(lambda x: x.id in ret, self.nodes)
     
     def analyze_tree(self):
@@ -227,10 +234,12 @@ class Graph:
                     print str(i) +':'+ 'if-then'
                     nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then')
                     self.insert_structure_as_node(nodes_to_replace, 'if-then')
+                    print self.edges
                 elif self.is_if_then_else(n):
                     print str(i) +':'+ 'if-then-else'
                     nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then-else')
                     self.insert_structure_as_node(nodes_to_replace, 'if-then-else')
+                    print self.edges
             elif self.is_target_of_back_edge(n):
                 prevs = self.get_previous_nodes(n.id)
                 if n.id in prevs:
@@ -251,7 +260,7 @@ class Graph:
         for edge in self.edges:
             if edge.start == node_id:
                 ret.append(edge.end)
-        return ret
+        return list(set(ret))
     
     def get_previous_nodes(self, node_id):
         # returns a list of alll node-id's that are direct
@@ -260,7 +269,7 @@ class Graph:
         for edge in self.edges:
             if edge.end == node_id:
                 ret.append(edge.start)
-        return ret
+        return list(set(ret))
     
     def traverse(self):
         # traversing-algorithm for the graph
@@ -301,6 +310,7 @@ class Node:
         self.last_index = last
         self.flags = None
         self.reset_flags()
+        self.dominators = []
     
     def reset_flags(self):
         self.flags = {'visited':False, 'reached_multiple':False}
@@ -350,3 +360,4 @@ if __name__ == '__main__':
     # test stuff
     l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
     g = Graph(l)
+    
