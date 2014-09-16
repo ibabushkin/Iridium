@@ -76,6 +76,7 @@ class Graph:
         for node in self.nodes:
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
+                print destination
                 destination = self.find_node_by_label(destination)
                 self.edges.append(Edge(current_edge_id, node.id, destination.id))
                 current_edge_id += 1
@@ -250,7 +251,7 @@ class Graph:
                     for j in nexts:
                         if n.id in self.get_next_nodes(j):
                             print str(i) +':'+ 'while-loop'
-                            self.insert_structure_as_node([n, j], 'while-loop')
+                            self.insert_structure_as_node([n, self.nodes[j]], 'while-loop')
                         
     
     def get_next_nodes(self, node_id):
@@ -358,6 +359,6 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output3.asm', 'rb').readlines())
     g = Graph(l)
     

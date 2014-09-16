@@ -32,9 +32,11 @@ class Parser:
             if i.name == 'main':
                 #f = FunctionParser(i)
                 #f.parse()
-                print '==========================='
-                print i
-                print '==========================='
+                for j in i.code:
+                    if j != '':
+                        if ';' in j:
+                            j = j.split(';')[0][:-2]
+                        print j.replace('\t', ' ')
 
             
 class FunctionParser:
@@ -181,18 +183,10 @@ class FunctionParser:
                     break
             l[index_2] = new
             self.insertions[index] = l
-    
-    #def find_parallel_execution_paths(self):
-        #list_of_nodes = []
-        #for self.current_line_index, self.current_line in enumerate(self.code):
-            #jump = self.find_forward_jump_by_line_index(self.current_line_index)
-            #if jump:
-                #if jump.mnemonic != 'jmp':
-                    #list_of_nodes.append(self.current_line_index)
                     
 
 
 
 if __name__ == '__main__':
-    p = Parser('tests/conditions2.asm')
+    p = Parser('tests/conditions3.asm')
     p.print_results()

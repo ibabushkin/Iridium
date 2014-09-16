@@ -14,6 +14,10 @@ class Function:
             if len(i) > 0 and not i.endswith(':'):
                 m = i.split()[0]
                 o = i[len(m)+1:]
+                if ';' in o:
+                    #print o
+                    o = o.split(';')[0][:-2]
+                    #print o
                 self.instructions.append(Instruction(j, 0, m, o))
         self.code = l
         

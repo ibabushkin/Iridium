@@ -6,7 +6,7 @@ class Instruction:
         self.operands = operands
 
     def __str__(self):
-        return '%i: %s %s' % (self.address, self.mnemonic, self.operands)
+        return '%s %s' % (self.mnemonic, self.operands)
 
     def is_jump(self):
         return self.mnemonic in ['jmp', 'jb', 'jnae', 'jc',
