@@ -146,7 +146,6 @@ class Graph:
                 self.edges[index].end = new_id
             elif edge.start in id_list:
                 self.edges[index].start = new_id
-        self.edges = list(set(self.edges))
     
     def insert_structure_as_node(self, nodes, structtype):
         # used to replace a group of nodes that are identified as a structure
@@ -235,8 +234,10 @@ class Graph:
             #ret += self.get_next_nodes(ret[-1])
         elif structtype == 'block':
             ret += self.find_linear_block(start.id)
-        print list(set(ret))
-        return list(set(filter(lambda x: x.id in ret, self.nodes)))
+        ret = list(set(ret))
+        if len(ret) > 1:
+            pass#print ret
+        return filter(lambda x: x.id in ret, self.nodes)
     
     def find_linear_block(self, id):
         return list(set(self.find_linear_block_forward(id) + self.find_linear_block_backward(id)))
@@ -256,7 +257,7 @@ class Graph:
         return ret
     
     def analyze_node(self, n, i):
-        struct_found = False
+        struct_found = None
         if self.is_simple_acyclic(n):
             if self.is_if_then(n):
                 print str(i) +':'+ 'if-then'
@@ -271,9 +272,9 @@ class Graph:
                 struct_found = self.nodes[-1]
                 #print self.edges
             elif self.is_block(n):
-                print str(i) +':'+ 'block'
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'block')
                 if len(nodes_to_replace) > 1:
+                    print str(i) +':'+ 'block'
                     self.insert_structure_as_node(nodes_to_replace, 'block')
                     struct_found = self.nodes[-1]
         elif self.is_target_of_back_edge(n):
@@ -291,12 +292,20 @@ class Graph:
                         struct_found = self.nodes[-1]
         if struct_found:
             self.analyze_node(struct_found, struct_found.id)
-
+    
+    def cleanup_edges(self):
+        new_edges = []
+        for edge in self.edges:
+            if not edge in new_edges:
+                new_edges.append(edge)
+        self.edges = new_edges
+    
     def analyze_tree(self):
         # parsing algorithm for the dfs-tree, rudimental
         for i in self.p:
             n = self.nodes[i]
             self.analyze_node(n, i)
+            self.cleanup_edges()
                         
     
     def get_next_nodes(self, node_id):
@@ -401,6 +410,9 @@ class Edge:
     def __str__(self):
         # not so pretty printing
         return str(self.start) +' '+ str(self.end)
+    
+    def __eq__(self, other): 
+        return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
     # test stuff
