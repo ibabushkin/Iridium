@@ -17,15 +17,17 @@ class Graph:
         self.end_node_index = None            # node determining the end of execution
         self.generate_graph()
         self.tree = None
-        self.generate_depth_first_spanning_tree()
-        self.p = self.tree.postorder()
         self.ways = []
-        #print self.is_target_of_back_edge(self.nodes[8])
-        self.analyze_tree()
         for i in self.nodes:
             print i
         for i in self.edges:
             print i
+    
+    def reduce(self):
+        # reduce the graph
+        self.generate_depth_first_spanning_tree()
+        self.p = self.tree.postorder()
+        self.analyze_tree()
     
     def get_code_from_text(self):
         # creates a list of objects carifieing the working of the
@@ -191,6 +193,8 @@ class Graph:
         return False
 
     def _find_all_ways(self, s=0, e=0, w=[]):
+        # finds all possible paths from a given entry-node s to a node e
+        # works recursively and accepts w for the current progress
         w.append(s)
         if s == e:
             self.ways.append(w)
@@ -200,10 +204,12 @@ class Graph:
                     self._find_all_ways(i, e, w)
     
     def _check_dominance(self, a):
+        # is a dominant to all currently saved paths?
         l = map(lambda x: a in x, self.ways)
         return not (False in l)
     
     def is_dominator(self, a, b):
+        # does a dominate b?
         self.ways = []
         self._find_all_ways(0, b, [])
         return self._check_dominance(a)
@@ -240,9 +246,12 @@ class Graph:
         return filter(lambda x: x.id in ret, self.nodes)
     
     def find_linear_block(self, id):
+        # find a linear structure in a graph beginning
+        # from any node, working forward and backward.
         return list(set(self.find_linear_block_forward(id) + self.find_linear_block_backward(id)))
     
     def find_linear_block_backward(self, id, l=[]):
+        # helper method
         prevs = self.get_previous_nodes(id)
         ret = l + [id]
         if len(prevs) == 1 and len(self.get_next_nodes(prevs[0])) == 1:
@@ -250,6 +259,7 @@ class Graph:
         return ret
         
     def find_linear_block_forward(self, id, l=[]):
+        # helper method
         posts = self.get_next_nodes(id)
         ret = l + [id]
         if len(posts) == 1 and len(self.get_previous_nodes(posts[0])) == 1:
@@ -259,6 +269,7 @@ class Graph:
         return []
     
     def analyze_node(self, n, i):
+        # analyzes a nodes on basis of the dfs-tree
         struct_found = None
         if self.is_simple_acyclic(n):
             if self.is_if_then(n):
@@ -296,6 +307,8 @@ class Graph:
             self.analyze_node(struct_found, struct_found.id)
     
     def cleanup_edges(self):
+        # intended to delete any duplicates that might be in the edge-set
+        # due to the reductions that took place.
         new_edges = []
         for edge in self.edges:
             found = False
@@ -308,7 +321,7 @@ class Graph:
         self.edges = new_edges
     
     def analyze_tree(self):
-        # parsing algorithm for the dfs-tree, rudimental
+        # parsing algorithm for the dfs-tree
         for i in self.p:
             n = self.nodes[i]
             self.analyze_node(n, i)
@@ -345,6 +358,7 @@ class Node:
         self.dominators = []
     
     def reset_flags(self):
+        # deprecated
         self.flags = {'visited':False, 'reached_multiple':False}
     
     def get_label_if_present(self):
@@ -363,9 +377,11 @@ class Node:
     
     def __str__(self):
         # pretty printing
-        return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
+        return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ \
+        str(self.last_index) +' ===\n'+ self.get_code_representation()
     
     def print_fancy(self, prefix='', child_prefix=''):
+        # used for pseudo-HLL-view
         print prefix + 'id: ' + str(self.id) + ' type: low-level'
 
 class StructNode:
@@ -382,12 +398,14 @@ class StructNode:
         return str(self.id) +' '+ self.structtype + ' ' + self.get_representation()
     
     def get_representation(self):
+        # output
         ret = ''
         for i in self.nodes:
             ret += str(i.id) + ' '
         return ret
     
     def hll_info_fancy(self):
+        # used for pseudo-HLL-view
         ret = ''
         for i in self.hll_info:
             #print self.hll_info[i]
@@ -399,6 +417,7 @@ class StructNode:
         return ret
     
     def print_fancy(self, prefix='', child_prefix='|-- '):
+        # pseudo-HLL-view, tree representng code as in C or any other HLL
         print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ':'
         prefix = prefix + '    '
         s = self.hll_info_fancy()
@@ -412,6 +431,7 @@ class StructNode:
             print '    |   ' + prefix + i.__str__()
     
     def compute_hll_info(self):
+        # HLL analysis of the generated structures
         if self.structtype == 'if-then':
             self.hll_info['condition'] = self.edges[0].start
             for i in self.nodes:
@@ -441,13 +461,15 @@ class Edge:
         # not so pretty printing
         return str(self.start) +' '+ str(self.end)
     
-    def __eq__(self, other): 
+    def __eq__(self, other):
+        # are two edges identical?
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
     # test stuff
     l = map(lambda x: x.strip('\n'), open('../../output5.asm', 'rb').readlines())
     g = Graph(l)
+    g.reduce()
     print
     g.nodes[g.start_node_index].print_fancy()
     
