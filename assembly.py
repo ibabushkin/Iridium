@@ -188,5 +188,5 @@ class FunctionParser:
 
 
 if __name__ == '__main__':
-    p = Parser('tests/conditions3.asm')
+    p = Parser('tests/conditions5.asm')
     p.print_results()

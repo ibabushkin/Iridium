@@ -1,7 +1,7 @@
 from instructions import Instruction
 from labels import Label
 from tree import Tree
-
+from types import *
 
 class Graph:
     # the representation of a CFG
@@ -332,36 +332,6 @@ class Graph:
             if edge.end == node_id:
                 ret.append(edge.start)
         return list(set(ret))
-    
-    def traverse(self):
-        # traversing-algorithm for the graph
-        # uses self.visit recursively
-        # deprecated
-        current_node_index = self.start_node_index
-        self.visit(current_node_index)
-        for i in self.nodes:
-            print i.id, i.flags
-    
-    def visit(self, node_index):
-        # recursive visiting and flag-setting of graph nodes
-        # deprecated
-        self.nodes[node_index].flags['visited'] = True
-        next_nodes = self.get_next_nodes(node_index)
-        for next_node in next_nodes:
-            if next_node <= node_index:
-                self.nodes[next_node].flags['loop_beginning'] = True
-                self.nodes[next_node].flags['reached_multiple'] = True
-                self.nodes[node_index].flags['loop_end'] = True
-                if self.nodes[node_index].code[-1].is_conditional_jump():
-                    self.nodes[node_index].flags['loop_condition'] = True
-                else:
-                    self.nodes[next_node].flags['loop_condition'] = True
-            if not self.nodes[next_node].flags['visited']:
-                self.visit(next_node)
-            else:
-                self.nodes[next_node].flags['reached_multiple'] = True
-                prev_nodes = self.get_previous_nodes(next_node)
-            
 
 class Node:
     # a representation of a one-entry, one-exit sequence of code
@@ -405,6 +375,8 @@ class StructNode:
         self.nodes = nodes
         self.edges = edges
         self.structtype = structtype
+        self.hll_info = {}
+        self.compute_hll_info()
     
     def __str__(self):
         return str(self.id) +' '+ self.structtype + ' ' + self.get_representation()
@@ -415,15 +387,48 @@ class StructNode:
             ret += str(i.id) + ' '
         return ret
     
+    def hll_info_fancy(self):
+        ret = ''
+        for i in self.hll_info:
+            #print self.hll_info[i]
+            if type(self.hll_info[i]) != ListType:
+                ret += i + ':' + str(self.hll_info[i]) + ' '
+            else:
+                s = ','.join(map(lambda x: str(x), self.hll_info[i]))
+                ret += i + ':' + s + ' '
+        return ret
+    
     def print_fancy(self, prefix='', child_prefix='|-- '):
         print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ':'
         prefix = prefix + '    '
+        s = self.hll_info_fancy()
+        if s != '':
+            print prefix + s
         print prefix + child_prefix + 'nodes:'
         for i in self.nodes:
             i.print_fancy(prefix+'|   ', child_prefix)
         print prefix + child_prefix +'edges:'
         for i in self.edges:
             print '    |   ' + prefix + i.__str__()
+    
+    def compute_hll_info(self):
+        if self.structtype == 'if-then':
+            self.hll_info['condition'] = self.edges[0].start
+            for i in self.nodes:
+                if i.id != self.edges[0].start:
+                    self.hll_info['then'] = i.id
+        elif self.structtype == 'if-then-else':
+            self.hll_info['condition'] = self.edges[0].start
+            self.hll_info['then_or_else'] = []
+            for i in self.nodes:
+                if i.id != self.edges[0].start:
+                    self.hll_info['then_or_else'].append(i.id)
+        elif self.structtype == 'while-loop':
+            self.hll_info['condition'] = None
+            self.hll_info['body'] = None
+        elif self.structtype == 'self-loop':
+            pass
+            
 
 class Edge:
     # a graph-edge
@@ -441,7 +446,7 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output3.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output5.asm', 'rb').readlines())
     g = Graph(l)
     print
     g.nodes[g.start_node_index].print_fancy()
