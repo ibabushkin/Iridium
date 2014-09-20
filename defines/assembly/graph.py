@@ -396,7 +396,7 @@ class Node:
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
     
     def print_fancy(self, prefix='', child_prefix=''):
-        print prefix + str(self.id)
+        print prefix + 'id: ' + str(self.id) + ' type: low-level'
 
 class StructNode:
     # a representaton of a structure inside a graph, placeholder for all nodes inside
@@ -441,7 +441,7 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output3.asm', 'rb').readlines())
     g = Graph(l)
     print
     g.nodes[g.start_node_index].print_fancy()
