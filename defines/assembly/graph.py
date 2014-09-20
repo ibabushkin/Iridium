@@ -254,7 +254,9 @@ class Graph:
         ret = l + [id]
         if len(posts) == 1 and len(self.get_previous_nodes(posts[0])) == 1:
             ret += self.find_linear_block_forward(posts[0], ret)
-        return ret
+        if len(ret) > 1:
+            return ret
+        return []
     
     def analyze_node(self, n, i):
         struct_found = None
@@ -296,8 +298,13 @@ class Graph:
     def cleanup_edges(self):
         new_edges = []
         for edge in self.edges:
-            if not edge in new_edges:
+            found = False
+            for new_edge in new_edges:
+                if edge == new_edge:
+                    found = True
+            if not found:
                 new_edges.append(edge)
+        #print self.edges == new_edges
         self.edges = new_edges
     
     def analyze_tree(self):
@@ -387,6 +394,9 @@ class Node:
     def __str__(self):
         # pretty printing
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ str(self.last_index) +' ===\n'+ self.get_code_representation()
+    
+    def print_fancy(self, prefix='', child_prefix=''):
+        print prefix + str(self.id)
 
 class StructNode:
     # a representaton of a structure inside a graph, placeholder for all nodes inside
@@ -397,8 +407,23 @@ class StructNode:
         self.structtype = structtype
     
     def __str__(self):
-        return str(self.id) +' '+ self.structtype
-        
+        return str(self.id) +' '+ self.structtype + ' ' + self.get_representation()
+    
+    def get_representation(self):
+        ret = ''
+        for i in self.nodes:
+            ret += str(i.id) + ' '
+        return ret
+    
+    def print_fancy(self, prefix='', child_prefix='|-- '):
+        print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ':'
+        prefix = prefix + '    '
+        print prefix + child_prefix + 'nodes:'
+        for i in self.nodes:
+            i.print_fancy(prefix+'|   ', child_prefix)
+        print prefix + child_prefix +'edges:'
+        for i in self.edges:
+            print '    |   ' + prefix + i.__str__()
 
 class Edge:
     # a graph-edge
@@ -418,5 +443,6 @@ if __name__ == '__main__':
     # test stuff
     l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
     g = Graph(l)
-    print g.start_node_index
+    print
+    g.nodes[g.start_node_index].print_fancy()
     
