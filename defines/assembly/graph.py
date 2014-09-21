@@ -27,7 +27,17 @@ class Graph:
         # reduce the graph
         self.generate_depth_first_spanning_tree()
         self.p = self.tree.postorder()
+        print self.p
         self.analyze_tree()
+        for i in self.nodes:
+            if isinstance(i, StructNode):
+                if i.structtype == 'block':
+                    reverse = []
+                    for j in i.edges:
+                        reverse.append(Edge(0, j.end, j.start))
+                    for j in reverse:
+                        if j in i.edges:
+                            i.structtype = 'do-loop'
     
     def get_code_from_text(self):
         # creates a list of objects carifieing the working of the
@@ -192,6 +202,14 @@ class Graph:
             return len(n1_next) == 1 and n1_next == n2_next
         return False
 
+    def get_all_visited_nodes(self):
+        ret = []
+        for i in self.ways:
+            for j in i:
+                if j not in ret:
+                    ret.append(j)
+        return ret
+
     def _find_all_ways(self, s=0, e=0, w=[]):
         # finds all possible paths from a given entry-node s to a node e
         # works recursively and accepts w for the current progress
@@ -201,24 +219,30 @@ class Graph:
         else:
             for i in self.get_next_nodes(s):
                 if i not in w:
-                    self._find_all_ways(i, e, w)
+                    self._find_all_ways(i, e, w[:])
     
     def _check_dominance(self, a):
         # is a dominant to all currently saved paths?
         l = map(lambda x: a in x, self.ways)
+        #print 'And a, l:', a,
+        #print l
         return not (False in l)
     
     def is_dominator(self, a, b):
         # does a dominate b?
         self.ways = []
         self._find_all_ways(0, b, [])
+        #print 'all ways to', a,
+        #print self.ways
         return self._check_dominance(a)
     
     def is_target_of_back_edge(self, node):
         # is there a back-edge targeting given node?
+        #print 'previous nodes of node', node.id,
+        #print self.get_previous_nodes(node.id)
         for i in self.get_previous_nodes(node.id): 
-            if self.is_dominator(node.id, i):
-                return True
+            ret = self.is_dominator(node.id, i)
+            if ret: return i
         return False
     
     def get_node_list_for_replacement(self, start, structtype):
@@ -271,6 +295,7 @@ class Graph:
     def analyze_node(self, n, i):
         # analyzes a nodes on basis of the dfs-tree
         struct_found = None
+        back = self.is_target_of_back_edge(n)
         if self.is_simple_acyclic(n):
             if self.is_if_then(n):
                 print str(i) +':'+ 'if-then'
@@ -286,12 +311,17 @@ class Graph:
                 #print self.edges
             elif self.is_block(n):
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'block')
+                check = map(lambda x: self.is_block(x), nodes_to_replace)
+                #if not (False in check):
                 if len(nodes_to_replace) > 1:
                     print str(i) +':'+ 'block'
                     self.insert_structure_as_node(nodes_to_replace, 'block')
                     struct_found = self.nodes[-1]
-        elif self.is_target_of_back_edge(n):
+        elif back:
+            print 'n.id, back', n.id, back
+            print self.get_next_nodes(back)
             prevs = self.get_previous_nodes(n.id)
+            #if len(self.get_next_nodes(back)) == 1:
             if n.id in prevs:
                 print str(i) +':'+ 'self-loop'
                 self.insert_structure_as_node([n], 'self-loop')
@@ -303,6 +333,8 @@ class Graph:
                         print str(i) +':'+ 'while-loop'
                         self.insert_structure_as_node([n, self.nodes[j]], 'while-loop')
                         struct_found = self.nodes[-1]
+        else:
+            print str(i) + ':nothing'
         if struct_found:
             self.analyze_node(struct_found, struct_found.id)
     
@@ -467,9 +499,9 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output5.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output6.asm', 'rb').readlines())
     g = Graph(l)
+    #print g.is_target_of_back_edge(g.nodes[1])
     g.reduce()
-    print
     g.nodes[g.start_node_index].print_fancy()
     
