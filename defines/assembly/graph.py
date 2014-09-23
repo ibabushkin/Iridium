@@ -29,15 +29,15 @@ class Graph:
         self.p = self.tree.postorder()
         print self.p
         self.analyze_tree()
-        for i in self.nodes:
-            if isinstance(i, StructNode):
-                if i.structtype == 'block':
-                    reverse = []
-                    for j in i.edges:
-                        reverse.append(Edge(0, j.end, j.start))
-                    for j in reverse:
-                        if j in i.edges:
-                            i.structtype = 'do-loop'
+        #for i in self.nodes:                                    # the
+            #if isinstance(i, StructNode):                       # hack
+                #if i.structtype == 'block':                     # I talked
+                    #reverse = []                                # about
+                    #for j in i.edges:                           # on the
+                        #reverse.append(Edge(0, j.end, j.start)) # git-log
+                    #for j in reverse:                           # ^^
+                        #if j in i.edges:                        #
+                            #i.structtype = 'late-do-loop'       #
     
     def get_code_from_text(self):
         # creates a list of objects carifieing the working of the
@@ -159,14 +159,14 @@ class Graph:
             elif edge.start in id_list:
                 self.edges[index].start = new_id
     
-    def insert_structure_as_node(self, nodes, structtype):
+    def insert_structure_as_node(self, nodes, structtype, start_id=0):
         # used to replace a group of nodes that are identified as a structure
         # by a special object in the graph that contains them all.
         # @param nodes: list of Node-instances
         # @param structtype: str determining the type of structure inserted
         edges = self.get_edges_for_subgraph(nodes)
         id_list = [i.id for i in nodes]
-        self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype))
+        self.nodes.append(StructNode(len(self.nodes), nodes, edges, structtype, start_id))
         self.replace_edges(len(self.nodes)-1, id_list)
         if self.start_node_index in id_list:
             self.start_node_index = len(self.nodes)-1
@@ -272,7 +272,7 @@ class Graph:
     def find_linear_block(self, id):
         # find a linear structure in a graph beginning
         # from any node, working forward and backward.
-        return list(set(self.find_linear_block_forward(id) + self.find_linear_block_backward(id)))
+        return self.find_linear_block_forward(id)#+ self.find_linear_block_backward(id)))
     
     def find_linear_block_backward(self, id, l=[]):
         # helper method
@@ -300,38 +300,43 @@ class Graph:
             if self.is_if_then(n):
                 print str(i) +':'+ 'if-then'
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then')
-                self.insert_structure_as_node(nodes_to_replace, 'if-then')
+                self.insert_structure_as_node(nodes_to_replace, 'if-then', i)
                 struct_found = self.nodes[-1]
                 #print self.edges
             elif self.is_if_then_else(n):
                 print str(i) +':'+ 'if-then-else'
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then-else')
-                self.insert_structure_as_node(nodes_to_replace, 'if-then-else')
+                self.insert_structure_as_node(nodes_to_replace, 'if-then-else', i)
                 struct_found = self.nodes[-1]
                 #print self.edges
             elif self.is_block(n):
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'block')
-                check = map(lambda x: self.is_block(x), nodes_to_replace)
-                #if not (False in check):
                 if len(nodes_to_replace) > 1:
                     print str(i) +':'+ 'block'
-                    self.insert_structure_as_node(nodes_to_replace, 'block')
+                    self.insert_structure_as_node(nodes_to_replace, 'block', i)
                     struct_found = self.nodes[-1]
+                    reverse = []
+                    for j in struct_found.edges:
+                        reverse.append(Edge(0, j.end, j.start))
+                    for j in reverse:                           
+                        if j in struct_found.edges:                        
+                            struct_found.structtype = 'do-loop'
+                            struct_found.compute_hll_info()
         elif back:
-            print 'n.id, back', n.id, back
-            print self.get_next_nodes(back)
+            #print 'n.id, back', n.id, back
+            #print self.get_next_nodes(back)
             prevs = self.get_previous_nodes(n.id)
             #if len(self.get_next_nodes(back)) == 1:
             if n.id in prevs:
-                print str(i) +':'+ 'self-loop'
-                self.insert_structure_as_node([n], 'self-loop')
+                print str(i) +':'+ 'do-loop'
+                self.insert_structure_as_node([n], 'do-loop', i)
                 struct_found = self.nodes[-1]
             else:
                 nexts = self.get_next_nodes(n.id)
                 for j in nexts:
                     if n.id in self.get_next_nodes(j):
                         print str(i) +':'+ 'while-loop'
-                        self.insert_structure_as_node([n, self.nodes[j]], 'while-loop')
+                        self.insert_structure_as_node([n, self.nodes[j]], 'while-loop', i)
                         struct_found = self.nodes[-1]
         else:
             print str(i) + ':nothing'
@@ -418,10 +423,11 @@ class Node:
 
 class StructNode:
     # a representaton of a structure inside a graph, placeholder for all nodes inside
-    def __init__(self, id, nodes, edges, structtype):
+    def __init__(self, id, nodes, edges, structtype, start_id):
         self.id = id
         self.nodes = nodes
         self.edges = edges
+        self.start_id = start_id
         self.structtype = structtype
         self.hll_info = {}
         self.compute_hll_info()
@@ -450,7 +456,7 @@ class StructNode:
     
     def print_fancy(self, prefix='', child_prefix='|-- '):
         # pseudo-HLL-view, tree representng code as in C or any other HLL
-        print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ':'
+        print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ' starts at ' + str(self.start_id) + ':'
         prefix = prefix + '    '
         s = self.hll_info_fancy()
         if s != '':
@@ -476,10 +482,15 @@ class StructNode:
                 if i.id != self.edges[0].start:
                     self.hll_info['then_or_else'].append(i.id)
         elif self.structtype == 'while-loop':
-            self.hll_info['condition'] = None
-            self.hll_info['body'] = None
-        elif self.structtype == 'self-loop':
-            pass
+            self.hll_info['condition'] = self.start_id
+            self.hll_info['body'] = self.get_other_node(self.start_id)
+        elif self.structtype == 'do-loop':
+            self.hll_info['condition'] = self.get_other_node(self.start_id)
+            self.hll_info['body'] = self.start_id
+    
+    def get_other_node(self, other_id):
+        if len(self.nodes) == 2:
+            return filter(lambda x: x != other_id, self.nodes)[0].id
             
 
 class Edge:
@@ -499,7 +510,7 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output6.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output8.asm', 'rb').readlines())
     g = Graph(l)
     #print g.is_target_of_back_edge(g.nodes[1])
     g.reduce()
