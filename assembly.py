@@ -5,9 +5,10 @@ from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
 
 class AssemblyParser:
-    def __init__(self, filepath):
+    def __init__(self, filepath, outputpath):
         self.code = map(lambda x: x.strip(), open(filepath, 'rb').readlines())
         self.in_function = False
+        self.output = open(outputpath, 'wb')
         self.functions = []
         self.current_function_beginning_index = None
         self.obtain_functions()
@@ -36,8 +37,9 @@ class AssemblyParser:
                     if j != '':
                         if ';' in j:
                             j = j.split(';')[0][:-2]
-                        print j.replace('\t', ' ')
+                        self.output.write(j.replace('\t', ' ')+'\n')
             print '=========================='
+        self.output.close()
 
 if __name__ == '__main__':
     args = sys.argv[1:]
@@ -45,8 +47,10 @@ if __name__ == '__main__':
     for index, arg in enumerate(args):
         if arg == '-p':
             path = args[index+1]
+        elif arg == '-o':
+            out = args[index+1]
     if path == '':
-        print 'Usage: python assembly.py -p <absolute-or-relative-path>'
+        print 'Usage: python assembly.py -p <path> -o <path>'
     else:
-        p = AssemblyParser(path)
+        p = AssemblyParser(path, out)
         p.print_results()

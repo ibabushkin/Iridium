@@ -295,7 +295,9 @@ class Graph:
     def analyze_node(self, n, i):
         # analyzes a nodes on basis of the dfs-tree
         struct_found = None
+        #print n.id
         back = self.is_target_of_back_edge(n)
+        #print back
         if self.is_simple_acyclic(n):
             if self.is_if_then(n):
                 print str(i) +':'+ 'if-then'
@@ -322,6 +324,8 @@ class Graph:
                         if j in struct_found.edges:                        
                             struct_found.structtype = 'do-loop'
                             struct_found.compute_hll_info()
+                else:
+                    print str(i) + ':nothing'
         elif back:
             #print 'n.id, back', n.id, back
             #print self.get_next_nodes(back)
@@ -455,7 +459,7 @@ class StructNode:
         return ret
     
     def print_fancy(self, prefix='', child_prefix='|-- '):
-        # pseudo-HLL-view, tree representng code as in C or any other HLL
+        # pseudo-HLL-view, tree representing code as in C or any other HLL
         print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + ' starts at ' + str(self.start_id) + ':'
         prefix = prefix + '    '
         s = self.hll_info_fancy()
@@ -510,8 +514,9 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output8.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output9.asm', 'rb').readlines())
     g = Graph(l)
+    #print g.is_target_of_back_edge(g.nodes[4])
     #print g.is_target_of_back_edge(g.nodes[1])
     g.reduce()
     g.nodes[g.start_node_index].print_fancy()
