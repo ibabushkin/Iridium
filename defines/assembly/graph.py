@@ -125,7 +125,9 @@ class Graph:
         # of a simple acyclic structure (block, if-else of if-then)
         # @ret: boolean value determining result
         return self.is_block(node) or self.is_if_then(node)\
-                or self.is_if_then_else(node)
+                or self.is_if_then_else(node) or \
+                self.is_if_then_with_or(node)\
+                or self.is_if_then_else_with_or(node)
     
     def remove_nodes(self, id_list):
         # removes all nodes, whose id is in id_list from the graph
@@ -191,6 +193,19 @@ class Graph:
                 return len(n2_next) == 1
         return False
     
+    def is_if_then_with_or(self, node):
+        n = self.get_next_nodes(node.id)
+        if len(n) == 2:
+            n1 = n[0]
+            n2 = n[1]
+            n1_next = self.get_next_nodes(n1)
+            n2_next = self.get_next_nodes(n2)
+            if len(n1_next) == 2 and n2 in n1_next and len(n2_next) == 1:
+                return n2_next[0] in n1_next
+            elif len(n2_next) == 2 and n1 in n2_next and len(n1_next) == 1:
+                return n1_next[0] in n2_next
+        return False
+    
     def is_if_then_else(self, node):
         # is a given node begnning of an if-else-block?
         n = self.get_next_nodes(node.id)
@@ -200,6 +215,28 @@ class Graph:
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
             return len(n1_next) == 1 and n1_next == n2_next
+        return False
+
+    def is_if_then_else_with_or(self, node):
+        n = self.get_next_nodes(node.id)
+        if len(n) == 2:
+            n1 = n[0]
+            n2 = n[1]
+            n3 = None
+            n1_next = self.get_next_nodes(n1)
+            n2_next = self.get_next_nodes(n2)
+            if len(n2_next) == 2 and n1 in n2_next and len(n1_next) == 1:
+                for i in n2_next:
+                    if i != n1:
+                        n3 = i
+                n3_next = self.get_next_nodes(n3)
+                return len(n3_next) == 1 and n3_next[0] == n1_next[0]
+            elif len(n1_next) == 2 and n2 in n1_next and len(n2_next) == 1:
+                for i in n1_next:
+                    if i != n2:
+                        n3 = i
+                n3_next = self.get_next_nodes(n3)
+                return len(n3_next) == 1 and n3_next[0] == n2_next[0]
         return False
 
     def get_all_visited_nodes(self):
@@ -264,6 +301,17 @@ class Graph:
             #ret += self.get_next_nodes(ret[-1])
         elif structtype == 'block':
             ret += self.find_linear_block(start.id)
+        elif structtype == 'if-then-with-or':
+            ret += self.get_next_nodes(start.id)
+        elif structtype == 'if-then-else-with-or':
+            n = self.get_next_nodes(start.id)
+            ret += n
+            n1_next = self.get_next_nodes(n[0])
+            n2_next = self.get_next_nodes(n[1])
+            if len(n1_next) == 2 and n[1] in n1_next and len(n2_next) == 1:
+                ret += n1_next
+            elif len(n2_next) == 2 and n[0] in n2_next and len(n1_next) == 1:
+                ret += n2_next
         ret = list(set(ret))
         if len(ret) > 1:
             pass#print ret
@@ -299,7 +347,17 @@ class Graph:
         back = self.is_target_of_back_edge(n)
         #print back
         if self.is_simple_acyclic(n):
-            if self.is_if_then(n):
+            if self.is_if_then_else_with_or(n):
+                print str(i) +': if-then-else-with-or'
+                nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then-else-with-or')
+                self.insert_structure_as_node(nodes_to_replace, 'if-then-else-with-or', i)
+                struct_found = self.nodes[-1]
+            elif self.is_if_then_with_or(n):
+                print str(i) +': if-then-with-or'
+                nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then-with-or')
+                self.insert_structure_as_node(nodes_to_replace, 'if-then-with-or', i)
+                struct_found = self.nodes[-1]
+            elif self.is_if_then(n):
                 print str(i) +':'+ 'if-then'
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'if-then')
                 self.insert_structure_as_node(nodes_to_replace, 'if-then', i)
@@ -514,7 +572,7 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output9.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
     g = Graph(l)
     #print g.is_target_of_back_edge(g.nodes[4])
     #print g.is_target_of_back_edge(g.nodes[1])
