@@ -187,10 +187,11 @@ class Graph:
             n2 = n[1]
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
-            if n2 in n1_next:
-                return len(n1_next) == 1
-            elif n1 in n2_next:
-                return len(n2_next) == 1
+            if len(self.get_previous_nodes(n1)) == 1 and len(self.get_previous_nodes(n2)) == 1:
+                if n2 in n1_next:
+                    return len(n1_next) == 1
+                elif n1 in n2_next:
+                    return len(n2_next) == 1
         return False
     
     def is_if_then_with_or(self, node):
@@ -214,7 +215,8 @@ class Graph:
             n2 = n[1]
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
-            return len(n1_next) == 1 and n1_next == n2_next
+            if len(self.get_previous_nodes(n1)) == 1 and len(self.get_previous_nodes(n2)) == 1:
+                return len(n1_next) == 1 and n1_next == n2_next
         return False
 
     def is_if_then_else_with_or(self, node):
@@ -494,6 +496,24 @@ class StructNode:
         self.hll_info = {}
         self.compute_hll_info()
     
+    def get_next_nodes(self, node_id):
+        # returns a list of all node-id's
+        # that can be reached directly from a given node
+        ret = []
+        for edge in self.edges:
+            if edge.start == node_id:
+                ret.append(edge.end)
+        return list(set(ret))
+    
+    def get_previous_nodes(self, node_id):
+        # returns a list of alll node-id's that are direct
+        # predecessos of a given node
+        ret = []
+        for edge in self.edges:
+            if edge.end == node_id:
+                ret.append(edge.start)
+        return list(set(ret))
+    
     def __str__(self):
         return str(self.id) +' '+ self.structtype + ' ' + self.get_representation()
     
@@ -543,6 +563,34 @@ class StructNode:
             for i in self.nodes:
                 if i.id != self.edges[0].start:
                     self.hll_info['then_or_else'].append(i.id)
+        elif self.structtype == 'if-then-with-or':
+            self.hll_info['condition1'] = self.start_id
+            n = self.get_next_nodes(self.start_id)
+            n1_next = self.get_next_nodes(n[0])
+            n2_next = self.get_next_nodes(n[1])
+            if n[1] in n1_next:
+                self.hll_info['then'] = n[1]
+                self.hll_info['condition2'] = n[0]
+            else:
+                self.hll_info['then'] = n[0]
+                self.hll_info['condition2'] = n[1]
+        elif self.structtype == 'if-then-else-with-or':
+            self.hll_info['condition1'] = self.start_id
+            n = self.get_next_nodes(self.start_id)
+            n1_next = self.get_next_nodes(n[0])
+            n2_next = self.get_next_nodes(n[1])
+            if n[1] in n1_next:
+                self.hll_info['then'] = n[1]
+                self.hll_info['condition2'] = n[0]
+                for i in n1_next:
+                    if i != n[1]:
+                        self.hll_info['else'] = i
+            else:
+                self.hll_info['then'] = n[0]
+                self.hll_info['condition2'] = n[1]
+                for i in n2_next:
+                    if i != n[0]:
+                        self.hll_info['else'] = i
         elif self.structtype == 'while-loop':
             self.hll_info['condition'] = self.start_id
             self.hll_info['body'] = self.get_other_node(self.start_id)
