@@ -95,7 +95,7 @@ class Graph:
             if node.code[-1].is_conditional_jump() or not node.code[-1].is_jump():
                 if node.id != len(self.nodes) -1:
                     destination = self.nodes[node.id+1]
-                    self.edges.append(Edge(current_edge_id, node.id, destination.id))
+                    self.edges.append(Edge(current_edge_id, node.id, destination.id, False))
                     current_edge_id += 1
         self.start_node_index = 0
         self.end_node_index = len(self.nodes) - 1
@@ -155,11 +155,20 @@ class Graph:
         # new_id
         # @param new_id: int, the new id to be inserted int the edge
         # @param id_list: all nodes, whose edges are to be processed
+        #print 'replace_edges', new_id, id_list
         for index, edge in enumerate(self.edges):
             if edge.end in id_list:
+                #print 'end found', self.edges[index].__str__()
                 self.edges[index].end = new_id
+                #print 'replaced by', self.edges[index].__str__()
             elif edge.start in id_list:
+                #print 'start found', self.edges[index].__str__() 
                 self.edges[index].start = new_id
+                #print 'replaced by', self.edges[index].__str__()
+        #print 'the current edge-set',
+        #for i in self.edges:
+        #    print i, ';',
+        #print
     
     def insert_structure_as_node(self, nodes, structtype, start_id=0):
         # used to replace a group of nodes that are identified as a structure
@@ -187,11 +196,10 @@ class Graph:
             n2 = n[1]
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
-            if len(self.get_previous_nodes(n1)) == 1 and len(self.get_previous_nodes(n2)) == 1:
-                if n2 in n1_next:
-                    return len(n1_next) == 1
-                elif n1 in n2_next:
-                    return len(n2_next) == 1
+            if n2 in n1_next and len(self.get_previous_nodes(n1)) == 1 and len(self.get_previous_nodes(n2)) == 2:
+                return len(n1_next) == 1
+            elif n1 in n2_next and len(self.get_previous_nodes(n2)) == 1 and len(self.get_previous_nodes(n1)) == 2:
+                return len(n2_next) == 1
         return False
     
     def is_if_then_with_or(self, node):
@@ -381,16 +389,13 @@ class Graph:
                     for j in struct_found.edges:
                         reverse.append(Edge(0, j.end, j.start))
                     for j in reverse:                           
-                        if j in struct_found.edges:                        
+                        if j in struct_found.edges:                       
                             struct_found.structtype = 'do-loop'
                             struct_found.compute_hll_info()
                 else:
-                    print str(i) + ':nothing'
+                    print str(i) + ':nothing, singular block'
         elif back:
-            #print 'n.id, back', n.id, back
-            #print self.get_next_nodes(back)
             prevs = self.get_previous_nodes(n.id)
-            #if len(self.get_next_nodes(back)) == 1:
             if n.id in prevs:
                 print str(i) +':'+ 'do-loop'
                 self.insert_structure_as_node([n], 'do-loop', i)
@@ -559,10 +564,15 @@ class StructNode:
                     self.hll_info['then'] = i.id
         elif self.structtype == 'if-then-else':
             self.hll_info['condition'] = self.edges[0].start
-            self.hll_info['then_or_else'] = []
-            for i in self.nodes:
-                if i.id != self.edges[0].start:
-                    self.hll_info['then_or_else'].append(i.id)
+            #self.hll_info['then_or_else'] = []
+            #for i in self.nodes:
+            #    if i.id != self.edges[0].start:
+            #        self.hll_info['then_or_else'].append(i.id)
+            for i in self.edges:
+                if not i.active:
+                    self.hll_info['then'] = i.end
+                else:
+                    self.hll_info['else'] = i.end
         elif self.structtype == 'if-then-with-or':
             self.hll_info['condition1'] = self.start_id
             n = self.get_next_nodes(self.start_id)
@@ -605,10 +615,11 @@ class StructNode:
 
 class Edge:
     # a graph-edge
-    def __init__(self, id, start, end):
+    def __init__(self, id, start, end, active=True):
         self.id = id
         self.start = start
         self.end = end
+        self.active = active
     
     def __str__(self):
         # not so pretty printing
@@ -620,7 +631,7 @@ class Edge:
 
 if __name__ == '__main__':
     # test stuff
-    l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output8.asm', 'rb').readlines())
     g = Graph(l)
     #print g.is_target_of_back_edge(g.nodes[4])
     #print g.is_target_of_back_edge(g.nodes[1])
