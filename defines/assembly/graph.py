@@ -352,6 +352,27 @@ class Graph:
             return ret
         return []
     
+    def appendable_to_block(self, node):
+        n = self.get_next_nodes(node.id)[0]
+        print 'appendable to', n, isinstance(self.nodes[n], StructNode)
+        return isinstance(self.nodes[n], StructNode)
+    
+    def append_to_block(self, node):
+        n = self.nodes[self.get_next_nodes(node.id)[0]]
+        n.nodes.append(node)
+        edge_to_remove = None
+        for edge in self.edges:
+            if edge.start == node.id and edge.end == n.id:
+                n.edges.append(edge)
+                n.edges[-1].end = n.start_id
+                n.start_id = node.id
+                edge_to_remove = edge.id
+                self.edges.remove(edge)
+                break
+        if self.start_node_index == node.id:
+            self.start_node_index = n.id
+        return n
+    
     def analyze_node(self, n, i):
         # analyzes a nodes using the dfs-tree
         struct_found = None
@@ -381,15 +402,18 @@ class Graph:
                 nodes_to_replace = self.get_node_list_for_replacement(n, 'block')
                 if len(nodes_to_replace) > 1:
                     print str(i) +':'+ 'block'
-                    self.insert_structure_as_node(nodes_to_replace, 'block', i)
-                    struct_found = self.nodes[-1]
-                    reverse = []
-                    for j in struct_found.edges:
-                        reverse.append(Edge(0, j.end, j.start))
-                    for j in reverse:                           
-                        if j in struct_found.edges:                       
-                            struct_found.structtype = 'do-loop'
-                            struct_found.compute_hll_info()
+                    if not self.appendable_to_block(n):
+                        self.insert_structure_as_node(nodes_to_replace, 'block', i)
+                        struct_found = self.nodes[-1]
+                        reverse = []
+                        for j in struct_found.edges:
+                            reverse.append(Edge(0, j.end, j.start))
+                        for j in reverse:                           
+                            if j in struct_found.edges:                       
+                                struct_found.structtype = 'do-loop'
+                                struct_found.compute_hll_info()
+                    else:
+                        struct_found = self.append_to_block(n)
                 else:
                     print str(i) + ':nothing, singular block'
         elif back:
@@ -630,7 +654,7 @@ class Edge:
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../output1.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
     g = Graph(l)
     g.reduce()
     
