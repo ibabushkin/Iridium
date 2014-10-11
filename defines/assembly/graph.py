@@ -371,6 +371,7 @@ class Graph:
                 break
         if self.start_node_index == node.id:
             self.start_node_index = n.id
+        n.order_nodes_by_edges()
         return n
     
     def analyze_node(self, n, i):
@@ -405,6 +406,7 @@ class Graph:
                     if not self.appendable_to_block(n):
                         self.insert_structure_as_node(nodes_to_replace, 'block', i)
                         struct_found = self.nodes[-1]
+                        struct_found.order_nodes_by_edges()
                         reverse = []
                         for j in struct_found.edges:
                             reverse.append(Edge(0, j.end, j.start))
@@ -523,6 +525,30 @@ class StructNode:
         self.structtype = structtype
         self.hll_info = {}
         self.compute_hll_info()
+    
+    def order_nodes_by_edges(self):
+        if self.structtype == 'block':
+            cur_node_id = None
+            ordered_nodes = []
+            for i in range(0, len(self.nodes)):
+                if i == 0:
+                    cur_node_id = self.start_id
+                ordered_nodes.append(cur_node_id)
+                try:
+                    cur_node_id = self.get_next_nodes(cur_node_id)[0]
+                except:
+                    pass
+            new_nodes = []
+            for i in ordered_nodes:
+                for j in self.nodes:
+                    if j.id == i:
+                        new_nodes.append(j)
+                        self.nodes.remove(j)
+                        break
+            self.nodes = new_nodes
+        
+        
+            
     
     def get_next_nodes(self, node_id):
         # returns a list of all node-id's
@@ -654,7 +680,7 @@ class Edge:
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../output2.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../output4.asm', 'rb').readlines())
     g = Graph(l)
     g.reduce()
     
