@@ -680,7 +680,7 @@ class Edge:
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../output4.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../tests/output1.asm', 'rb').readlines())
     g = Graph(l)
     g.reduce()
     
