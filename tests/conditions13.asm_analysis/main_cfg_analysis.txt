@@ -38,6 +38,28 @@ main endp
 postorder [3, 2, 1, 0]
 3:nothing, singular block
 2:nothing, singular block
-1:nothing
-0:nothing
-id: 0 type: low-level
+1:if-then
+4:nothing, singular block
+0:if-then
+5:block
+appendable to 3 False
+6:nothing, singular block
+id: 6 type: block starts at 5:
+    |-- nodes:
+    |   id: 5 type: if-then starts at 0:
+    |       then:4 condition:0 
+    |       |-- nodes:
+    |       |   id: 0 type: low-level
+    |       |   id: 4 type: if-then starts at 1:
+    |       |       then:2 condition:1 
+    |       |       |-- nodes:
+    |       |       |   id: 1 type: low-level
+    |       |       |   id: 2 type: low-level
+    |       |       |-- edges:
+    |       |       |       1 2
+    |       |-- edges:
+    |       |       0 4
+    |   id: 3 type: low-level
+    |-- edges:
+    |       5 3
+    |       5 3

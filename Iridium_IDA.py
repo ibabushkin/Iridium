@@ -4,7 +4,7 @@ import os
 from defines.assembly.labels import Function, Label, FunctionLabel
 from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
-from defines.data.data import DataParser
+from defines.assembly.data import DataParser
 
 class AssemblyParser:
     def __init__(self, filepath):
@@ -53,7 +53,7 @@ class AssemblyParser:
         sys.stdout = stdout
 
     def dataflow_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), functions_name + '.asm'), 'rb').readlines())
+        l = map(lambda x: x.strip('\n'), open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
         sys.stdout = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '_dataflow_analysis.txt'), 'wb')
         p = DataParser(l)
@@ -64,9 +64,10 @@ class AssemblyParser:
         for i in self.functions:
             print 'analyzing function', i.name,'...'
             self.cfg_analysis(i.name)
+            self.dataflow_analysis(i.name)
             print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/conditions13.asm')
+    a = AssemblyParser('tests/conditions7.asm')
     a.dump_functions()
     a.analyze_everything()

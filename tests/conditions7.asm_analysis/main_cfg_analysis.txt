@@ -1,0 +1,63 @@
+
+=== 0 0 13 ===
+main proc near
+var_20= dword ptr -20h
+var_8= dword ptr -8
+var_4= dword ptr -4
+push ebp
+mov ebp, esp
+and esp, 0FFFFFFF0h
+sub esp, 20
+mov [esp+20h+var_4], 0
+mov [esp+20h+var_8], 1
+mov eax, [esp+20h+var_4]
+cmp eax, [esp+20h+var_8]
+jz short loc_8048545
+
+
+=== 1 13 19 ===
+loc_804852F at 13
+mov [esp+20h+var_20], offset aLoleD
+call _printf
+mov eax, [esp+20h+var_4]
+cmp eax, [esp+20h+var_8]
+jz short loc_804852F
+
+
+=== 2 19 24 ===
+loc_8048545 at 19
+mov eax, 0
+leave 
+retn 
+main endp
+
+0 2
+0 1
+1 1
+1 2
+postorder [2, 1, 0]
+2:nothing, singular block
+1:do-loop
+3:nothing, singular block
+0:if-then
+4:block
+appendable to 2 False
+5:nothing, singular block
+id: 5 type: block starts at 4:
+    |-- nodes:
+    |   id: 4 type: if-then starts at 0:
+    |       then:3 condition:0 
+    |       |-- nodes:
+    |       |   id: 0 type: low-level
+    |       |   id: 3 type: do-loop starts at 1:
+    |       |       body:1 condition:None 
+    |       |       |-- nodes:
+    |       |       |   id: 1 type: low-level
+    |       |       |-- edges:
+    |       |       |       1 1
+    |       |-- edges:
+    |       |       0 3
+    |   id: 2 type: low-level
+    |-- edges:
+    |       4 2
+    |       4 2
