@@ -1,0 +1,71 @@
+
+=== 0 0 9 ===
+__do_global_dtors_aux proc near
+push ebp
+mov ebp, esp
+push esi
+push ebx
+call __x86_get_pc_thunk_bx
+add ebx, 139Ah
+cmp byte ptr [ebx+20h], 0
+jnz short loc_80484BE
+
+
+=== 1 9 17 ===
+mov eax, [ebx+24h]
+lea esi, [ebx-0E0h]
+lea edx, [ebx-0E4h]
+sub esi, edx
+sar esi, 2
+sub esi, 1
+cmp eax, esi
+jnb short loc_80484B2
+
+
+=== 2 17 18 ===
+nop 
+
+
+=== 3 18 25 ===
+loc_8048498 at 18
+add eax, 1
+mov [ebx+24h], eax
+call dword ptr [ebx+eax*4-0E4h]
+mov eax, [ebx+24h]
+cmp eax, esi
+jb short loc_8048498
+
+
+=== 4 25 28 ===
+loc_80484B2 at 25
+call deregister_tm_clones
+mov byte ptr [ebx+20h], 1
+
+
+=== 5 28 34 ===
+loc_80484BE at 28
+pop ebx
+pop esi
+pop ebp
+retn 
+__do_global_dtors_aux endp
+
+0 5
+0 1
+1 4
+1 2
+2 3
+3 3
+3 4
+4 5
+postorder [5, 4, 3, 2, 1, 0]
+5:nothing, singular block
+4:nothing, singular block
+3:do-loop
+6:nothing, singular block
+2:block
+appendable to 6 True
+6:nothing, singular block
+1:nothing
+0:nothing
+id: 0 type: low-level

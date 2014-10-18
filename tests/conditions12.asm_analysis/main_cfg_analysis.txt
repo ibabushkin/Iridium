@@ -1,0 +1,55 @@
+
+=== 0 0 14 ===
+main proc near
+var_20= dword ptr -20h
+var_C= dword ptr -0Ch
+var_8= dword ptr -8
+var_4= dword ptr -4
+push ebp
+mov ebp, esp
+and esp, 0FFFFFFF0h
+sub esp, 20
+mov [esp+20h+var_4], 1
+mov [esp+20h+var_8], 2
+mov [esp+20h+var_C], 3
+cmp [esp+20h+var_4], 1
+jz short loc_8048542
+
+
+=== 1 14 16 ===
+cmp [esp+20h+var_8], 2
+jnz short loc_804854E
+
+
+=== 2 16 18 ===
+cmp [esp+20h+var_C], 3
+jnz short loc_804854E
+
+
+=== 3 18 21 ===
+loc_8048542 at 18
+mov [esp+20h+var_20], offset aTrue
+call _printf
+
+
+=== 4 21 26 ===
+loc_804854E at 21
+mov eax, 0
+leave 
+retn 
+main endp
+
+0 3
+0 1
+1 4
+1 2
+2 4
+2 3
+3 4
+postorder [4, 3, 2, 1, 0]
+4:nothing, singular block
+3:nothing, singular block
+2:nothing
+1:nothing
+0:nothing
+id: 0 type: low-level

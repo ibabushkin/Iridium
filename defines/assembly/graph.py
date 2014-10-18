@@ -86,8 +86,11 @@ class Graph:
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
                 destination = self.find_node_by_label(destination)
-                self.edges.append(Edge(current_edge_id, node.id, destination.id))
-                current_edge_id += 1
+                if destination:
+                    self.edges.append(Edge(current_edge_id, node.id, destination.id))
+                    current_edge_id += 1
+                else:
+                    print 'encountered jump to non-local destination, probably a call.'
             if node.code[-1].is_conditional_jump() or not node.code[-1].is_jump():
                 if node.id != len(self.nodes) -1:
                     destination = self.nodes[node.id+1]
@@ -198,10 +201,10 @@ class Graph:
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
             if n2 in n1_next and len(self.get_previous_nodes(n1)) == 1\
-            and len(self.get_previous_nodes(n2)) == 2:
+            and len(self.get_previous_nodes(n2)) >= 2:
                 return len(n1_next) == 1
             elif n1 in n2_next and len(self.get_previous_nodes(n2)) == 1\
-            and len(self.get_previous_nodes(n1)) == 2:
+            and len(self.get_previous_nodes(n1)) >= 2:
                 return len(n2_next) == 1
         return False
     
@@ -680,7 +683,8 @@ class Edge:
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/output1.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../tests/conditions13.asm_analysis/main.asm', 'rb').readlines())
     g = Graph(l)
+    print g.is_if_then(g.nodes[1])
     g.reduce()
     

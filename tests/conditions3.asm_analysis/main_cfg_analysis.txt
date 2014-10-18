@@ -1,0 +1,63 @@
+
+=== 0 0 10 ===
+main proc near
+var_20= dword ptr -20h
+var_1C= dword ptr -1Ch
+var_4= dword ptr -4
+push ebp
+mov ebp, esp
+and esp, 0FFFFFFF0h
+sub esp, 20
+mov [esp+20h+var_4], 0
+jmp short loc_8048538
+
+
+=== 1 10 16 ===
+loc_804851F at 10
+mov eax, [esp+20h+var_4]
+mov [esp+20h+var_1C], eax
+mov [esp+20h+var_20], offset aIteration
+call _printf
+add [esp+20h+var_4], 1
+
+
+=== 2 16 19 ===
+loc_8048538 at 16
+cmp [esp+20h+var_4], 13h
+jle short loc_804851F
+
+
+=== 3 19 22 ===
+leave 
+retn 
+main endp
+
+0 2
+1 2
+2 1
+2 3
+postorder [3, 1, 2, 0]
+3:nothing, singular block
+1:nothing, singular block
+2:while-loop
+4:block
+appendable to 3 False
+5:nothing, singular block
+0:block
+appendable to 5 True
+5:nothing, singular block
+id: 5 type: block starts at 0:
+    |-- nodes:
+    |   id: 0 type: low-level
+    |   id: 4 type: while-loop starts at 2:
+    |       body:2 condition:2 
+    |       |-- nodes:
+    |       |   id: 2 type: low-level
+    |       |   id: 1 type: low-level
+    |       |-- edges:
+    |       |       1 2
+    |       |       2 1
+    |   id: 3 type: low-level
+    |-- edges:
+    |       4 3
+    |       0 4

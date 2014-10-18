@@ -35,13 +35,29 @@ class AssemblyParser:
 
     def dump_functions(self):
         for i in self.functions:
+            #print os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), i.name + '.asm')
             output = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), i.name + '.asm'), 'wb')
             for j in i.code:
                 if j != '':
                     if ';' in j:
                         j = j.split(';')[0][:-2]
                     output.write(j.replace('\t', ' ')+'\n')
+    
+    def cfg_analysis(self, function_name):
+        l = map(lambda x: x.strip('\n'), open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '.asm'), 'rb').readlines())
+        stdout = sys.stdout
+        sys.stdout = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '_cfg_analysis.txt'), 'wb')
+        g = Graph(l)
+        g.reduce()
+        sys.stdout = stdout
+    
+    def analyze_everything(self):
+        for i in self.functions:
+            print 'analyzing function', i.name,'...'
+            self.cfg_analysis(i.name)
+            print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/conditions3.asm')
+    a = AssemblyParser('tests/conditions13.asm')
     a.dump_functions()
+    a.analyze_everything()

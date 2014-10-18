@@ -4,7 +4,7 @@ mov ebp, esp
 push esi
 push ebx
 call __x86_get_pc_thunk_bx
-add ebx, 139Ah
+add ebx, 13A2h
 cmp byte ptr [ebx+20h], 0
 jnz short loc_80484BE
 mov eax, [ebx+24h]

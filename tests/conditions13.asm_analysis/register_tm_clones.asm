@@ -5,7 +5,7 @@ push ebp
 mov ebp, esp
 push ebx
 call __x86_get_pc_thunk_bx
-add ebx, 13EBh
+add ebx, 13DFh
 sub esp, 14h
 lea eax, [ebx+20h]
 lea edx, [ebx+20h]
