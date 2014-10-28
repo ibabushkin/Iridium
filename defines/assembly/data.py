@@ -8,6 +8,13 @@ class DataParser:
         self.code = self.get_code_from_text()
         self.addressed_offsets = []
         self.variables = []
+        self.real_variables = []
+        self.called_funcs = {}
+        self.sizes = {'qword':8, 'dword':4, 'word':2, 'byte':1}
+        self.hll_sizes = {8:['long long int', 'double'],
+                          4:['int', 'float'],
+                          2:['short int'],
+                          1:['char']}
         
     def get_code_from_text(self):
         l = []
@@ -25,11 +32,59 @@ class DataParser:
         return l
 
     def recognize(self):
+        #try:
         self.get_memory_offsets_assuming_IDA()
         self.generate_variables()
-        
+        self.allocated_space = self.get_allocated_space()
+        print 'Allocated:', self.allocated_space
+        print self.draw_memory_layout()
+        num_of_contrast_points = 0
+        contrast_points = []
+        current_byte = None
+        for index, byte in enumerate(self.draw_memory_layout()):
+            if current_byte == None:
+                current_byte = byte
+            if current_byte != byte:
+                current_byte = byte
+                contrast_points.append(index)
         for var in self.variables:
+            if var.offset >= contrast_points[1] - self.allocated_space:
+                self.real_variables.append(var)
+        if len(contrast_points) > 2:
+            for i in range(0, self.allocated_space):
+                #print i
+                if i in contrast_points and contrast_points.index(i) > 1:
+                    #print 'A'
+                    var = self.find_variable_by_contrast_point(i)
+                    if var:
+                        #print 'S'
+                        var.array = True
+                        var.num_items = abs(contrast_points[contrast_points.index(i)+1]-i) / self.sizes[var.size] + 1
+        # include pointer recognition or an applicable heuristic here.
+        for var in self.real_variables:
             print var
+        #except:
+        #    pass
+    
+    def find_variable_by_contrast_point(self, point):
+        byte_offset = -self.allocated_space + point -1
+        for i in self.real_variables:
+            #print i.name, i.offset, self.sizes[i.size], byte_offset
+            if i.offset + self.sizes[i.size] >= byte_offset and i.offset <= byte_offset:
+                return i
+    
+    def get_allocated_space(self):
+        for line in self.code:
+            if isinstance(line, Instruction):
+                if line.mnemonic == 'sub':
+                    return int(line.operands.split(' ')[1], 16)
+        
+    def draw_memory_layout(self):
+        ret = ['-' for i in range(0, self.allocated_space)]
+        for var in self.variables:
+            for i in range(var.offset, var.offset + self.sizes[var.size]):
+                ret[i] = '|'
+        return ''.join(ret)
     
     def generate_variables(self):
         for offset in self.addressed_offsets:
@@ -55,16 +110,26 @@ class DataParser:
                     self.addressed_offsets.append(int(i.mnemonic.split('=')[0][4:], 16))
         #print self.addressed_offsets
 
+    def find_all_function_calls(self):
+        ret = {}
+        for index, line in enumerate(self.code):
+            if isinstance(line, Instruction):
+                if line.mnemonic == 'call':
+                    ret[index] = line.operands
+        return ret
+
 class Variable:
     def __init__(self, name, size, offset):
         self.size = size
         self.offset = offset
         self.name = name
+        self.array = False
+        self.num_items = 1
     
     def __str__(self):
-        return self.name + ' ' + str(self.size) + ' ' + str(self.offset)
+        return self.name + ' ' + str(self.size) + ' ' + str(self.offset) + ' Array: ' + str(self.num_items)
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/conditions13.asm_analysis/main.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../tests/data.asm_analysis/main.asm', 'rb').readlines())
     d = DataParser(l)
     d.recognize()

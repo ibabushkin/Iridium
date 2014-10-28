@@ -68,6 +68,6 @@ class AssemblyParser:
             print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/conditions7.asm')
+    a = AssemblyParser('tests/data.asm')
     a.dump_functions()
     a.analyze_everything()
