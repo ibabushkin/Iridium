@@ -57,8 +57,8 @@ class AssemblyParser:
         stdout = sys.stdout
         sys.stdout = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '_dataflow_analysis.txt'), 'wb')
         p = DataParser(l)
-        p.recognize()
-	sys.stdout = stdout
+        p.recognize_frontend()
+        sys.stdout = stdout
     
     def analyze_everything(self):
         for i in self.functions:
@@ -68,6 +68,6 @@ class AssemblyParser:
             print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/data.asm')
+    a = AssemblyParser('tests/data2.asm')
     a.dump_functions()
     a.analyze_everything()

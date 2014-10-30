@@ -1,0 +1,4 @@
+Allocated: 32
+||||||||----------------||||||||
+var_8 dword -8 Array: 1
+var_4 dword -4 Array: 1

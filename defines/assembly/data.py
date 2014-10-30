@@ -32,7 +32,6 @@ class DataParser:
         return l
 
     def recognize(self):
-        #try:
         self.get_memory_offsets_assuming_IDA()
         self.generate_variables()
         self.allocated_space = self.get_allocated_space()
@@ -52,19 +51,20 @@ class DataParser:
                 self.real_variables.append(var)
         if len(contrast_points) > 2:
             for i in range(0, self.allocated_space):
-                #print i
                 if i in contrast_points and contrast_points.index(i) > 1:
-                    #print 'A'
                     var = self.find_variable_by_contrast_point(i)
                     if var:
-                        #print 'S'
                         var.array = True
                         var.num_items = abs(contrast_points[contrast_points.index(i)+1]-i) / self.sizes[var.size] + 1
-        # include pointer recognition or an applicable heuristic here.
+        self.find_pointers()
         for var in self.real_variables:
             print var
-        #except:
-        #    pass
+    
+    def recognize_frontend(self):
+        try:
+            self.recognize()
+        except:
+            print 'Analysis not possible!'
     
     def find_variable_by_contrast_point(self, point):
         byte_offset = -self.allocated_space + point -1
@@ -109,6 +109,20 @@ class DataParser:
                 elif i.mnemonic.startswith('arg_'):
                     self.addressed_offsets.append(int(i.mnemonic.split('=')[0][4:], 16))
         #print self.addressed_offsets
+    
+    def find_pointers(self):
+        for index, line in enumerate(self.code):
+            if line.mnemonic == 'lea':
+                destination = line.operands.split(',')[0]
+                instruction = self.code[index+1]
+                if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
+                    self.find_variable_by_expression(instruction.operands.split(',')[0]).pointer = True
+    
+    def find_variable_by_expression(self, expression):
+        var_name = expression[1:-1].split('+')[-1]
+        for i in self.real_variables:
+            if i.name == var_name:
+                return i
 
     def find_all_function_calls(self):
         ret = {}
@@ -125,11 +139,12 @@ class Variable:
         self.name = name
         self.array = False
         self.num_items = 1
+        self.pointer = False
     
     def __str__(self):
-        return self.name + ' ' + str(self.size) + ' ' + str(self.offset) + ' Array: ' + str(self.num_items)
+        return self.name + ' ' + str(self.size) + ' ' + str(self.offset) + ' Array: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/data.asm_analysis/main.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../tests/data2.asm_analysis/main.asm', 'rb').readlines())
     d = DataParser(l)
     d.recognize()
