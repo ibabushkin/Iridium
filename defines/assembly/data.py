@@ -11,10 +11,10 @@ class DataParser:
         self.real_variables = []
         self.called_funcs = {}
         self.sizes = {'qword':8, 'dword':4, 'word':2, 'byte':1}
-        self.hll_sizes = {8:['long long int', 'double'],
-                          4:['int', 'float'],
-                          2:['short int'],
-                          1:['char']}
+        #self.hll_sizes = {8:['long long int', 'double'],
+                          #4:['int', 'float'],
+                          #2:['short int'],
+                          #1:['char']}
         
     def get_code_from_text(self):
         l = []
@@ -135,6 +135,11 @@ class DataParser:
 class Variable:
     def __init__(self, name, size, offset):
         self.size = size
+        self.hll_sizes = {'qword':['double', 'long long int'],
+                          'dword':['int', 'float'],
+                          'word':['short int'],
+                          'byte':['char']}
+        self.hll_size = self.hll_sizes[size]
         self.offset = offset
         self.name = name
         self.array = False
@@ -142,7 +147,7 @@ class Variable:
         self.pointer = False
     
     def __str__(self):
-        return self.name + ' ' + str(self.size) + ' ' + str(self.offset) + ' Array: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
+        return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
 
 if __name__ == '__main__':
     l = map(lambda x: x.strip('\n'), open('../../tests/data2.asm_analysis/main.asm', 'rb').readlines())
