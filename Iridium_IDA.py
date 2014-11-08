@@ -12,6 +12,7 @@ class AssemblyParser:
         self.analyze_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
         if not os.path.exists(os.path.join(self.analyze_dir, self.filename + '_analysis')):
+            print 'creating directory...'
             os.mkdir(os.path.join(self.analyze_dir, self.filename + '_analysis'))
         self.in_function = False
         self.functions = []
@@ -68,6 +69,6 @@ class AssemblyParser:
             print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/data2.asm')
+    a = AssemblyParser('tests/data3.asm')
     a.dump_functions()
     a.analyze_everything()

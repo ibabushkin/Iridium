@@ -12,7 +12,7 @@ class DataParser:
         self.addressed_offsets = [] # used to determine class 0 vars
         self.variables = [] # used for class 0 vars
         self.real_variables = [] # class 1 vars
-        self.called_funcs = {} # for call-/ return-analysis
+        self.called_funcs = self.find_all_function_calls() # for call-/ return-analysis
         self.sizes = {'qword':8, 'dword':4, 'word':2, 'byte':1} # var sizes
         #self.hll_sizes = {8:['long long int', 'double'],
                           #4:['int', 'float'],
@@ -134,12 +134,19 @@ class DataParser:
         # searches for pointers using the analysis of lea-instructions
         # will be enhanced to search for malloc()
         for index, line in enumerate(self.code):
-            if line.mnemonic == 'lea':
-                destination = line.operands.split(',')[0]
-                instruction = self.code[index+1]
-                if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
-                    self.find_variable_by_expression(instruction.operands.split(',')[0]).pointer = True
-    
+            if isinstance(line, Instruction):
+                if line.mnemonic == 'lea':
+                    destination = line.operands.split(',')[0]
+                    instruction = self.code[index+1]
+                    if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
+                        self.find_variable_by_expression(instruction.operands.split(',')[0]).pointer = True
+                if line.mnemonic == 'call' and 'malloc' in line.operands:
+                    instruction = self.code[index+1]
+                    if instruction.mnemonic == 'mov':
+                        dest, source = instruction.operands.split(', ')
+                        if source == 'eax':
+                            self.find_variable_by_expression(dest).pointer = True
+                            
     def find_variable_by_expression(self, expression):
         # used to determine the name of a variable used in an instruction
         var_name = expression[1:-1].split('+')[-1]
@@ -176,6 +183,6 @@ class Variable:
         return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/data2.asm_analysis/main.asm', 'rb').readlines())
+    l = map(lambda x: x.strip('\n'), open('../../tests/data3.asm_analysis/main.asm', 'rb').readlines())
     d = DataParser(l)
     d.recognize()

@@ -1,0 +1,60 @@
+
+=== 0 0 18 ===
+register_tm_clones proc near
+var_18= dword ptr -18h
+var_14= dword ptr -14h
+push ebp
+mov ebp, esp
+push ebx
+call __x86_get_pc_thunk_bx
+add ebx, 141Fh
+sub esp, 14h
+lea eax, [ebx+28h]
+lea edx, [ebx+28h]
+sub eax, edx
+sar eax, 2
+mov ecx, eax
+shr ecx, 1Fh
+add eax, ecx
+sar eax, 1
+jnz short loc_80484B4
+
+
+=== 1 18 23 ===
+loc_80484AE at 18
+add esp, 14h
+pop ebx
+pop ebp
+retn 
+
+
+=== 2 23 27 ===
+loc_80484B4 at 23
+mov ecx, [ebx-4]
+test ecx, ecx
+jz short loc_80484AE
+
+
+=== 3 27 31 ===
+mov [esp+18h+var_14], eax
+mov [esp+18h+var_18], edx
+call ecx
+jmp short loc_80484AE
+
+
+=== 4 31 32 ===
+register_tm_clones endp
+
+0 2
+0 1
+1 2
+2 1
+2 3
+3 1
+postorder [3, 2, 1, 0]
+3:nothing, singular block
+2:if-then
+5:nothing, singular block
+1:nothing, singular block
+0:nothing
+id: 0 type: low-level
