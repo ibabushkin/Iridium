@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{structural_analysis:1}
+M.~Sharir, ``Structural analysis: A new approach to flow analysis in optimizing
+  compilers,''
+
+\bibitem{division:2}
+T.~Granlund and P.~L. Montgomery, ``Division by invariant integers using
+  multiplication,''
+
+\bibitem{wiki1:3}
+``{Wikipedia-Artikel zu Kontrollflussgraphen}.''
+  http://de.wikipedia.org/wiki/Kontrollflussgraph.
+\newblock Eingesehen am 4.11.2014.
+
+\end{thebibliography}

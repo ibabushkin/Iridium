@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
+The top-level auxiliary file: first.aux
+The style file: ieeetr.bst
+Database file #1: first.bib
+Warning--empty journal in structural_analysis:1
+Warning--empty year in structural_analysis:1
+Warning--empty journal in division:2
+Warning--empty year in division:2
+You've used 3 entries,
+            1876 wiz_defined-function locations,
+            486 strings with 3792 characters,
+and the built_in function-call counts, 408 in all, are:
+= -- 29
+> -- 13
+< -- 0
++ -- 6
+- -- 3
+* -- 25
+:= -- 63
+add.period$ -- 2
+call.type$ -- 3
+change.case$ -- 3
+chr.to.int$ -- 0
+cite$ -- 7
+duplicate$ -- 22
+empty$ -- 53
+format.name$ -- 3
+if$ -- 93
+int.to.chr$ -- 0
+int.to.str$ -- 3
+missing$ -- 2
+newline$ -- 13
+num.names$ -- 2
+pop$ -- 22
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 8
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 4
+while$ -- 2
+width$ -- 4
+write$ -- 22
+(There were 4 warnings)
