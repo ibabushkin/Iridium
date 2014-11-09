@@ -14,6 +14,7 @@ class DataParser:
         self.real_variables = [] # class 1 vars
         self.called_funcs = self.find_all_function_calls() # for call-/ return-analysis
         self.sizes = {'qword':8, 'dword':4, 'word':2, 'byte':1} # var sizes
+        self.functions_returning_pointers = ['malloc', 'calloc', 'realloc']
         #self.hll_sizes = {8:['long long int', 'double'],
                           #4:['int', 'float'],
                           #2:['short int'],
@@ -140,12 +141,14 @@ class DataParser:
                     instruction = self.code[index+1]
                     if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
                         self.find_variable_by_expression(instruction.operands.split(',')[0]).pointer = True
-                if line.mnemonic == 'call' and 'malloc' in line.operands:
-                    instruction = self.code[index+1]
-                    if instruction.mnemonic == 'mov':
-                        dest, source = instruction.operands.split(', ')
-                        if source == 'eax':
-                            self.find_variable_by_expression(dest).pointer = True
+                if line.mnemonic == 'call': # analyzing function calls regarding returned pointers
+                    for function in self.functions_returning_pointers:
+                        if function in line.operands:
+                            instruction = self.code[index+1]
+                            if instruction.mnemonic == 'mov':
+                                dest, source = instruction.operands.split(', ')
+                                if source == 'eax':
+                                    self.find_variable_by_expression(dest).pointer = True
                             
     def find_variable_by_expression(self, expression):
         # used to determine the name of a variable used in an instruction
