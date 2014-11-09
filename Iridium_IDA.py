@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
+import argparse
 from defines.assembly.labels import Function, Label, FunctionLabel
 from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
@@ -11,9 +12,10 @@ class AssemblyParser:
         self.code = map(lambda x: x.strip(), open(filepath, 'rb').readlines())
         self.analyze_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
-        if not os.path.exists(os.path.join(self.analyze_dir, self.filename + '_analysis')):
+        self.results_dir = os.path.join(self.analyze_dir, self.filename + '_analysis')
+        if not os.path.exists(self.results_dir):
             print 'creating directory...'
-            os.mkdir(os.path.join(self.analyze_dir, self.filename + '_analysis'))
+            os.mkdir(self.results_dir)
         self.in_function = False
         self.functions = []
         self.current_function_beginning_index = None
@@ -38,7 +40,7 @@ class AssemblyParser:
     def dump_functions(self):
         for i in self.functions:
             #print os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), i.name + '.asm')
-            output = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), i.name + '.asm'), 'wb')
+            output = open(os.path.join(self.results_dir, i.name + '.asm'), 'wb')
             for j in i.code:
                 if j != '':
                     if ';' in j:
@@ -46,29 +48,45 @@ class AssemblyParser:
                     output.write(j.replace('\t', ' ')+'\n')
     
     def cfg_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '.asm'), 'rb').readlines())
+        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '_cfg_analysis.txt'), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, function_name + '_cfg_analysis.txt'), 'wb')
         g = Graph(l)
         g.reduce()
         sys.stdout = stdout
 
     def dataflow_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '.asm'), 'rb').readlines())
+        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), function_name + '_dataflow_analysis.txt'), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, function_name + '_dataflow_analysis.txt'), 'wb')
         p = DataParser(l)
         p.recognize_frontend()
         sys.stdout = stdout
     
-    def analyze_everything(self):
+    def analyze_everything(self, ignore_cfg=True, ignore_data=True, ignore_div=True):
         for i in self.functions:
-            print 'analyzing function', i.name,'...'
-            self.cfg_analysis(i.name)
-            self.dataflow_analysis(i.name)
+            print 'analyzing function', i.name + '...',
+            if not ignore_cfg:
+                self.cfg_analysis(i.name)
+            if not ignore_data:
+                self.dataflow_analysis(i.name)
             print 'done.'
 
 if __name__ == '__main__':
-    a = AssemblyParser('tests/data3.asm')
+    parser = argparse.ArgumentParser(description='Analyze IDA\'s output')
+    parser.add_argument('file', help='The file to be analyzed')
+    parser.add_argument('--ignore-controlflow', action='store_true', help='Don\'t perform CFG analysis')
+    parser.add_argument('--ignore-data', action='store_true', help='Don\'t perform data analysis')
+    parser.add_argument('--ignore-division', action='store_true', help='Don\'t perform division analysis. Currently not implemented')
+    f = parser.parse_args()
+    print 'target:', f.file
+    if f.ignore_controlflow:
+        print 'skipping CFG analysis.'
+    if f.ignore_data:
+        print 'skipping data analysis.'
+    if f.ignore_division:
+        pass#rint 'skipping division analysis.'
+    a = AssemblyParser(f.file)
     a.dump_functions()
-    a.analyze_everything()
+    a.analyze_everything(f.ignore_controlflow, f.ignore_data, f.ignore_division)
+    print 'task completed. see', a.results_dir,'for results.'

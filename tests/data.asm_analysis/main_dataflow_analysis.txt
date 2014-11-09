@@ -1,6 +1,6 @@
 Allocated: 144
 ||||------------||||----------------------------------------------------------------------------||||------------------------------------||||||||
-var_80 dword -128
-var_30 dword -48
-var_8 dword -8
-var_4 dword -4
+int/float var_80 (-128) Elements: 20 Pointer: False
+int/float var_30 (-48) Elements: 10 Pointer: False
+int/float var_8 (-8) Elements: 1 Pointer: False
+int/float var_4 (-4) Elements: 1 Pointer: False

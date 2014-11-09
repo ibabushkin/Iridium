@@ -1,3 +1,5 @@
 Allocated: 32
 ||||||||------------||||||||||||
-Analysis not possible!
+int/float var_C (-12) Elements: 1 Pointer: True
+int/float var_8 (-8) Elements: 1 Pointer: False
+int/float var_4 (-4) Elements: 1 Pointer: False

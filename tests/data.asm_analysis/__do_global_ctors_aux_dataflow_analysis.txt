@@ -1,2 +1,2 @@
-Allocated: 4
-----
+Allocated: None
+Analysis not possible!
