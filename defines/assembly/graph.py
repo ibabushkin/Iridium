@@ -1,3 +1,6 @@
+import argparse
+import sys
+
 from instructions import Instruction
 from labels import Label
 from tree import Tree
@@ -683,7 +686,14 @@ class Edge:
         return self.start == other.start and self.end == other.end
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/conditions13.asm_analysis/main.asm', 'rb').readlines())
+    parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
+    parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+    parser.add_argument('-o', '--output', help='Optional file to redirect input to')
+    source = '../../tests/conditions13.asm_analysis/main.asm'
+    f = parser.parse_args()
+    if f.source: source = f.source
+    if f.output: sys.stdout = open(f.output, 'wb')
+    l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     g = Graph(l)
     print g.is_if_then(g.nodes[1])
     g.reduce()

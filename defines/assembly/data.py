@@ -1,3 +1,6 @@
+import argparse
+import sys
+
 from instructions import Instruction
 from labels import Label
 from types import *
@@ -186,6 +189,13 @@ class Variable:
         return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
 
 if __name__ == '__main__':
-    l = map(lambda x: x.strip('\n'), open('../../tests/data3.asm_analysis/main.asm', 'rb').readlines())
+    parser = argparse.ArgumentParser(description='The data analysis module, capable to work stand-alone')
+    parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+    parser.add_argument('-o', '--output', help='Optional file to redirect input to')
+    source = '../../tests/data3.asm_analysis/main.asm'
+    f = parser.parse_args()
+    if f.source: source = f.source
+    if f.output: sys.stdout = open(f.output, 'wb')
+    l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     d = DataParser(l)
     d.recognize()
