@@ -17,6 +17,8 @@ class AssemblyParser:
         if not os.path.exists(self.results_dir):
             print 'creating directory...'
             os.mkdir(self.results_dir)
+        else:
+            print 'skipping mkdir, directory already existing...'
         self.in_function = False
         self.functions = []
         self.current_function_beginning_index = None

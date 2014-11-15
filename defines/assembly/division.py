@@ -6,10 +6,11 @@ from instructions import Instruction
 from labels import Label
 
 class DivisionParser:
-    def __init__(self, text):
+    def __init__(self, text, do_analysis=True):
         self.text = text # raw code
         self.code = self.get_code_from_text() # medium-level code representation
-        self.find_interestig_code_sequences()
+        if do_analysis:
+            self.find_interestig_code_sequences()
     
     def get_code_from_text(self):
         # same as in Graph. maybe we should use some Parent-Class?
@@ -38,11 +39,11 @@ class DivisionParser:
                     next_imul = self.find_next_instruction(index+1, 'imul', d+', %X')
                     if next_imul < 5 and next_imul:
                         next_sar = self.find_next_instruction(index+1, 'sar', '%X, %X')
-                        if next_sar < 4 and next_sar:
+                        if next_sar < 9 and next_sar:
                             shift = self.code[index+next_sar+1].operands.split(', ')[1]
                             magic = '0x' + hexstr.lower()[:-1]
                             print 'Found candidate for optimized integer division starting at line ' + str(index) + ':'
-                            print 'magic: '+ magic + ' rshift: '+ shift
+                            print 'constant: '+ magic + ', rshift: '+ shift
                             result = self.get_divisor(magic, int(shift))
                             print '--> division by '+ str(result)
                     
@@ -68,9 +69,23 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The division analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
+    parser.add_argument('--next-imul-threshold', help='''Maximal index-difference between the imul and the
+    loading of the constant to consider the corresponding code-block an optimized division, defaults to 5. Use with care, default value should work in most cases.
+    If it does not, it is advised to extract the parameters by hand and call the module just to do the maths (see below).''')
+    parser.add_argument('--next-sar-threshold', help='''Maximal index-difference between the right-shift and the
+    loading of the constant to consider the corresponding code-block an optimized division, defaults to 9. Use with care, default value should work in most cases.
+    If it does not, it is advised to extract the parameters by hand and call the module just to do the maths (see below).''')
+    parser.add_argument('--interactive', '-i', action='store_true', help='Ask the user for input and process it as if it was extracted from an assembly-listing. Overrides all other options.')
     source = '../../tests/division.asm_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
-    d = DivisionParser(l)
+    if not f.interactive:
+        d = DivisionParser(l)
+    else:
+        d = DivisionParser(l, False)
+        magic = raw_input('Enter constant as hex number prefixed by 0x (input not verified!): ')
+        rshift = int(raw_input('Enter rshift amount (must be int, input not verified): '))
+        print 'Divisor seems to be '+ str(d.get_divisor(magic, rshift)) + '.'
+    
