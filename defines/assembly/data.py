@@ -70,7 +70,7 @@ class DataParser:
         for var in self.real_variables:
             print var
     
-    def recognize_frontend(self):
+    def recognize_from_frontend(self):
         # called by top-level scripts like Iridium_IDA.py
         # to prevent errors caused by compiler-generated functions
         # still keeping maintainability forthe code in self.recognze()

@@ -6,6 +6,7 @@ from defines.assembly.labels import Function, Label, FunctionLabel
 from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
 from defines.assembly.data import DataParser
+from defines.assembly.division import DivisionParser
 
 class AssemblyParser:
     def __init__(self, filepath):
@@ -60,7 +61,14 @@ class AssemblyParser:
         stdout = sys.stdout
         sys.stdout = open(os.path.join(self.results_dir, function_name + '_dataflow_analysis.txt'), 'wb')
         p = DataParser(l)
-        p.recognize_frontend()
+        p.recognize_from_frontend()
+        sys.stdout = stdout
+        
+    def division_analysis(self, function_name):
+        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+        stdout = sys.stdout
+        sys.stdout = open(os.path.join(self.results_dir, function_name + '_division_analysis.txt'), 'wb')
+        p = DivisionParser(l)
         sys.stdout = stdout
     
     def analyze_everything(self, ignore_cfg=True, ignore_data=True, ignore_div=True):
@@ -70,6 +78,8 @@ class AssemblyParser:
                 self.cfg_analysis(i.name)
             if not ignore_data:
                 self.dataflow_analysis(i.name)
+            if not ignore_div:
+                self.division_analysis(i.name)
             print 'done.'
 
 if __name__ == '__main__':
@@ -85,7 +95,7 @@ if __name__ == '__main__':
     if f.ignore_data:
         print 'skipping data analysis.'
     if f.ignore_division:
-        pass#rint 'skipping division analysis.'
+        print 'skipping division analysis.'
     a = AssemblyParser(f.file)
     a.dump_functions()
     a.analyze_everything(f.ignore_controlflow, f.ignore_data, f.ignore_division)
