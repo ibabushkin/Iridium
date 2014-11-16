@@ -6,16 +6,19 @@ from instructions import Instruction
 from labels import Label
 
 class DivisionParser:
+    # the module retrieving and workiing on the information
+    # present in the analyzed source, equivalent to Graph and DataParser
     def __init__(self, text, do_analysis=True):
         self.text = text # raw code
         self.code = self.get_code_from_text() # medium-level code representation
-        self.next_imul = 5
-        self.next_sar = 9
-        if do_analysis:
+        self.next_imul = 5 # some threshold value, see help
+        self.next_sar = 9 # see directly above
+        if do_analysis: # to make weird tricks (useless and ugly)
             self.find_interestig_code_sequences()
     
     def get_code_from_text(self):
         # same as in Graph. maybe we should use some Parent-Class?
+        # yep. it's time for that
         l = []
         index = 0
         for line in self.text:
@@ -31,9 +34,12 @@ class DivisionParser:
         return l
     
     def hex2signeddecimal(self, hexstr):
+        # take the hexdump of a dword (or any other sequence of memory) and
+        # interpret it as a signed integer
         return int(bin(int(hexstr, 16)), 2) - (1 << 32)
     
     def find_interestig_code_sequences(self):
+        # find and analyze optimized divisions.
         for index, instruction in enumerate(self.code):
             if isinstance(instruction, Instruction):
                 if instruction.mnemonic == 'mov' and instruction.operands.split(', ')[1].endswith('h'):
@@ -51,6 +57,7 @@ class DivisionParser:
                     
     
     def find_next_instruction(self, start_index, mnemonic, opers):
+        # get the distance to the next instruction matching the args. Warning: might return None.
         # opers should look like these examples: '%X, %X', '%X, eax', 'eax, %X'
         # where %X is a wildcard
         first, second = opers.split(', ')
@@ -63,10 +70,10 @@ class DivisionParser:
         
     def get_divisor(self, magic, rshift, bitness=32):
         # see the explanation at http://reverseengineering.stackexchange.com/questions/1397/how-can-i-reverse-optimized-integer-division-modulo-by-constant-operations
+        # basically calculates the divisor from magic constant and shift amount, as well as used register size.
         magic = self.hex2signeddecimal(magic)
         return int(math.ceil((2.0**(bitness+rshift))/(magic+2**bitness)))
 
-#print math.ceil((2.0**(32+4))/(-1307163959+2**32))
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The division analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
@@ -85,7 +92,6 @@ if __name__ == '__main__':
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     if not f.interactive:
         d = DivisionParser(l, False)
-        #print f
         if f.next_imul_threshold: d.next_imul = int(f.next_imul_threshold)
         if f.next_sar_threshold: d.next_sar = int(f.next_sar_threshold)
         d.find_interestig_code_sequences()
