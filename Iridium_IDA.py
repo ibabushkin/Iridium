@@ -95,7 +95,7 @@ if __name__ == '__main__':
     parser.add_argument('file', help='The file to be analyzed')
     parser.add_argument('--ignore-controlflow', action='store_true', help='Don\'t perform CFG analysis')
     parser.add_argument('--ignore-data', action='store_true', help='Don\'t perform data analysis')
-    parser.add_argument('--ignore-division', action='store_true', help='Don\'t perform division analysis. Currently not implemented')
+    parser.add_argument('--ignore-division', action='store_true', help='Don\'t perform division analysis')
     f = parser.parse_args()
     print 'target:', f.file
     if f.ignore_controlflow:
