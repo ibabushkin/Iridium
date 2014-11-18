@@ -15,6 +15,7 @@ class AssemblyParser:
         self.code = map(lambda x: x.strip(), open(filepath, 'rb').readlines())
         self.analyze_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
+        self.current_function = ''
         if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
             self.results_dir = os.path.join(self.analyze_dir, self.filename + RESULTS_DIR_NAME)
         else:
@@ -55,39 +56,41 @@ class AssemblyParser:
                         j = j.split(';')[0][:-2]
                     output.write(j.replace('\t', ' ')+'\n')
     
-    def cfg_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+    def cfg_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['cfg']), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, self.current_function + FILENAME_EXTENSIONS['cfg']), 'wb')
         g = Graph(l)
         g.reduce()
         sys.stdout = stdout
 
-    def dataflow_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+    def dataflow_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['data']), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, self.current_function + FILENAME_EXTENSIONS['data']), 'wb')
         p = DataParser(l)
         p.recognize_from_frontend()
         sys.stdout = stdout
         
-    def division_analysis(self, function_name):
-        l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+    def division_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['div']), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, self.current_function + FILENAME_EXTENSIONS['div']), 'wb')
         p = DivisionParser(l)
         p.find_interestig_code_sequences()
         sys.stdout = stdout
     
+    def load_function(self, function_name):
+        return map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+    
     def analyze_everything(self, ignore_cfg=True, ignore_data=True, ignore_div=True):
         for i in self.functions:
             print 'analyzing function', i.name + '...',
+            l = self.load_function(i.name)
+            self.current_function = i.name
             if not ignore_cfg:
-                self.cfg_analysis(i.name)
+                self.cfg_analysis(l)
             if not ignore_data:
-                self.dataflow_analysis(i.name)
+                self.dataflow_analysis(l)
             if not ignore_div:
-                self.division_analysis(i.name)
+                self.division_analysis(l)
             print 'done.'
 
 if __name__ == '__main__':
