@@ -6,36 +6,36 @@ Warning--empty journal in structural_analysis:1
 Warning--empty year in structural_analysis:1
 Warning--empty journal in division:2
 Warning--empty year in division:2
-You've used 3 entries,
+You've used 4 entries,
             1876 wiz_defined-function locations,
-            486 strings with 3792 characters,
-and the built_in function-call counts, 408 in all, are:
-= -- 29
-> -- 13
+            488 strings with 3938 characters,
+and the built_in function-call counts, 488 in all, are:
+= -- 41
+> -- 14
 < -- 0
-+ -- 6
++ -- 7
 - -- 3
-* -- 25
-:= -- 63
-add.period$ -- 2
-call.type$ -- 3
-change.case$ -- 3
+* -- 22
+:= -- 68
+add.period$ -- 4
+call.type$ -- 4
+change.case$ -- 2
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 22
-empty$ -- 53
+cite$ -- 8
+duplicate$ -- 26
+empty$ -- 65
 format.name$ -- 3
-if$ -- 93
+if$ -- 117
 int.to.chr$ -- 0
-int.to.str$ -- 3
+int.to.str$ -- 4
 missing$ -- 2
-newline$ -- 13
+newline$ -- 17
 num.names$ -- 2
-pop$ -- 22
+pop$ -- 28
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 8
+skip$ -- 11
 stack$ -- 0
 substring$ -- 0
 swap$ -- 0
@@ -45,6 +45,6 @@ top$ -- 0
 type$ -- 0
 warning$ -- 4
 while$ -- 2
-width$ -- 4
-write$ -- 22
+width$ -- 5
+write$ -- 28
 (There were 4 warnings)

@@ -8,12 +8,18 @@ from defines.assembly.graph import Graph
 from defines.assembly.data import DataParser
 from defines.assembly.division import DivisionParser
 
+from settings import *
+
 class AssemblyParser:
     def __init__(self, filepath):
         self.code = map(lambda x: x.strip(), open(filepath, 'rb').readlines())
         self.analyze_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
-        self.results_dir = os.path.join(self.analyze_dir, self.filename + '_analysis')
+        if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
+            self.results_dir = os.path.join(self.analyze_dir, self.filename + RESULTS_DIR_NAME)
+        else:
+            fn = '.'.join(self.filename.split('.')[:-1])
+            self.results_dir = os.path.join(self.analyze_dir, fn + RESULTS_DIR_NAME)
         if not os.path.exists(self.results_dir):
             print 'creating directory...'
             os.mkdir(self.results_dir)
@@ -42,7 +48,6 @@ class AssemblyParser:
 
     def dump_functions(self):
         for i in self.functions:
-            #print os.path.join(os.path.join(self.analyze_dir, self.filename + '_analysis'), i.name + '.asm')
             output = open(os.path.join(self.results_dir, i.name + '.asm'), 'wb')
             for j in i.code:
                 if j != '':
@@ -53,7 +58,7 @@ class AssemblyParser:
     def cfg_analysis(self, function_name):
         l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + '_cfg_analysis.txt'), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['cfg']), 'wb')
         g = Graph(l)
         g.reduce()
         sys.stdout = stdout
@@ -61,7 +66,7 @@ class AssemblyParser:
     def dataflow_analysis(self, function_name):
         l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + '_dataflow_analysis.txt'), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['data']), 'wb')
         p = DataParser(l)
         p.recognize_from_frontend()
         sys.stdout = stdout
@@ -69,8 +74,9 @@ class AssemblyParser:
     def division_analysis(self, function_name):
         l = map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(self.results_dir, function_name + '_division_analysis.txt'), 'wb')
+        sys.stdout = open(os.path.join(self.results_dir, function_name + FILENAME_EXTENSIONS['div']), 'wb')
         p = DivisionParser(l)
+        p.find_interestig_code_sequences()
         sys.stdout = stdout
     
     def analyze_everything(self, ignore_cfg=True, ignore_data=True, ignore_div=True):

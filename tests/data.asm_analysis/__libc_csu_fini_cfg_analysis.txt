@@ -1,9 +1,0 @@
-
-=== 0 0 3 ===
-__libc_csu_fini proc near
-rep retn
-__libc_csu_fini endp
-
-postorder [0]
-0:nothing, singular block
-id: 0 type: low-level

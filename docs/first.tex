@@ -59,7 +59,7 @@
 \columnsep7mm
 \usepackage[cm]{fullpage}
 
-\usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs}
+\usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs, url}
 %\usepackage{url}
 %\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, pdftex,pagebackref]{hyperref}
 \renewcommand{\bibname}{Bibliotheksreferenz}
@@ -92,7 +92,7 @@ Einer der zentralen Aspekte moderner wie historischer Programme ist die Möglich
 Daten bilden den zweiten Hauptbestandteil eines Programms, weswegen das Layout der Variablen, Argumente/Parameter, Rückgabewerte von großem Interesse für den Benutzer sein sollte. Gleichzeitig sind Arrays und Variablen nicht immer trivial zu erkennen, weswegen sich einige einfache, dennoch effektive Heuristiken anbieten.
 
 \subsection{Behandlung von Integerdivision}
-Die Integerdivision ist, ebenso wie die Modulodivision, eine verhältnismäßig häufig verwendete Rechenarten in Programmen, bzw. ist meistens von zentraler Bedeutung für die Resultate der Ausführung. Allerdings sind diese Operationen auch sehr ressourcenintensiv, weswegen seit den späten 1990er Jahren die entsprechenden Prozessorinstruktionen kaum noch verwendet werden, zumal die Division durch Konstanten durch Multiplikation und Shifts ersetzt werden kann, was deutlich schnellere Operationen sind \cite{division:2}. Gleichzeitig wird dadurch die eigentliche Bedeutung des Codes verschleiert, was zu Hürden bei der Analyse durch Menschen führt. Auch hier ist eine automatisierte Lösung also naheliegend, zudem noch nicht allgemein verbreitet.
+Die Integerdivision ist, ebenso wie die Modulodivision, eine verhältnismäßig häufig verwendete Rechenarten in Programmen, bzw. ist meistens von zentraler Bedeutung für die Resultate der Ausführung. Allerdings sind diese Operationen auch sehr ressourcenintensiv, weswegen seit den späten 1990er Jahren die entsprechenden Prozessorinstruktionen kaum noch verwendet werden, zumal die Division durch Konstanten durch Multiplikation und Shifts ersetzt werden kann, was deutlich schnellere Operationen sind\cite{division:2}, wodurch die Ausführung gerade in Schleifen beschleunigt werden kann. Gleichzeitig wird dadurch die eigentliche Bedeutung des Codes verschleiert, was zu Hürden bei der Analyse durch Menschen führt. Auch hier ist eine automatisierte Lösung also naheliegend, zudem noch nicht allgemein verbreitet\footnote{Eine Recherche des Autors ergab, dass z.B. der Hex-Rays Decompiler "ohne Probleme" mit solchen Konstrukten umgehen kann, da dieser allerdings ein komerzielles und noch dazu recht teures Produkt darstellt, kann vermutlich nicht vonn allgemeiner Verbreitung gesprochen werden.}.
 
 \section{Umsetzung}
 Im Folgenden werden die verwendeten Algorithmen im Detail beschrieben.
@@ -104,6 +104,8 @@ Die Software geht bei der Analyse folgendermaßen vor: Die Knoten werden nachein
 \subsection{Datenanalyse}
 Bei diesem Modul liegt der Hauptaugenmerk auf der Möglichkeit, nicht nur addressierte Speicherbereiche aus einer Analyse des Codes zu extrahieren, wie es z.B. in IDA Pro geschieht, sondern auch aus dem Kontext der Speicheraufrufe auf die Funktion der entsprechenden Speicherabschnitte zu schließen. Dabei sei erwähnt, dass solche Verfahren grundsätzlich nur Heuristiken darstellen, da nicht jeder Speicherabschnitt, aus dem z.B. ein DWORD\footnote{4 byte (32 bit) großer Speicherabschnitt, meist ein Integer} gelesen wird, automatisch einer Integervariable gleichgesetzt werden kann. So verwenden moderne Compiler die push\footnote{push alloziert Speicher auf dem Stack und speichert dort den übergebenen Operanden}- und pop\footnote{pop entfernt den zuletzt auf den Stack geschobenen Wert und speichert ihn im übergebenen Operanden}-Instruktionen nicht mehr für Funktionsaufrufe, da diese zu viele Ressourcen verbrauchen. Stattdessen wird am Anfang der Funktion mehr Speicher alloziert als für die lokalen Variablen notwendig, so dass Parameter direkt in den Speicher geschrieben werden, bevor eine Funktion aufgerufen wird. Darüber hinaus werden vermehrt sogenannte Canarys auf dem Stack hinterlegt, die sicherstellen sollen, dass kein Stackoverflow stattfindet. Dabei handelt sich um "freien" Speicher, der zwischen den lokalen Variablen und dem für Parameter reservierten Platz alloziert wird und auf seine Integrität überprüft wird, wenn die Funktion zurückkehrt. Auf diese Weise wird es viel schwieriger, die Rückkehradresse durch Nutzereingaben zu verändern. Solche Canary-Werte können auch zwischen Arrays und anderen Variablen eingefügt werden, was z.B. die Längenbestimmung von Arrays erschwert, zumal bei diesen selten direkte Addressierungen der Elemente stattfinden. Diese und andere Aspekte der Kompilierung, bei denen Informationen verlorengehen, erschweren die Analyse und Wiederherstellung mitunter sehr, was gleichermaßen für Menschen und Programme gilt, wobei letztere weniger trugschlussanfällig zu sein scheinen, da sie das Analyseergebnis schrittweise aufbauen, so dass mitunter Informationen nur unvollständig sind, jedoch nur selten objektiv falsch.
 
+\subsection{Optimisierte Intergerdivision}
+Die derzeitige Umsetzung dieses Moduls basiert auf praktischen Erfahrungen des Autors und von Nutzern der Reverse-Engineering-Stackexchange Website\cite{stackexchange:1}. 
 
 \bibliographystyle{ieeetr}
 \bibliography{first}

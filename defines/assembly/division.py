@@ -8,13 +8,11 @@ from labels import Label
 class DivisionParser:
     # the module retrieving and workiing on the information
     # present in the analyzed source, equivalent to Graph and DataParser
-    def __init__(self, text, do_analysis=True):
+    def __init__(self, text):
         self.text = text # raw code
         self.code = self.get_code_from_text() # medium-level code representation
         self.next_imul = 5 # some threshold value, see help
         self.next_sar = 9 # see directly above
-        if do_analysis: # to make weird tricks (useless and ugly)
-            self.find_interestig_code_sequences()
     
     def get_code_from_text(self):
         # same as in Graph. maybe we should use some Parent-Class?
@@ -91,12 +89,12 @@ if __name__ == '__main__':
     if f.output: sys.stdout = open(f.output, 'wb')
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     if not f.interactive:
-        d = DivisionParser(l, False)
+        d = DivisionParser(l)
         if f.next_imul_threshold: d.next_imul = int(f.next_imul_threshold)
         if f.next_sar_threshold: d.next_sar = int(f.next_sar_threshold)
         d.find_interestig_code_sequences()
     else:
-        d = DivisionParser(l, False)
+        d = DivisionParser(l)
         magic = raw_input('Enter constant as hex number prefixed by 0x (input not verified!): ')
         rshift = int(raw_input('Enter rshift amount (must be int, input not verified): '))
         print 'Divisor seems to be '+ str(d.get_divisor(magic, rshift)) + '.'
