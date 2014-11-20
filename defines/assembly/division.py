@@ -4,32 +4,15 @@ import math
 
 from instructions import Instruction
 from labels import Label
+from parser import Parser
 
-class DivisionParser:
+class DivisionParser(Parser):
     # the module retrieving and workiing on the information
     # present in the analyzed source, equivalent to Graph and DataParser
     def __init__(self, text):
-        self.text = text # raw code
-        self.code = self.get_code_from_text() # medium-level code representation
+        Parser.__init__(self, text)
         self.next_imul = 5 # some threshold value, see help
         self.next_sar = 9 # see directly above
-    
-    def get_code_from_text(self):
-        # same as in Graph. maybe we should use some Parent-Class?
-        # yep. it's time for that
-        l = []
-        index = 0
-        for line in self.text:
-            if line.endswith(':'):
-                l.append(Label(index, line))
-            else:
-                tokens = line.split(' ')
-                if len(tokens) > 0:
-                    m = tokens[0]
-                    o = line[len(m)+1:]
-                    l.append(Instruction(index, 0, m, o))
-            index += 1
-        return l
     
     def hex2signeddecimal(self, hexstr):
         # take the hexdump of a dword (or any other sequence of memory) and
@@ -83,7 +66,7 @@ if __name__ == '__main__':
     loading of the constant to consider the corresponding code-block an optimized division, defaults to 9. Use with care, default value should work in most cases.
     If it does not, it is advised to extract the parameters by hand and call the module in interactive mode (see below).''')
     parser.add_argument('--interactive', '-i', action='store_true', help='Ask the user for input and process it as if it was extracted from an assembly-listing. Overrides all other options.')
-    source = '../../tests/division.asm_analysis/main.asm'
+    source = '../../tests/division_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')

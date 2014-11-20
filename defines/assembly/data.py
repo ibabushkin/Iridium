@@ -4,14 +4,14 @@ import sys
 from instructions import Instruction
 from labels import Label
 from types import *
+from parser import Parser
 
-class DataParser:
+class DataParser(Parser):
     # intended to parse a program regarding the data it uses
     # similar to Graph (at least consdering the level of abstraction
     # and overall position in the system)
     def __init__(self, text):
-        self.text = text # raw code
-        self.code = self.get_code_from_text() # medium-level code representation
+        Parser.__init__(self, text)
         self.addressed_offsets = [] # used to determine class 0 vars
         self.variables = [] # used for class 0 vars
         self.real_variables = [] # class 1 vars
@@ -22,22 +22,6 @@ class DataParser:
                           #4:['int', 'float'],
                           #2:['short int'],
                           #1:['char']}
-        
-    def get_code_from_text(self):
-        # same as in Graph. maybe we should use some Parent-Class?
-        l = []
-        index = 0
-        for line in self.text:
-            if line.endswith(':'):
-                l.append(Label(index, line))
-            else:
-                tokens = line.split(' ')
-                if len(tokens) > 0:
-                    m = tokens[0]
-                    o = line[len(m)+1:]
-                    l.append(Instruction(index, 0, m, o))
-            index += 1
-        return l
 
     def recognize(self):
         # the main method to record all data availible
@@ -77,7 +61,7 @@ class DataParser:
         try:
             self.recognize()
         except:
-            print 'Analysis not possible!'
+            print 'Data analysis not possible!'
     
     def find_variable_by_contrast_point(self, point):
         # a contrast point is a point in memory (on the stack)
@@ -192,7 +176,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The data analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/data3.asm_analysis/main.asm'
+    source = '../../tests/data3_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')

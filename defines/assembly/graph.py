@@ -5,14 +5,12 @@ from instructions import Instruction
 from labels import Label
 from tree import Tree
 from types import *
+from parser import Parser
 
-class Graph:
+class Graph(Parser):
     # the representation of a CFG
     def __init__(self, text):
-        # @param text: list of code-lines
-        self.text = text
-        self.code = self.get_code_from_text() # generating a list of Instruction-
-                                              # and Label-instances
+        Parser.__init__(self, text)
         self.delimiter_lines = []             # "borders" of the nodes
         self.nodes = []
         self.edges = []
@@ -37,25 +35,6 @@ class Graph:
     def print_fancy(self):
         # output the analysis results.
         self.nodes[self.start_node_index].print_fancy()
-        
-    
-    def get_code_from_text(self):
-        # creates a list of objects carifieing the working of the
-        # corresponding line
-        # @ret: list of objects
-        l = []
-        index = 0
-        for line in self.text:
-            if line.endswith(':'):
-                l.append(Label(index, line))
-            else:
-                tokens = line.split(' ')
-                if len(tokens) > 0:
-                    m = tokens[0]
-                    o = line[len(m)+1:]
-                    l.append(Instruction(index, 0, m, o))
-            index += 1
-        return l
     
     def find_node_by_label(self, label_name):
         # returns the node, that begins with a label
@@ -689,7 +668,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions13.asm_analysis/main.asm'
+    source = '../../tests/conditions13_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
