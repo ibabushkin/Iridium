@@ -60,6 +60,7 @@
 \usepackage[cm]{fullpage}
 
 \usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs, url}
+%\usepackage{mathtools, mathpazo}
 %\usepackage{url}
 %\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, pdftex,pagebackref]{hyperref}
 \renewcommand{\bibname}{Bibliotheksreferenz}
@@ -105,7 +106,28 @@ Die Software geht bei der Analyse folgendermaßen vor: Die Knoten werden nachein
 Bei diesem Modul liegt der Hauptaugenmerk auf der Möglichkeit, nicht nur addressierte Speicherbereiche aus einer Analyse des Codes zu extrahieren, wie es z.B. in IDA Pro geschieht, sondern auch aus dem Kontext der Speicheraufrufe auf die Funktion der entsprechenden Speicherabschnitte zu schließen. Dabei sei erwähnt, dass solche Verfahren grundsätzlich nur Heuristiken darstellen, da nicht jeder Speicherabschnitt, aus dem z.B. ein DWORD\footnote{4 byte (32 bit) großer Speicherabschnitt, meist ein Integer} gelesen wird, automatisch einer Integervariable gleichgesetzt werden kann. So verwenden moderne Compiler die push\footnote{push alloziert Speicher auf dem Stack und speichert dort den übergebenen Operanden}- und pop\footnote{pop entfernt den zuletzt auf den Stack geschobenen Wert und speichert ihn im übergebenen Operanden}-Instruktionen nicht mehr für Funktionsaufrufe, da diese zu viele Ressourcen verbrauchen. Stattdessen wird am Anfang der Funktion mehr Speicher alloziert als für die lokalen Variablen notwendig, so dass Parameter direkt in den Speicher geschrieben werden, bevor eine Funktion aufgerufen wird. Darüber hinaus werden vermehrt sogenannte Canarys auf dem Stack hinterlegt, die sicherstellen sollen, dass kein Stackoverflow stattfindet. Dabei handelt sich um "freien" Speicher, der zwischen den lokalen Variablen und dem für Parameter reservierten Platz alloziert wird und auf seine Integrität überprüft wird, wenn die Funktion zurückkehrt. Auf diese Weise wird es viel schwieriger, die Rückkehradresse durch Nutzereingaben zu verändern. Solche Canary-Werte können auch zwischen Arrays und anderen Variablen eingefügt werden, was z.B. die Längenbestimmung von Arrays erschwert, zumal bei diesen selten direkte Addressierungen der Elemente stattfinden. Diese und andere Aspekte der Kompilierung, bei denen Informationen verlorengehen, erschweren die Analyse und Wiederherstellung mitunter sehr, was gleichermaßen für Menschen und Programme gilt, wobei letztere weniger trugschlussanfällig zu sein scheinen, da sie das Analyseergebnis schrittweise aufbauen, so dass mitunter Informationen nur unvollständig sind, jedoch nur selten objektiv falsch.
 
 \subsection{Optimisierte Intergerdivision}
-Die derzeitige Umsetzung dieses Moduls basiert auf praktischen Erfahrungen des Autors und von Nutzern der Reverse-Engineering-Stackexchange Website\cite{stackexchange:1}. 
+Die derzeitige Umsetzung dieses Moduls basiert auf praktischen Erfahrungen des Autors und von Nutzern der Reverse-Engineering-Stackexchange Website\cite{stackexchange:1}.
+
+\subsubsection{Herleitung des Algorithmus}
+Essentiell für das Verständnis, wie der Computer bei optimisierter Division rechnet, ist es wichtig zu verstehen, dass Division durch die Multiplikation mit dem Kehrwert esetzt werden kann:
+
+\begin{equation*}
+\frac{n}{r} = n * \frac{1}{r}
+\end{equation*}
+
+Dabei ist es allerdings nicht möglich, einen Bruch $\frac{1}{r}$ mit $r \ni \mathbb{N}$ als einen Integer zu speichern, weswegen es nahe liegt, beide Werte mit einer Konstante zu multiplizieren.
+In der Regel wird $2^{32}$ als Faktor verwendet, da dies gut zur verwendeten Registergröße passt.
+
+Folglich kann der folgende Zusammenhang verwendet werden:
+\begin{equation*}
+d = \frac{y+x}{r} * \frac{n}{y} , x = r - (y\mod{r})
+\end{equation*}
+Dabei ist $y$ der verwendete Faktor, hier $2^{32}$, wobei dies eigentlich jede Zahl $2^n$ sein kann,
+allerdings ist die verwendete Konstante - wie bereits erwähnt - aufgrund der 32-Bit breiten Register besonders bequem, $x$ wir die sogenannte "Magic number" darstellen, die der Compiler als Konstante verwenden wird, $n$ ist die Variable, die dividiert werden soll. Aus diesen Ausführngen folgt:
+\begin{equation*}
+d = \frac{n}{r} + \frac{xn}{ry}
+\end{equation*}
+Wobei der zweite Summand die Abweichung, die möglichst klein werden soll, darstellt.
 
 \bibliographystyle{ieeetr}
 \bibliography{first}

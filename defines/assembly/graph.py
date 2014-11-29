@@ -19,6 +19,7 @@ class Graph(Parser):
         self.generate_graph()
         self.tree = None
         self.ways = []
+        self.ways2 = []
         for i in self.nodes:
             print i
         for i in self.edges:
@@ -110,9 +111,9 @@ class Graph(Parser):
         # of a simple acyclic structure (block, if-else of if-then)
         # @ret: boolean value determining result
         return self.is_block(node) or self.is_if_then(node)\
-                or self.is_if_then_else(node) or \
-                self.is_if_then_with_or(node)\
-                or self.is_if_then_else_with_or(node)
+                or self.is_if_then_else(node)# or
+                #self.is_if_then_with_or(node)
+               # or self.is_if_then_else_with_or(node)
     
     def remove_nodes(self, id_list):
         # removes all nodes, whose id is in id_list from the graph
@@ -358,11 +359,64 @@ class Graph(Parser):
             self.start_node_index = n.id
         n.order_nodes_by_edges()
         return n
+
+    def calculate_paths(self, start, depth, path=[]):
+        current_path = path[:] + [start]
+        next_nodes = self.get_next_nodes(start)
+        if depth == 0 or len(next_nodes) == 0:
+            self.ways2.append(current_path)
+        else:
+            for i in next_nodes:
+               if not self.is_dominator(i, start):
+                   self.calculate_paths(i, depth-1, current_path)
+               else:
+                   self.ways2.append(current_path)
     
+    def analyze_paths(self, loop):
+        visited_nodes = []
+        source = self.is_target_of_back_edge(self.nodes[self.ways2[0][0]])
+        for i in self.ways2:
+            for j in i:
+                if j not in visited_nodes:
+                    visited_nodes.append(j)
+        omnipresent_nodes = visited_nodes[:]
+        if loop:
+            self.ways2 = filter(lambda x: source not in x, self.ways2)
+        for i in visited_nodes:
+            for j in self.ways2:
+                if i not in j:
+                    if i in omnipresent_nodes:
+                        omnipresent_nodes.remove(i)
+        first_knot = None # first node after structure
+        if loop:
+            self.ways = []
+            self._find_all_ways(self.nodes[self.ways2[0][0]], source, [])
+            if len(self.ways) == 0:
+                first_knot = i
+        elif self.ways2:
+            for i in self.ways2[0][1:]:
+                if i in omnipresent_nodes:
+                    first_knot = i
+                    break
+        print 'knot',first_knot
+        # strip all nodes from the paths that come after first_knot
+        # everything else belongs to the structure --> generate a ConditionNode      
+             
     def analyze_node(self, n, i):
-        # analyzes a nodes using the dfs-tree
+        # analyzes a node using the dfs-tree
         struct_found = None
+        loop = False
         back = self.is_target_of_back_edge(n)
+        branching = len(self.get_next_nodes(n.id)) == 2
+        if back:
+            loop = len(self.get_next_nodes(back)) == 2
+        if self.is_simple_acyclic(n):
+            n.comment = 'simple condition'
+        elif branching: # uncomment for testing the new code
+            self.ways2 = []
+            self.calculate_paths(start=n.id, depth=5)
+            self.analyze_paths(loop)
+            
         if self.is_simple_acyclic(n):
             if self.is_if_then_else_with_or(n):
                 print str(i) +': if-then-else-with-or'
@@ -668,7 +722,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions13_analysis/main.asm'
+    source = '../../tests/conditions15_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
