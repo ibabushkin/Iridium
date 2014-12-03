@@ -20,6 +20,8 @@ class Graph(Parser):
         self.tree = None
         self.ways = []
         self.ways2 = []
+    
+    def print_graph(self):
         for i in self.nodes:
             print i
         for i in self.edges:
@@ -91,6 +93,8 @@ class Graph(Parser):
         # helper-function, uses self.visit_depth_first and
         # sets the tree up
         self.tree = Tree(self.nodes[self.start_node_index])
+        for i in self.nodes:
+            i.reset_flags()
         self.visit_depth_first(self.start_node_index)
     
     def visit_depth_first(self, node_id):
@@ -173,6 +177,8 @@ class Graph(Parser):
     def is_block(self, node):
         # is a given node (part of) a block?
         # yeah, it's stupid I know...
+        #if node.id == 5:
+         #   print self.get_next_nodes(node.id)
         return len(self.get_next_nodes(node.id)) < 2
     
     def is_if_then(self, node):
@@ -340,23 +346,24 @@ class Graph(Parser):
     
     def appendable_to_block(self, node):
         n = self.get_next_nodes(node.id)[0]
-        print 'appendable to', n, isinstance(self.nodes[n], StructNode)
-        return isinstance(self.nodes[n], StructNode)
+        print 'appendable to', n, isinstance(self.nodes[n], StructNode) and self.nodes[n].structtype == 'block'
+        return isinstance(self.nodes[n], StructNode) and self.nodes[n].structtype == 'block'
     
     def append_to_block(self, node):
         n = self.nodes[self.get_next_nodes(node.id)[0]]
         n.nodes.append(node)
-        edge_to_remove = None
         for edge in self.edges:
             if edge.start == node.id and edge.end == n.id:
                 n.edges.append(edge)
                 n.edges[-1].end = n.start_id
                 n.start_id = node.id
-                edge_to_remove = edge.id
                 self.edges.remove(edge)
                 break
         if self.start_node_index == node.id:
             self.start_node_index = n.id
+        for edge in self.edges:
+            if edge.end == node.id:
+                edge.end = n.id
         n.order_nodes_by_edges()
         return n
 
@@ -398,25 +405,60 @@ class Graph(Parser):
                 if i in omnipresent_nodes:
                     first_knot = i
                     break
-        print 'knot',first_knot
-        # strip all nodes from the paths that come after first_knot
-        # everything else belongs to the structure --> generate a ConditionNode      
+                    
+        #print self.ways2, omnipresent_nodes            
+        print 'knot',first_knot # what if first_knot is None?
+        self.ways2 = map(lambda x: x[:x.index(first_knot)], self.ways2)
+        structure_nodes = []
+        red = True
+        conditions = []
+        for i in self.ways2:
+            for j in i:
+                if j not in structure_nodes:
+                    structure_nodes.append(j)
+        for i in structure_nodes:
+            if len(self.get_next_nodes(i)) == 2:
+                self.nodes[i].comment = 'part of complex condition'
+                conditions.append(self.nodes[i])
+            else:
+                self.nodes[i].comment = 'code'
+            prevs = self.get_previous_nodes(i)
+            for j in prevs:
+                if j not in structure_nodes and i != self.ways2[0][0]:
+                    red = False
+        if red:
+            edges = self.get_edges_for_subgraph(conditions)
+            id_list = [i.id for i in conditions]
+            self.nodes.append(StructNode(len(self.nodes), conditions, edges, 'condition', self.ways2[0][0]))
+            self.replace_edges(len(self.nodes)-1, id_list)
+            if self.start_node_index in id_list:
+                self.start_node_index = len(self.nodes)-1
              
     def analyze_node(self, n, i):
         # analyzes a node using the dfs-tree
+        #print '======================'
+        #for edge in self.edges:
+         #   print edge
+        #print '======================'
         struct_found = None
         loop = False
         back = self.is_target_of_back_edge(n)
         branching = len(self.get_next_nodes(n.id)) == 2
         if back:
-            loop = len(self.get_next_nodes(back)) == 2
+            loop = len(self.get_next_nodes(back)) != 2 
         if self.is_simple_acyclic(n):
             n.comment = 'simple condition'
-        elif branching: # uncomment for testing the new code
-            self.ways2 = []
-            self.calculate_paths(start=n.id, depth=5)
-            self.analyze_paths(loop)
-            
+        elif branching:
+            for ind in range(1, 10):
+                self.ways2 = []
+                self.calculate_paths(start=n.id, depth=5*ind)
+                try:
+                    self.analyze_paths(loop)
+                    n = self.nodes[-1]
+                    i = len(self.nodes) - 1
+                    break
+                except:
+                    pass
         if self.is_simple_acyclic(n):
             if self.is_if_then_else_with_or(n):
                 print str(i) +': if-then-else-with-or'
@@ -454,10 +496,13 @@ class Graph(Parser):
                                 struct_found.structtype = 'do-loop'
                                 struct_found.compute_hll_info()
                     else:
+                        print 'appending'
                         struct_found = self.append_to_block(n)
+                        print 'appended'
                 else:
                     print str(i) + ':nothing, singular block'
         elif back:
+            #print 'i', i
             prevs = self.get_previous_nodes(n.id)
             if n.id in prevs:
                 print str(i) +':'+ 'do-loop'
@@ -466,8 +511,10 @@ class Graph(Parser):
             else:
                 nexts = self.get_next_nodes(n.id)
                 for j in nexts:
-                    if n.id in self.get_next_nodes(j):
-                        print str(i) +':'+ 'while-loop'
+                    #print 'lol',self.get_previous_nodes(j)
+                    if n.id in self.get_next_nodes(j) and len(self.get_previous_nodes(j)) == 1:
+                        #print str(i) +':'+ 'while-loop'
+                        #print self.get_next_nodes(j), self.get_previous_nodes(j), n, self.nodes[j]
                         self.insert_structure_as_node([n, self.nodes[j]], 'while-loop', i)
                         struct_found = self.nodes[-1]
         else:
@@ -477,7 +524,7 @@ class Graph(Parser):
     
     def cleanup_edges(self):
         # intended to delete any duplicates that might be in the edge-set
-        # due to the reductions that took place. Currently not workig to the full
+        # due to the reductions that took place. Currently not working to the full
         # extend.
         new_edges = []
         for edge in self.edges:
@@ -558,13 +605,19 @@ class StructNode:
     # e.g. a loop, branch or whatever.
     def __init__(self, id, nodes, edges, structtype, start_id):
         self.id = id
+        self.flags = None
+        self.reset_flags()
         self.nodes = nodes
         self.edges = edges
         self.start_id = start_id
         self.structtype = structtype
         self.hll_info = {}
         self.compute_hll_info()
-    
+
+    def reset_flags(self):
+        # deprecated, but still in use.
+        self.flags = {'visited':False, 'reached_multiple':False}
+
     def order_nodes_by_edges(self):
         if self.structtype == 'block':
             cur_node_id = None
@@ -699,7 +752,8 @@ class StructNode:
     def get_other_node(self, other_id):
         # helper method.
         if len(self.nodes) == 2:
-            return filter(lambda x: x != other_id, self.nodes)[0].id
+            for i in self.nodes:
+                if i.id != other_id: return i.id
             
 
 class Edge:
@@ -722,12 +776,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions15_analysis/main.asm'
+    source = '../../tests/conditions14_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     g = Graph(l)
-    print g.is_if_then(g.nodes[1])
+    g.print_graph()
     g.reduce()
     
