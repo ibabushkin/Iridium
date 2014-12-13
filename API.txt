@@ -1,0 +1,7 @@
+- nodes are saved in a dictionary, with their id as the key, they can be removed
+- all methods are taking an integer or a list of integers as arguments when they 
+need a reference to one or mutiple nodes
+- all methods get a clear documentation of the algorithm used, if not clear
+- all loop variables get special names, not just i,j and k - this leads to 
+confusion.
+- make sure that variable names are clearly stating the purpose of the variable.
