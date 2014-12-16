@@ -27,7 +27,7 @@ class Label:
         self.index = index
     
     def __str__(self):
-        return '%s at %i' % (self.name, self.index)
+        return '%s:' % self.name
 
 class FunctionLabel(Label):
     def __init__(self, name):
