@@ -21,6 +21,7 @@ class Graph(Parser):
         self.tree = None
         self.ways = []
         self.ways2 = []
+        self.non_knot_nodes = []
         
     def print_graph(self):
         # prints all nodes and edges, without walking them recursively
@@ -65,6 +66,8 @@ class Graph(Parser):
                 self.delimiter_lines.append(index)
             elif instruction.is_jump():
                 self.delimiter_lines.append(index+1)
+            elif instruction.mnemonic in ['cmp', 'test'] and index-1 not in self.delimiter_lines:
+                self.delimiter_lines.append(index)
         self.delimiter_lines = [0] + sorted(list(set(self.delimiter_lines))) + [len(self.code)]
         for index, content in enumerate(self.delimiter_lines):
             if content != len(self.code):
@@ -73,6 +76,7 @@ class Graph(Parser):
                     self.nodes[current_node_id] = Node(current_node_id, c, content, self.delimiter_lines[index+1])
                     current_node_id += 1
         for node_index in self.nodes:
+            print self.nodes[node_index]
             node = self.nodes[node_index]
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
@@ -238,6 +242,8 @@ class Graph(Parser):
         # does a dominate b?
         self.ways = []
         self._find_all_ways(0, b, [])
+        #self.ways = map(lambda x: x[:x.index(b)], self.ways)
+        #if a == 2 and b == 1: print self.ways
         return self._check_dominance(a)
 
     def is_target_of_back_edge(self, node_id):
@@ -330,12 +336,13 @@ class Graph(Parser):
                if not self.is_dominator(i, start):
                    self.calculate_paths(i, depth-1, current_path)
                else:
-                   self.ways2.append(current_path)
+                   #self.ways2.append(current_path)
+                   self.non_knot_nodes.append(start)
 
     def analyze_paths(self, loop):
         # based on the calculated paths, find conditions and replace them
         # by single StructNodes, that mark them as such. Also, ugliest code
-        # ever. Seriously. URGENT: rewrite if possible!!!
+        # ever. Seriously.
         visited_nodes = []
         source = self.is_target_of_back_edge(self.ways2[0][0])
         for i in self.ways2:
@@ -345,22 +352,20 @@ class Graph(Parser):
         omnipresent_nodes = visited_nodes[:]
         if loop:
             self.ways2 = filter(lambda x: source not in x, self.ways2)
+        #print self.ways2
         for i in visited_nodes:
             for j in self.ways2:
                 if i not in j:
                     if i in omnipresent_nodes:
                         omnipresent_nodes.remove(i)
         first_knot = None # first node after structure
-        #print i
         if loop:
             self.ways = []
             self._find_all_ways(self.ways2[0][0], source, [])
-            #print self.ways
-           # if len(self.ways) == 0:
             first_knot = i
         elif self.ways2:
             for i in self.ways2[0][1:]:
-                if i in omnipresent_nodes:
+                if i in omnipresent_nodes and i not in self.non_knot_nodes:
                     first_knot = i
                     break     
         if first_knot: print 'found knot-node:',first_knot
@@ -382,7 +387,8 @@ class Graph(Parser):
             for j in prevs:
                 if j not in structure_nodes and i != self.ways2[0][0]:
                     red = False
-        if red:
+        if red and len(conditions) > 1:
+            print 'reducing condition:', conditions
             self.insert_structure_as_node(conditions, 'condition', self.ways2[0][0])
 
     def analyze_node(self, node_id):
@@ -406,6 +412,7 @@ class Graph(Parser):
             print 'couldn\'t find simple structure.'
             for ind in range(1, 10):
                 self.ways2 = []
+                self.non_knot_nodes = []
                 self.calculate_paths(start=node_id, depth=5*ind)
                 try:
                     self.analyze_paths(loop)
@@ -428,25 +435,27 @@ class Graph(Parser):
             elif self.is_block(node_id):
                 nodes_to_replace = self.get_node_list_for_replacement(node_id, 'block')
                 if len(nodes_to_replace) > 1:
-                    print 'found block.'
+                    print 'found block.', nodes_to_replace
                     if not self.appendable_to_block(node_id):
                         self.insert_structure_as_node(nodes_to_replace, 'block', node_id)
                         struct_found = self.largest_id - 1
-                        found_node = self.nodes[struct_found]
-                        found_node.order_nodes_by_edges()
-                        reverse = []
-                        for j in found_node.edges:
-                            reverse.append(Edge(0, j.end, j.start))
-                        for j in reverse:                           
-                            if j in found_node.edges:
-                                print 'correcting to do-loop.'                     
-                                found_node.structtype = 'do-loop'
-                                found_node.compute_hll_info()
-                                break
                     else:
                         print 'appending to existing block ...',
                         struct_found = self.append_to_block(node_id)
                         print 'done.'
+                        #for j in self.edges: print j
+                    found_node = self.nodes[struct_found]
+                    found_node.order_nodes_by_edges()
+                    reverse = []
+                    for j in found_node.edges:
+                        reverse.append(Edge(0, j.end, j.start))
+                    #for j in reverse: print j
+                    for j in reverse:                           
+                        if j in found_node.edges:
+                            print 'correcting to do-loop.'                     
+                            found_node.structtype = 'do-loop'
+                            found_node.compute_hll_info()
+                            break
                 else:
                     print 'found nothing, block is singular.'
         elif back:
@@ -454,11 +463,11 @@ class Graph(Parser):
             if node_id in prevs:
                 print 'found do-loop.'
                 self.insert_structure_as_node([node_id], 'do-loop', node_id)
-                struct_found = node_id
+                struct_found = self.largest_id - 1
             else:
                 nexts = self.get_next_nodes(node_id)
                 for j in nexts:
-                    if node_id in self.get_next_nodes(j) and len(self.get_previous_nodes(j)) == 1:
+                    if node_id in self.get_next_nodes(j) and len(self.get_next_nodes(j)) == 1 and len(self.get_previous_nodes(ind)) == 1:
                         print 'found while-loop.'
                         self.insert_structure_as_node([node_id, j], 'while-loop', node_id)
                         struct_found = self.largest_id - 1
@@ -473,7 +482,7 @@ class Graph(Parser):
         if node_id in prevs: return True
         nexts = self.get_next_nodes(node_id)
         for ind in nexts:
-            if node_id in self.get_next_nodes(ind) and len(self.get_previous_nodes(ind)) == 1:
+            if node_id in self.get_next_nodes(ind) and len(self.get_next_nodes(ind)) == 1 and len(self.get_previous_nodes(ind)) == 1:
                 return True
         return False
 
@@ -552,8 +561,13 @@ class Node:
     def print_fancy(self, prefix='', child_prefix=''):
         # used for pseudo-HLL-view
         print prefix + 'id: ' + str(self.id) + ' type: low-level'
+        max_len = 0
         for i in self.get_code_representation().split('\n'):
-            print prefix + i
+            if len(i) > max_len: max_len = len(i)
+        print prefix + '+'+ '-' * max_len + '+'
+        for i in self.get_code_representation().split('\n')[:-1]:
+            print prefix + '|' + i + ' ' * (max_len - len(i)) + '|'
+        print prefix + '+'+ '-' * max_len + '+\n'+ prefix
 
 class StructNode:
     # a representaton of a structure inside a graph, placeholder for all nodes inside,
@@ -704,7 +718,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions8_analysis/main.asm'
+    source = '../../tests/conditions17_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
