@@ -183,8 +183,8 @@ class Graph(Parser):
     def is_block(self, node_id):
         # is a given node (part of) a block?
         # yeah, it's stupid I know...
-        return len(self.get_next_nodes(node_id)) < 2
-    
+        return len(self.get_next_nodes(node_id)) < 2 
+            
     def is_if_then(self, node_id):
         # is a given node beginning of an if-then-block?
         n = self.get_next_nodes(node_id)
@@ -423,33 +423,31 @@ class Graph(Parser):
         # normal reduction begins here...
         if self.is_simple_acyclic(node_id):
             if self.is_if_then(node_id):
-                print 'found if-then.'
                 nodes_to_replace = self.get_node_list_for_replacement(node_id, 'if-then')
+                print 'if-then:', nodes_to_replace
                 self.insert_structure_as_node(nodes_to_replace, 'if-then', node_id)
                 struct_found = self.largest_id - 1
             elif self.is_if_then_else(node_id):
-                print 'found if-then-else.'
                 nodes_to_replace = self.get_node_list_for_replacement(node_id, 'if-then-else')
+                print 'if-then-else:', nodes_to_replace
                 self.insert_structure_as_node(nodes_to_replace, 'if-then-else', node_id)
                 struct_found = self.largest_id - 1
             elif self.is_block(node_id):
                 nodes_to_replace = self.get_node_list_for_replacement(node_id, 'block')
                 if len(nodes_to_replace) > 1:
-                    print 'found block.', nodes_to_replace
+                    print 'block:', nodes_to_replace
                     if not self.appendable_to_block(node_id):
                         self.insert_structure_as_node(nodes_to_replace, 'block', node_id)
                         struct_found = self.largest_id - 1
                     else:
                         print 'appending to existing block ...',
                         struct_found = self.append_to_block(node_id)
-                        print 'done.'
-                        #for j in self.edges: print j
+                        print 'done:', struct_found
                     found_node = self.nodes[struct_found]
                     found_node.order_nodes_by_edges()
                     reverse = []
                     for j in found_node.edges:
                         reverse.append(Edge(0, j.end, j.start))
-                    #for j in reverse: print j
                     for j in reverse:                           
                         if j in found_node.edges:
                             print 'correcting to do-loop.'                     
@@ -461,18 +459,16 @@ class Graph(Parser):
         elif back:
             prevs = self.get_previous_nodes(node_id)
             if node_id in prevs:
-                print 'found do-loop.'
+                print 'do-loop:', node_id
                 self.insert_structure_as_node([node_id], 'do-loop', node_id)
                 struct_found = self.largest_id - 1
             else:
                 nexts = self.get_next_nodes(node_id)
                 for j in nexts:
                     if node_id in self.get_next_nodes(j) and len(self.get_next_nodes(j)) == 1 and len(self.get_previous_nodes(ind)) == 1:
-                        print 'found while-loop.'
+                        print 'while-loop:', [node_id, j]
                         self.insert_structure_as_node([node_id, j], 'while-loop', node_id)
                         struct_found = self.largest_id - 1
-        else:
-            print 'found nothing.'
         if struct_found:
             print 'reduction successful, applying recursive analysis ...'
             self.analyze_node(struct_found)
@@ -690,6 +686,13 @@ class StructNode:
         elif self.structtype == 'do-loop':
             self.hll_info['condition'] = self.get_other_node(self.start_id)
             self.hll_info['body'] = self.start_id
+            if not self.hll_info['condition']:
+                self.hll_info['condition'] = self.get_condition_from_block()
+    
+    def get_condition_from_block(self):
+        for i in self.nodes[0].nodes:
+            if isinstance(i, StructNode) and i.structtype == 'condition':
+                return i.id
     
     def get_other_node(self, other_id):
         # helper method.
@@ -718,7 +721,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions17_analysis/main.asm'
+    source = '../../tests/conditions16_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
