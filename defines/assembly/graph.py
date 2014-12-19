@@ -45,6 +45,8 @@ class Graph(Parser):
     def generate_graph(self):
         # generates a graph from a list of Instruction- and
         # Label-instances
+        # splits the graph at labels, jumps and compares
+        # (the last to ensure code is separated from conditions) 
         current_node_id = 0
         current_edge_id = 0
         for index, instruction in enumerate(self.code):
@@ -290,8 +292,7 @@ class Graph(Parser):
     
     def replace_edges(self, new_id, id_list):
         # replaces beginning or end of all edges that are adjacent to nodes
-        # identified by an element of id_list, by the value of 
-        # new_id
+        # identified by an element of id_list, by the value of new_id
         # @param new_id: int, the new id to be inserted into the edge
         # @param id_list: all nodes, whose edges are to be processed, given as a list of id's
         for edge in self.edges:
@@ -301,6 +302,7 @@ class Graph(Parser):
                 edge.start = new_id
 
     def get_nodes(self, id_list):
+        # return all nodes that are identified by an element of id_list
         return [self.nodes[i] for i in self.nodes if i in id_list]
 
     def insert_structure_as_node(self, id_list, structtype, start_id=0):
@@ -318,7 +320,7 @@ class Graph(Parser):
         self.remove_nodes(id_list)
     
     def get_all_visited_nodes(self):
-        # returns all nodes already traversed and saved in self.ways.
+        # returns all nodes already traversed and somehow saved in self.ways.
         ret = []
         for i in self.ways:
             for j in i:
@@ -328,7 +330,7 @@ class Graph(Parser):
 
     def _find_all_ways(self, s=0, e=0, w=[]):
         # finds all possible paths from a given entry-node s to a node e
-        # works recursively and accepts w for the current progress
+        # works recursively and accepts w as a path for the current progress
         w.append(s)
         if s == e:
             self.ways.append(w)
@@ -338,18 +340,20 @@ class Graph(Parser):
                     self._find_all_ways(i, e, w[:])
     
     def _check_dominance(self, a):
-        # is a dominant to all currently saved paths?
+        # is a dominant to all currently saved paths? (see next method)
         l = map(lambda x: a in x, self.ways)
         return not (False in l)
 
     def is_dominator(self, a, b):
-        # does a dominate b?
+        # does a dominate b? (do all paths leading from the entrypoint to
+        # b contain a? (per definition, a node dominates itself)
         self.ways = []
         self._find_all_ways(0, b, [])
         return self._check_dominance(a)
 
     def get_node_list_for_replacement(self, start_id, structtype):
-        # returns a list of Node-id's that are reachable from start_id
+        # returns a list of Node-id's that belong to a structure of type
+        # structtype, beginning at start_id
         ret = [start_id]
         if structtype == 'if-then':
             nexts = self.get_next_nodes(start_id)
@@ -368,11 +372,11 @@ class Graph(Parser):
     
     def find_linear_block(self, node_id):
         # find a linear structure in a graph beginning
-        # from any node, working forward.
+        # at any node, working forward.
         return self.find_linear_block_forward(node_id)
     
     def find_linear_block_backward(self, node_id, l=[]):
-        # helper method
+        # helper method for finding blocks
         prevs = self.get_previous_nodes(node_id)
         ret = l + [node_id]
         if len(prevs) == 1 and len(self.get_next_nodes(prevs[0])) == 1:
@@ -380,7 +384,7 @@ class Graph(Parser):
         return ret
     
     def find_linear_block_forward(self, node_id, l=[]):
-        # helper method
+        # helper method for finding blocks
         posts = self.get_next_nodes(node_id)
         ret = l + [node_id]
         if len(posts) == 1 and len(self.get_previous_nodes(posts[0])) == 1:
@@ -391,7 +395,7 @@ class Graph(Parser):
     
     def appendable_to_block(self, node_id):
         # is a given node already recognized as a possible block
-        # appendable to the following node (that must be a block in such case)
+        # appendable to the following node (which must be a block)
         n = self.get_next_nodes(node_id)[0]
         appendable = isinstance(self.nodes[n], StructNode) and self.nodes[n].structtype == 'block'
         print 'appendable to', n, '...', appendable
@@ -442,7 +446,7 @@ class Graph(Parser):
         return list(set(ret))
    
     def get_previous_nodes(self, node_id):
-        # returns a list of alll node-id's that are direct
+        # returns a list of all node-id's that are direct
         # predecessos of a given node
         ret = []
         for edge in self.edges:
@@ -461,8 +465,8 @@ class Graph(Parser):
         return self.is_block(node_id) or self.is_if_then(node_id) or self.is_if_then_else(node_id)
     
     def is_block(self, node_id):
-        # is a given node (part of) a block?
-        # yeah, it's stupid I know...
+        # is a given node (part of) a block, or at least
+        # a candidate to be a block?
         return len(self.get_next_nodes(node_id)) < 2 
             
     def is_if_then(self, node_id):
@@ -546,12 +550,12 @@ class Node:
         return ret
     
     def __str__(self):
-        # pretty printing
+        # "pretty" printing
         return '\n=== '+ str(self.id) +' '+ str(self.first_index) +' '+ \
         str(self.last_index) +' ===\n'+ self.get_code_representation()
     
     def print_fancy(self, prefix='', child_prefix=''):
-        # used for pseudo-HLL-view
+        # used for pseudo-HLL-view, draws nodes and boxes around them
         print prefix + 'id: ' + str(self.id) + ' type: low-level'
         max_len = 0
         for i in self.get_code_representation().split('\n'):
@@ -651,7 +655,6 @@ class StructNode:
         # used for pseudo-HLL-view
         ret = ''
         for i in self.hll_info:
-            #print self.hll_info[i]
             if type(self.hll_info[i]) != ListType:
                 ret += i + ':' + str(self.hll_info[i]) + ' '
             else:
