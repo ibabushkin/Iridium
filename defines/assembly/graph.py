@@ -205,6 +205,7 @@ class Graph(Parser):
                 self.ways2 = []
                 self.non_knot_nodes = []
                 self.calculate_paths(start=node_id, depth=5*ind)
+                if node_id == 2: print self.ways2
                 try:
                     self.analyze_paths(loop)
                     node_id = self.largest_id - 1
@@ -435,15 +436,16 @@ class Graph(Parser):
         # works recursively, thus the path argument.
         current_path = path[:] + [start]
         next_nodes = self.get_next_nodes(start)
-        print start, next_nodes
         if depth == 0 or len(next_nodes) == 0:
             self.ways2.append(current_path)
         else:
             for i in next_nodes:
-               if not self.is_dominator(i, start) or len(self.get_next_nodes(i)) == 1:
+               if not self.is_dominator(i, start):
                    self.calculate_paths(i, depth-1, current_path)
-               else:
+               elif len(self.get_next_nodes(start)) == 2:
                    self.non_knot_nodes.append(start)
+               else:
+                   self.ways2.append(current_path)
     
     def get_next_nodes(self, node_id):
         # returns a list of all node-id's
@@ -739,12 +741,16 @@ class Edge:
     def equals(self, other):
         # are two edges identical?
         return self.start == other.start and self.end == other.end
+    
+    def __eq__(self, other):
+        # are two edges identical?
+        return self.start == other.start and self.end == other.end      
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions_analysis/main.asm'
+    source = '../../tests/conditions17_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
