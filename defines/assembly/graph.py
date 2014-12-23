@@ -132,6 +132,8 @@ class Graph(Parser):
         # based on the calculated paths, find conditions and replace them
         # by a single StructNodes, that mark them as such. Also, ugliest code
         # ever. Seriously.
+        # @param loop: boolean value indicating whether the condition in question
+        # is a while-loop's condition
         visited_nodes = []
         source = self.is_target_of_back_edge(self.ways2[0][0])
         for i in self.ways2:
@@ -181,6 +183,7 @@ class Graph(Parser):
 
     def analyze_node(self, node_id):
         # analyzes a node and reduces found conditions and controlflow-structures if possible
+        # @param node_id: int, valid key in self.nodes
         print '=================='
         print 'analyzing node', node_id, '...'
         struct_found = None
@@ -262,7 +265,7 @@ class Graph(Parser):
     ### helper methods ###
         
     def find_node_by_label(self, label_name):
-        # returns the node, that begins with a label
+        # returns the node beginning with a label
         # having the given name
         # @param label_name: label's name
         # @ret: node-object
@@ -281,7 +284,7 @@ class Graph(Parser):
     def get_edges_for_subgraph(self, id_list):
         # returns all edges starting and ending at the given nodes
         # removes these edges from the graph afterwards.
-        # @param id_nodes: a list of Node-id's
+        # @param id_list: a list of Node-id's
         # @ret: a list of Edge-instances
         edges = []
         for i in self.edges:
@@ -303,6 +306,8 @@ class Graph(Parser):
 
     def get_nodes(self, id_list):
         # return all nodes that are identified by an element of id_list
+        # @param id_list: list of integers
+        # @ret: list of Node-instances
         return [self.nodes[i] for i in self.nodes if i in id_list]
 
     def insert_structure_as_node(self, id_list, structtype, start_id=0):
@@ -310,6 +315,7 @@ class Graph(Parser):
         # by a special object in the graph that contains them all.
         # @param id_list: list of Node-instances - change to id's
         # @param structtype: str determining the type of structure inserted
+        # possible values are 'condition', 'do-loop', 'while-loop', 'block', 'if-then', 'if-then-else'
         edges = self.get_edges_for_subgraph(id_list)
         new_id = self.largest_id
         self.largest_id += 1
@@ -320,7 +326,8 @@ class Graph(Parser):
         self.remove_nodes(id_list)
     
     def get_all_visited_nodes(self):
-        # returns all nodes already traversed and somehow saved in self.ways.
+        # returns all nodes already traversed and somehow saved in self.ways
+        # @ret: list of Node-id's
         ret = []
         for i in self.ways:
             for j in i:
@@ -341,6 +348,7 @@ class Graph(Parser):
     
     def _check_dominance(self, a):
         # is a dominant to all currently saved paths? (see next method)
+        # in other words, is a present in every element of self.ways?
         l = map(lambda x: a in x, self.ways)
         return not (False in l)
 
@@ -427,11 +435,12 @@ class Graph(Parser):
         # works recursively, thus the path argument.
         current_path = path[:] + [start]
         next_nodes = self.get_next_nodes(start)
+        print start, next_nodes
         if depth == 0 or len(next_nodes) == 0:
             self.ways2.append(current_path)
         else:
             for i in next_nodes:
-               if not self.is_dominator(i, start):
+               if not self.is_dominator(i, start) or len(self.get_next_nodes(i)) == 1:
                    self.calculate_paths(i, depth-1, current_path)
                else:
                    self.non_knot_nodes.append(start)
@@ -735,7 +744,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions14_analysis/main.asm'
+    source = '../../tests/conditions_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
