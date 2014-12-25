@@ -259,6 +259,7 @@ class Graph(Parser):
         # apply recursion if needed
         if struct_found:
             print 'reduction successful, applying recursive analysis ...'
+            self.nodes[struct_found].order_nodes_by_edges()
             self.analyze_node(struct_found)
             
     ### end of section node analysis ###
@@ -629,6 +630,8 @@ class StructNode:
                         self.nodes.remove(j)
                         break
             self.nodes = new_nodes
+        elif self.structtype == 'while-loop':
+            pass
         
         
             
@@ -750,7 +753,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions17_analysis/main.asm'
+    source = '../../tests/conditions15_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
