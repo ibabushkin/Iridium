@@ -235,7 +235,6 @@ class Graph(Parser):
                     struct_found = self.append_to_block(node_id)
                     print 'done:', struct_found
                 found_node = self.nodes[struct_found]
-                found_node.order_nodes_by_edges()
                 reverse = []
                 for j in found_node.edges:
                     reverse.append(Edge(0, j.end, j.start))
@@ -611,9 +610,9 @@ class StructNode:
 
     def order_nodes_by_edges(self):
         # used to make the output look better
-        if self.structtype == 'block':
-            cur_node_id = None
-            ordered_nodes = []
+        cur_node_id = None
+        ordered_nodes = []
+        if self.structtype in ['do-loop', 'block']:
             for i in range(0, len(self.nodes)):
                 if i == 0:
                     cur_node_id = self.start_id
@@ -622,6 +621,13 @@ class StructNode:
                     cur_node_id = self.get_next_nodes(cur_node_id)[0]
                 except:
                     pass
+        elif self.structtype == 'while-loop':
+            for i in self.nodes:
+                if i.id == self.hll_info['condition']:
+                    ordered_nodes.append(i.id)
+                    cur_node_id = i.id
+            ordered_nodes.append(self.get_other_node(cur_node_id))
+        if ordered_nodes:   
             new_nodes = []
             for i in ordered_nodes:
                 for j in self.nodes:
@@ -630,12 +636,7 @@ class StructNode:
                         self.nodes.remove(j)
                         break
             self.nodes = new_nodes
-        elif self.structtype == 'while-loop':
-            pass
-        
-        
             
-    
     def get_next_nodes(self, node_id):
         # returns a list of all node-id's
         # that belong to direct successors of a given node
