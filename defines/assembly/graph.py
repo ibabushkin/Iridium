@@ -205,7 +205,6 @@ class Graph(Parser):
                 self.ways2 = []
                 self.non_knot_nodes = []
                 self.calculate_paths(start=node_id, depth=5*ind)
-                if node_id == 2: print self.ways2
                 try:
                     self.analyze_paths(loop)
                     node_id = self.largest_id - 1
@@ -225,14 +224,16 @@ class Graph(Parser):
             struct_found = self.largest_id - 1
         elif self.is_block(node_id):
             nodes_to_replace = self.get_node_list_for_replacement(node_id, 'block')
+            print 'block:', nodes_to_replace
             if len(nodes_to_replace) > 1:
-                print 'block:', nodes_to_replace
                 if not self.appendable_to_block(node_id):
                     self.insert_structure_as_node(nodes_to_replace, 'block', node_id)
                     struct_found = self.largest_id - 1
                 else:
                     print 'appending to existing block ...',
                     struct_found = self.append_to_block(node_id)
+                    #self.replace_edges(struct_found, [node_id])
+                    #self.remove_nodes([node_id])
                     print 'done:', struct_found
                 found_node = self.nodes[struct_found]
                 reverse = []
@@ -325,6 +326,7 @@ class Graph(Parser):
         if self.start_node_index in id_list:
             self.start_node_index = new_id
         self.remove_nodes(id_list)
+        self.edges = list(set(self.edges))
     
     def get_all_visited_nodes(self):
         # returns all nodes already traversed and somehow saved in self.ways
@@ -419,8 +421,10 @@ class Graph(Parser):
                 n.edges.append(edge)
                 n.edges[-1].end = n.start_id
                 n.start_id = node_id
-                self.edges.remove(edge)
                 break
+        for edge in self.edges:
+            if edge.start == node_id and edge.end == n.id:
+                self.edges.remove(edge)
         if self.start_node_index == node_id:
             self.start_node_index = n.id
         for edge in self.edges:
@@ -428,6 +432,7 @@ class Graph(Parser):
                 edge.end = n.id
         n.order_nodes_by_edges()
         self.remove_nodes([node_id])
+        self.edges = list(set(self.edges))
         return n.id
     
     def calculate_paths(self, start, depth, path=[]):
@@ -717,6 +722,13 @@ class StructNode:
             self.hll_info['body'] = self.start_id
             if not self.hll_info['condition']:
                 self.hll_info['condition'] = self.get_condition_from_block()
+            #if len(self.nodes) == 2:
+             #   self.hll_info['condition'] = self.get_other_node(self.start_id)
+              #  self.hll_info['body'] = self.start_id
+            #else:
+             #   self.order_nodes_by_edges()
+              #  self.hll_info['condition'] = self.nodes[-1].id
+            
     
     def get_condition_from_block(self):
         for i in self.nodes[0].nodes:
@@ -744,17 +756,20 @@ class Edge:
     
     def equals(self, other):
         # are two edges identical?
-        return self.start == other.start and self.end == other.end
+        return self.__eq__(other)
     
     def __eq__(self, other):
         # are two edges identical?
-        return self.start == other.start and self.end == other.end      
+        return self.start == other.start and self.end == other.end
+    
+    def __hash__(self):
+        return hash(self.__str__())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions15_analysis/main.asm'
+    source = '../../tests/conditions16_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
