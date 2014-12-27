@@ -6,22 +6,26 @@ from labels import Label
 from types import *
 from parser import Parser
 
+
 class DataParser(Parser):
     # intended to parse a program regarding the data it uses
     # similar to Graph (at least consdering the level of abstraction
     # and overall position in the system)
+
     def __init__(self, text):
         Parser.__init__(self, text)
-        self.addressed_offsets = [] # used to determine class 0 vars
-        self.variables = [] # used for class 0 vars
-        self.real_variables = [] # class 1 vars
-        self.called_funcs = self.find_all_function_calls() # for call-/ return-analysis
-        self.sizes = {'qword':8, 'dword':4, 'word':2, 'byte':1} # var sizes
+        self.addressed_offsets = []  # used to determine class 0 vars
+        self.variables = []  # used for class 0 vars
+        self.real_variables = []  # class 1 vars
+        # for call-/ return-analysis
+        self.called_funcs = self.find_all_function_calls()
+        # var sizes
+        self.sizes = {'qword': 8, 'dword': 4, 'word': 2, 'byte': 1}
         self.functions_returning_pointers = ['malloc', 'calloc', 'realloc']
-        #self.hll_sizes = {8:['long long int', 'double'],
-                          #4:['int', 'float'],
-                          #2:['short int'],
-                          #1:['char']}
+        # self.hll_sizes = {8:['long long int', 'double'],
+        # 4:['int', 'float'],
+        # 2:['short int'],
+        # 1:['char']}
 
     def recognize(self):
         # the main method to record all data availible
@@ -49,11 +53,12 @@ class DataParser(Parser):
                     var = self.find_variable_by_contrast_point(i)
                     if var:
                         var.array = True
-                        var.num_items = abs(contrast_points[contrast_points.index(i)+1]-i) / self.sizes[var.size] + 1
+                        var.num_items = abs(
+                            contrast_points[contrast_points.index(i) + 1] - i) / self.sizes[var.size] + 1
         self.find_pointers()
         for var in self.real_variables:
             print var
-    
+
     def recognize_from_frontend(self):
         # called by top-level scripts like Iridium_IDA.py
         # to prevent errors caused by compiler-generated functions
@@ -62,26 +67,27 @@ class DataParser(Parser):
             self.recognize()
         except:
             print 'Data analysis not possible!'
-    
+
     def find_variable_by_contrast_point(self, point):
         # a contrast point is a point in memory (on the stack)
         # that is at the edge of some chunk of memory that is adressed
         # directly by the code. This method makes it possible to find the
         # corresponding variable.
-        byte_offset = -self.allocated_space + point -1
+        byte_offset = -self.allocated_space + point - 1
         for i in self.real_variables:
-            #print i.name, i.offset, self.sizes[i.size], byte_offset
+            # print i.name, i.offset, self.sizes[i.size], byte_offset
             if i.offset + self.sizes[i.size] >= byte_offset and i.offset <= byte_offset:
                 return i
-    
+
     def get_allocated_space(self):
         # searches for the first sub-instruction in the code, that is used
         # to allocate space on the stack.
         for line in self.code:
             if isinstance(line, Instruction):
-                if line.mnemonic == 'sub' and 'esp' in line.operands: # save enough, I hope
+                # save enough, I hope
+                if line.mnemonic == 'sub' and 'esp' in line.operands:
                     return int(line.operands.split(' ')[1], 16)
-        
+
     def draw_memory_layout(self):
         # represents directly adressed memory as chars in a chr-bar of some sort.
         # can be drawn directly or analyzed.
@@ -90,20 +96,20 @@ class DataParser(Parser):
             for i in range(var.offset, var.offset + self.sizes[var.size]):
                 ret[i] = '|'
         return ''.join(ret)
-    
+
     def generate_variables(self):
         # generates medium-level representations of addressed offsets
         for offset in self.addressed_offsets:
             name, size = self.get_name_and_size_of_variable_by_offset(offset)
             self.variables.append(Variable(name, size, offset))
-    
+
     def get_name_and_size_of_variable_by_offset(self, offset):
         # analyzes, how much space is addressed at a specific offset
         if offset in self.addressed_offsets:
             for i in self.code:
                 if isinstance(i, Instruction):
                     if i.mnemonic.startswith('var_'):
-                        if int('-'+i.mnemonic.split('=')[0][4:], 16) == offset:
+                        if int('-' + i.mnemonic.split('=')[0][4:], 16) == offset:
                             name = i.mnemonic.split('=')[0]
                             size = i.operands.split(' ')[0]
                             return [name, size]
@@ -113,11 +119,13 @@ class DataParser(Parser):
         for i in self.code:
             if isinstance(i, Instruction):
                 if i.mnemonic.startswith('var_'):
-                    self.addressed_offsets.append(int('-'+i.mnemonic.split('=')[0][4:], 16))
+                    self.addressed_offsets.append(
+                        int('-' + i.mnemonic.split('=')[0][4:], 16))
                 elif i.mnemonic.startswith('arg_'):
-                    self.addressed_offsets.append(int(i.mnemonic.split('=')[0][4:], 16))
-        #print self.addressed_offsets
-    
+                    self.addressed_offsets.append(
+                        int(i.mnemonic.split('=')[0][4:], 16))
+        # print self.addressed_offsets
+
     def find_pointers(self):
         # searches for pointers using the analysis of lea-instructions
         # will be enhanced to search for malloc()
@@ -125,18 +133,21 @@ class DataParser(Parser):
             if isinstance(line, Instruction):
                 if line.mnemonic == 'lea':
                     destination = line.operands.split(',')[0]
-                    instruction = self.code[index+1]
+                    instruction = self.code[index + 1]
                     if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
-                        self.find_variable_by_expression(instruction.operands.split(',')[0]).pointer = True
-                if line.mnemonic == 'call': # analyzing function calls regarding returned pointers
+                        self.find_variable_by_expression(
+                            instruction.operands.split(',')[0]).pointer = True
+                # analyzing function calls regarding returned pointers
+                if line.mnemonic == 'call':
                     for function in self.functions_returning_pointers:
                         if function in line.operands:
-                            instruction = self.code[index+1]
+                            instruction = self.code[index + 1]
                             if instruction.mnemonic == 'mov':
                                 dest, source = instruction.operands.split(', ')
                                 if source == 'eax':
-                                    self.find_variable_by_expression(dest).pointer = True
-                            
+                                    self.find_variable_by_expression(
+                                        dest).pointer = True
+
     def find_variable_by_expression(self, expression):
         # used to determine the name of a variable used in an instruction
         var_name = expression[1:-1].split('+')[-1]
@@ -153,33 +164,40 @@ class DataParser(Parser):
                     ret[index] = line.operands
         return ret
 
+
 class Variable:
     # the medium-level representation of an addressed offset
+
     def __init__(self, name, size, offset):
         self.size = size
-        self.hll_sizes = {'qword':['double', 'long long int'],
-                          'dword':['int', 'float'],
-                          'word':['short int'],
-                          'byte':['char']}
+        self.hll_sizes = {'qword': ['double', 'long long int'],
+                          'dword': ['int', 'float'],
+                          'word': ['short int'],
+                          'byte': ['char']}
         self.hll_size = self.hll_sizes[size]
         self.offset = offset
         self.name = name
         self.array = False
         self.num_items = 1
         self.pointer = False
-    
+
     def __str__(self):
-        #fancy printing
-        return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: '+ str(self.pointer)
+        # fancy printing
+        return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: ' + str(self.pointer)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='The data analysis module, capable to work stand-alone')
-    parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
-    parser.add_argument('-o', '--output', help='Optional file to redirect input to')
+    parser = argparse.ArgumentParser(
+        description='The data analysis module, capable to work stand-alone')
+    parser.add_argument(
+        '-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+    parser.add_argument(
+        '-o', '--output', help='Optional file to redirect input to')
     source = '../../tests/data3_analysis/main.asm'
     f = parser.parse_args()
-    if f.source: source = f.source
-    if f.output: sys.stdout = open(f.output, 'wb')
+    if f.source:
+        source = f.source
+    if f.output:
+        sys.stdout = open(f.output, 'wb')
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     d = DataParser(l)
     d.recognize()

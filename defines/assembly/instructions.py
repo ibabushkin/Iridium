@@ -1,4 +1,5 @@
 class Instruction:
+
     def __init__(self, address, size, mnemonic, operands):
         self.address = address
         self.size = size
@@ -39,10 +40,10 @@ class Instruction:
 
     def is_sub(self):
         return self.mnemonic == 'sub'
-    
+
     def is_unconditional_jump(self):
         return self.mnemonic == 'jmp'
-    
+
     def is_conditional_jump(self):
         return self.mnemonic in ['jb', 'jnae', 'jc', 'jecxz',
                                  'jae', 'jnb', 'jnc', 'jbe',
@@ -52,16 +53,18 @@ class Instruction:
                                  'jz', 'jne', 'jnz', 'jp',
                                  'jpe', 'jnp', 'jpo', 'js',
                                  'jns', 'jo', 'jno', 'jcxz']
-    
+
     def get_destination(self):
         if self.is_jump():
             return self.operands.split(' ')[-1]
 
+
 class Jump:
+
     def __init__(self, line_index, mnemonic, destination):
         self.index = line_index
         self.mnemonic = mnemonic
         self.destination = destination
-    
+
     def __str__(self):
         return 'line %i: %s %s' % (self.index, self.mnemonic, self.destination)
