@@ -258,13 +258,23 @@ class Graph(Parser):
             struct_found = self.largest_id - 1
         # apply recursion if needed
         if struct_found:
-            print 'reduction successful, applying recursive analysis ...'
+            print 'reduction successful.\ncurrent nodeset: |',
+            for node in self.nodes: print node, '|',
+            if len(self.edges) != 0:
+                print '\ncurrent edgeset: |',
+                for edge in self.edges: print edge, '|',
+            print '\napplying recursive analysis ...'
             self.nodes[struct_found].order_nodes_by_edges()
             self.analyze_node(struct_found)
             
     ### end of section node analysis ###
     
     ### helper methods ###
+    
+    def clean_edges(self):
+        for edge in self.edges:
+            if edge.end not in self.nodes or edge.start not in self.nodes:
+                self.edges.remove(edge)
         
     def find_node_by_label(self, label_name):
         # returns the node beginning with a label
@@ -416,9 +426,10 @@ class Graph(Parser):
         # append given node to following block node
         n = self.nodes[self.get_next_nodes(node_id)[0]]
         n.nodes.append(self.nodes[node_id])
+        #if node_id == 11: import pdb; pdb.set_trace()
         for edge in self.edges:
             if edge.start == node_id and edge.end == n.id:
-                n.edges.append(edge)
+                n.edges.append(Edge(edge.id, node_id, n.start_id, edge.active))
                 n.edges[-1].end = n.start_id
                 n.start_id = node_id
                 break
@@ -731,9 +742,7 @@ class StructNode:
             
     
     def get_condition_from_block(self):
-        for i in self.nodes[0].nodes:
-            if isinstance(i, StructNode) and i.structtype == 'condition':
-                return i.id
+        return self.nodes[0].nodes[-1].id
     
     def get_other_node(self, other_id):
         # helper method.
@@ -752,7 +761,7 @@ class Edge:
     
     def __str__(self):
         # not so pretty printing
-        return str(self.start) +' '+ str(self.end)
+        return str(self.start) +'-'+ str(self.end)
     
     def equals(self, other):
         # are two edges identical?
@@ -769,7 +778,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument('-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument('-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions16_analysis/main.asm'
+    source = '../../tests/conditions18_analysis/main.asm'
     f = parser.parse_args()
     if f.source: source = f.source
     if f.output: sys.stdout = open(f.output, 'wb')
