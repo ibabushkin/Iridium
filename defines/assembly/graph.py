@@ -76,7 +76,12 @@ class Graph(Parser):
                 c = self.code[content:self.delimiter_lines[index + 1]]
                 if len(c) > 0:
                     self.nodes[current_node_id] = Node(
-                        current_node_id, c, content, self.delimiter_lines[index + 1])
+                        current_node_id,
+                        c,
+                        content,
+                        self.delimiter_lines[
+                            index +
+                            1])
                     current_node_id += 1
         for node_index in self.nodes:
             print self.nodes[node_index]
@@ -90,7 +95,9 @@ class Graph(Parser):
                     current_edge_id += 1
                 else:
                     print 'encountered jump to non-local destination, probably a call.'
-            if node.code[-1].is_conditional_jump() or not node.code[-1].is_jump():
+            if node.code[-
+                         1].is_conditional_jump() or not node.code[-
+                                                                   1].is_jump():
                 if node.id != len(self.nodes) - 1:
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
@@ -518,7 +525,8 @@ class Graph(Parser):
         # determines, wether given node is the beginning
         # of a simple acyclic structure (block, if-else of if-then)
         # @ret: boolean value determining result
-        return self.is_block(node_id) or self.is_if_then(node_id) or self.is_if_then_else(node_id)
+        return self.is_block(node_id) or self.is_if_then(
+            node_id) or self.is_if_then_else(node_id)
 
     def is_block(self, node_id):
         # is a given node (part of) a block, or at least
@@ -549,7 +557,9 @@ class Graph(Parser):
             n2 = n[1]
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
-            if len(self.get_previous_nodes(n1)) == 1 and len(self.get_previous_nodes(n2)) == 1:
+            if len(
+                    self.get_previous_nodes(n1)) == 1 and len(
+                    self.get_previous_nodes(n2)) == 1:
                 return len(n1_next) == 1 and n1_next == n2_next
         return False
 
@@ -564,7 +574,9 @@ class Graph(Parser):
     def is_while_loop(self, node_id):
         nexts = self.get_next_nodes(node_id)
         for ind in nexts:
-            if node_id in self.get_next_nodes(ind) and len(self.get_next_nodes(ind)) == 1 and len(self.get_previous_nodes(ind)) == 1:
+            if node_id in self.get_next_nodes(ind) and len(
+                    self.get_next_nodes(ind)) == 1 and len(
+                    self.get_previous_nodes(ind)) == 1:
                 return ind
         return False
 
@@ -709,7 +721,8 @@ class StructNode:
 
     def __str__(self):
         # "graphical" representation
-        return str(self.id) + ' ' + self.structtype + ' ' + self.get_representation()
+        return str(self.id) + ' ' + self.structtype + \
+            ' ' + self.get_representation()
 
     def get_representation(self):
         # output
@@ -722,7 +735,7 @@ class StructNode:
         # used for pseudo-HLL-view
         ret = ''
         for i in self.hll_info:
-            if type(self.hll_info[i]) != ListType:
+            if not isinstance(self.hll_info[i], ListType):
                 ret += i + ':' + str(self.hll_info[i]) + ' '
             else:
                 s = ','.join(map(lambda x: str(x), self.hll_info[i]))
@@ -815,7 +828,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='The controlflow analysis module, capable to work stand-alone')
     parser.add_argument(
-        '-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+        '-s',
+        '--source',
+        help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
     source = '../../tests/conditions18_analysis/main.asm'

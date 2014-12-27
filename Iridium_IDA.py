@@ -64,32 +64,55 @@ class AssemblyParser:
 
     def cfg_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(
-            self.results_dir, self.current_function + FILENAME_EXTENSIONS['cfg']), 'wb')
+        sys.stdout = open(
+            os.path.join(
+                self.results_dir,
+                self.current_function +
+                FILENAME_EXTENSIONS['cfg']),
+            'wb')
         g = Graph(l)
         g.reduce()
         sys.stdout = stdout
 
     def dataflow_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(
-            self.results_dir, self.current_function + FILENAME_EXTENSIONS['data']), 'wb')
+        sys.stdout = open(
+            os.path.join(
+                self.results_dir,
+                self.current_function +
+                FILENAME_EXTENSIONS['data']),
+            'wb')
         p = DataParser(l)
         p.recognize_from_frontend()
         sys.stdout = stdout
 
     def division_analysis(self, l):
         stdout = sys.stdout
-        sys.stdout = open(os.path.join(
-            self.results_dir, self.current_function + FILENAME_EXTENSIONS['div']), 'wb')
+        sys.stdout = open(
+            os.path.join(
+                self.results_dir,
+                self.current_function +
+                FILENAME_EXTENSIONS['div']),
+            'wb')
         p = DivisionParser(l)
         p.find_interestig_code_sequences()
         sys.stdout = stdout
 
     def load_function(self, function_name):
-        return map(lambda x: x.strip('\n'), open(os.path.join(self.results_dir, function_name + '.asm'), 'rb').readlines())
+        return map(
+            lambda x: x.strip('\n'),
+            open(
+                os.path.join(
+                    self.results_dir,
+                    function_name +
+                    '.asm'),
+                'rb').readlines())
 
-    def analyze_everything(self, ignore_cfg=True, ignore_data=True, ignore_div=True):
+    def analyze_everything(
+            self,
+            ignore_cfg=True,
+            ignore_data=True,
+            ignore_div=True):
         for i in self.functions:
             print 'analyzing function', i.name + '...',
             l = self.load_function(i.name)
@@ -106,11 +129,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyze IDA\'s output')
     parser.add_argument('file', help='The file to be analyzed')
     parser.add_argument(
-        '--ignore-controlflow', action='store_true', help='Don\'t perform CFG analysis')
+        '--ignore-controlflow',
+        action='store_true',
+        help='Don\'t perform CFG analysis')
     parser.add_argument(
-        '--ignore-data', action='store_true', help='Don\'t perform data analysis')
+        '--ignore-data',
+        action='store_true',
+        help='Don\'t perform data analysis')
     parser.add_argument(
-        '--ignore-division', action='store_true', help='Don\'t perform division analysis')
+        '--ignore-division',
+        action='store_true',
+        help='Don\'t perform division analysis')
     f = parser.parse_args()
     print 'target:', f.file
     if f.ignore_controlflow:

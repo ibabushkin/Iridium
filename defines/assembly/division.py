@@ -25,7 +25,8 @@ class DivisionParser(Parser):
         # find and analyze optimized divisions.
         for index, instruction in enumerate(self.code):
             if isinstance(instruction, Instruction):
-                if instruction.mnemonic == 'mov' and instruction.operands.split(', ')[1].endswith('h'):
+                if instruction.mnemonic == 'mov' and instruction.operands.split(
+                        ', ')[1].endswith('h'):
                     d, hexstr = instruction.operands.split(', ')
                     next_imul = self.find_next_instruction(
                         index + 1, 'imul', d + ', %X')
@@ -50,7 +51,8 @@ class DivisionParser(Parser):
             if isinstance(instruction, Instruction):
                 if instruction.mnemonic == mnemonic:
                     operands = instruction.operands.split(', ')
-                    if (first == '%X' or first == operands[0]) and (second == '%X' or second == operands[1]):
+                    if (first == '%X' or first == operands[0]) and (
+                            second == '%X' or second == operands[1]):
                         return index
 
     def get_divisor(self, magic, rshift, bitness=32):
@@ -58,13 +60,16 @@ class DivisionParser(Parser):
         # basically calculates the divisor from magic constant and shift
         # amount, as well as used register size.
         magic = self.hex2signeddecimal(magic)
-        return int(math.ceil((2.0 ** (bitness + rshift)) / (magic + 2 ** bitness)))
+        return int(
+            math.ceil((2.0 ** (bitness + rshift)) / (magic + 2 ** bitness)))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='The division analysis module, capable to work stand-alone')
     parser.add_argument(
-        '-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+        '-s',
+        '--source',
+        help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
     parser.add_argument('--next-imul-threshold', help='''Maximal index-difference between the imul and the
@@ -73,8 +78,11 @@ if __name__ == '__main__':
     parser.add_argument('--next-sar-threshold', help='''Maximal index-difference between the right-shift and the
     loading of the constant to consider the corresponding code-block an optimized division, defaults to 9. Use with care, default value should work in most cases.
     If it does not, it is advised to extract the parameters by hand and call the module in interactive mode (see below).''')
-    parser.add_argument('--interactive', '-i', action='store_true',
-                        help='Ask the user for input and process it as if it was extracted from an assembly-listing. Overrides all other options.')
+    parser.add_argument(
+        '--interactive',
+        '-i',
+        action='store_true',
+        help='Ask the user for input and process it as if it was extracted from an assembly-listing. Overrides all other options.')
     source = '../../tests/division_analysis/main.asm'
     f = parser.parse_args()
     if f.source:

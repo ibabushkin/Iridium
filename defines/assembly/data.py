@@ -39,7 +39,7 @@ class DataParser(Parser):
         contrast_points = []
         current_byte = None
         for index, byte in enumerate(self.draw_memory_layout()):
-            if current_byte == None:
+            if current_byte is None:
                 current_byte = byte
             if current_byte != byte:
                 current_byte = byte
@@ -76,7 +76,8 @@ class DataParser(Parser):
         byte_offset = -self.allocated_space + point - 1
         for i in self.real_variables:
             # print i.name, i.offset, self.sizes[i.size], byte_offset
-            if i.offset + self.sizes[i.size] >= byte_offset and i.offset <= byte_offset:
+            if i.offset + \
+                    self.sizes[i.size] >= byte_offset and i.offset <= byte_offset:
                 return i
 
     def get_allocated_space(self):
@@ -109,7 +110,11 @@ class DataParser(Parser):
             for i in self.code:
                 if isinstance(i, Instruction):
                     if i.mnemonic.startswith('var_'):
-                        if int('-' + i.mnemonic.split('=')[0][4:], 16) == offset:
+                        if int(
+                                '-' +
+                                i.mnemonic.split('=')[0][
+                                    4:],
+                                16) == offset:
                             name = i.mnemonic.split('=')[0]
                             size = i.operands.split(' ')[0]
                             return [name, size]
@@ -134,7 +139,8 @@ class DataParser(Parser):
                 if line.mnemonic == 'lea':
                     destination = line.operands.split(',')[0]
                     instruction = self.code[index + 1]
-                    if instruction.mnemonic == 'mov' and instruction.operands.split(' ')[1] == destination:
+                    if instruction.mnemonic == 'mov' and instruction.operands.split(
+                            ' ')[1] == destination:
                         self.find_variable_by_expression(
                             instruction.operands.split(',')[0]).pointer = True
                 # analyzing function calls regarding returned pointers
@@ -183,13 +189,16 @@ class Variable:
 
     def __str__(self):
         # fancy printing
-        return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + ') Elements: ' + str(self.num_items) + ' Pointer: ' + str(self.pointer)
+        return '/'.join(self.hll_size) + ' ' + self.name + ' (' + str(self.offset) + \
+            ') Elements: ' + str(self.num_items) + ' Pointer: ' + str(self.pointer)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='The data analysis module, capable to work stand-alone')
     parser.add_argument(
-        '-s', '--source', help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
+        '-s',
+        '--source',
+        help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
     source = '../../tests/data3_analysis/main.asm'
