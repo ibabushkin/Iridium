@@ -98,7 +98,7 @@ class Graph(Parser):
             if node.code[-
                          1].is_conditional_jump() or not node.code[-
                                                                    1].is_jump():
-                if node.id != len(self.nodes) - 1:
+                if node.id != len(self.nodes) - 1 and node.code[-1].mnemonic not in ['ret', 'retn']:
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id, False))
@@ -110,6 +110,7 @@ class Graph(Parser):
         self.start_node_index = 0
         self.end_node_index = len(self.nodes) - 1
         self.largest_id = current_node_id
+        self.remove_dead_code()
 
     def generate_depth_first_spanning_tree(self):
         # generates a dfs-tree for the graph
@@ -303,6 +304,18 @@ class Graph(Parser):
     ### end of section node analysis ###
 
     ### helper methods ###
+    
+    def remove_dead_code(self):
+        nodes = self.nodes.copy()
+        for node_id in self.nodes:
+            found = False
+            for edge in self.edges:
+                if node_id in (edge.end, edge.start, self.start_node_index):
+                    found = True
+            if not found:
+                nodes.pop(node_id, None)
+        #print nodes
+        self.nodes = nodes
 
     def clean_edges(self):
         for edge in self.edges:
@@ -398,7 +411,7 @@ class Graph(Parser):
         # is a dominant to all currently saved paths? (see next method)
         # in other words, is a present in every element of self.ways?
         l = map(lambda x: a in x, self.ways)
-        return not (False in l)
+        return not False in l
 
     def is_dominator(self, a, b):
         # does a dominate b? (do all paths leading from the entrypoint to
@@ -833,7 +846,7 @@ if __name__ == '__main__':
         help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions18_analysis/main.asm'
+    source = '../../tests/conditions18_analysis/deregister_tm_clones.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source
