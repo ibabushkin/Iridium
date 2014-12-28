@@ -98,7 +98,8 @@ class Graph(Parser):
             if node.code[-
                          1].is_conditional_jump() or not node.code[-
                                                                    1].is_jump():
-                if node.id != len(self.nodes) - 1 and node.code[-1].mnemonic not in ['ret', 'retn']:
+                if node.id != len(
+                        self.nodes) - 1 and node.code[-1].mnemonic not in ['ret', 'retn']:
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id, False))
@@ -304,7 +305,7 @@ class Graph(Parser):
     ### end of section node analysis ###
 
     ### helper methods ###
-    
+
     def remove_dead_code(self):
         nodes = self.nodes.copy()
         for node_id in self.nodes:
@@ -314,7 +315,7 @@ class Graph(Parser):
                     found = True
             if not found:
                 nodes.pop(node_id, None)
-        #print nodes
+        # print nodes
         self.nodes = nodes
 
     def clean_edges(self):
