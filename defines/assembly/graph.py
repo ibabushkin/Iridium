@@ -309,13 +309,12 @@ class Graph(Parser):
     def remove_dead_code(self):
         nodes = self.nodes.copy()
         for node_id in self.nodes:
-            found = False
+            found = node_id == self.start_node_index
             for edge in self.edges:
-                if node_id in (edge.end, edge.start, self.start_node_index):
+                if node_id in (edge.end, edge.start):
                     found = True
             if not found:
                 nodes.pop(node_id, None)
-        # print nodes
         self.nodes = nodes
 
     def clean_edges(self):
@@ -847,7 +846,7 @@ if __name__ == '__main__':
         help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions18_analysis/deregister_tm_clones.asm'
+    source = '../../tests/conditions18_analysis/public.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source
