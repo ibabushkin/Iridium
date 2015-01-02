@@ -38,7 +38,13 @@ class AssemblyParser:
     def obtain_functions(self):
         for index, line in enumerate(self.code):
             if not self.in_function:
-                if 'proc' in line:
+                if 'public' in line: #and not 'segment' in line:
+                    self.functions.append(Function(line.split()[1]))
+                    self.in_function = True
+                    self.current_function_beginning_index = index
+                    #if line.split()[1] == '_fp_hw':
+                    #for i in self.code[index:index+20]: print i
+                elif 'proc' in line:
                     self.functions.append(Function(line.split()[0]))
                     self.in_function = True
                     self.current_function_beginning_index = index

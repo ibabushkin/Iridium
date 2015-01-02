@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-"""This script prompts a user to enter a message to encode or decode
-   using a classic Caeser shift substitution (3 letter shift)"""
+"""This module is intended to provide a class capable of generating a
+   CFG-graph from an assembly function and to recover structures like
+   loops and other branches from it."""
 
 import argparse
 import sys
@@ -79,9 +80,7 @@ class Graph(Parser):
                         current_node_id,
                         c,
                         content,
-                        self.delimiter_lines[
-                            index +
-                            1])
+                        self.delimiter_lines[index +1])
                     current_node_id += 1
         for node_index in self.nodes:
             print self.nodes[node_index]
@@ -95,11 +94,10 @@ class Graph(Parser):
                     current_edge_id += 1
                 else:
                     print 'encountered jump to non-local destination, probably a call.'
-            if node.code[-
-                         1].is_conditional_jump() or not node.code[-
-                                                                   1].is_jump():
-                if node.id != len(
-                        self.nodes) - 1 and node.code[-1].mnemonic not in ['ret', 'retn']:
+            if node.code[-1].is_conditional_jump() \
+            or not node.code[-1].is_jump():
+                if node.id != len(self.nodes) - 1 \
+                         and node.code[-1].mnemonic not in ['ret', 'retn']:
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id, False))
@@ -307,6 +305,8 @@ class Graph(Parser):
     ### helper methods ###
 
     def remove_dead_code(self):
+        # remove all nodes from the graph that are never reached
+        # by control flow.
         nodes = self.nodes.copy()
         for node_id in self.nodes:
             found = node_id == self.start_node_index
@@ -318,6 +318,10 @@ class Graph(Parser):
         self.nodes = nodes
 
     def clean_edges(self):
+        # remove all edges, whose start or end isn't a valid node
+        # only for debugging purposes, the code isn't supposed to
+        # create a graph that would neet such treatment at any stage
+        # of analysis
         for edge in self.edges:
             if edge.end not in self.nodes or edge.start not in self.nodes:
                 self.edges.remove(edge)
@@ -846,7 +850,7 @@ if __name__ == '__main__':
         help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions18_analysis/public.asm'
+    source = '../../tests/conditions18_analysis/main.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source
