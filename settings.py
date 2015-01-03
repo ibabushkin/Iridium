@@ -2,10 +2,10 @@
 # quite rudimental
 
 # append the given string to the name of the file
-RESULTS_DIR_NAME = "_analysis"
+RESULTS_DIR_NAME_SUFFIX = "_analysis"
 # being analyzed to generate the directory name
 SKIP_FILE_EXTENSION_FOR_DIRNAME = True
-# data.asm --> 'data.analysis', not 'data.asm_analysis'
+# data.asm --> 'data_analysis', not 'data.asm_analysis'
 
 FILENAME_EXTENSIONS = {'cfg': '.cfg', 'data': '.data', 'div': '.div'}
-# to circumvent the bulky names currently used
+# to circumvent the bulky names currently used, everyone can modify this.

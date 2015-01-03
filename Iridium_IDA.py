@@ -22,11 +22,11 @@ class AssemblyParser:
         self.current_function = ''
         if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
             self.results_dir = os.path.join(
-                self.analyze_dir, self.filename + RESULTS_DIR_NAME)
+                self.analyze_dir, self.filename + RESULTS_DIR_NAME_SUFFIX)
         else:
             fn = '.'.join(self.filename.split('.')[:-1])
             self.results_dir = os.path.join(
-            self.analyze_dir, fn + RESULTS_DIR_NAME)
+            self.analyze_dir, fn + RESULTS_DIR_NAME_SUFFIX)
         if not os.path.exists(self.results_dir):
             print 'creating directory...'
             os.mkdir(self.results_dir)
