@@ -1,4 +1,3 @@
-public _init_proc
 _init_proc proc near
 push ebx
 sub esp, 8

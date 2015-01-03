@@ -1,4 +1,3 @@
-public TlsCallback_1
 TlsCallback_1 proc near
 var_1C= dword ptr -1Ch
 var_18= dword ptr -18h

@@ -1,4 +1,3 @@
-public start
 start proc near
 sub esp, 0Ch
 mov ds:dword_40A03C, 0

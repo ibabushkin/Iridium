@@ -1,4 +1,3 @@
-public _start
 _start proc near
 xor ebp, ebp
 pop esi

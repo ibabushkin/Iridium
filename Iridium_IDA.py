@@ -2,6 +2,8 @@
 import sys
 import os
 import argparse
+import re
+
 from defines.assembly.labels import Function, Label, FunctionLabel
 from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
@@ -24,7 +26,7 @@ class AssemblyParser:
         else:
             fn = '.'.join(self.filename.split('.')[:-1])
             self.results_dir = os.path.join(
-                self.analyze_dir, fn + RESULTS_DIR_NAME)
+            self.analyze_dir, fn + RESULTS_DIR_NAME)
         if not os.path.exists(self.results_dir):
             print 'creating directory...'
             os.mkdir(self.results_dir)
@@ -36,20 +38,16 @@ class AssemblyParser:
         self.obtain_functions()
 
     def obtain_functions(self):
+        print 'obtaining functions...'
         for index, line in enumerate(self.code):
             if not self.in_function:
-                if 'public' in line: #and not 'segment' in line:
-                    self.functions.append(Function(line.split()[1]))
-                    self.in_function = True
-                    self.current_function_beginning_index = index
-                    #if line.split()[1] == '_fp_hw':
-                    #for i in self.code[index:index+20]: print i
-                elif 'proc' in line:
+                if re.match(r'.+[ \t]proc[ \t]near$', line, re.MULTILINE):
+                    print 'line', line
                     self.functions.append(Function(line.split()[0]))
                     self.in_function = True
                     self.current_function_beginning_index = index
             else:
-                if 'endp' in line:
+                if re.match(r'.+ endp$', line, re.MULTILINE):
                     self.functions[-1].set_code(
                         self.get_code(self.current_function_beginning_index, index + 1))
                     self.current_function_beginning_index = None

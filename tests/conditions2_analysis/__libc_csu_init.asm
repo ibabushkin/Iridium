@@ -1,4 +1,3 @@
-public __libc_csu_init
 __libc_csu_init proc near
 var_24= dword ptr -24h
 var_20= dword ptr -20h
@@ -41,3 +40,35 @@ pop edi
 pop ebp
 retn
 __libc_csu_init endp
+jmp short __libc_csu_fini
+align 10h
+public __libc_csu_fini
+__libc_csu_fini proc near
+rep retn
+__libc_csu_fini endp
+align 10h
+
+__do_global_ctors_aux proc near
+push ebp
+mov ebp, esp
+push esi
+push ebx
+call __x86_get_pc_thunk_bx
+add ebx, 122Ah
+mov eax, [ebx-0ECh]
+lea esi, [ebx-0ECh]
+cmp eax, 0FFFFFFFFh
+jz short loc_8048614
+lea esi, [esi+0]
+loc_8048608:
+sub esi, 4
+call eax
+mov eax, [esi]
+cmp eax, 0FFFFFFFFh
+jnz short loc_8048608
+loc_8048614:
+pop ebx
+pop esi
+pop ebp
+retn
+__do_global_ctors_aux endp

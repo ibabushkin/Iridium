@@ -1,4 +1,3 @@
-public _term_proc
 _term_proc proc near
 push ebx
 sub esp, 8
