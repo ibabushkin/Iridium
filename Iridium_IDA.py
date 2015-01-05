@@ -4,8 +4,8 @@ import os
 import argparse
 import re
 
-from defines.assembly.labels import Function, Label, FunctionLabel
-from defines.assembly.instructions import Jump
+from defines.assembly.labels import Function
+# from defines.assembly.instructions import Jump
 from defines.assembly.graph import Graph
 from defines.assembly.data import DataParser
 from defines.assembly.division import DivisionParser
@@ -21,8 +21,8 @@ class AssemblyParser:
         self.filename = os.path.split(filepath)[1]
         self.current_function = ''
         if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
-            self.results_dir = os.path.join(
-                self.analyze_dir, self.filename + RESULTS_DIR_NAME_SUFFIX)
+            self.results_dir = os.path.join(self.analyze_dir,
+                self.filename + RESULTS_DIR_NAME_SUFFIX)
         else:
             fn = '.'.join(self.filename.split('.')[:-1])
             self.results_dir = os.path.join(
@@ -40,14 +40,15 @@ class AssemblyParser:
     def obtain_functions(self):
         print 'obtaining functions...'
         for index, line in enumerate(self.code):
+            if 'proc near' in line: print line
             if not self.in_function:
-                if re.match(r'.+[ \t]proc[ \t]near$', line, re.MULTILINE):
+                if re.match('.+[\t ]proc[\t ]near$', line, re.MULTILINE):
                     print 'line', line
                     self.functions.append(Function(line.split()[0]))
                     self.in_function = True
                     self.current_function_beginning_index = index
             else:
-                if re.match(r'.+ endp$', line, re.MULTILINE):
+                if re.match('.+[\t ]endp$', line, re.MULTILINE):
                     self.functions[-1].set_code(
                         self.get_code(self.current_function_beginning_index, index + 1))
                     self.current_function_beginning_index = None
