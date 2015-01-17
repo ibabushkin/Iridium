@@ -1,4 +1,3 @@
-public __libc_csu_init
 __libc_csu_init proc near
 var_24= dword ptr -24h
 var_20= dword ptr -20h

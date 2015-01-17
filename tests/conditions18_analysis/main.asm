@@ -1,4 +1,3 @@
-public main
 main proc near
 var_20= dword ptr -20h
 var_4= dword ptr -4

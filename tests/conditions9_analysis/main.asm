@@ -1,4 +1,3 @@
-public main
 main proc near
 var_4= dword ptr -4
 push ebp

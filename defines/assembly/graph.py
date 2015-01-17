@@ -14,7 +14,6 @@ from parser import Parser
 
 
 class Graph(Parser):
-
     # the representation of a CFG, also reduces itself
 
     def __init__(self, text):
@@ -71,7 +70,7 @@ class Graph(Parser):
             elif instruction.mnemonic in ['cmp', 'test'] and index - 1 not in self.delimiter_lines:
                 self.delimiter_lines.append(index)
         self.delimiter_lines = [
-            0] + sorted(list(set(self.delimiter_lines))) + [len(self.code)]
+                                   0] + sorted(list(set(self.delimiter_lines))) + [len(self.code)]
         for index, content in enumerate(self.delimiter_lines):
             if content != len(self.code):
                 c = self.code[content:self.delimiter_lines[index + 1]]
@@ -80,7 +79,7 @@ class Graph(Parser):
                         current_node_id,
                         c,
                         content,
-                        self.delimiter_lines[index +1])
+                        self.delimiter_lines[index + 1])
                     current_node_id += 1
         for node_index in self.nodes:
             print self.nodes[node_index]
@@ -95,9 +94,9 @@ class Graph(Parser):
                 else:
                     print 'encountered jump to non-local destination, probably a call.'
             if node.code[-1].is_conditional_jump() \
-            or not node.code[-1].is_jump():
+                    or not node.code[-1].is_jump():
                 if node.id != len(self.nodes) - 1 \
-                         and node.code[-1].mnemonic not in ['ret', 'retn']:
+                        and node.code[-1].mnemonic not in ['ret', 'retn']:
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id, False))
@@ -263,7 +262,7 @@ class Graph(Parser):
                 else:
                     print 'appending to existing block ...',
                     struct_found = self.append_to_block(node_id)
-                    #self.replace_edges(struct_found, [node_id])
+                    # self.replace_edges(struct_found, [node_id])
                     # self.remove_nodes([node_id])
                     print 'done:', struct_found
                 found_node = self.nodes[struct_found]
@@ -360,11 +359,14 @@ class Graph(Parser):
         # identified by an element of id_list, by the value of new_id
         # @param new_id: int, the new id to be inserted into the edge
         # @param id_list: all nodes, whose edges are to be processed, given as a list of id's
+        replaced_edges = []
         for edge in self.edges:
             if edge.end in id_list:
                 edge.end = new_id
             elif edge.start in id_list:
+                replaced_edges.append(Edge(None, edge.start, edge.end, edge.active))
                 edge.start = new_id
+        return replaced_edges
 
     def get_nodes(self, id_list):
         # return all nodes that are identified by an element of id_list
@@ -384,7 +386,12 @@ class Graph(Parser):
         self.largest_id += 1
         self.nodes[new_id] = StructNode(
             new_id, self.get_nodes(id_list), edges, structtype, start_id)
-        self.replace_edges(new_id, id_list)
+        replaced_edges = self.replace_edges(new_id, id_list)
+        if structtype == 'condition':
+            self.nodes[new_id].replaced_edges = replaced_edges
+            print 'replaced edges:',
+            for i in replaced_edges: print i,
+            print
         if self.start_node_index in id_list:
             self.start_node_index = new_id
         self.remove_nodes(id_list)
@@ -471,7 +478,7 @@ class Graph(Parser):
         # appendable to the following node (which must be a block)
         n = self.get_next_nodes(node_id)[0]
         appendable = isinstance(self.nodes[n], StructNode) and self.nodes[
-            n].structtype == 'block'
+                                                                   n].structtype == 'block'
         print 'appendable to', n, '...', appendable
         return appendable
 
@@ -479,7 +486,7 @@ class Graph(Parser):
         # append given node to following block node
         n = self.nodes[self.get_next_nodes(node_id)[0]]
         n.nodes.append(self.nodes[node_id])
-        #if node_id == 11: import pdb; pdb.set_trace()
+        # if node_id == 11: import pdb; pdb.set_trace()
         for edge in self.edges:
             if edge.start == node_id and edge.end == n.id:
                 n.edges.append(Edge(edge.id, node_id, n.start_id, edge.active))
@@ -558,10 +565,10 @@ class Graph(Parser):
             n2 = n[1]
             n1_next = self.get_next_nodes(n1)
             n2_next = self.get_next_nodes(n2)
-            if n2 in n1_next and len(self.get_previous_nodes(n1)) == 1\
+            if n2 in n1_next and len(self.get_previous_nodes(n1)) == 1 \
                     and len(self.get_previous_nodes(n2)) >= 2:
                 return len(n1_next) == 1
-            elif n1 in n2_next and len(self.get_previous_nodes(n2)) == 1\
+            elif n1 in n2_next and len(self.get_previous_nodes(n2)) == 1 \
                     and len(self.get_previous_nodes(n1)) >= 2:
                 return len(n2_next) == 1
         return False
@@ -605,7 +612,7 @@ class Graph(Parser):
                 return i
         return False
 
-    ### end of section structure checks ###
+        ### end of section structure checks ###
 
 
 class Node:
@@ -641,7 +648,7 @@ class Node:
     def __str__(self):
         # "pretty" printing
         return '\n=== ' + str(self.id) + ' ' + str(self.first_index) + ' ' + \
-            str(self.last_index) + ' ===\n' + self.get_code_representation()
+               str(self.last_index) + ' ===\n' + self.get_code_representation()
 
     def print_fancy(self, prefix='', child_prefix=''):
         # used for pseudo-HLL-view, draws nodes and boxes around them
@@ -662,6 +669,7 @@ class StructNode:
 
     def __init__(self, id, nodes, edges, structtype, start_id):
         self.id = id
+        self.description = ''
         self.flags = None
         self.reset_flags()
         self.nodes = nodes
@@ -718,28 +726,36 @@ class StructNode:
                         break
             self.nodes = new_nodes
 
-    def get_next_nodes(self, node_id):
+    def get_next_nodes(self, node_id, use_outer_edges=False):
         # returns a list of all node-id's
         # that belong to direct successors of a given node
         ret = []
         for edge in self.edges:
             if edge.start == node_id:
                 ret.append(edge.end)
+        if use_outer_edges:
+            for edge in self.replaced_edges:
+                if edge.start == node_id:
+                    ret.append(edge.end)
         return list(set(ret))
 
-    def get_previous_nodes(self, node_id):
+    def get_previous_nodes(self, node_id, use_outer_edges=False):
         # returns a list of all node-id's that belong to direct
         # predecessos of a given node
         ret = []
         for edge in self.edges:
             if edge.end == node_id:
                 ret.append(edge.start)
+        if use_outer_edges:
+            for edge in self.replaced_edges:
+                if edge.end == node_id:
+                    ret.append(edge.end)
         return list(set(ret))
 
     def __str__(self):
         # "graphical" representation
         return str(self.id) + ' ' + self.structtype + \
-            ' ' + self.get_representation()
+               ' ' + self.get_representation()
 
     def get_representation(self):
         # output
@@ -757,12 +773,14 @@ class StructNode:
             else:
                 s = ','.join(map(lambda x: str(x), self.hll_info[i]))
                 ret += i + ':' + s + ' '
+        #if self.structtype == 'condition':
+            #ret += ' ' + self.description
         return ret
 
     def print_fancy(self, prefix='', child_prefix='|-- '):
         # pseudo-HLL-view, tree representing code as in C or any other HLL
-        print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype +\
-            ' starts at ' + str(self.start_id) + ':'
+        print prefix + 'id: ' + str(self.id) + ' type: ' + self.structtype + \
+              ' starts at ' + str(self.start_id) + ':'
         prefix = prefix + '    '
         s = self.hll_info_fancy()
         if s != '':
@@ -773,6 +791,11 @@ class StructNode:
         print prefix + child_prefix + 'edges:'
         for i in self.edges:
             print '    |   ' + prefix + i.__str__()
+        if self.structtype == 'condition':
+            print prefix + '|   '
+            print prefix + child_prefix + 'outer edges:'
+            for i in self.replaced_edges:
+                print '    |   ' + prefix + i.__str__()
         print prefix
 
     def compute_hll_info(self):
@@ -799,12 +822,12 @@ class StructNode:
             self.hll_info['body'] = self.start_id
             if not self.hll_info['condition']:
                 self.hll_info['condition'] = self.get_condition_from_block()
-            # if len(self.nodes) == 2:
-             #   self.hll_info['condition'] = self.get_other_node(self.start_id)
-              #  self.hll_info['body'] = self.start_id
-            # else:
-             #   self.order_nodes_by_edges()
-              #  self.hll_info['condition'] = self.nodes[-1].id
+                # if len(self.nodes) == 2:
+                #    self.hll_info['condition'] = self.get_other_node(self.start_id)
+                #    self.hll_info['body'] = self.start_id
+                # else:
+                #    self.order_nodes_by_edges()
+                #    self.hll_info['condition'] = self.nodes[-1].id
 
     def get_condition_from_block(self):
         return self.nodes[0].nodes[-1].id
@@ -815,6 +838,94 @@ class StructNode:
             for i in self.nodes:
                 if i.id != other_id:
                     return i.id
+
+    def get_condition_node(self):
+        if 'condition' in self.hll_info:
+            for i in self.nodes:
+                if self.hll_info['condition'] == i.id:
+                    return i
+            if self.nodes[0].structtype == 'block':
+                for i in self.nodes[0].nodes:
+                    if self.hll_info['condition'] == i.id:
+                        return i
+
+    def get_node_by_id(self, id):
+        for node in self.nodes:
+            if node.id == id:
+                return node
+
+    def compute_condition(self, TRUE=[], FALSE=[]):
+        if self.structtype in ['if-then', 'if-then-else']:
+            TRUE.append(self.hll_info['then'])
+        elif self.structtype in ['while-loop', 'do-loop']:
+            TRUE.append(self.hll_info['body'])
+        if self.structtype == 'if-then-else':
+            FALSE = [self.hll_info['else']]
+        if self.structtype != 'condition':
+            condition_node = self.get_condition_node()
+            print 'self', self
+            print 'condition_node', condition_node
+            if condition_node:
+                condition_node.compute_condition(TRUE, FALSE)
+        else:
+            print TRUE, FALSE
+            STRUCT_TRUE = []
+            STRUCT_FALSE = []
+            print 'analyzing'
+            for node in self.nodes[::-1]:
+                print node
+                ns = self.get_next_nodes(node.id, True)
+                ns[0] = self.get_node_by_id(ns[0])
+                ns[1] = self.get_node_by_id(ns[1])
+                if ns[0].id in self.get_next_nodes(ns[1].id):
+                    if ns[0].id in TRUE:
+                        TRUE.append(ns[1].id)
+                        TRUE.append(node.id)
+                        STRUCT_TRUE.append(node.id)
+                        if ns[0].id in STRUCT_TRUE:
+                            self.description += ' || '
+                        elif ns[0].id in STRUCT_FALSE:
+                            self.description += ' && '
+                        self.description += '(%i || %i)', (node.id, ns[1].id)
+                    elif ns[0].id in FALSE:
+                        FALSE.append(ns[1].id)
+                        FALSE.append(node.id)
+                        STRUCT_FALSE.append(node.id)
+                        if ns[0].id in STRUCT_TRUE:
+                            self.description += ' || '
+                        elif ns[0].id in STRUCT_FALSE:
+                            self.description += ' && '
+                        self.description += '(%i && %i)', (node.id, ns[1].id)
+                elif ns[1].id in self.get_next_nodes(ns[0].id):
+                    if ns[1].id in TRUE:
+                        TRUE.append(ns[0].id)
+                        TRUE.append(node.id)
+                        STRUCT_TRUE.append(node.id)
+                        if ns[1].id in STRUCT_TRUE:
+                            self.description += ' || '
+                        elif ns[1].id in STRUCT_FALSE:
+                            self.description += ' && '
+                        self.description += '(%i || %i)', (node.id, ns[0].id)
+                    elif ns[1].id in FALSE:
+                        FALSE.append(ns[0].id)
+                        FALSE.append(node.id)
+                        STRUCT_FALSE.append(node.id)
+                        if ns[1].id in STRUCT_TRUE:
+                            self.description += ' || '
+                        elif ns[1].id in STRUCT_FALSE:
+                            self.description += ' && '
+                        self.description += '(%i && %i)', (node.id, ns[0].id)
+            print self.id, self.description
+        for index, node in enumerate(self.nodes):
+            if isinstance(node, StructNode) and node.structtype != 'block':
+                try:
+                    FALSE = [self.nodes[index+1].id]
+                    TRUE = []
+                    node.compute_condition(TRUE, FALSE)
+                except:
+                    pass
+
+
 
 
 class Edge:
@@ -841,6 +952,7 @@ class Edge:
     def __hash__(self):
         return hash(self.__str__())
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='The controlflow analysis module, capable to work stand-alone')
@@ -850,7 +962,7 @@ if __name__ == '__main__':
         help='Optional file to be analyzed, if not present, the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions18_analysis/main.asm'
+    source = '../../tests/conditions17_analysis/main.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source
@@ -860,4 +972,4 @@ if __name__ == '__main__':
     g = Graph(l)
     g.print_graph()
     g.reduce()
-    # g.print_graph()
+    g.nodes[g.start_node_index].compute_condition()
