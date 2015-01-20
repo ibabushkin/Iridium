@@ -868,61 +868,67 @@ class StructNode:
             if condition_node:
                 condition_node.compute_condition(TRUE, FALSE)
         else:
-            print TRUE, FALSE
+            print 'TRUE, FALSE', TRUE, FALSE
             STRUCT_TRUE = []
             STRUCT_FALSE = []
-            print 'analyzing'
             for node in self.nodes[::-1]:
-                print node
-                ns = self.get_next_nodes(node.id, True)
-                ns[0] = self.get_node_by_id(ns[0])
-                ns[1] = self.get_node_by_id(ns[1])
-                if ns[0].id in self.get_next_nodes(ns[1].id):
-                    if ns[0].id in TRUE:
-                        TRUE.append(ns[1].id)
+                print 'node', node
+                nz = self.get_next_nodes(node.id, True)
+                print 'nz', nz
+                #ns = [self.get_node_by_id(nz[0]), self.get_node_by_id(nz[1])]
+                print self.get_next_nodes(nz[1]), self.get_next_nodes(nz[0])
+                if nz[0] in self.get_next_nodes(nz[1], True):
+                    print 'DOH'
+                    if nz[0] in TRUE + STRUCT_TRUE:
+                        print 'DUH'
+                        TRUE.append(nz[1])
                         TRUE.append(node.id)
                         STRUCT_TRUE.append(node.id)
-                        if ns[0].id in STRUCT_TRUE:
+                        if nz[0] in STRUCT_TRUE:
                             self.description += ' || '
-                        elif ns[0].id in STRUCT_FALSE:
+                        elif nz[0] in STRUCT_FALSE:
                             self.description += ' && '
-                        self.description += '(%i || %i)', (node.id, ns[1].id)
-                    elif ns[0].id in FALSE:
-                        FALSE.append(ns[1].id)
+                        self.description += '(%i || %i)' % (node.id, nz[1])
+                    elif nz[0] in FALSE + STRUCT_FALSE:
+                        print 'DUH'
+                        FALSE.append(nz[1])
                         FALSE.append(node.id)
                         STRUCT_FALSE.append(node.id)
-                        if ns[0].id in STRUCT_TRUE:
+                        if nz[0] in STRUCT_TRUE:
                             self.description += ' || '
-                        elif ns[0].id in STRUCT_FALSE:
+                        elif nz[0] in STRUCT_FALSE:
                             self.description += ' && '
-                        self.description += '(%i && %i)', (node.id, ns[1].id)
-                elif ns[1].id in self.get_next_nodes(ns[0].id):
-                    if ns[1].id in TRUE:
-                        TRUE.append(ns[0].id)
+                        self.description += '(%i && %i)' % (node.id, nz[1])
+                elif nz[1] in self.get_next_nodes(nz[0], True):
+                    print 'DOH'
+                    if nz[1] in TRUE + STRUCT_TRUE:
+                        print 'DUH'
+                        TRUE.append(nz[0])
                         TRUE.append(node.id)
                         STRUCT_TRUE.append(node.id)
-                        if ns[1].id in STRUCT_TRUE:
+                        if nz[1] in STRUCT_TRUE:
                             self.description += ' || '
-                        elif ns[1].id in STRUCT_FALSE:
+                        elif nz[1] in STRUCT_FALSE:
                             self.description += ' && '
-                        self.description += '(%i || %i)', (node.id, ns[0].id)
-                    elif ns[1].id in FALSE:
-                        FALSE.append(ns[0].id)
+                        self.description += '(%i || %i)' % (node.id, nz[0])
+                    elif nz[1] in FALSE + STRUCT_FALSE:
+                        print 'DUH'
+                        FALSE.append(nz[0])
                         FALSE.append(node.id)
                         STRUCT_FALSE.append(node.id)
-                        if ns[1].id in STRUCT_TRUE:
+                        if nz[1] in STRUCT_TRUE:
                             self.description += ' || '
-                        elif ns[1].id in STRUCT_FALSE:
+                        elif nz[1] in STRUCT_FALSE:
                             self.description += ' && '
-                        self.description += '(%i && %i)', (node.id, ns[0].id)
-            print self.id, self.description
+                        self.description += '(%i && %i)' % (node.id, nz[0])
+            print 'id, description:', self.id, self.description
         for index, node in enumerate(self.nodes):
             if isinstance(node, StructNode) and node.structtype != 'block':
                 try:
                     FALSE = [self.nodes[index+1].id]
                     TRUE = []
                     node.compute_condition(TRUE, FALSE)
-                except:
+                except IndexError:
                     pass
 
 
@@ -970,6 +976,6 @@ if __name__ == '__main__':
         sys.stdout = open(f.output, 'wb')
     l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     g = Graph(l)
-    g.print_graph()
+    #g.print_graph()
     g.reduce()
     g.nodes[g.start_node_index].compute_condition()
