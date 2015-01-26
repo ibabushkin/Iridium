@@ -451,11 +451,9 @@ class Graph(Parser):
         return replaced_edges
 
     def get_nodes(self, id_list):
-        """
-        Return all nodes that are identified by an element of id_list
-        @param id_list: list of integers
-        @ret: list of Node-instances
-        """
+        # return all nodes that are identified by an element of id_list
+        # @param id_list: list of integers
+        # @ret: list of Node-instances
         return [self.nodes[i] for i in self.nodes if i in id_list]
 
     def insert_structure_as_node(self, id_list, structtype, start_id=0):

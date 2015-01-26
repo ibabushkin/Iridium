@@ -1,7 +1,7 @@
 import argparse
 import sys
 from instructions import Instruction
-from types import *
+# from types import *
 from parser import Parser
 
 

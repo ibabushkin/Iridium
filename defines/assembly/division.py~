@@ -110,9 +110,7 @@ if __name__ == '__main__':
     else:
         d = DivisionParser(l)
         magic = raw_input(
-            'Enter constant as hex number prefixed\
-            by 0x (input not verified!): ')
+            'Enter constant as hex number prefixed by 0x (input not verified!): ')
         rshift = int(
-            raw_input('Enter rshift amount\
-                      (must be int, input not verified): '))
+            raw_input('Enter rshift amount (must be int, input not verified): '))
         print 'Divisor seems to be ' + str(d.get_divisor(magic, rshift)) + '.'
