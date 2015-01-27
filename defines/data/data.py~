@@ -1,8 +1,9 @@
 import argparse
 import sys
-from instructions import Instruction
-# from types import *
-from parser import Parser
+
+from defines.util.instructions import Instruction
+from types import *
+from defines.util.parser import Parser
 
 
 class DataParser(Parser):

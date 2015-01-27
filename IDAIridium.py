@@ -15,10 +15,10 @@ import os
 import argparse
 import re
 
-from defines.assembly.labels import Function
-from defines.assembly.graph import Graph
-from defines.assembly.data import DataParser
-from defines.assembly.division import DivisionParser
+from defines.util.labels import Function
+from defines.cfg.graph import Graph
+from defines.data.data import DataParser
+from defines.div.division import DivisionParser
 
 from settings import RESULTS_DIR_NAME_SUFFIX
 from settings import SKIP_FILE_EXTENSION_FOR_DIRNAME

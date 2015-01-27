@@ -1,8 +1,9 @@
 import argparse
 import sys
-from instructions import Instruction
+
+from defines.util.instructions import Instruction
 from types import *
-from parser import Parser
+from defines.util.parser import Parser
 
 
 class DataParser(Parser):
@@ -204,7 +205,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)''')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/data3_analysis/main.asm'
+    source = '../../tests/data2_analysis/main.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source

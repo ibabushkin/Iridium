@@ -12,8 +12,8 @@ import argparse
 import sys
 import math
 
-from instructions import Instruction
-from parser import Parser
+from defines.util.instructions import Instruction
+from defines.util.parser import Parser
 
 
 def hex2signeddecimal(hexstr):
