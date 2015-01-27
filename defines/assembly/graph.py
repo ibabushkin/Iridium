@@ -12,7 +12,7 @@ generating a graph from a assembly listing and analyzing it.
 import argparse
 import sys
 
-from labels import Label
+from Iridium.defines.assembly.labels import Label
 from tree import Tree
 from types import ListType
 from parser import Parser
@@ -190,7 +190,8 @@ class Graph(Parser):
         print 'Reducing graph ...'
         print 'postorder of dfs-tree:', self.p
         self.analyze_tree()
-        self.nodes[self.start_node_index].compute_condition()
+        if isinstance(self.nodes[self.start_node_index], StructNode):
+            self.nodes[self.start_node_index].compute_condition()
         self.print_fancy()
 
     # end of section main structure

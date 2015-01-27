@@ -8,7 +8,7 @@ Description:
 """
 
 
-class Instruction(object):
+class Instruction:
     """
     A class representing an instruction
     """
@@ -89,7 +89,7 @@ class Instruction(object):
             return self.operands.split(' ')[-1]
 
 
-class Jump(object):
+class Jump:
     """
     A jump, containing information about
     occurence, instruction and destination
