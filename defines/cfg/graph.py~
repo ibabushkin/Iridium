@@ -13,9 +13,9 @@ import argparse
 import sys
 
 from defines.util.labels import Label
-from util.tree import Tree
+from defines.util.tree import Tree
 from types import ListType
-from util.parser import Parser
+from defines.util.parser import Parser
 
 
 class Graph(Parser):

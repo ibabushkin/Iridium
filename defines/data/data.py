@@ -1,9 +1,9 @@
 import argparse
 import sys
 
-from defines.util.instructions import Instruction
+from Iridium.defines.util.instructions import Instruction
 from types import *
-from defines.util.parser import Parser
+from Iridium.defines.util.parser import Parser
 
 
 class DataParser(Parser):

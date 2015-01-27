@@ -1,4 +1,4 @@
-from defines.util.instructions import Instruction
+from Iridium.defines.util.instructions import Instruction
 
 
 class Function:

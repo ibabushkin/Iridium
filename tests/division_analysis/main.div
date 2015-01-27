@@ -1,0 +1,3 @@
+Found candidate for optimized integer division                                 starting at line 11:
+constant: 0x0b21642c9, rshift: 4
+--> division by 23

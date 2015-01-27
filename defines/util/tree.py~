@@ -1,17 +1,3 @@
-# class Tree:
-# def __init__(self, obj):
-#self.content = obj
-#self.left = None
-#self.right = None
-
-# def set_right(self, obj):
-#self.right = Tree(obj)
-
-# def set_left(self, obj):
-#self.left = Tree(obj)
-
-# def postorder(self):
-# return self.left.postorder() + self.right.postorder() + self.obj
 
 
 class Tree:

@@ -12,10 +12,10 @@ generating a graph from a assembly listing and analyzing it.
 import argparse
 import sys
 
-from defines.util.labels import Label
-from defines.util.tree import Tree
+from Iridium.defines.util.labels import Label
+from Iridium.defines.util.tree import Tree
 from types import ListType
-from defines.util.parser import Parser
+from Iridium.defines.util.parser import Parser
 
 
 class Graph(Parser):

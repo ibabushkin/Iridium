@@ -1,5 +1,5 @@
-from defines.util.instructions import Instruction
-from defines.util.labels import Label
+from Iridium.defines.util.instructions import Instruction
+from Iridium.defines.util.labels import Label
 from types import *
 
 
