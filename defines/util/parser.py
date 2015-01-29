@@ -1,28 +1,42 @@
+"""
+File: parser.py
+Author: Inokentiy Babushkin
+Email: inokentiy.babushkin@googlemail.com
+Github: None
+Description:
+    A module that makes traversing the code of a file
+    in some manner possible.
+"""
+
 from Iridium.defines.util.instructions import Instruction
 from Iridium.defines.util.labels import Label
-from types import *
 
 
-class Parser:
-    # the parent class for all modules.
-    # intended to extract the code and make
-    # access easy.
-
+class Parser(object):
+    """
+    The parent class for all modules.
+    Intended to extract the code and make
+    access easy.
+    """
     def __init__(self, text):
         self.text = text  # raw code
         self.code = self.get_code_from_text()
 
     def get_code_from_text(self):
-        l = []
+        """
+        Extract the code from the listing and
+        save it in a high-levle representation.
+        """
+        lines = []
         index = 0
         for line in self.text:
             if line.endswith(':'):
-                l.append(Label(index, line))
+                lines.append(Label(index, line))
             else:
                 tokens = line.split(' ')
                 if len(tokens) > 0:
-                    m = tokens[0]
-                    o = line[len(m) + 1:]
-                    l.append(Instruction(index, 0, m, o))
+                    mnemonic = tokens[0]
+                    operands = line[len(mnemonic) + 1:]
+                    lines.append(Instruction(index, 0, mnemonic, operands))
             index += 1
-        return l
+        return lines

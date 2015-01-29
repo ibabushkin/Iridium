@@ -12,10 +12,10 @@ generating a graph from a assembly listing and analyzing it.
 import argparse
 import sys
 
-from defines.util.labels import Label
-from defines.util.tree import Tree
+from Iridium.defines.util.labels import Label
+from Iridium.defines.util.tree import Tree
 from types import ListType
-from defines.util.parser import Parser
+from Iridium.defines.util.parser import Parser
 
 
 class Graph(Parser):
@@ -102,11 +102,11 @@ class Graph(Parser):
             [len(self.code)]
         for index, content in enumerate(self.delimiter_lines):
             if content != len(self.code):
-                c = self.code[content:self.delimiter_lines[index + 1]]
-                if len(c) > 0:
+                code_lines = self.code[content:self.delimiter_lines[index + 1]]
+                if len(code_lines) > 0:
                     self.nodes[current_node_id] = Node(
                         current_node_id,
-                        c,
+                        code_lines,
                         content,
                         self.delimiter_lines[index + 1])
                     current_node_id += 1
@@ -140,7 +140,7 @@ class Graph(Parser):
         self.largest_id = current_node_id
         self.remove_dead_code()
 
-    def generate_depth_first_spanning_tree(self):
+    def generate_dfs_tree(self):
         """
         Generates a dfs-tree for the graph.
         This function uses self.visit_depth_first and
@@ -177,18 +177,18 @@ class Graph(Parser):
         Uses the postorder-traversion of self.tree, which
         is stored in self.p.
         """
-        for i in self.p:
+        for i in self.postorder:
             self.analyze_node(i)
 
     def reduce(self):
         """
         Reduces the graph, prepares the enviroment
         """
-        self.generate_depth_first_spanning_tree()
-        self.p = self.tree.postorder()
+        self.generate_dfs_tree()
+        self.postorder = self.tree.postorder()
         print '=================='
         print 'Reducing graph ...'
-        print 'postorder of dfs-tree:', self.p
+        print 'postorder of dfs-tree:', self.postorder
         self.analyze_tree()
         if isinstance(self.nodes[self.start_node_index], StructNode):
             self.nodes[self.start_node_index].compute_condition()
@@ -210,14 +210,15 @@ class Graph(Parser):
             If a condition is present, it is reduced.
         """
         visited_nodes = []
-        source = self.is_target_of_back_edge(self.ways2[0][0])
+        jump_source = self.is_target_of_back_edge(self.ways2[0][0])
         for i in self.ways2:
             for j in i:
                 if j not in visited_nodes:
                     visited_nodes.append(j)
         omnipresent_nodes = visited_nodes[:]
         if loop:
-            self.ways2 = filter(lambda x: source not in x, self.ways2)
+            # self.ways2 = filter(lambda x: jump_source not in x, self.ways2)
+            self.ways2 = [way for way in self.ways2 if jump_source not in way]
         for i in visited_nodes:
             for j in self.ways2:
                 if i not in j:
@@ -226,7 +227,7 @@ class Graph(Parser):
         first_knot = None  # first node after structure
         if loop:
             self.ways = []
-            self._find_all_ways(self.ways2[0][0], source, [])
+            self._find_all_ways(self.ways2[0][0], jump_source, [])
             first_knot = i
         elif self.ways2:
             for i in self.ways2[0][1:]:
@@ -235,7 +236,8 @@ class Graph(Parser):
                     break
         if first_knot:
             print 'found knot-node:', first_knot
-        self.ways2 = map(lambda x: x[:x.index(first_knot)], self.ways2)
+        # self.ways2 = map(lambda x: x[:x.index(first_knot)], self.ways2)
+        self.ways2 = [way[:way.index(first_knot)] for way in self.ways2]
         structure_nodes = []
         red = True  # reduce or not?
         conditions = []
@@ -342,9 +344,9 @@ class Graph(Parser):
             self.insert_structure_as_node([node_id], 'do-loop', node_id)
             struct_found = self.largest_id - 1
         elif self.is_while_loop(node_id):
-            o = self.is_while_loop(node_id)
-            print 'while-loop:', [node_id, o]
-            self.insert_structure_as_node([node_id, o], 'while-loop', node_id)
+            loop_body = self.is_while_loop(node_id)
+            print 'while-loop:', [node_id, loop_body]
+            self.insert_structure_as_node([node_id, loop_body], 'while-loop', node_id)
             struct_found = self.largest_id - 1
         # apply recursion if needed
         if struct_found:
@@ -425,7 +427,8 @@ class Graph(Parser):
         for i in self.edges:
             if i.start in id_list and i.end in id_list:
                 edges.append(i)
-        self.edges = filter(lambda x: x not in edges, self.edges)
+        # self.edges = filter(lambda x: x not in edges, self.edges)
+        self.edges = [edge for edge in self.edges if edge not in edges]
         return edges
 
     def replace_edges(self, new_id, id_list):
@@ -460,12 +463,14 @@ class Graph(Parser):
         return [self.nodes[i] for i in self.nodes if i in id_list]
 
     def insert_structure_as_node(self, id_list, structtype, start_id=0):
-        # used to replace a group of nodes that are identified as a structure
-        # by a special object in the graph that contains them all.
-        # @param id_list: list of Node-instances - change to id's
-        # @param structtype: str determining the type of structure inserted
-        # possible values are 'condition', 'do-loop', 'while-loop', 'block',
-        # 'if-then', 'if-then-else'
+        """
+        used to replace a group of nodes that are identified as a structure
+        by a special object in the graph that contains them all.
+        @param id_list: list of Node-instances - change to id's
+        @param structtype: str determining the type of structure inserted
+        possible values are 'condition', 'do-loop', 'while-loop', 'block',
+        'if-then', 'if-then-else'
+        """
         edges = self.get_edges_for_subgraph(id_list)
         new_id = self.largest_id
         self.largest_id += 1
@@ -484,8 +489,10 @@ class Graph(Parser):
         self.edges = list(set(self.edges))
 
     def get_all_visited_nodes(self):
-        # returns all nodes already traversed and somehow saved in self.ways
-        # @ret: list of Node-id's
+        """
+        returns all nodes already traversed and somehow saved in self.ways
+        @ret: list of Node-id's
+        """
         ret = []
         for i in self.ways:
             for j in i:
@@ -493,33 +500,42 @@ class Graph(Parser):
                     ret.append(j)
         return ret
 
-    def _find_all_ways(self, s=0, e=0, w=[]):
-        # finds all possible paths from a given entry-node s to a node e
-        # works recursively and accepts w as a path for the current progress
-        w.append(s)
-        if s == e:
-            self.ways.append(w)
+    def _find_all_ways(self, start=0, end=0, ways=[]):
+        """
+        finds all possible paths from a given entry-node s to a node e
+        works recursively and accepts w as a path for the current progress
+        """
+        ways.append(start)
+        if start == end:
+            self.ways.append(ways)
         else:
-            for i in self.get_next_nodes(s):
-                if i not in w:
-                    self._find_all_ways(i, e, w[:])
+            for i in self.get_next_nodes(start):
+                if i not in ways:
+                    self._find_all_ways(i, end, ways[:])
 
-    def _check_dominance(self, a):
-        # is a dominant to all currently saved paths? (see next method)
-        # in other words, is a present in every element of self.ways?
-        l = map(lambda x: a in x, self.ways)
-        return False not in l
+    def _check_dominance(self, node_id):
+        """
+        is a dominant to all currently saved paths? (see next method)
+        in other words, is a present in every element of self.ways?
+        """
+        # dominance_paths = map(lambda x: a in x, self.ways)
+        dominance_paths = [node_id in x for x in self.ways]
+        return False not in dominance_paths
 
     def is_dominator(self, a, b):
-        # does a dominate b? (do all paths leading from the entrypoint to
-        # b contain a? (per definition, a node dominates itself)
+        """
+        does a dominate b? (do all paths leading from the entrypoint to
+        contain a? (per definition, a node dominates itself)
+        """
         self.ways = []
         self._find_all_ways(0, b, [])
         return self._check_dominance(a)
 
     def get_node_list_for_replacement(self, start_id, structtype):
-        # returns a list of Node-id's that belong to a structure of type
-        # structtype, beginning at start_id
+        """
+        returns a list of Node-id's that belong to a structure of type
+        structtype, beginning at start_id
+        """
         ret = [start_id]
         if structtype == 'if-then':
             nexts = self.get_next_nodes(start_id)
@@ -537,12 +553,14 @@ class Graph(Parser):
         return list(set(ret))
 
     def find_linear_block(self, node_id):
-        # find a linear structure in a graph beginning
-        # at any node, working forward.
+        """
+        find a linear structure in a graph beginning
+        at any node, working forward.
+        """
         return self.find_linear_block_forward(node_id)
 
     def find_linear_block_backward(self, node_id, l=[]):
-        # helper method for finding blocks
+        """ helper method for finding blocks """
         prevs = self.get_previous_nodes(node_id)
         ret = l + [node_id]
         if len(prevs) == 1 and len(self.get_next_nodes(prevs[0])) == 1:
@@ -550,7 +568,7 @@ class Graph(Parser):
         return ret
 
     def find_linear_block_forward(self, node_id, l=[]):
-        # helper method for finding blocks
+        """ helper method for finding blocks """
         posts = self.get_next_nodes(node_id)
         ret = l + [node_id]
         if len(posts) == 1 and len(self.get_previous_nodes(posts[0])) == 1:
@@ -560,8 +578,10 @@ class Graph(Parser):
         return []
 
     def appendable_to_block(self, node_id):
-        # is a given node already recognized as a possible block
-        # appendable to the following node (which must be a block)
+        """
+        is a given node already recognized as a possible block
+        appendable to the following node (which must be a block)
+        """
         n = self.get_next_nodes(node_id)[0]
         appendable = (isinstance(self.nodes[n], StructNode)
                       and self.nodes[n].structtype == 'block')
@@ -569,10 +589,9 @@ class Graph(Parser):
         return appendable
 
     def append_to_block(self, node_id):
-        # append given node to following block node
+        """ append given node to following block node """
         n = self.nodes[self.get_next_nodes(node_id)[0]]
         n.nodes.append(self.nodes[node_id])
-        # if node_id == 11: import pdb; pdb.set_trace()
         for edge in self.edges:
             if edge.start == node_id and edge.end == n.id:
                 n.edges.append(Edge(edge.id, node_id, n.start_id, edge.active))
@@ -593,9 +612,11 @@ class Graph(Parser):
         return n.id
 
     def calculate_paths(self, start, depth, path=[]):
-        # calculate all possible controlflow-paths from a
-        # given node with given depth. saves results in self.ways2.
-        # works recursively, thus the path argument.
+        """
+        calculate all possible controlflow-paths from a
+        given node with given depth. saves results in self.ways2.
+        works recursively, thus the path argument.
+        """
         current_path = path[:] + [start]
         next_nodes = self.get_next_nodes(start)
         if depth == 0 or len(next_nodes) == 0:
@@ -610,8 +631,10 @@ class Graph(Parser):
                     self.ways2.append(current_path)
 
     def get_next_nodes(self, node_id):
-        # returns a list of all node-id's
-        # that can be reached directly from a given node
+        """
+        returns a list of all node-id's
+        that can be reached directly from a given node
+        """
         ret = []
         for edge in self.edges:
             if edge.start == node_id:
@@ -619,8 +642,10 @@ class Graph(Parser):
         return list(set(ret))
 
     def get_previous_nodes(self, node_id):
-        # returns a list of all node-id's that are direct
-        # predecessos of a given node
+        """
+        returns a list of all node-id's that are direct
+        predecessos of a given node
+        """
         ret = []
         for edge in self.edges:
             if edge.end == node_id:
@@ -632,19 +657,23 @@ class Graph(Parser):
     # structure checks
 
     def is_simple_acyclic(self, node_id):
-        # determines, wether given node is the beginning
-        # of a simple acyclic structure (block, if-else of if-then)
-        # @ret: boolean value determining result
+        """
+        determines, wether given node is the beginning
+        of a simple acyclic structure (block, if-else of if-then)
+        @ret: boolean value determining result
+        """
         return self.is_block(node_id) or self.is_if_then(
             node_id) or self.is_if_then_else(node_id)
 
     def is_block(self, node_id):
-        # is a given node (part of) a block, or at least
-        # a candidate to be a block?
+        """
+        is a given node (part of) a block, or at least
+        a candidate to be a block?
+        """
         return len(self.get_next_nodes(node_id)) < 2
 
     def is_if_then(self, node_id):
-        # is a given node beginning of an if-then-block?
+        """ is a given node beginning of an if-then-block? """
         n = self.get_next_nodes(node_id)
         if len(n) == 2:
             n1 = n[0]
@@ -660,7 +689,7 @@ class Graph(Parser):
         return False
 
     def is_if_then_else(self, node_id):
-        # is a given node beginning of an if-else-block?
+        """ is a given node beginning of an if-else-block? """
         n = self.get_next_nodes(node_id)
         if len(n) == 2:
             n1 = n[0]
@@ -674,14 +703,17 @@ class Graph(Parser):
         return False
 
     def is_loop(self, node_id):
+        """ Are we at the beginning of a loop? """
         return self.is_do_loop(node_id) or self.is_while_loop(node_id)
 
     def is_do_loop(self, node_id):
+        """ Are we at the beginning of a do-loop? """
         prevs = self.get_previous_nodes(node_id)
         if node_id in prevs:
             return True
 
     def is_while_loop(self, node_id):
+        """ Are we at the beginning of a while-loop? """
         nexts = self.get_next_nodes(node_id)
         for ind in nexts:
             if node_id in self.get_next_nodes(ind) and len(
@@ -691,7 +723,7 @@ class Graph(Parser):
         return False
 
     def is_target_of_back_edge(self, node_id):
-        # is there a back-edge targeting given node?
+        """ is there a back-edge targeting given node? """
         for i in self.get_previous_nodes(node_id):
             ret = self.is_dominator(node_id, i)
             if ret:
@@ -702,7 +734,9 @@ class Graph(Parser):
 
 
 class Node:
-    # a representation of a one-entry, one-exit sequence of code
+    """
+    a representation of a one-entry, one-exit sequence of code
+    """
 
     def __init__(self, id, code, first, last):
         self.id = id
@@ -1058,7 +1092,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     parser.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    source = '../../tests/conditions17_analysis/main.asm'
+    source = '../../tests/conditions14_analysis/main.asm'
     f = parser.parse_args()
     if f.source:
         source = f.source

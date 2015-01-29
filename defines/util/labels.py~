@@ -1,8 +1,21 @@
+"""
+File: labels.py
+Author: Inokentiy Babushkin
+Email: inokentiy.babushkin@googlemail.com
+Github: None
+Description:
+    Abstractions over functions and labels are
+    provided in this module.
+"""
+
 from Iridium.defines.util.instructions import Instruction
 
 
-class Function:
-
+class Function(object):
+    """
+    A Function:
+        A bunch of code and a name.
+    """
     def __init__(self, name):
         self.name = name
         self.code = []
@@ -11,21 +24,26 @@ class Function:
     def __str__(self):
         return '\n'.join(self.code)
 
-    def set_code(self, l):
-        for j, i in enumerate(l):
+    def set_code(self, lines):
+        """
+        Get a higher-level representation of the
+        code from the function's listing.
+        """
+        for j, i in enumerate(lines):
             if len(i) > 0 and not i.endswith(':'):
-                m = i.split()[0]
-                o = i[len(m) + 1:]
-                if ';' in o:
-                    # print o
-                    o = o.split(';')[0][:-2]
-                    # print o
-                self.instructions.append(Instruction(j, 0, m, o))
-        self.code = l
+                mnemonic = i.split()[0]
+                operands = i[len(mnemonic) + 1:]
+                if ';' in operands:
+                    operands = operands.split(';')[0][:-2]
+                self.instructions.append(Instruction(j, 0, mnemonic, operands))
+        self.code = lines
 
 
-class Label:
-
+class Label(object):
+    """
+    A label:
+        A name, a place in the code.
+    """
     def __init__(self, index, line):
         self.name = line[:-1]
         self.index = index
@@ -34,7 +52,9 @@ class Label:
         return '%s:' % self.name
 
 
-class FunctionLabel(Label):
-
-    def __init__(self, name):
-        Label.__init__(self, 0, name + ':')
+#class FunctionLabel(Label):
+    """
+    A Label that marks a function's beginning
+    """
+ #   def __init__(self, name):
+  #      Label.__init__(self, 0, name + ':')
