@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 File: IDAIridium.py
 Author: Inokentiy Babushkin

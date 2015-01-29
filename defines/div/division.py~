@@ -12,8 +12,8 @@ import argparse
 import sys
 import math
 
-from defines.util.instructions import Instruction
-from defines.util.parser import Parser
+from Iridium.defines.util.instructions import Instruction
+from Iridium.defines.util.parser import Parser
 
 
 def hex2signeddecimal(hexstr):
