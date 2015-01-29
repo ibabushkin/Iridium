@@ -14,18 +14,23 @@ h)q}q}qUwaysqUbuiltinqUlistqh‡s†bUGraph.get_previous_nodesh)q}q
 ‡†h†hs}q2†bUGraph.is_if_thenh)q3}q4hhh	h
 ‡†h†hs}q5†bUGraph.find_node_by_labelh)q6}q7hhh(h
 ‡†h†hs}q8†bUGraph.is_looph)q9}q:hhh	h
-‡†h†hs}q;†bUGraph.calculate_pathsh)q<}q=(hhh	h
-‡†hhhths}q>†bUGraph.analyze_treeh)q?}q@hhhh
-‡†…hs}qA†bUGraph.analyze_pathsh)qB}qChhh	h
-‡†h†hs}qD†bUNode.__init__h)qE}qF(hhh(UNodeqG‡†hhhh‡hhths}qH†bUEdge.__init__h)qI}qJ((hhh(h‡†hhhhth(hhh(h‡†hhhhthu}qK†bUGraph.visit_depth_firsth)qL}qMhhh$h
-‡†h†hs}qN†bUGraph.is_do_looph)qO}qPhhh	h
-‡†h†hs}qQ†bUGraph.is_blockh)qR}qShhh	h
-‡†h†hs}qT†bUGraph.is_if_then_elseh)qU}qVhhh	h
-‡†h†hs}qW†bUGraph.is_simple_acyclich)qX}qYhhh	h
-‡†h†hs}qZ†bUGraph.get_next_nodesh)q[}q\hhhh
-‡†h†hhh‡s}q]†bU#Graph.get_node_list_for_replacementh)q^}q_hhh	h
-‡†hUbuiltinUstr†q`‡hhh‡s}qa†bUGraph.insert_structure_as_nodeh)qb}qc((hhh	h
-‡†hhh‡h`hth(hhhh
-‡†hhh‡h`hthu}qd†bUGraph._find_all_waysh)qe}qf((hhUgraph.pyqgh
+‡†h†hs}q;†bUNode.reset_flagsh)q<}q=hhUgraph.pyq>UNodeq?‡†…hs}q@†bUGraph.calculate_pathsh)qA}qB(hhh	h
+‡†hhhths}qC†bUGraph.analyze_treeh)qD}qEhhhh
+‡†…hs}qF†bUGraph.find_linear_blockh)qG}qHhhUgraph.pyqIh
+‡†h†hs}qJ†bUGraph.analyze_pathsh)qK}qLhhh	h
+‡†h†hs}qM†bUNode.__init__h)qN}qO(hhh(h?‡†hhhh‡hhths}qP†bU Graph.find_linear_block_backwardh)qQ}qRhhUgraph.pyqSh
+‡†hh‡hs}qT†bUEdge.__init__h)qU}qV((hhh(h‡†hhhhth(hhUgraph.pyqWh‡†hhhhth(hhh(h‡†hhhhthu}qX†bUGraph.visit_depth_firsth)qY}qZhhh$h
+‡†h†hs}q[†bUGraph.remove_nodesh)q\}q]hhhWh
+‡†hhh‡†hs}q^†bUGraph.is_do_looph)q_}q`hhh	h
+‡†h†hs}qa†bUGraph.find_linear_block_forwardh)qb}qchhUgraph.pyqdh
+‡†hh‡hs}qe†bUGraph.is_blockh)qf}qghhh	h
+‡†h†hs}qh†bUGraph.is_if_then_elseh)qi}qjhhh	h
+‡†h†hs}qk†bUGraph.is_simple_acyclich)ql}qmhhh	h
+‡†h†hs}qn†bUGraph.get_next_nodesh)qo}qphhhh
+‡†h†hhh‡s}qq†bU#Graph.get_node_list_for_replacementh)qr}qshhh	h
+‡†hUbuiltinUstr†qt‡hhh‡s}qu†bUGraph.insert_structure_as_nodeh)qv}qw((hhh	h
+‡†hhh‡hthth(hhhh
+‡†hhh‡hththu}qx†bUGraph._check_dominanceh)qy}qzhhUgraph.pyq{h
+‡†h†hs}q|†bUGraph._find_all_waysh)q}}q~((hhUgraph.pyqh
 ‡†hhhhh‡th(hhhh
-‡†hhhhh‡thu}qh†buU0/home/thewormkill/Iridium/defines/util/parser.py}qiUParser.get_code_from_texth)qj}qkhhU0/home/thewormkill/Iridium/defines/util/parser.pyUParserql‡†…hhh‡s}qm†bsU./home/thewormkill/Iridium/defines/util/tree.py}qn(UTree.postorderh)qo}qphhU./home/thewormkill/Iridium/defines/util/tree.pyUTreeqq‡†h†hhh‡s}qr†bUTree.__init__h)qs}qthhU./home/thewormkill/Iridium/defines/util/tree.pyhq‡†h†hs}qu†buu.
+‡†hhhhh‡thu}q€†buU0/home/thewormkill/Iridium/defines/util/parser.py}qUParser.get_code_from_texth)q‚}qƒhhU0/home/thewormkill/Iridium/defines/util/parser.pyUParserq„‡†…hhh‡s}q…†bsU./home/thewormkill/Iridium/defines/util/tree.py}q†(UTree.postorderh)q‡}qˆhhU./home/thewormkill/Iridium/defines/util/tree.pyUTreeq‰‡†h†hhh‡s}qŠ†bUTree.__init__h)q‹}qŒhhU./home/thewormkill/Iridium/defines/util/tree.pyh‰‡†h†hs}q†buu.

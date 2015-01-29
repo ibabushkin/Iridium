@@ -49,6 +49,7 @@ class Graph(Parser):
         self.ways = []
         self.ways2 = []
         self.non_knot_nodes = []
+        self.postorder = None
 
     # output (before and after analysis)
 
@@ -522,14 +523,14 @@ class Graph(Parser):
         dominance_paths = [node_id in x for x in self.ways]
         return False not in dominance_paths
 
-    def is_dominator(self, a, b):
+    def is_dominator(self, node_a, node_b):
         """
         does a dominate b? (do all paths leading from the entrypoint to
         contain a? (per definition, a node dominates itself)
         """
         self.ways = []
-        self._find_all_ways(0, b, [])
-        return self._check_dominance(a)
+        self._find_all_ways(0, node_b, [])
+        return self._check_dominance(node_a)
 
     def get_node_list_for_replacement(self, start_id, structtype):
         """
@@ -541,9 +542,9 @@ class Graph(Parser):
             nexts = self.get_next_nodes(start_id)
             conditional = None
             for i in nexts:
-                ns = self.get_next_nodes(i)
-                if len(ns) != 0:
-                    if ns[0] in nexts:
+                next_nodes = self.get_next_nodes(i)
+                if len(next_nodes) != 0:
+                    if next_nodes[0] in nexts:
                         conditional = i
             ret += [conditional]
         elif structtype == 'if-then-else':
@@ -559,18 +560,18 @@ class Graph(Parser):
         """
         return self.find_linear_block_forward(node_id)
 
-    def find_linear_block_backward(self, node_id, l=[]):
+    def find_linear_block_backward(self, node_id, block_nodes=[]):
         """ helper method for finding blocks """
         prevs = self.get_previous_nodes(node_id)
-        ret = l + [node_id]
+        ret = block_nodes + [node_id]
         if len(prevs) == 1 and len(self.get_next_nodes(prevs[0])) == 1:
             ret += self.find_linear_block_backward(prevs[0], ret)
         return ret
 
-    def find_linear_block_forward(self, node_id, l=[]):
+    def find_linear_block_forward(self, node_id, block_nodes=[]):
         """ helper method for finding blocks """
         posts = self.get_next_nodes(node_id)
-        ret = l + [node_id]
+        ret = block_nodes + [node_id]
         if len(posts) == 1 and len(self.get_previous_nodes(posts[0])) == 1:
             ret += self.find_linear_block_forward(posts[0], ret)
         if len(ret) > 1:
@@ -582,34 +583,34 @@ class Graph(Parser):
         is a given node already recognized as a possible block
         appendable to the following node (which must be a block)
         """
-        n = self.get_next_nodes(node_id)[0]
-        appendable = (isinstance(self.nodes[n], StructNode)
-                      and self.nodes[n].structtype == 'block')
-        print 'appendable to', n, '...', appendable
+        next_nodes = self.get_next_nodes(node_id)[0]
+        appendable = (isinstance(self.nodes[next_nodes], StructNode)
+                      and self.nodes[next_nodes].structtype == 'block')
+        print 'appendable to', next_nodes, '...', appendable
         return appendable
 
     def append_to_block(self, node_id):
         """ append given node to following block node """
-        n = self.nodes[self.get_next_nodes(node_id)[0]]
-        n.nodes.append(self.nodes[node_id])
+        next_node = self.nodes[self.get_next_nodes(node_id)[0]]
+        next_node.nodes.append(self.nodes[node_id])
         for edge in self.edges:
-            if edge.start == node_id and edge.end == n.id:
-                n.edges.append(Edge(edge.id, node_id, n.start_id, edge.active))
-                n.edges[-1].end = n.start_id
-                n.start_id = node_id
+            if edge.start == node_id and edge.end == next_node.id:
+                next_node.edges.append(Edge(edge.id, node_id, next_node.start_id, edge.active))
+                next_node.edges[-1].end = next_node.start_id
+                next_node.start_id = node_id
                 break
         for edge in self.edges:
-            if edge.start == node_id and edge.end == n.id:
+            if edge.start == node_id and edge.end == next_node.id:
                 self.edges.remove(edge)
         if self.start_node_index == node_id:
-            self.start_node_index = n.id
+            self.start_node_index = next_node.id
         for edge in self.edges:
             if edge.end == node_id:
-                edge.end = n.id
-        n.order_nodes_by_edges()
+                edge.end = next_node.id
+        next_node.order_nodes_by_edges()
         self.remove_nodes([node_id])
         self.edges = list(set(self.edges))
-        return n.id
+        return next_node.id
 
     def calculate_paths(self, start, depth, path=[]):
         """
@@ -674,31 +675,31 @@ class Graph(Parser):
 
     def is_if_then(self, node_id):
         """ is a given node beginning of an if-then-block? """
-        n = self.get_next_nodes(node_id)
-        if len(n) == 2:
-            n1 = n[0]
-            n2 = n[1]
-            n1_next = self.get_next_nodes(n1)
-            n2_next = self.get_next_nodes(n2)
-            if n2 in n1_next and len(self.get_previous_nodes(n1)) == 1 \
-                    and len(self.get_previous_nodes(n2)) >= 2:
+        next_nodes = self.get_next_nodes(node_id)
+        if len(next_nodes) == 2:
+            next_1 = next_nodes[0]
+            next_2 = next_nodes[1]
+            n1_next = self.get_next_nodes(next_1)
+            n2_next = self.get_next_nodes(next_2)
+            if next_2 in n1_next and len(self.get_previous_nodes(next_1)) == 1 \
+                    and len(self.get_previous_nodes(next_2)) >= 2:
                 return len(n1_next) == 1
-            elif n1 in n2_next and len(self.get_previous_nodes(n2)) == 1 \
-                    and len(self.get_previous_nodes(n1)) >= 2:
+            elif next_1 in n2_next and len(self.get_previous_nodes(next_2)) == 1 \
+                    and len(self.get_previous_nodes(next_1)) >= 2:
                 return len(n2_next) == 1
         return False
 
     def is_if_then_else(self, node_id):
         """ is a given node beginning of an if-else-block? """
-        n = self.get_next_nodes(node_id)
-        if len(n) == 2:
-            n1 = n[0]
-            n2 = n[1]
-            n1_next = self.get_next_nodes(n1)
-            n2_next = self.get_next_nodes(n2)
-            if len(
-                    self.get_previous_nodes(n1)) == 1 and len(
-                    self.get_previous_nodes(n2)) == 1:
+        next_nodes = self.get_next_nodes(node_id)
+        if len(next_nodes) == 2:
+            next_1 = next_nodes[0]
+            next_2 = next_nodes[1]
+            n1_next = self.get_next_nodes(next_1)
+            n2_next = self.get_next_nodes(next_2)
+            len_prev_next_1 = len(self.get_previous_nodes(next_1))
+            len_prev_next_2 = len(self.get_previous_nodes(next_2))
+            if len_prev_next_1 == 1 and len_prev_next_2 == 1:
                 return len(n1_next) == 1 and n1_next == n2_next
         return False
 
@@ -716,9 +717,9 @@ class Graph(Parser):
         """ Are we at the beginning of a while-loop? """
         nexts = self.get_next_nodes(node_id)
         for ind in nexts:
-            if node_id in self.get_next_nodes(ind) and len(
-                    self.get_next_nodes(ind)) == 1 and len(
-                    self.get_previous_nodes(ind)) == 1:
+            if node_id in self.get_next_nodes(ind) and \
+                    len(self.get_next_nodes(ind)) == 1 and \
+                    len(self.get_previous_nodes(ind)) == 1:
                 return ind
         return False
 
@@ -733,13 +734,13 @@ class Graph(Parser):
         # end of section structure checks
 
 
-class Node:
+class Node(object):
     """
     a representation of a one-entry, one-exit sequence of code
     """
 
-    def __init__(self, id, code, first, last):
-        self.id = id
+    def __init__(self, id_, code, first, last):
+        self.id = id_
         self.code = code
         self.first_index = first
         self.last_index = last
@@ -748,30 +749,37 @@ class Node:
         self.dominators = []
 
     def reset_flags(self):
-        # deprecated, but still in use.
+        """
+        Deprecated, but still in use.
+        """
         self.flags = {'visited': False, 'reached_multiple': False}
 
     def get_label_if_present(self):
-        # returns a label's name at the beginning of
-        # the code-sequence, if present
+        """
+        Returns a label's name at the beginning of
+        the code-sequence, if present.
+        """
         if isinstance(self.code[0], Label):
             return self.code[0].name
         return ''
 
     def get_code_representation(self):
-        # returns own code as string
+        """
+        Returns own code as string.
+        """
         ret = ''
         for instruction in self.code:
             ret += instruction.__str__() + '\n'
         return ret
 
     def __str__(self):
-        # "pretty" printing
         return '\n=== ' + str(self.id) + ' ' + str(self.first_index) + ' ' + \
                str(self.last_index) + ' ===\n' + self.get_code_representation()
 
     def print_fancy(self, prefix='', child_prefix=''):
-        # used for pseudo-HLL-view, draws nodes and boxes around them
+        """
+        Used for pseudo-HLL-view, draws nodes and boxes around them.
+        """
         print prefix + 'id: ' + str(self.id) + ' type: low-level'
         max_len = 0
         for i in self.get_code_representation().split('\n'):
@@ -783,9 +791,11 @@ class Node:
         print prefix + '+' + '-' * max_len + '+\n' + prefix
 
 
-class StructNode:
-    # a representaton of a structure inside a graph,
-    # placeholder for all nodes inside, e.g. a loop, branch or whatever.
+class StructNode(object):
+    """
+    A representaton of a structure inside a graph,
+    placeholder for all nodes inside, e.g. a loop, branch or whatever.
+    """
 
     def __init__(self, id, nodes, edges, structtype, start_id):
         self.id = id
@@ -794,6 +804,7 @@ class StructNode:
         self.reset_flags()
         self.nodes = nodes
         self.edges = edges
+        self.replaced_edges = []
         self.start_id = start_id
         self.structtype = structtype
         self.hll_info = {}
@@ -801,8 +812,10 @@ class StructNode:
         self.cleanup_edges()
 
     def cleanup_edges(self):
-        # delete any duplicates that might be in the edge-set
-        # due to the reductions that took place.
+        """
+        Delete any duplicates that might be in the edge-set
+        due to the reductions that took place.
+        """
         new_edges = []
         for edge in self.edges:
             found = False
@@ -814,11 +827,15 @@ class StructNode:
         self.edges = new_edges
 
     def reset_flags(self):
-        # deprecated, but still in use.
+        """
+        Deprecated, but still in use.
+        """
         self.flags = {'visited': False, 'reached_multiple': False}
 
     def order_nodes_by_edges(self):
-        # used to make the output look better
+        """
+        Used to make the output look better.
+        """
         cur_node_id = None
         ordered_nodes = []
         if self.structtype in ['do-loop', 'block']:
@@ -847,8 +864,10 @@ class StructNode:
             self.nodes = new_nodes
 
     def get_next_nodes(self, node_id, use_outer_edges=False):
-        # returns a list of all node-id's
-        # that belong to direct successors of a given node
+        """
+        Returns a list of all node-id's
+        that belong to direct successors of a given node.
+        """
         ret = []
         for edge in self.edges:
             if edge.start == node_id:
@@ -860,8 +879,10 @@ class StructNode:
         return list(set(ret))
 
     def get_previous_nodes(self, node_id, use_outer_edges=False):
-        # returns a list of all node-id's that belong to direct
-        # predecessos of a given node
+        """
+        Returns a list of all node-id's that belong to direct
+        predecessos of a given node.
+        """
         ret = []
         for edge in self.edges:
             if edge.end == node_id:
@@ -873,20 +894,26 @@ class StructNode:
         return list(set(ret))
 
     def __str__(self):
-        # "graphical" representation
+        """
+        "Graphical" representation
+        """
         return str(self.id) +\
             ' ' + self.structtype +\
             ' ' + self.get_representation()
 
     def get_representation(self):
-        # output
+        """
+        Used to generate a short representation.
+        """
         ret = ''
         for i in self.nodes:
             ret += str(i.id) + ' '
         return ret
 
     def hll_info_fancy(self):
-        # used for pseudo-HLL-view
+        """
+        Used for pseudo-HLL-view.
+        """
         ret = ''
         for i in self.hll_info:
             if not isinstance(self.hll_info[i], ListType):
@@ -897,13 +924,22 @@ class StructNode:
         return ret
 
     def get_condition_string(self):
+        """
+        If the node is a condition,
+        return a string that's a valid
+        condition in C.
+        """
         if self.structtype == 'condition':
             return self.description
         else:
             return ''
 
     def print_fancy(self, prefix='', child_prefix='|-- '):
-        # pseudo-HLL-view, tree representing code as in C or any other HLL
+        """
+        Pseudo-HLL-view.
+        print a tree representing code
+        as in C or any other HLL
+        """
         print prefix + 'id: ' +\
             str(self.id) + ' type: ' +\
             self.structtype + ' starts at ' +\
@@ -926,9 +962,11 @@ class StructNode:
         print prefix
 
     def compute_hll_info(self):
-        # HLL analysis of the generated structures
-        # used to determine which entrypoint a structure has, as well as
-        # which of it's sub-nodes has which purpose. Sounds awful.
+        """
+        HLL analysis of the generated structures.
+        Used to determine which entrypoint a structure has, as well as
+        which of it's sub-nodes has which purpose. Sounds awful.
+        """
         if self.structtype == 'if-then':
             self.hll_info['condition'] = self.edges[0].start
             for i in self.nodes:
@@ -957,16 +995,27 @@ class StructNode:
                 #    self.hll_info['condition'] = self.nodes[-1].id
 
     def get_condition_from_block(self):
+        """
+        A check-less way to get a condition node from a block
+        inside a do-loop (which is the last node of it).
+        """
         return self.nodes[0].nodes[-1].id
 
     def get_other_node(self, other_id):
-        # helper method.
+        """
+        Helper method. Used to get the second subnode from
+        a structure with two nodes, given the first subnode.
+        """
         if len(self.nodes) == 2:
             for i in self.nodes:
                 if i.id != other_id:
                     return i.id
 
     def get_condition_node(self):
+        """
+        Get the subnode that is the condition of the
+        structure.
+        """
         if 'condition' in self.hll_info:
             for i in self.nodes:
                 if self.hll_info['condition'] == i.id:
@@ -977,6 +1026,9 @@ class StructNode:
                         return i
 
     def get_node_by_id(self, id):
+        """
+        Return the subnode specified by id.
+        """
         for node in self.nodes:
             if node.id == id:
                 return node
@@ -1056,7 +1108,7 @@ class StructNode:
                     pass
 
 
-class Edge:
+class Edge(object):
     # a graph-edge
 
     def __init__(self, id, start, end, active=True):
@@ -1066,18 +1118,24 @@ class Edge:
         self.active = active
 
     def __str__(self):
-        # not so pretty printing
         return str(self.start) + '-' + str(self.end)
 
     def equals(self, other):
-        # are two edges identical?
+        """
+        Wrapper around self.__eq__
+        """
         return self.__eq__(other)
 
     def __eq__(self, other):
-        # are two edges identical?
+        """
+        Are two edges identical?
+        """
         return self.start == other.start and self.end == other.end
 
     def __hash__(self):
+        """
+        Make hashing and thus sorting possible.
+        """
         return hash(self.__str__())
 
 
