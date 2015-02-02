@@ -1,6 +1,6 @@
 @techreport{structural_analysis:1,
 	author={Misha Sharir},
-	institution={New York University, Department of Computer Sciences},
+	institution={},
 	title={Structural Analysis: A new approach to Flow Analysis in Optimizing Compilers},
 	year={1979}
 }

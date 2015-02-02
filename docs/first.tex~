@@ -68,7 +68,7 @@
 %\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, pdftex,pagebackref]{hyperref}
 \renewcommand{\bibname}{Bibliotheksreferenz}
 \renewcommand{\contentsname}{Inhalt}
-\renewcommand{\figurename}{Figur}
+\renewcommand{\figurename}{Fig.}
 
 \title{Besondere Lernleistung - Dokumentation}
 \author{Inokentiy Babushkin}

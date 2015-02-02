@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Grundlagen}{1}
+\contentsline {section}{\numberline {2}Problemantik}{1}
+\contentsline {section}{\numberline {3}Zielsetzung}{2}
+\contentsline {subsection}{\numberline {3.1}Projektstruktur}{2}
+\contentsline {subsection}{\numberline {3.2}Kontrollflussanalyse}{3}
+\contentsline {subsection}{\numberline {3.3}Analyse von Variablen und anderen Daten}{3}
+\contentsline {subsection}{\numberline {3.4}Behandlung von Integerdivision}{3}
+\contentsline {section}{\numberline {4}Umsetzung}{4}
+\contentsline {subsection}{\numberline {4.1}Kontrollflussanalyse}{4}
+\contentsline {subsubsection}{\numberline {4.1.1}Algorithmusbeschreibung und Implementationsdetails}{4}
+\contentsline {subsection}{\numberline {4.2}Datenanalyse}{6}
+\contentsline {subsection}{\numberline {4.3}Optimisierte Intergerdivision}{6}
+\contentsline {subsubsection}{\numberline {4.3.1}Herleitung des Algorithmus}{6}
+\contentsline {section}{\numberline {5}Ausblick}{7}
+\contentsline {section}{Bibliotheksreferenz}{7}

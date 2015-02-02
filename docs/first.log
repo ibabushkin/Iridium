@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  23 DEC 2014 19:08
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  2 FEB 2015 14:12
 entering extended mode
 **first.tex
 (./first.tex
@@ -464,7 +464,29 @@ Package tocloft Note: The document has section divisions.
 \cftbeforesubtabskip=\skip101
 \cftsubtabindent=\skip102
 \cftsubtabnumwidth=\skip103
-) (/usr/share/texmf/tex/latex/preprint/fullpage.sty
+) (/home/thewormkill/texmf/tex/latex/dirtree/dirtree.sty
+Package: dirtree 2012/12/11 v0.32 package wrapper for dirtree
+
+(/home/thewormkill/texmf/tex/latex/dirtree/dirtree.tex
+`dirtree' v0.32, 2012/12/11 (jcc)
+\DT@offset=\dimen138
+\DT@width=\dimen139
+\DT@sep=\dimen140
+\DT@all=\dimen141
+\DT@rulewidth=\dimen142
+\DT@dotwidth=\dimen143
+\DTbaselineskip=\dimen144
+\DT@counti=\count111
+\DT@countii=\count112
+\DT@countiii=\count113
+\DT@countiv=\count114
+\DT@indent=\dimen145
+\DT@parskip=\dimen146
+\DT@baselineskip=\dimen147
+)
+File: dirtree.tex 2012/12/11 v0.32 `dirtree' (jcc)
+)
+(/usr/share/texmf/tex/latex/preprint/fullpage.sty
 Package: fullpage 1999/02/23 1.1 (PWD)
 \FP@margin=\skip104
 )
@@ -479,46 +501,46 @@ Package: amstext 2000/06/29 v2.01
 (/usr/share/texmf/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks20
-\ex@=\dimen138
+\ex@=\dimen148
 ))
 (/usr/share/texmf/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen139
+\pmbraise@=\dimen149
 )
 (/usr/share/texmf/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count111
+\inf@bad=\count115
 LaTeX Info: Redefining \frac on input line 211.
-\uproot@=\count112
-\leftroot@=\count113
+\uproot@=\count116
+\leftroot@=\count117
 LaTeX Info: Redefining \overline on input line 307.
-\classnum@=\count114
-\DOTSCASE@=\count115
+\classnum@=\count118
+\DOTSCASE@=\count119
 LaTeX Info: Redefining \ldots on input line 379.
 LaTeX Info: Redefining \dots on input line 382.
 LaTeX Info: Redefining \cdots on input line 467.
 \Mathstrutbox@=\box52
 \strutbox@=\box53
-\big@size=\dimen140
+\big@size=\dimen150
 LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
-\macc@depth=\count116
-\c@MaxMatrixCols=\count117
+\macc@depth=\count120
+\c@MaxMatrixCols=\count121
 \dotsspace@=\muskip10
-\c@parentequation=\count118
-\dspbrk@lvl=\count119
+\c@parentequation=\count122
+\dspbrk@lvl=\count123
 \tag@help=\toks21
-\row@=\count120
-\column@=\count121
-\maxfields@=\count122
+\row@=\count124
+\column@=\count125
+\maxfields@=\count126
 \andhelp@=\toks22
-\eqnshift@=\dimen141
-\alignsep@=\dimen142
-\tagshift@=\dimen143
-\tagwidth@=\dimen144
-\totwidth@=\dimen145
-\lineht@=\dimen146
+\eqnshift@=\dimen151
+\alignsep@=\dimen152
+\tagshift@=\dimen153
+\tagwidth@=\dimen154
+\totwidth@=\dimen155
+\lineht@=\dimen156
 \@envbody=\toks23
 \multlinegap=\skip106
 \multlinetaggap=\skip107
@@ -543,21 +565,42 @@ Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 (/usr/share/texmf/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2004/03/15  ver 3.1  Verb mode for urls, etc.
+)
+(/usr/share/texmf/tex/latex/mh/mathtools.sty
+Package: mathtools 2004/10/10 v1.01a mathematical typesetting tools (MH)
+
+(/usr/share/texmf/tex/latex/tools/calc.sty
+Package: calc 1998/07/07 v4.1b Infix arithmetic (KKT,FJ)
+\calc@Acount=\count127
+\calc@Bcount=\count128
+\calc@Adimen=\dimen157
+\calc@Bdimen=\dimen158
+\calc@Askip=\skip108
+\calc@Bskip=\skip109
+LaTeX Info: Redefining \setlength on input line 59.
+LaTeX Info: Redefining \addtolength on input line 60.
+\calc@denominator=\count129
+)
+(/usr/share/texmf/tex/latex/mh/mhsetup.sty
+Package: mhsetup 2004/10/10 v1.0b programming setup (MH)
+)
+\g_MT_multlinerow_int=\count130
+\l_MT_multwidth_dim=\dimen159
 ) (./first.aux)
 \openout1 = `first.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
 -------------------- Geometry parameters
 paper: a4paper
 landscape: --
@@ -601,35 +644,35 @@ driver: pdftex
 (/usr/share/texmf/tex/context/base/supp-pdf.tex
 (/usr/share/texmf/tex/context/base/supp-mis.tex
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count123
-\scratchcounter=\count124
+\protectiondepth=\count131
+\scratchcounter=\count132
 \scratchtoks=\toks25
-\scratchdimen=\dimen147
-\scratchskip=\skip108
+\scratchdimen=\dimen160
+\scratchskip=\skip110
 \scratchmuskip=\muskip12
 \scratchbox=\box54
 \scratchread=\read2
 \scratchwrite=\write3
-\zeropoint=\dimen148
-\onepoint=\dimen149
-\onebasepoint=\dimen150
-\minusone=\count125
-\thousandpoint=\dimen151
-\onerealpoint=\dimen152
+\zeropoint=\dimen161
+\onepoint=\dimen162
+\onebasepoint=\dimen163
+\minusone=\count133
+\thousandpoint=\dimen164
+\onerealpoint=\dimen165
 \emptytoks=\toks26
 \nextbox=\box55
-\nextdepth=\dimen153
+\nextdepth=\dimen166
 \everyline=\toks27
-\!!counta=\count126
-\!!countb=\count127
-\recursecounter=\count128
+\!!counta=\count134
+\!!countb=\count135
+\recursecounter=\count136
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count129
-\nofMParguments=\count130
-\MPscratchCnt=\count131
-\MPscratchDim=\dimen154
-\MPnumerator=\count132
+\nofMPsegments=\count137
+\nofMParguments=\count138
+\MPscratchCnt=\count139
+\MPscratchDim=\dimen167
+\MPnumerator=\count140
 \everyMPtoPDFconversion=\toks28
 ) (/usr/share/texmf/tex/latex/ms/ragged2e.sty
 Package: ragged2e 2003/03/25 v2.04 ragged2e Package (MS)
@@ -638,83 +681,82 @@ Package: ragged2e 2003/03/25 v2.04 ragged2e Package (MS)
 Package: everysel 1999/06/08 v1.03 EverySelectfont Package (MS)
 LaTeX Info: Redefining \selectfont on input line 125.
 )
-\CenteringLeftskip=\skip109
-\RaggedLeftLeftskip=\skip110
-\RaggedRightLeftskip=\skip111
-\CenteringRightskip=\skip112
-\RaggedLeftRightskip=\skip113
-\RaggedRightRightskip=\skip114
-\CenteringParfillskip=\skip115
-\RaggedLeftParfillskip=\skip116
-\RaggedRightParfillskip=\skip117
-\JustifyingParfillskip=\skip118
-\CenteringParindent=\skip119
-\RaggedLeftParindent=\skip120
-\RaggedRightParindent=\skip121
-\JustifyingParindent=\skip122
+\CenteringLeftskip=\skip111
+\RaggedLeftLeftskip=\skip112
+\RaggedRightLeftskip=\skip113
+\CenteringRightskip=\skip114
+\RaggedLeftRightskip=\skip115
+\RaggedRightRightskip=\skip116
+\CenteringParfillskip=\skip117
+\RaggedLeftParfillskip=\skip118
+\RaggedRightParfillskip=\skip119
+\JustifyingParfillskip=\skip120
+\CenteringParindent=\skip121
+\RaggedLeftParindent=\skip122
+\RaggedRightParindent=\skip123
+\JustifyingParindent=\skip124
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 74.
+LaTeX Font Info:    Try loading font information for U+msa on input line 79.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 74.
+LaTeX Font Info:    Try loading font information for U+msb on input line 79.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 74.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 79.
 
 (/usr/share/texmf/tex/latex/jknappen/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
+) (./first.toc)
+\tf@toc=\write4
+\openout4 = `first.toc'.
 
-Package multicol Warning: I moved some lines to the next page.
-(multicol)                Footnotes on page 1 might be wrong on input line 92.
+
+Overfull \hbox (12.14302pt too wide) in paragraph at lines 90--107
+\OT1/cmr/m/n/10.95 schwieriger, in bin^^?arer Form vor-liegende Soft-ware-pro-d
+ukte so umzu-for-men, dass sie ein tiefge-hen-des Verst^^?andnis
+ []
 
 [1
 
 {/usr/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 105--105
-[]\OT1/cmss/m/n/10.95 Algorithmusbeschreibung und Im-ple-men-ta-
- []
 
-[2] [3]
-Underfull \hbox (badness 7030) in paragraph at lines 120--121
-\OT1/cmr/m/n/10.95 Nutzern der Reverse-Engineering-Stackexchange
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-(./first.bbl
-Overfull \hbox (5.03444pt too wide) in paragraph at lines 12--14
-[]\OT1/cmr/m/n/10.95 http://de.wikipedia.org/wiki/Kontrollflussgraph.
- []
+[2] [3] [4] [5] [6]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 428.
 
-
-Overfull \hbox (90.6269pt too wide) in paragraph at lines 16--19
-[]\OT1/cmr/m/n/10.95 http://reverseengineering.stackexchange.com/questions/1397
-/how-
- []
-
-) [4] (./first.aux) ) 
+ (/usr/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 428.
+ (./first.bbl)
+[7] (./first.aux) ) 
 Here is how much of TeX's memory you used:
- 4088 strings out of 94500
- 52712 string characters out of 1176766
- 122810 words of memory out of 1000000
- 7166 multiletter control sequences out of 10000+50000
- 16695 words of font info for 65 fonts, out of 500000 for 2000
+ 4579 strings out of 94500
+ 60544 string characters out of 1176766
+ 126501 words of memory out of 1000000
+ 7633 multiletter control sequences out of 10000+50000
+ 17208 words of font info for 67 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,8n,43p,2228b,300s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,8n,43p,223b,301s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 52 PDF objects out of 300000
+ 71 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 65536
-</usr/share/texmf/fonts/type1/bluesky/symbols/msbm10.pfb><
-/usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1
-/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss10.pfb></us
-r/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/b
-luesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/sh
-are/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky
-/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/tex
-mf/fonts/type1/bluesky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/c
-mr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (4 pages, 97662 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/sha
+re/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesk
+y/cm/cmti9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/
+texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/c
+m/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/te
+xmf/fonts/type1/bluesky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
+cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.p
+fb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/t
+ype1/bluesky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb><
+/usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on first.pdf (7 pages, 139139 bytes).
