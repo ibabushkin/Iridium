@@ -1,5 +1,13 @@
 \begin{thebibliography}{1}
 
+\bibitem{wikibook1:7}
+http://en.wikibooks.org/wiki/X86\_Assembly.
+\newblock Eingesehen am 08.02.2015.
+
+\bibitem{wikibook2:8}
+http://en.wikibooks.org/wiki/X86\_Disassembly.
+\newblock Eingesehen am 08.02.2015.
+
 \bibitem{structural_analysis:1}
 Misha Sharir.
 \newblock Structural analysis: A new approach to flow analysis in optimizing

@@ -68,7 +68,7 @@
 %\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, pdftex,pagebackref]{hyperref}
 \renewcommand{\bibname}{Bibliotheksreferenz}
 \renewcommand{\contentsname}{Inhalt}
-\renewcommand{\figurename}{Fig.}
+\renewcommand{\figurename}{Figur}
 
 \title{Besondere Lernleistung - Dokumentation}
 \author{Inokentiy Babushkin}
@@ -86,19 +86,111 @@ umfassend zu planen und umzusetzen.
 Dieses Dokument beschreibt Zielsetzung, Aufbau und konkrete Aspekte der Umsetzung,
 wobei der Hauptaugenmerk auf Algorithmen, Vorgehensweisen und Designentscheidungen liegen wird.
 
+\section{Eine kurze Einführung in Reverse Engineering und Dekompilierung}
+\subsection{Grundlegende Funktionsweise von CPU und die Abstraktion der Assemblersprache}\footnote{
+		Die hier beschriebene Syntax ist die Intel-Syntax, die unter der x86(-64)
+		Architektur am weitesten verbreitet ist.}
+Die CPU, also der Prozessor eienes Computersystems unterteilt jedes mögliche Programm in sogenannte
+Instruktionen, die die kleinste unteilbare Einheit eines Programms darstellen. Es werden
+verschiedene Instruktionsklassen unterschieden. Allgemein ist jede Instruktion nach folgendem Muster
+aufgebaut: Sie besteht aus 2 bis 3 Tokens (Wörtern), wobei der erste den Namen der Instruktion, der
+diese eindeutig kennzeichnet, darstellt. Im Assembler-Jargon wird dieser als \textit{Mnemonic}
+bezeichnet. Die folgenden 1 bis 2 Tokens sind sogenannte \textit{Operanden}, die noch weiter in
+\textit{Source-} und \textit{Destination-} Operand unterteilt werden. Diese sind immer
+eine Referenz auf Daten, auf die die Instruktion angewandt wird. Beispielsweise gibt es
+Instruktionen für Grundrechenarten und bitlogische Operationen, wobei folgende Darstellungsform
+verwendet wird: $$ instruction\ destination[, source]$$
+\subsubsection{Einige häufig anzutreffende Instruktionen}
+\begin{itemize}
+	\item{\textit{add:}} Addiert Source- und Destination-Operand und speichert das Ergebnis in
+		Destination.
+	\item{\textit{sub:}} Subtrahiert den Source- vom Destination Operand und speichert dort das
+		Ergebnis.
+	\item{\textit{mov:}} Kopiert die Daten aus dem Source- in den Destination-Operand.
+	\item{\textit{push:}} Nimmt nur einen Source-Operanden und legt diesen auf dem Stack ab.
+	\item{\textit{pop:}} Nimmt nur einen Destination-Operanden und legt in ihm das letzte
+		Element auf dem Stack ab, was seiner Größe entspricht. Wenn also ein 4 Byte großer
+		Speicherbereich den Destination-Operanden darstellt, werden die obersten 4 Byte auf
+		dem Stack in ihm abgelegt und der Stack entsprechend verkleinert.
+	\item{\textit{cmp:}} Führt einen Vergleich der Operanden durch und setzt entsprechende
+		CPU-Flags. Diese sind in einem speziellen EFLAGS-Register zu finden und sind
+		Boolsche Werte, die über das Ergebnis von Vergleichen etc. Auskunft geben. Es
+		existiert eine Reihe von Instruktionen, die in Abhängigkeit vom Zustand bestimmter
+		Flags ausgeführt werden.
+	\item{\textit{Sprünge:}} Der einfachste Sprung, \textit{jmp}, wird immer ausgeführt und
+		springt zur Adresse / zum Label in seinem einzigen Operanden. Alle anderen
+		Sprnginstruktionen fragen vor der tatsächlichen Sprunginstruktion die CPU-Flags ab,
+		sind also sogenannte \textit{bedingte Sprünge}. Deren Instruktions-Mnemonics fangen
+		in der Regel mir einem \textit{j} an.
+	\item{\textit{call}} Ruft die durch den einzigen Operanden identifizierte Funktion auf.
+\end{itemize}
+Diese Liste ist natürlich bei weitem nicht vollständig, da sie nur dazu gedacht ist, die dem
+Programm beigefügten Test-Cases und Beispiele für vollständige Neulinge verständlicher zu gestalten.
+Um ein umfassendes Grundwissen über Programmierung und Verständnis von Assembler (zwecks
+Reverse-Engineering) zu erlangen, empfehlen sich die unter den Literaturverweisen \cite{wikibook1:7}
+und \cite{wikibook2:8} referenzierten Wikibooks.
+\subsubsection{Funktionen}
+Zum weiteren Verständnis des Projekts ist eine Erklärung von Funktionen in Assembler vonnöten.
+Eine Funktion ist, genau wie in Hochsprachen, ein Codeabschnitt, der blockweise ausgeführt wird,
+wobei innerhalb eines solchen Blocks Verzweigungen möglich sind. Eine Funktion kann Argumente
+(Parameter) annehmen, welche für ihre Funktionsweise notwendig sind und meistens über den Stack
+üergeben werden. Auch kann eine Funktion Variablen mit lokal begrenzter Gültigkeit auf dem eigenen
+Stackframe, dem für jede aufgerufene Instanz individuellen Stackabschnitt, ablegen.
+Dabei muss jede Funktion ihren Stackframe selbst initialisieren und - je nach Aufrufkonvention -
+wieder deinitialisieren. Gleichzeitig legt die Definition der Funktion die Reihenfolge der Parameter
+auf dem Stack fest. Auch dies ist nur eine sehr kurze Einführung in die grundlegenden Konzepte, die
+für das Verständnis von Assembler-Programmen relevant sind. Auch hier sei nochmal auf
+\cite{wikibook1:7} und \cite{wikibook2:8} verwiesen.
+
+\subsection{Compiler, Decompiler und Disassembler}
+Jede Hochsprache, die bis jetzt entwickelt wurde, hatte das Ziel, dem Programmierer ein effizientes
+Werkzeug bereitzustellen, welches verhältnismäßig einfache Softwareentwicklung möglich machen
+sollte, ohne ihn in seiner Handlungsfreiheit zu beschränken. Gleichzeitig soll der gesamte Prozess
+der Entrwicklung für den Programmierer so transparent wie möglich sein.
+Tatsächlich hat sich dieser Ansatz bewährt und erfüllt die Zielvorgaben. Damit die in einer solchen
+Sprache formalisierten Algortihmen auch von einem Prozessor ausgeführt werden können, muss der Quellcode
+erst in eine für den Computer angemessene Form überführt werden, das heißt in die Assemblersprache
+beziehungsweise ihre Representation als einzelne Bytes im Speicher. Genau dies ist die Aufgabe eines
+sogenannten Compilers: Dieses Programm nimmt Hochsprachen-Quellcode als Eingabe und gibt entweder
+Assemblerprogramme oder direkt ausführbare Binärdateien zurück, die das selbe Programm
+repräsentieren. Dabei verlieren die so umgewandelten Programme jedoch viele Informationen, die für
+die Ausführung unerheblich sind, zu ihrem Verständis jedoch entscheidend beitragen: Kommentare,
+Klassenprototypen, Variablennamen und viele weitere Details, die das Lesen von Quellcode durch menschliche
+Nutzer vereinfachen sollen. Wenn ein Programm jedoch nur in Binärform vorliegt,
+ist die Analyse - je nach Komplexität des Analyseziels - kompliziert und
+erfordert fundierte Fachkenntnisse über die Funktionsweise der CPU und grundlegende Konzepte der
+Assemblerprogrammerung, zumal die erwähnten Vereinfachungen und Hilfestellungen der Hochsprachen
+nicht verfügbar sind. Stattdessen besitzt die Assemblersprache - wie im vorangehenden Abschnitt
+eräutert - keine Kontrollstrukturen im eigentlichen Sinn, was es schwierig macht,
+den Kontrollfluss eines Programms, das in dieser Form vorliegt, zu verstehen. Die tatsächliche
+Umwandlung einer Binärdatei in ein Assemblerlisting, welches grundlegende Abstraktionen über
+einzelne Instruktion der CPU bereiststellt, ist Aufgabe eines Disassemblers, der aus diesem Grund
+ein zentrales Wekzeug eines Reverse Engineers darstellt. Durch die allgemeine Ausrichtung eines
+Compilers, nämlich schnell und effizient arbeitenden Code zu generieren und dabei auf (hürdenfreie)
+Menschenlesbarkeit unter Umständen zu verzichten, wird diese Art der Analyse zusehends zeitintensiv.
+Aus diesem Grund gibt es auch einige Ansätze, diesen Prozess komplett zu automatisieren, so dass
+keine oder kaum Nutzrinteraktion notwendig ist, wovon sich die Entwickler eine enorme Beschleunigng
+des Prozesses erhoffen. Diese technischen Lösungen sind als Decompiler bekannt, da sie - im
+Idealfall - die Funktionsweise eines Compilers umkehren. Da diese meist über eine für ein Programm
+überaus komplexe Aufgabe erfüllen, sind es auch in der Regel kommerzielle Produkte, die auf diesem
+Gebiet verhältnismäßig weite Verbreitung finden, wobei auch eine Anzahl von Open-Source-Projekten
+sich mit dieser Zielsetzung befassen.
+
 \section{Problemantik}
-Das erklärte Ziel dieses Projekts ist es, ein Programm zu schreiben, welches
+Das erklärte Ziel dieses Projekts ist es, ein Programm zu entwickeln, welches
 es ermöglicht, Software teilweise automatisch zu dekompilieren. Da moderne Software immer kompexer
 wird, wird es entsprechend schwieriger, in binärer Form vorliegende Softwareprodukte so umzuformen,
-dass sie ein tiefgehendes Verständnis und darauf basierende Modifikation erlauben. Aus diesem Grund
+dass sie ein tiefgehendes Verständnis und darauf basierende Modifikation erlauben.
+Dies betrifft nicht nur die Untersuchung von fremder Software, sondern auch die Wiederherstellung
+von Quellcode aus alten, beendeten oder sonstwie des Quellcodes verlustig gewordenen Projekten. Aus diesem Grund
 werden bereits seit einiger Zeit Ansätze unternommen, diesen Vorgang so weit wie möglich zu automatisieren.
-Die Gründe dafür sind, dass die Wiederherstellung von Kontrollfluss, Variablen, Funktionen und
-weiteren HLL\footnote{High Level Language, also Programmiersprache mit hohem Abstraktionsgrad, bekannte
-Beispiele für kompilierte HLL's sind C, C++ und Java}-spezifischen Strukturen ohnehin nicht komplett
-möglich ist, das Ergebnis also bloß eine Annäherung an den Originalcode sein kann. Gleichzeitig ist
-der Vorgang - von Menschen durchgeführt - sehr zeitraubend, erfordert viel Fachwissen und
-detaillierte Kenntnisse über die Funktionsweise der zu untersuchenden Software. All dies lässt es
-vorteilhaft erscheinen, die recht "undankbare" Aufgabe des Reverse-Engineerings auf ein
+Die Hauptargumente für eine solche Vorgehensweise sind, dass die Wiederherstellung von Kontrollfluss,
+Variablen, Funktionen und weiteren HLL\footnote{High Level Language, also Programmiersprache mit hohem
+Abstraktionsgrad, bekannte Beispiele für kompilierte HLL's sind C, C++ und Java}-spezifischen Strukturen
+ohnehin nicht komplett möglich ist, das Ergebnis also bloß eine Annäherung an den Originalcode sein kann.
+Gleichzeitig ist der Vorgang - von Menschen durchgeführt - sehr zeitraubend, erfordert viel
+Fachwissen und möglichst detaillierte Kenntnisse über die Funktionsweise der zu untersuchenden Software.
+All dies lässt es vorteilhaft erscheinen, die recht "undankbare" Aufgabe des Reverse-Engineerings auf ein
 automatisiertes System zu verlagern, vorausgesetzt das Ziel ist der komplette Quellcode des zu
 untersuchenden Produkts. Diese Systeme beruhen auf verschiedenen theoretischen Ansätzen,
 Programme zu beschreiben und Muster in ihnen zu erkennen, die in ihrer Komplexität stark variieren.
@@ -116,15 +208,16 @@ verschiedene Bereiche des Analysegebiets abdecken. Die Entscheidung, keinen komp
 anzustreben wurde aus mehreren Gründen getroffen: Zum Einen ist automatisierte Programmanalyse recht
 genau, kann jedoch trotz allem Fehler erzeugen. Deswegen ist es  deutlich günstiger, eine
 transparente Arbeitsweise und eine enge Zusammenarbeit zwischen Benutzer und System zu ermöglichen,
-da auf diese Weise Fehler deutlich schneller gefunden und behoben werden können. Zum Anderen sind
+da auf diese Weise Fehler deutlich schneller gefunden und behoben werden können, was die Qualität
+der Arbeit des Nutzers wesentlich verbessert und ihm eine enorme Zeitersparnis ermöglicht. Zum Anderen sind
 viele Funktionen und Features in einem solchen Projekt machbar und können auch mehr oder weniger
 einfach integriert werden, obwohl sie kaum Nutzen erbringen, da das Verhältnis zwischen
-Ergebnisqualität und Programmkomplexität zu schlecht ist. Folglich ist es sinnvoll, sich auf die
-wesentlichen Aufgabenstellungen zu beschränken, so dass der Aufwand in Relation zum erbrachten
-Nutzen steht.
+Ergebnisqualität und Programmkomplexität zu schlecht ist und die erbrachten Resultate zu fragil.
+Folglich ist es sinnvoll, sich auf die wesentlichen Aufgabenstellungen zu beschränken, so dass
+der Aufwand in Relation zum erbrachten Nutzen steht.
 
 \section{Zielsetzung} Wie bereits im letzten Abschnitt erwähnt, handelt es sich bei diesem Projekt
-um ein Analyseframework zur (teilweisen) Dekompilierung von Software, wobei auch eine Vielzahl
+um ein Analyseframework zur teilweisen Dekompilierung von Software, wobei auch eine Vielzahl
 weiterer Reverse-Engineering\footnote{Der Prozess, Software oder andere technische Systeme in ihrem
 Aufbau und Verhalten zu analysieren, um sie zu reproduzieren, zu modifizieren oder das dabei
 gewonnene Wissen weiterzuverwenden, z.B. um Anti-Malware Routinen zu entwickeln}-Aufgaben mit seiner
@@ -137,22 +230,27 @@ Eingabeformate mithilfe weiterer Module zu akzeptieren, ohne Änderungen in der 
 umsetzen zu müssen. Die Umsetzung des Moduls für IDA wurde zuerst durchgeführt, da diese keine
 wesentliche Verarbeitung der Eingabe erfordert, um die für die Programmmechanik notwendigen
 Informationen bereitzustellen, weswegen ein solches Modul sich besonders gut als
-Demonstrationsbeispiel eignet.
+Demonstrationsbeispiel eignet. Für mehr Informationen zum Projektaufbau und eine graphische
+Darstellung sei auf den gleichnamigen Abschnitt verwiesen.
 
 \subsection{Projektstruktur} Um eine Erweiterung im Sinne des vorhergehenden Abschnittes zu
 gewährleisten, ist es besonders wichtig, eine sinnvole Aufteilung des Codes in einzelne Module
-durchzuführen. Auch sonst gehört es zum "guten Stil", Programme in Sinneinheiten zu koppeln.
+durchzuführen. Auch sonst gehört es zu einem  "guten Stil", Programme in Sinneinheiten zu koppeln.
 Wie bereits erwähnt, wird deswegen das Projekt grob in zwei zentrale Teile unterteilt: Die
 tatsächlichen Analysemodule, die alle eine Eingabe in einem bestimmten Format erwarten, und Module,
 die den Zweck erfüllen, Daten in diesem Format bereitzustellen und diese aus verschiedenen
-Eingabeformaten generieren. Die Ordnerstruktur sieht folgendermaßen aus und wird primär verwendet,
-um das Projekt zu strukturieren. An der Wurzel der Ordnerstruktur liegen die einzelnen Module, die
-Eingabe verarbeiten und in ein Format umwandeln, welches von den Analysemodulen verwendet wird.
-Diese wiederum befinden sich innerhalb des Moduls \textit{defines}, welches pro Submodul einen
-Unterordner besitzt. Jedes dieser Submodule kann sowohl alleinsthend, also als Script, als auch als
-Modul benutzt, also imporiert werden. Auf diese Weise sind die einzelnen Komponenten
-Kommunikationsfähig, jedoch trotzdem nur wenn notwendig voneinander abhängig, so dass Erweiterung
-und Modifikation sehr einfach zu bewerkstelligen ist.
+Eingabeformaten generieren. Die Ordnerstruktur sieht aus, wie in Figur 1 dargestellt und wird
+primär verwendet, um das Projekt zu strukturieren. An der Wurzel der Ordnerstruktur liegen die
+einzelnen Module, die Eingabe verarbeiten und in ein Format umwandeln, welches von den Analysemodulen
+verwendet wird. Diese wiederum befinden sich innerhalb des Moduls \textit{defines}, welches pro
+Submodul einen Unterordner besitzt. Jedes dieser Submodule kann sowohl alleinstehend, also als
+Script, als auch als Modul benutzt bzw. imporiert werden. Auf diese Weise sind die
+einzelnen Komponenten fähig, miteinander in Kontakt zu treten und auf die Funktionalität anderer
+Module zuzugreifen, jedoch ohne zu sehr voneinander abhängig zu sein, so dass Erweiterung und
+Modifikation sehr einfach zu bewerkstelligen ist. Beispielsweise sind so ohne Weiteres andere
+Eingabeparsing-Module denkbar, als die bereits mitgelieferten. Ebenfalls kann die Analyse um weitere
+Aspekte des zu untersuchenden Programms erweitert werden, sollte dies sich als notwendig
+herausstellen.
 %\newpage
 \begin{figure}[h!]
 %	\centering
@@ -170,8 +268,8 @@ und Modifikation sehr einfach zu bewerkstelligen ist.
 \end{figure}
 \subsection{Kontrollflussanalyse} \label{sec:CFA} Einer der zentralen Aspekte moderner wie
 historischer Programme ist die Möglichkeit, Code in Abhängigkeit von Bedingungen ausführen zu
-können. Die am weitesten bekannten Beispiele sind verschiedene Arten Bedingter Anweisungen, Schleifen u.ä. Diese
-Beziehungen zwischen den einzelnen Teilen des Codes wiederherstellen zu können ist eine der
+können. Die am weitesten bekannten Beispiele sind verschiedene Arten Bedingter Anweisungen, Schleifen
+u.ä. Diese Beziehungen zwischen den einzelnen Teilen des Codes wiederherstellen zu können ist eine der
 Hauptaufgaben dieses Projekts. Dabei ist diese Zielsetzung keineswegs trivial, zumal Strukturen
 linear und nicht linear verschachtelt\footnote{Strukturen in einem CFG bestehen in der Regel aus
 zwei oder Mehr Teilen, wobei sogenannte primitive Teile einfache Knoten des Kontrollflussgraphen
@@ -431,6 +529,14 @@ einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch
 	\item{Gegebenenfalls sollte eine Unterstützung von \textit{break}, \textit{continue},
 		\textit{goto} und \textit{return} in die Kontrollflussanalyse eingebunden werden.}
 \end{itemize}
+Gleichzeitig ist das Projekt durchaus recht weit seiner Fertigstellung fortgeschritten, unter
+anderem, da alle Features einem sehr gründlichen System an Testläufen unterzogen wurden, die auch
+auf Integration mit dem Restsystem ausgerichtet sind, was bedeutet, dass Tests, die einzelnen
+Bausteinen eines Moduls gelten so konzipiet sind, dass aus ihren Ergebnissen auf das Verhalten des
+Systems in veränderten Kontexten geschlossen werden kann. Auf diese Weise wird verhndert, dass
+einzelne Fehler in bestimmten Eingabekonfigurationen auftreten können. Dies ist besonders für das
+Kontrollflussanalysemodul wichtig, da dieses mit Abstand am komplexesten ist, weswegen auch
+zukünftige Erweiterungen sehr streng auf ihre Interoperabilität geprüft werden müssen.
 
 \bibliography{first}
 \bibliographystyle{unsrt}

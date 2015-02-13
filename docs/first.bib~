@@ -1,6 +1,6 @@
 @techreport{structural_analysis:1,
 	author={Misha Sharir},
-	institution={},
+	institution={New York University, Department of Computer Sciences},
 	title={Structural Analysis: A new approach to Flow Analysis in Optimizing Compilers},
 	year={1979}
 }
@@ -25,4 +25,12 @@ division-modulo-by-constant-operations},
 @misc{wiki3:6,
 	howpublished={http://de.wikipedia.org/wiki/Binärbaum},
 	note={Eingesehen am 31.01.2015}	
+}
+@misc{wikibook1:7,
+	howpublished={http://en.wikibooks.org/wiki/X86\_Assembly},
+	note={Eingesehen am 08.02.2015}
+}
+@misc{wikibook2:8,
+	howpublished={http://en.wikibooks.org/wiki/X86\_Disassembly},
+	note={Eingesehen am 08.02.2015}
 }
