@@ -15,10 +15,10 @@ import argparse
 import sys
 
 from Iridium.defines.util.instructions import Instruction
-from Iridium.defines.util.parser import Parser
+from Iridium.defines.util.parser import CodeCrawler
 
 
-class DataParser(Parser):
+class DataParser(CodeCrawler):
     """
     Intended to parse a program regarding the data it uses.
     Similar to Graph (at least consdering the level of abstraction
@@ -29,7 +29,7 @@ class DataParser(Parser):
         """
         Prepare everything for analysis.
         """
-        Parser.__init__(self, text)
+        CodeCrawler.__init__(self, text)
         self.addressed_offsets = []  # used to determine class 0 vars
         self.variables = []  # used for class 0 vars
         self.real_variables = []  # class 1 vars

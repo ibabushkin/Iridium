@@ -15,7 +15,7 @@ import sys
 import math
 
 from Iridium.defines.util.instructions import Instruction
-from Iridium.defines.util.parser import Parser
+from Iridium.defines.util.parser import CodeCrawler
 
 
 def hex2signeddecimal(hexstr):
@@ -38,7 +38,7 @@ def get_divisor(magic, rshift, bitness=32):
         math.ceil((2.0 ** (bitness + rshift)) / (magic + 2 ** bitness)))
 
 
-class DivisionParser(Parser):
+class DivisionParser(CodeCrawler):
 
     """
     The class retrieving and workiing on the information
@@ -50,7 +50,7 @@ class DivisionParser(Parser):
         Set default threshold vales and prepare
         for analysis.
         """
-        Parser.__init__(self, text)
+        CodeCrawler.__init__(self, text)
         self.next_imul = 5  # a threshold value, see help
         self.next_sar = 9  # see directly above
 

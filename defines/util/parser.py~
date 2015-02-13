@@ -12,7 +12,7 @@ from Iridium.defines.util.instructions import Instruction
 from Iridium.defines.util.labels import Label
 
 
-class Parser(object):
+class CodeCrawler(object):
     """
     The parent class for all modules.
     Intended to extract the code and make
@@ -36,7 +36,7 @@ class Parser(object):
                 tokens = line.split(' ')
                 if len(tokens) > 0:
                     mnemonic = tokens[0]
-                    operands = line[len(m) + 1:]
+                    operands = line[len(mnemonic) + 1:]
                     lines.append(Instruction(index, 0, mnemonic, operands))
             index += 1
         return lines

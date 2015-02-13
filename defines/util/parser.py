@@ -12,7 +12,7 @@ from Iridium.defines.util.instructions import Instruction
 from Iridium.defines.util.labels import Label
 
 
-class Parser(object):
+class CodeCrawler(object):
     """
     The parent class for all modules.
     Intended to extract the code and make

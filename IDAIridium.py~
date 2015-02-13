@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 File: IDAIridium.py
 Author: Inokentiy Babushkin
@@ -17,6 +18,7 @@ import re
 
 from Iridium.defines.util.labels import Function
 from Iridium.defines.cfg.graph import Graph
+from Iridium.defines.cfg.analyzer import GraphAnalyzer
 from Iridium.defines.data.data import DataParser
 from Iridium.defines.div.division import DivisionParser
 

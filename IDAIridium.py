@@ -18,6 +18,7 @@ import re
 
 from Iridium.defines.util.labels import Function
 from Iridium.defines.cfg.graph import Graph
+from Iridium.defines.cfg.analyzer import GraphAnalyzer
 from Iridium.defines.data.data import DataParser
 from Iridium.defines.div.division import DivisionParser
 
@@ -116,7 +117,8 @@ class AssemblyParser(object):
                 FILENAME_EXTENSIONS['cfg']),
             'wb')
         graph = Graph(listing)
-        graph.reduce()
+        analyzer = GraphAnalyzer(graph)
+        analyzer.reduce()
         sys.stdout = stdout
 
     def dataflow_analysis(self, listing):
