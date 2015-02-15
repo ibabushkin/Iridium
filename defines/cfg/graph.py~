@@ -9,8 +9,6 @@ Description: A module intended for controlflow-analysis,
 generating a graph from a assembly listing and representing it.
 """
 
-import argparse
-import sys
 
 from Iridium.defines.util.labels import Label
 from Iridium.defines.util.tree import Tree
@@ -24,8 +22,6 @@ class Graph(CodeCrawler):
     of analyzing itself and recovering HLL-structures from the code.
     Works using an extended version of the algorithm described by
     M. Sharir in his paper (see documentation).
-    TODO: Intended to be only a representation, the analysis code will be moved
-          a GraphAnalyzer class.
     """
     def __init__(self, text):
         """
@@ -156,7 +152,6 @@ class Graph(CodeCrawler):
             if not found:
                 nodes.pop(node_id, None)
         self.nodes = nodes
-        # TODO: This probably won't need any change.
 
     def clean_edges(self):
         """
@@ -167,7 +162,6 @@ class Graph(CodeCrawler):
         for edge in self.edges:
             if edge.end not in self.nodes or edge.start not in self.nodes:
                 self.edges.remove(edge)
-        # TODO: See previous.
 
     def find_node_by_label(self, label_name):
         """
@@ -184,7 +178,6 @@ class Graph(CodeCrawler):
                 if node.code[0].name == label_name:
                     return node
         return None
-        # TODO: Keep in Graph.
 
     def remove_nodes(self, id_list):
         """
@@ -193,7 +186,6 @@ class Graph(CodeCrawler):
             id_list -- a list of int's
         """
         self.nodes = {i: self.nodes[i] for i in self.nodes if i not in id_list}
-        # TODO: Keep in Graph.
 
     def get_nodes(self, id_list):
         """
@@ -280,8 +272,48 @@ class StructNode(object):
         self.start_id = start_id
         self.structtype = structtype
         self.hll_info = {}
+        self.struct_nodes = {}
+        self.structs = {}
+        self.tree = None
+        self.current_id = 'a'
+        if self.structtype == 'condition':
+            self.generate_dfs_tree()
+            print 'POST'
+            print 'ORDER'
+            print self.tree.postorder()
         self.compute_hll_info()
         self.cleanup_edges()
+
+    def generate_dfs_tree(self):
+        """
+        Generates a dfs-tree for the graph.
+        This function uses self.visit_depth_first and
+        sets the tree up. In most cases, you won't need
+        to call it, since self.tree does not change during
+        runtime.
+        """
+        self.tree = Tree(self.get_node_by_id(self.start_id))
+        for node in self.nodes:
+            node.reset_flags()
+        self.visit_depth_first(self.start_id)
+
+    def visit_depth_first(self, node_id):
+        """
+        Performs depth-first-traversal of the graph
+        Keyword arguments:
+            node_id -- id of node from which the traversal
+                       should start working recursively
+        Results:
+            self.tree contains a Tree-instance / the DFS-Tree
+            of the graph.
+        """
+        self.get_node_by_id(node_id).flags['traversed'] = True
+        cur_node = self.tree.current_node
+        for next_node_id in self.get_next_nodes(node_id):
+            if 'traversed' not in self.get_node_by_id(next_node_id).flags:
+                self.tree.append(self.get_node_by_id(next_node_id))
+                self.visit_depth_first(next_node_id)
+            self.tree.current_node = cur_node
 
     def cleanup_edges(self):
         """
@@ -340,30 +372,59 @@ class StructNode(object):
         Returns a list of all node-id's
         that belong to direct successors of a given node.
         """
+        if node_id in self.structs:
+            if node_id = self.struct_nodes[self.structs[node_id]][0]:
+                return self.get_next_nodes(
+                    self.structs[node_id], use_outer_edges)
         ret = []
-        for edge in self.edges:
-            if edge.start == node_id:
-                ret.append(edge.end)
-        if use_outer_edges:
-            for edge in self.replaced_edges:
+        if isinstance(node_id, int):
+            for edge in self.edges:
                 if edge.start == node_id:
                     ret.append(edge.end)
-        return list(set(ret))
+            if use_outer_edges:
+                for edge in self.replaced_edges:
+                    if edge.start == node_id:
+                        ret.append(edge.end)
+            new_ret = []
+            for n_id in ret:
+                if n_id in self.structs:
+                    new_ret.append(self.structs[n_id])
+                else:
+                    new_ret.append(n_id)
+            return list(set(new_ret))
+        else:
+            return self.get_next_nodes(
+                self.struct_nodes[node_id][1],
+                use_outer_edges)
 
     def get_previous_nodes(self, node_id, use_outer_edges=False):
         """
         Returns a list of all node-id's that belong to direct
         predecessos of a given node.
         """
+      #  if node_id in self.structs:
+     #       return self.get_previous_nodes(
+    #            self.structs[node_id], use_outer_edges)
         ret = []
-        for edge in self.edges:
-            if edge.end == node_id:
-                ret.append(edge.start)
-        if use_outer_edges:
-            for edge in self.replaced_edges:
+        if isinstance(node_id, int):
+            for edge in self.edges:
                 if edge.end == node_id:
-                    ret.append(edge.end)
-        return list(set(ret))
+                    ret.append(edge.start)
+            if use_outer_edges:
+                for edge in self.replaced_edges:
+                    if edge.end == node_id:
+                        ret.append(edge.end)
+            new_ret = []
+            for n_id in ret:
+                if n_id in self.structs:
+                    new_ret.append(self.structs[n_id])
+                else:
+                    new_ret.append(n_id)
+            return list(set(new_ret))
+        else:
+            return self.get_previous_nodes(
+                self.struct_nodes[node_id][0],
+                use_outer_edges)
 
     def __str__(self):
         """
@@ -439,21 +500,27 @@ class StructNode(object):
         Used to determine which entrypoint a structure has, as well as
         which of it's sub-nodes has which purpose. Sounds awful.
         """
+        true_node = None
+        false_node = None
         if self.structtype == 'if-then':
             self.hll_info['condition'] = self.edges[0].start
             for i in self.nodes:
                 if i.id != self.edges[0].start:
                     self.hll_info['then'] = i.id
+                    true_node = i.id
         elif self.structtype == 'if-then-else':
             self.hll_info['condition'] = self.edges[0].start
             for i in self.edges:
                 if not i.active:
                     self.hll_info['then'] = i.end
+                    true_node = i.end
                 else:
                     self.hll_info['else'] = i.end
+                    false_node = i.end
         elif self.structtype == 'while-loop':
             self.hll_info['condition'] = self.start_id
             self.hll_info['body'] = self.get_other_node(self.start_id)
+            true_node = self.get_other_node(self.start_id)
         elif self.structtype == 'do-loop':
             self.hll_info['condition'] = self.get_other_node(self.start_id)
             self.hll_info['body'] = self.start_id
@@ -465,6 +532,54 @@ class StructNode(object):
                 # else:
                 #    self.order_nodes_by_edges()
                 #    self.hll_info['condition'] = self.nodes[-1].id
+            true_node = self.start_id
+        if 'condition' in self.hll_info:
+            self.get_node_by_id(self.hll_info['condition']).compute_condition(
+                true_node, false_node)
+
+    def compute_condition(self, node_true, node_false):
+        import pdb; pdb.set_trace()
+        for node_id in self.tree.postorder():
+            while True:
+                next_nodes = self.get_next_nodes(node_id, True)
+                followup = None
+                secondary = None
+                next_nodes_1 = self.get_next_nodes(next_nodes[0], True)
+                next_nodes_2 = self.get_next_nodes(next_nodes[1], True)
+                if next_nodes[0] in next_nodes_2:
+                    followup, secondary = next_nodes
+                elif next_nodes[1] in next_nodes_1:
+                    secondary, followup = next_nodes
+                if isinstance(node_id, int):
+                    desc_primary = str(node_id)
+                else:
+                    desc_primary = self.struct_nodes[node_id][2]
+                if isinstance(secondary, int):
+                    desc_secondary = str(secondary)
+                elif isinstance(secondary, str):
+                    desc_secondary = self.struct_nodes[secondary][2]
+                if followup and len(self.get_previous_nodes(secondary, True)) == 1:
+                    if followup == node_true:
+                        self.struct_nodes[
+                            self.current_id] = (
+                                node_id, secondary,
+                                '(' + desc_primary + ' || ' + desc_secondary + ')')
+                        self.structs[node_id] = self.current_id
+                        node_id = self.current_id
+                        self.structs[secondary] = self.current_id
+                        self.current_id = chr(ord(self.current_id)+1)
+                    elif followup == node_false or not self.get_node_by_id(followup):
+                        self.struct_nodes[
+                            self.current_id] = (
+                                node_id, secondary,
+                                '(' + desc_primary + ' && ' + desc_secondary + ')')
+                        self.structs[node_id] = self.current_id
+                        node_id = self.current_id
+                        self.structs[secondary] = self.current_id
+                        self.current_id = chr(ord(self.current_id)+1)
+                else:
+                    break
+        self.description = self.struct_nodes[chr(ord(self.current_id)-1)][2]
 
     def get_condition_from_block(self):
         """
@@ -535,6 +650,4 @@ class Edge(object):
         Make hashing and thus sorting possible.
         """
         return hash(self.__str__())
-
-
 

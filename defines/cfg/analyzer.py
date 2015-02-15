@@ -75,6 +75,7 @@ class GraphAnalyzer(object):
         """
         Reduces the graph, prepares the enviroment
         """
+        self.graph.print_graph()
         self.generate_dfs_tree()
         self.postorder = self.tree.postorder()
         print '=================='
@@ -577,6 +578,6 @@ if __name__ == '__main__':
         SOURCE = ARGS.source
     if ARGS.output:
         sys.stdout = open(ARGS.output, 'wb')
-    lines = [line.strip('\n') for line in open(SOURCE, 'rb').readlines()]
-    graph_analyzer = GraphAnalyzer(Graph(lines))
-    graph_analyzer.reduce()
+    LINES = [line.strip('\n') for line in open(SOURCE, 'rb').readlines()]
+    GRAPH_ANALYZER = GraphAnalyzer(Graph(LINES))
+    GRAPH_ANALYZER.reduce()
