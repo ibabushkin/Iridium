@@ -75,6 +75,7 @@ class GraphAnalyzer(object):
         """
         Reduces the graph, prepares the enviroment
         """
+        self.graph.print_graph()
         self.generate_dfs_tree()
         self.postorder = self.tree.postorder()
         print '=================='

@@ -373,7 +373,7 @@ class StructNode(object):
         that belong to direct successors of a given node.
         """
         if node_id in self.structs:
-            if node_id = self.struct_nodes[self.structs[node_id]][0]:
+            if node_id == self.struct_nodes[self.structs[node_id]][0]:
                 return self.get_next_nodes(
                     self.structs[node_id], use_outer_edges)
         ret = []
@@ -537,8 +537,28 @@ class StructNode(object):
             self.get_node_by_id(self.hll_info['condition']).compute_condition(
                 true_node, false_node)
 
+    def get_edge_by_endpoints(self, start, end):
+        """
+        Get an edge-instance which is identified by its start-
+        and endpoint.
+        """
+        print start, end
+        if isinstance(start, str):
+            start = self.struct_nodes[start][1]
+            print 'START', start
+        if isinstance(end, str):
+            end = self.struct_nodes[end][0]
+            print 'END', end
+        for edge in self.edges:
+            if edge.start == start and edge.end == end:
+                return edge
+
     def compute_condition(self, node_true, node_false):
-        import pdb; pdb.set_trace()
+        """
+        Compute how the nodes are logically connected in a complex
+        condition. Works for || and &&, which should be sufficient.
+        """
+        # import pdb; pdb.set_trace()
         for node_id in self.tree.postorder():
             while True:
                 next_nodes = self.get_next_nodes(node_id, True)
@@ -556,23 +576,30 @@ class StructNode(object):
                     desc_primary = self.struct_nodes[node_id][2]
                 if isinstance(secondary, int):
                     desc_secondary = str(secondary)
+                    if not self.get_edge_by_endpoints(secondary,
+                                                      followup).active:
+                        desc_secondary = '!' + desc_secondary
                 elif isinstance(secondary, str):
                     desc_secondary = self.struct_nodes[secondary][2]
-                if followup and len(self.get_previous_nodes(secondary, True)) == 1:
+                if followup and \
+                        len(self.get_previous_nodes(secondary, True)) == 1:
                     if followup == node_true:
                         self.struct_nodes[
                             self.current_id] = (
                                 node_id, secondary,
-                                '(' + desc_primary + ' || ' + desc_secondary + ')')
+                                '(' + desc_primary + ' || ' +
+                                desc_secondary + ')')
                         self.structs[node_id] = self.current_id
                         node_id = self.current_id
                         self.structs[secondary] = self.current_id
                         self.current_id = chr(ord(self.current_id)+1)
-                    elif followup == node_false or not self.get_node_by_id(followup):
+                    elif followup == node_false or not \
+                            self.get_node_by_id(followup):
                         self.struct_nodes[
                             self.current_id] = (
                                 node_id, secondary,
-                                '(' + desc_primary + ' && ' + desc_secondary + ')')
+                                '(' + desc_primary + ' && ' +
+                                desc_secondary + ')')
                         self.structs[node_id] = self.current_id
                         node_id = self.current_id
                         self.structs[secondary] = self.current_id
