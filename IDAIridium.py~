@@ -16,12 +16,14 @@ import os
 import argparse
 import re
 
+# import the submodules
 from Iridium.defines.util.labels import Function
 from Iridium.defines.cfg.graph import Graph
 from Iridium.defines.cfg.analyzer import GraphAnalyzer
 from Iridium.defines.data.data import DataParser
 from Iridium.defines.div.division import DivisionParser
 
+# import the settings
 from Iridium.settings import RESULTS_DIR_NAME_SUFFIX
 from Iridium.settings import SKIP_FILE_EXTENSION_FOR_DIRNAME
 from Iridium.settings import FILENAME_EXTENSIONS
@@ -117,7 +119,8 @@ class AssemblyParser(object):
                 FILENAME_EXTENSIONS['cfg']),
             'wb')
         graph = Graph(listing)
-        graph.reduce()
+        analyzer = GraphAnalyzer(graph)
+        analyzer.reduce()
         sys.stdout = stdout
 
     def dataflow_analysis(self, listing):

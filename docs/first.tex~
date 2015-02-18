@@ -525,9 +525,15 @@ einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch
 \begin{itemize}
 	\item{Die Dokumentation muss verbessert werden.}
 	\item{Die Analyse reduzierter Bedingungen muss umgesetzt werden.}
-	\item{Das CFG-Modul muss restrukturiert werden, um es stylistisch zu verbessern.}
+	\item{Das CFG-Modul muss restrukturiert werden, um es stylistisch zu verbessern. Dies wurde
+		bereits teilweise umgesetzt, ob tatsächlich weitere Umstrukturierungen notwendig sind,
+		wird sich mit der Weiterentwicklung zeigen.}
 	\item{Gegebenenfalls sollte eine Unterstützung von \textit{break}, \textit{continue},
 		\textit{goto} und \textit{return} in die Kontrollflussanalyse eingebunden werden.}
+	\item{Derzeit unterstützt das Projekt keine Sprünge an zur Laufzeit berechnete Adressen. Gegebenenfalls
+		sollte eine Unterstützung für diese Strukturen implementiert werden. Zur Zeit ist dies
+		jedoch vermutlich nicht notwendig, da solche Sprünge aufgrund ihrer recht geringen Effizienz
+		kaum von Compilern verwendet werden.}
 \end{itemize}
 Gleichzeitig ist das Projekt durchaus recht weit seiner Fertigstellung fortgeschritten, unter
 anderem, da alle Features einem sehr gründlichen System an Testläufen unterzogen wurden, die auch

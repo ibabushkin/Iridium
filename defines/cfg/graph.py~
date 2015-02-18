@@ -85,17 +85,22 @@ class Graph(CodeCrawler):
         current_edge_id = 0
         for index, instruction in enumerate(self.code):
             if isinstance(instruction, Label):
+                # found a label, which is the beginning of a node.
                 self.delimiter_lines.append(index)
             elif instruction.is_jump():
+                # found a jump, which is the end of a node
                 self.delimiter_lines.append(index + 1)
             elif (instruction.mnemonic in ['cmp', 'test']
                   and index - 1 not in self.delimiter_lines):
+                # found a comparison, which is used as the beginning of a node
+                # to make sure conditions and code are separated.
                 self.delimiter_lines.append(index)
         self.delimiter_lines = [0] + \
             sorted(list(set(self.delimiter_lines))) + \
             [len(self.code)]
         for index, content in enumerate(self.delimiter_lines):
             if content != len(self.code):
+                # create a node.
                 code_lines = self.code[content:self.delimiter_lines[index + 1]]
                 if len(code_lines) > 0:
                     self.nodes[current_node_id] = Node(
@@ -105,16 +110,20 @@ class Graph(CodeCrawler):
                         self.delimiter_lines[index + 1])
                     current_node_id += 1
         for node_index in self.nodes:
-            print self.nodes[node_index]
+            # print self.nodes[node_index]
             node = self.nodes[node_index]
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
                 destination = self.find_node_by_label(destination)
                 if destination:
+                    # insert an edge for a jump.
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id))
                     current_edge_id += 1
                 else:
+                    # oops! Should not happen, unless we have
+                    # calls by jump or jumps to locations cal-
+                    # culated at runtime.
                     print 'encountered jump to non-local\
                     destination, probably a call.'
             if node.code[-1].is_conditional_jump() \
@@ -129,10 +138,11 @@ class Graph(CodeCrawler):
                     # or simply the next instruction line. Used to determine
                     # the then/else relationships in if-then-else structures.
                     current_edge_id += 1
-        self.start_node_index = 0
-        self.end_node_index = len(self.nodes) - 1
+        self.start_node_index = 0  # The functions's entrypoint.
+        self.end_node_index = len(self.nodes) - 1  # The last node.
+        # make inserting StructNodes possible:
         self.largest_id = current_node_id
-        self.remove_dead_code()
+        self.remove_dead_code()  # Get rid of the junk.
 
     # end of section main structure
 
@@ -196,14 +206,15 @@ class Graph(CodeCrawler):
         return [self.nodes[i] for i in self.nodes if i in id_list]
 
 
-
-
 class Node(object):
     """
     a representation of a one-entry, one-exit sequence of code
     """
 
     def __init__(self, id_, code, first, last):
+        """
+        Set the instance attributes.
+        """
         self.id = id_
         self.code = code
         self.first_index = first
@@ -237,10 +248,11 @@ class Node(object):
         return ret
 
     def __str__(self):
+        """ Pretty printing """
         return '\n=== ' + str(self.id) + ' ' + str(self.first_index) + ' ' + \
                str(self.last_index) + ' ===\n' + self.get_code_representation()
 
-    def print_fancy(self, prefix='', child_prefix=''):
+    def print_fancy(self, prefix=''):
         """
         Used for pseudo-HLL-view, draws nodes and boxes around them.
         """
@@ -278,9 +290,6 @@ class StructNode(object):
         self.current_id = 'a'
         if self.structtype == 'condition':
             self.generate_dfs_tree()
-            print 'POST'
-            print 'ORDER'
-            print self.tree.postorder()
         self.compute_hll_info()
         self.cleanup_edges()
 
@@ -332,12 +341,13 @@ class StructNode(object):
 
     def reset_flags(self):
         """
-        Deprecated, but still in use.
+        Clear the node's flags. Used for easier traversal.
         """
         self.flags = {'visited': False, 'reached_multiple': False}
 
     def order_nodes_by_edges(self):
         """
+        Order the nodes in a block or loop in a senseful manner.
         Used to make the output look better.
         """
         cur_node_id = None
@@ -347,7 +357,7 @@ class StructNode(object):
                 if i == 0:
                     cur_node_id = self.start_id
                 ordered_nodes.append(cur_node_id)
-                try:
+                try:  # TODO: replace by a check.
                     cur_node_id = self.get_next_nodes(cur_node_id)[0]
                 except:
                     pass
@@ -371,6 +381,7 @@ class StructNode(object):
         """
         Returns a list of all node-id's
         that belong to direct successors of a given node.
+        Respects structures inside a condition.
         """
         if node_id in self.structs:
             if node_id == self.struct_nodes[self.structs[node_id]][0]:
@@ -401,10 +412,8 @@ class StructNode(object):
         """
         Returns a list of all node-id's that belong to direct
         predecessos of a given node.
+        Respects structures inside a condition.
         """
-      #  if node_id in self.structs:
-     #       return self.get_previous_nodes(
-    #            self.structs[node_id], use_outer_edges)
         ret = []
         if isinstance(node_id, int):
             for edge in self.edges:
@@ -436,7 +445,7 @@ class StructNode(object):
 
     def get_representation(self):
         """
-        Used to generate a short representation.
+        Used to generate a short description.
         """
         ret = ''
         for i in self.nodes:
@@ -452,15 +461,15 @@ class StructNode(object):
             if not isinstance(self.hll_info[i], ListType):
                 ret += i + ':' + str(self.hll_info[i]) + ' '
             else:
-                s = ','.join(map(lambda x: str(x), self.hll_info[i]))
-                ret += i + ':' + s + ' '
+                temp_str = ','.join([str(x) for x in self.hll_info[i]])
+                ret += i + ':' + temp_str + ' '
         return ret
 
     def get_condition_string(self):
         """
         If the node is a condition,
         return a string that's a valid
-        condition in C.
+        approximation of the condition in C.
         """
         if self.structtype == 'condition':
             return self.description
@@ -478,12 +487,12 @@ class StructNode(object):
             self.structtype + ' starts at ' +\
             str(self.start_id) + self.get_condition_string() + ':'
         prefix = prefix + '    '
-        s = self.hll_info_fancy()
-        if s != '':
-            print prefix + s
+        hll_info_str = self.hll_info_fancy()
+        if hll_info_str != '':
+            print prefix + hll_info_str
         print prefix + child_prefix + 'nodes:'
         for i in self.nodes:
-            i.print_fancy(prefix + '|   ', child_prefix)
+            i.print_fancy(prefix + '|   ')
         print prefix + child_prefix + 'edges:'
         for i in self.edges:
             print '    |   ' + prefix + i.__str__()
@@ -498,10 +507,11 @@ class StructNode(object):
         """
         HLL analysis of the generated structures.
         Used to determine which entrypoint a structure has, as well as
-        which of it's sub-nodes has which purpose. Sounds awful.
+        which of it's sub-nodes has which purpose.
         """
-        true_node = None
-        false_node = None
+        true_node = None  # node executed if condition is true.
+        false_node = None  # node executed if condition is false.
+        # Both variables are used to make condition-analysis possible.
         if self.structtype == 'if-then':
             self.hll_info['condition'] = self.edges[0].start
             for i in self.nodes:
@@ -526,16 +536,15 @@ class StructNode(object):
             self.hll_info['body'] = self.start_id
             if not self.hll_info['condition']:
                 self.hll_info['condition'] = self.get_condition_from_block()
-                # if len(self.nodes) == 2:
-                #    self.hll_info['condition'] = self.get_other_node(self.start_id)
-                #    self.hll_info['body'] = self.start_id
-                # else:
-                #    self.order_nodes_by_edges()
-                #    self.hll_info['condition'] = self.nodes[-1].id
             true_node = self.start_id
         if 'condition' in self.hll_info:
-            self.get_node_by_id(self.hll_info['condition']).compute_condition(
-                true_node, false_node)
+            # If a child-node is a condition, analyze it properly
+            cond = self.get_node_by_id(self.hll_info['condition'])
+            if self.structtype == 'do-loop' and not cond:
+                cond =  self.nodes[0].nodes[-1]
+            if isinstance(cond, StructNode) and cond.structtype == 'condition':
+                cond.generate_dfs_tree()
+                cond.compute_condition(true_node, false_node)
 
     def get_edge_by_endpoints(self, start, end):
         """
@@ -545,21 +554,20 @@ class StructNode(object):
         print start, end
         if isinstance(start, str):
             start = self.struct_nodes[start][1]
-            print 'START', start
         if isinstance(end, str):
             end = self.struct_nodes[end][0]
-            print 'END', end
-        for edge in self.edges:
+        for edge in self.edges + self.replaced_edges:
             if edge.start == start and edge.end == end:
                 return edge
 
     def compute_condition(self, node_true, node_false):
         """
         Compute how the nodes are logically connected in a complex
-        condition. Works for || and &&, which should be sufficient.
+        condition. Works for ||, && and simple negation (!),
+        which should be sufficient.
         """
-        # import pdb; pdb.set_trace()
         for node_id in self.tree.postorder():
+            # make recursion by iteration possible:
             while True:
                 next_nodes = self.get_next_nodes(node_id, True)
                 followup = None
@@ -567,11 +575,18 @@ class StructNode(object):
                 next_nodes_1 = self.get_next_nodes(next_nodes[0], True)
                 next_nodes_2 = self.get_next_nodes(next_nodes[1], True)
                 if next_nodes[0] in next_nodes_2:
+                    # we found an if-like structure
                     followup, secondary = next_nodes
                 elif next_nodes[1] in next_nodes_1:
+                    # we found an if-like structure
                     secondary, followup = next_nodes
+                # Find an appropriate representation for the nodes (str)
                 if isinstance(node_id, int):
                     desc_primary = str(node_id)
+                    followup_edge = self.get_edge_by_endpoints(
+                        node_id, followup)
+                    if followup_edge and not followup_edge.active:
+                        desc_primary = '!' + desc_primary
                 else:
                     desc_primary = self.struct_nodes[node_id][2]
                 if isinstance(secondary, int):
@@ -583,29 +598,38 @@ class StructNode(object):
                     desc_secondary = self.struct_nodes[secondary][2]
                 if followup and \
                         len(self.get_previous_nodes(secondary, True)) == 1:
+                    # We found an || or &&
                     if followup == node_true:
+                        # It's a ||, insert the struct:
                         self.struct_nodes[
                             self.current_id] = (
                                 node_id, secondary,
                                 '(' + desc_primary + ' || ' +
                                 desc_secondary + ')')
+                        # set the struct info and prepare for
+                        # recursive analysis:
                         self.structs[node_id] = self.current_id
                         node_id = self.current_id
                         self.structs[secondary] = self.current_id
                         self.current_id = chr(ord(self.current_id)+1)
                     elif followup == node_false or not \
                             self.get_node_by_id(followup):
+                        # It's a &&, insert the struct:
                         self.struct_nodes[
                             self.current_id] = (
                                 node_id, secondary,
                                 '(' + desc_primary + ' && ' +
                                 desc_secondary + ')')
+                        # set the struct info and prepare for
+                        # recursive analysis:
                         self.structs[node_id] = self.current_id
                         node_id = self.current_id
                         self.structs[secondary] = self.current_id
                         self.current_id = chr(ord(self.current_id)+1)
                 else:
+                    # Nothing found, no recursive analysis needed.
                     break
+        # Make the results availible to the HLL-view.
         self.description = self.struct_nodes[chr(ord(self.current_id)-1)][2]
 
     def get_condition_from_block(self):
@@ -639,25 +663,37 @@ class StructNode(object):
                     if self.hll_info['condition'] == i.id:
                         return i
 
-    def get_node_by_id(self, id):
+    def get_node_by_id(self, node_id):
         """
         Return the subnode specified by id.
+        Needed, since subnodes of StructNodes are saved
+        in a list and keep their old id's.
         """
         for node in self.nodes:
-            if node.id == id:
+            if node.id == node_id:
                 return node
 
 
 class Edge(object):
-    # a graph-edge
+    """
+    A graph-edge, that contains information about
+    start, end and type of edge.
+    An active edge is an executed jump, while a non-
+    active edge isn't, being a simple transition to the
+    next instruction.
+    """
 
     def __init__(self, id, start, end, active=True):
+        """
+        Set the instance attributes.
+        """
         self.id = id
         self.start = start
         self.end = end
         self.active = active
 
     def __str__(self):
+        """ Pretty printing. """
         return str(self.start) + '-' + str(self.end)
 
     def equals(self, other):
@@ -677,4 +713,3 @@ class Edge(object):
         Make hashing and thus sorting possible.
         """
         return hash(self.__str__())
-
