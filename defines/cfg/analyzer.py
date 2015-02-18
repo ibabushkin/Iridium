@@ -572,7 +572,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/conditions_analysis/main.asm'
+    SOURCE = '../../tests/conditions14_analysis/main.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source

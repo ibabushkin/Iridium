@@ -357,10 +357,9 @@ class StructNode(object):
                 if i == 0:
                     cur_node_id = self.start_id
                 ordered_nodes.append(cur_node_id)
-                try:  # TODO: replace by a check.
-                    cur_node_id = self.get_next_nodes(cur_node_id)[0]
-                except:
-                    pass
+                n_nodes = self.get_next_nodes(cur_node_id)
+                if n_nodes:
+                    cur_node_id = [0]
         elif self.structtype == 'while-loop':
             for i in self.nodes:
                 if i.id == self.hll_info['condition']:
@@ -541,7 +540,7 @@ class StructNode(object):
             # If a child-node is a condition, analyze it properly
             cond = self.get_node_by_id(self.hll_info['condition'])
             if self.structtype == 'do-loop' and not cond:
-                cond =  self.nodes[0].nodes[-1]
+                cond = self.nodes[0].nodes[-1]
             if isinstance(cond, StructNode) and cond.structtype == 'condition':
                 cond.generate_dfs_tree()
                 cond.compute_condition(true_node, false_node)
