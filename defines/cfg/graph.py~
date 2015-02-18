@@ -523,10 +523,10 @@ class StructNode(object):
             for i in self.edges:
                 if not i.active:
                     self.hll_info['then'] = i.end
-                    true_node = i.end
+                    false_node = i.end
                 else:
                     self.hll_info['else'] = i.end
-                    false_node = i.end
+                    true_node = i.end
         elif self.structtype == 'while-loop':
             self.hll_info['condition'] = self.start_id
             self.hll_info['body'] = self.get_other_node(self.start_id)
