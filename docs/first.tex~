@@ -16,7 +16,7 @@
 
 %%% PAGE DIMENSIONS
 \usepackage{geometry} % to change the page dimensions
-\geometry{a4paper} % or letterpaper (US) or a5paper or....
+\geometry{a4paper,left=3.5cm,right=2.5cm,top=2.5cm,bottom=2cm} % or letterpaper (US) or a5paper or....
 % \geometry{margin=2in} % for example, change the margins to 2 inches all round
 % \geometry{landscape} % set up the page for landscape
 %   read geometry.pdf for detailed page layout information
@@ -57,7 +57,7 @@
 \usepackage{dirtree}
 \columnseprule0.01pt
 \columnsep7mm
-\usepackage[cm]{fullpage}
+%\usepackage[cm]{fullpage}
 
 \usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs, url}
 \usepackage{mathtools}

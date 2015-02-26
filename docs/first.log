@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  16 FEB 2015 20:10
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  26 FEB 2015 21:48
 entering extended mode
 **first.tex
 (./first.tex
@@ -486,13 +486,9 @@ Package: dirtree 2012/12/11 v0.32 package wrapper for dirtree
 )
 File: dirtree.tex 2012/12/11 v0.32 `dirtree' (jcc)
 )
-(/usr/share/texmf/tex/latex/preprint/fullpage.sty
-Package: fullpage 1999/02/23 1.1 (PWD)
-\FP@margin=\skip104
-)
 (/usr/share/texmf/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2000/07/18 v2.13 AMS math features
-\@mathmargin=\skip105
+\@mathmargin=\skip104
 
 For additional information on amsmath, use the `?' option.
 (/usr/share/texmf/tex/latex/amsmath/amstext.sty
@@ -542,8 +538,8 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \totwidth@=\dimen155
 \lineht@=\dimen156
 \@envbody=\toks23
-\multlinegap=\skip106
-\multlinetaggap=\skip107
+\multlinegap=\skip105
+\multlinetaggap=\skip106
 \mathdisplay@stack=\toks24
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
@@ -575,8 +571,8 @@ Package: calc 1998/07/07 v4.1b Infix arithmetic (KKT,FJ)
 \calc@Bcount=\count128
 \calc@Adimen=\dimen157
 \calc@Bdimen=\dimen158
-\calc@Askip=\skip108
-\calc@Bskip=\skip109
+\calc@Askip=\skip107
+\calc@Bskip=\skip108
 LaTeX Info: Redefining \setlength on input line 59.
 LaTeX Info: Redefining \addtolength on input line 60.
 \calc@denominator=\count129
@@ -607,9 +603,9 @@ landscape: --
 twocolumn: --
 twoside: --
 asymmetric: --
-h-parts: 89.62709pt, 0.7\paperwidth , 89.6271pt (default)
+h-parts: 99.58464pt, 426.79135pt, 71.13188pt
 v-parts: 101.40665pt, 0.7\paperheight , 152.11pt (default)
-hmarginratio: 1:1
+hmarginratio: --
 vmarginratio: 2:3
 lines: --
 heightrounded: --
@@ -622,13 +618,13 @@ driver: pdftex
 -------------------- Page layout dimensions and switches
 \paperwidth  597.50787pt
 \paperheight 845.04684pt
-\textwidth  512.14963pt
-\textheight 729.6886pt
-\oddsidemargin  -29.59087pt
-\evensidemargin -29.59087pt
-\topmargin  -29.59087pt
-\headheight 0.0pt
-\headsep    0.0pt
+\textwidth  426.79135pt
+\textheight 591.5302pt
+\oddsidemargin  27.31465pt
+\evensidemargin 27.31465pt
+\topmargin  -7.86334pt
+\headheight 12.0pt
+\headsep    25.0pt
 \footskip   30.0pt
 \marginparwidth 59.0pt
 \marginparsep   10.0pt
@@ -648,7 +644,7 @@ loading : Context Support Macros / Miscellaneous (2004.10.26)
 \scratchcounter=\count132
 \scratchtoks=\toks25
 \scratchdimen=\dimen160
-\scratchskip=\skip110
+\scratchskip=\skip109
 \scratchmuskip=\muskip12
 \scratchbox=\box54
 \scratchread=\read2
@@ -681,20 +677,20 @@ Package: ragged2e 2003/03/25 v2.04 ragged2e Package (MS)
 Package: everysel 1999/06/08 v1.03 EverySelectfont Package (MS)
 LaTeX Info: Redefining \selectfont on input line 125.
 )
-\CenteringLeftskip=\skip111
-\RaggedLeftLeftskip=\skip112
-\RaggedRightLeftskip=\skip113
-\CenteringRightskip=\skip114
-\RaggedLeftRightskip=\skip115
-\RaggedRightRightskip=\skip116
-\CenteringParfillskip=\skip117
-\RaggedLeftParfillskip=\skip118
-\RaggedRightParfillskip=\skip119
-\JustifyingParfillskip=\skip120
-\CenteringParindent=\skip121
-\RaggedLeftParindent=\skip122
-\RaggedRightParindent=\skip123
-\JustifyingParindent=\skip124
+\CenteringLeftskip=\skip110
+\RaggedLeftLeftskip=\skip111
+\RaggedRightLeftskip=\skip112
+\CenteringRightskip=\skip113
+\RaggedLeftRightskip=\skip114
+\RaggedRightRightskip=\skip115
+\CenteringParfillskip=\skip116
+\RaggedLeftParfillskip=\skip117
+\RaggedRightParfillskip=\skip118
+\JustifyingParfillskip=\skip119
+\CenteringParindent=\skip120
+\RaggedLeftParindent=\skip121
+\RaggedRightParindent=\skip122
+\JustifyingParindent=\skip123
 )
 LaTeX Font Info:    Try loading font information for U+msa on input line 79.
 
@@ -725,35 +721,69 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 105.
- [2]
-Overfull \hbox (12.14302pt too wide) in paragraph at lines 180--199
-\OT1/cmr/m/n/10.95 schwieriger, in bin^^?arer Form vor-liegende Soft-ware-pro-d
-ukte so umzu-for-men, dass sie ein tiefge-hen-des Verst^^?andnis
+
+Overfull \hbox (0.68912pt too wide) in paragraph at lines 120--125
+[]\OT1/cmr/m/it/10.95 Spr^^?unge: \OT1/cmr/m/n/10.95 Der ein-fach-ste Sprung, \
+OT1/cmr/m/it/10.95 jmp\OT1/cmr/m/n/10.95 , wird im-mer aus-gef^^?uhrt und sprin
+gt zur Adresse
  []
 
-[3] [4] [5] [6] [7] [8] (./first.bbl [9]) [10] (./first.aux) ) 
+[2] [3] [4]
+Overfull \hbox (2.26668pt too wide) in paragraph at lines 205--218
+\OT1/cmr/m/n/10.95 Das Re-sul-tat der vor-liegen-den Beson-deren Lern-leis-tung
+ ist in die zweite Kat-e-gorie einzuord-
+ []
+
+
+Overfull \hbox (15.71086pt too wide) in paragraph at lines 219--235
+\OT1/cmr/m/n/10.95 erm^^?oglicht, an-dere Eingabefor-mate mithilfe weit-erer Mo
+d-ule zu akzep-tieren, ohne []Anderungen
+ []
+
+[5] [6]
+Overfull \hbox (4.94324pt too wide) in paragraph at lines 286--308
+\OT1/cmr/m/n/10.95 weswe-gen das Lay-out der Vari-ablen, Ar-gu-mente/Parameter 
+und R^^?uckgabewerte von gro^^Yem
+ []
+
+[7] [8] [9] [10] [11]
+Overfull \hbox (15.285pt too wide) in paragraph at lines 528--531
+\OT1/cmr/m/n/10.95 wurde bere-its teil-weise umge-setzt, ob tats^^?achlich weit
+-ere Um-struk-turierun-gen notwendig
+ []
+
+[12] (./first.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 24--27
+[]\OT1/cmr/m/n/10.95 http://reverseengineering.stackexchange.com/questions/1397
+/how-can-i-reverse-
+ []
+
+) [13] (./first.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 4582 strings out of 94500
- 60588 string characters out of 1176766
- 126531 words of memory out of 1000000
- 7636 multiletter control sequences out of 10000+50000
+ 4562 strings out of 94500
+ 60270 string characters out of 1176766
+ 126497 words of memory out of 1000000
+ 7620 multiletter control sequences out of 10000+50000
  17208 words of font info for 67 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,8n,43p,223b,301s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,10n,43p,223b,320s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 80 PDF objects out of 300000
+ 90 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 65536
-</usr/share/texmf
-/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmex
-10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/share/texmf/fon
-ts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.
-pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts
-/type1/bluesky/cm/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pf
-b></usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/t
-ype1/bluesky/cm/cmr9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></us
-r/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/blu
-esky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pfb></usr/sha
-re/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky
-/cm/cmr17.pfb>
-Output written on first.pdf (10 pages, 155271 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/ty
+pe1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></
+usr/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1
+/bluesky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/blues
+ky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/shar
+e/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/te
+xmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/c
+mss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on first.pdf (13 pages, 158515 bytes).
