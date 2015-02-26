@@ -359,7 +359,7 @@ class StructNode(object):
                 ordered_nodes.append(cur_node_id)
                 n_nodes = self.get_next_nodes(cur_node_id)
                 if n_nodes:
-                    cur_node_id = [0]
+                    cur_node_id = n_nodes[0]
         elif self.structtype == 'while-loop':
             for i in self.nodes:
                 if i.id == self.hll_info['condition']:
