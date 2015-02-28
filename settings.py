@@ -24,3 +24,4 @@ Attributes:
 RESULTS_DIR_NAME_SUFFIX = "_analysis"
 SKIP_FILE_EXTENSION_FOR_DIRNAME = True
 FILENAME_EXTENSIONS = {'cfg': '.cfg', 'data': '.data', 'div': '.div'}
+

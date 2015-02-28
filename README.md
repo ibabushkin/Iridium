@@ -74,3 +74,11 @@ are some issues still not implemented:
 * more input methods
   + PE/ELF standalone analysis via pefile and Capstone etc.
   + `IDAPython` integration
+* A function blacklist for `IDAIridium.py` and similar modules
+* Some bugfixes
+    * why does the Analysis of a function in any PE file take so long?
+    * Sometimes complex conditions in `if-then-else` structures are not
+      recognized properly, because their edges leading to the `then` or 
+      `else` part are reduced pseudo-randomly. Probably hard to fix, but
+      sometimes annoying and slowing down.
+    * make the project more usable
