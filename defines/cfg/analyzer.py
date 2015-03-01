@@ -30,6 +30,7 @@ class GraphAnalyzer(object):
         self.ways = []
         self.ways2 = []
         self.non_knot_nodes = []
+        self.possibly_incomplete = False
 
     def generate_dfs_tree(self):
         """
@@ -83,6 +84,10 @@ class GraphAnalyzer(object):
         print 'Postorder of dfs-tree:', self.postorder
         self.analyze_tree()
         self.graph.print_fancy()
+        if self.possibly_incomplete:
+            print 'Analysis might be incomplete, since some nodes'
+            print 'were analyzed with the intention to reduce a'
+            print 'condition, which failed.'
 
     def reduce_condition(self, loop):
         """
@@ -112,9 +117,10 @@ class GraphAnalyzer(object):
                         omnipresent_nodes.remove(i)
         first_knot = None  # first node after structure
         if loop:
-            self.ways = []
-            self._find_all_ways(self.ways2[0][0], jump_source, [])
-            first_knot = i
+            for i in omnipresent_nodes:
+                if jump_source not in self.get_next_nodes(i):
+                    first_knot = i
+                    break
         elif self.ways2:
             for i in self.ways2[0][1:]:
                 if i in omnipresent_nodes and i not in self.non_knot_nodes:
@@ -122,7 +128,6 @@ class GraphAnalyzer(object):
                     break
         if first_knot:
             print 'found knot-node:', first_knot
-        # self.ways2 = map(lambda x: x[:x.index(first_knot)], self.ways2)
         self.ways2 = [way[:way.index(first_knot)] for way in self.ways2]
         structure_nodes = []
         red = True  # reduce or not?
@@ -174,16 +179,18 @@ class GraphAnalyzer(object):
             self.graph.nodes[node_id].comment = 'simple condition'
         elif branching:
             print 'couldn\'t find simple structure.'
-            for ind in range(1, 10):
+            for ind in range(0, 4):
                 self.ways2 = []
                 self.non_knot_nodes = []
-                self.calculate_paths(start=node_id, depth=5 * ind)
+                self.calculate_paths(start=node_id, depth=5 + ind)
                 try:
                     self.reduce_condition(loop)
                     node_id = self.graph.largest_id - 1
                     break
                 except ValueError:
-                    pass
+                    print 'No reduction of condition possible, retrying...'
+            else:
+                self.possibly_incomplete = True
         # normal reduction begins here...
         if self.is_if_then(node_id):
             nodes_to_replace = self.get_node_list_for_replacement(
@@ -572,7 +579,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/conditions14_analysis/main.asm'
+    SOURCE = '../../tests/conditions_analysis/sub_401180.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source
