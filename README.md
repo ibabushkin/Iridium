@@ -38,6 +38,9 @@ on disk. If you already have a `.asm`-file that contains only one function, you 
 simply run one of the modules as a script, providing the file as an argument. The modules
 are the same as used by `IDAIridium.py` and are stored in the `defines`-tree. For more
 information, see their documentation by running `python <module> -h`.
+At the moment, this is the only way to analyze a complete binary, more are likely to follow.
+You can use the free version of IDA Pro, as I do, the behaviour with more current releases
+isn't tested yet.
 
 An example: you want to run controlflow-analysis on a file containing one function in assembly.
 In this case, do this, I assume that you're in the project's root:
