@@ -37,15 +37,15 @@ class AssemblyParser(object):
     description of features and configuration options, see
     ``python IDAIridium.py -h`` and ``settings.py``
     """
-    def __init__(self, filepath):
+    def __init__(self, filepath, blacklist):
         """
         Get the code out of the file and create and create an enviroment
         suitable for analysis.
         """
-        # self.code = map(lambda x: x.strip(), open(filepath, 'rb').readlines())
         self.code = [line.strip() for line in open(filepath, 'rb').readlines()]
         self.analysis_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
+        self.blacklist_pattern = blacklist
         self.current_function = ''
         if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
             self.results_dir = os.path.join(self.analysis_dir,
@@ -171,16 +171,17 @@ class AssemblyParser(object):
         For every function, perform the specified kinds of analysis.
         """
         for i in self.functions:
-            print 'analyzing function', i.name + '...',
             code = self.load_function(i.name)
             self.current_function = i.name
-            if not ignore_cfg:
-                self.cfg_analysis(code)
-            if not ignore_data:
-                self.dataflow_analysis(code)
-            if not ignore_div:
-                self.division_analysis(code)
-            print 'done.'
+            if not re.match(self.blacklist_pattern, self.current_function):
+                print 'analyzing function', i.name + '...',
+                if not ignore_cfg:
+                    self.cfg_analysis(code)
+                if not ignore_data:
+                    self.dataflow_analysis(code)
+                if not ignore_div:
+                    self.division_analysis(code)
+                print 'done.'
 
 if __name__ == '__main__':
     ARG_PARSER = argparse.ArgumentParser(description='Analyze IDA\'s output')
@@ -197,7 +198,12 @@ if __name__ == '__main__':
         '--ignore-division',
         action='store_true',
         help='Don\'t perform division analysis')
+    ARG_PARSER.add_argument(
+        '--blacklist-pattern',
+        help='Functions that match the pattern are excluded from analysis.\
+            The source is still saved to disk.')
     ARGS = ARG_PARSER.parse_args()
+    print ARGS.blacklist_pattern
     print 'target:', ARGS.file
     if ARGS.ignore_controlflow:
         print 'skipping CFG analysis.'
@@ -205,7 +211,7 @@ if __name__ == '__main__':
         print 'skipping data analysis.'
     if ARGS.ignore_division:
         print 'skipping division analysis.'
-    ASM_PARSER = AssemblyParser(ARGS.file)
+    ASM_PARSER = AssemblyParser(ARGS.file, ARGS.blacklist_pattern)
     ASM_PARSER.dump_functions()
     ASM_PARSER.analyze_everything(
         ARGS.ignore_controlflow, ARGS.ignore_data, ARGS.ignore_division)
