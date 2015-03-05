@@ -85,6 +85,26 @@ Die vorliegende Besondere Lernleistung hat das Ziel, ein Softwareprojekt
 umfassend zu planen und umzusetzen.
 Dieses Dokument beschreibt Zielsetzung, Aufbau und konkrete Aspekte der Umsetzung,
 wobei der Hauptaugenmerk auf Algorithmen, Vorgehensweisen und Designentscheidungen liegen wird.
+Bei besagtem Softwareprojekt handelt es sich um ein System, welches Reverse-Engineering, manuelle
+Dekompilation und bestimmte Aspekte der Malware-Analyse vereinfachen bzw. automatisieren soll,
+ohne dass durch seine Benutzung weitere Probleme entstehen. Folglich lag der Schwerpunkt der Entwicklung
+auf einem sinnvolen Programmdesign, effizienten und effektiven Algorithmen und einer guten Grundlage
+für Erweiterungen aller Art. Aus diesem Grund ergaben sich mehrere Entscheidungen, die den Entwicklungsprozess
+und die Eigenschaften des Projekts nachhaltig prägten.
+\begin{enumerate}
+	\item{Es sollte eine Programmiersprache verwendet werden, die dem potentiellen Nutzer mit hoher
+		Wahrscheinlichkeit zur Verfügung steht, die er/sie ggf. bereits beherrscht und die nicht nur
+		"gut zu schreiben", sondern auch einfach zu lesen ist. Zusätzlich sollte sie Erweiterungen
+		durch den Nutzer möglich machen. Deswegen fiel die Wahl auf Python, eine multiparadigmatische
+		und lesbarkeitsbetonte, interpretierte höhere Programmiersprache. Die vorherige Erfahrung des
+		Autors beeinflusste diese Entscheidung wesentlich.
+	}
+	\item{Das Projekt sollte freie Software werden. Diese Entscheidung war nicht nur ideologisch begründet;
+		Vielmehr kann die Qualität des Quellcodes und dementsprechend der Arbeitsergebnisse auf diese Weise
+		wesentlich besser kontrolliert werden, während die Gesellschaft bzw. ein Teil von ihr auf diese
+		Art deutlich besser von der Arbeit des Autors profitiert.
+	}
+\end{enumerate}
 
 \section{Eine kurze Einführung in Reverse Engineering und Dekompilierung}
 \subsection{Grundlegende Funktionsweise von CPU und die Abstraktion der Assemblersprache}\footnote{

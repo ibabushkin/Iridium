@@ -64,8 +64,10 @@ class Graph(CodeCrawler):
         graph, recursively. Thus, all recovered structures can be
         seen in the output.
         """
-        print '=================='
-        self.nodes[self.start_node_index].print_fancy()
+        print '==================RESULTS=================='
+        print 'Graph starting at node', self.start_node_index
+        for node in self.nodes:
+            self.nodes[node].print_fancy()
 
     # end of section output
 

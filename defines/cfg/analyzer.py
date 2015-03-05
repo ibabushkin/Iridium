@@ -30,7 +30,6 @@ class GraphAnalyzer(object):
         self.ways = []
         self.ways2 = []
         self.non_knot_nodes = []
-        self.possibly_incomplete = False
 
     def generate_dfs_tree(self):
         """
@@ -84,10 +83,6 @@ class GraphAnalyzer(object):
         print 'Postorder of dfs-tree:', self.postorder
         self.analyze_tree()
         self.graph.print_fancy()
-        if self.possibly_incomplete:
-            print 'Analysis might be incomplete, since some nodes'
-            print 'were analyzed with the intention to reduce a'
-            print 'condition, which failed.'
 
     def reduce_condition(self, loop):
         """
@@ -189,8 +184,6 @@ class GraphAnalyzer(object):
                     break
                 except ValueError:
                     print 'No reduction of condition possible, retrying...'
-            else:
-                self.possibly_incomplete = True
         # normal reduction begins here...
         if self.is_if_then(node_id):
             nodes_to_replace = self.get_node_list_for_replacement(
