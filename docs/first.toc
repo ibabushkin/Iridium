@@ -8,13 +8,13 @@
 \contentsline {section}{\numberline {4}Zielsetzung}{6}
 \contentsline {subsection}{\numberline {4.1}Projektstruktur}{6}
 \contentsline {subsection}{\numberline {4.2}Kontrollflussanalyse}{7}
-\contentsline {subsection}{\numberline {4.3}Analyse von Variablen und anderen Daten}{7}
+\contentsline {subsection}{\numberline {4.3}Analyse von Variablen und anderen Daten}{8}
 \contentsline {subsection}{\numberline {4.4}Behandlung von Integerdivision}{8}
-\contentsline {section}{\numberline {5}Umsetzung}{8}
-\contentsline {subsection}{\numberline {5.1}Kontrollflussanalyse}{8}
-\contentsline {subsubsection}{\numberline {5.1.1}Algorithmusbeschreibung und Implementationsdetails}{9}
-\contentsline {subsection}{\numberline {5.2}Datenanalyse}{11}
+\contentsline {section}{\numberline {5}Umsetzung}{9}
+\contentsline {subsection}{\numberline {5.1}Kontrollflussanalyse}{9}
+\contentsline {subsubsection}{\numberline {5.1.1}Algorithmusbeschreibung und Implementationsdetails}{10}
+\contentsline {subsection}{\numberline {5.2}Datenanalyse}{12}
 \contentsline {subsection}{\numberline {5.3}Optimisierte Intergerdivision}{12}
-\contentsline {subsubsection}{\numberline {5.3.1}Herleitung des Algorithmus}{12}
+\contentsline {subsubsection}{\numberline {5.3.1}Herleitung des Algorithmus}{13}
 \contentsline {section}{\numberline {6}Ausblick}{13}
-\contentsline {section}{Bibliotheksreferenz}{13}
+\contentsline {section}{Bibliotheksreferenz}{14}

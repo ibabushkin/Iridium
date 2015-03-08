@@ -202,7 +202,16 @@ es ermöglicht, Software teilweise automatisch zu dekompilieren. Da moderne Soft
 wird, wird es entsprechend schwieriger, in binärer Form vorliegende Softwareprodukte so umzuformen,
 dass sie ein tiefgehendes Verständnis und darauf basierende Modifikation erlauben.
 Dies betrifft nicht nur die Untersuchung von fremder Software, sondern auch die Wiederherstellung
-von Quellcode aus alten, beendeten oder sonstwie des Quellcodes verlustig gewordenen Projekten. Aus diesem Grund
+von Quellcode aus alten, beendeten oder sonstwie des Quellcodes verlustig gewordenen Projekten.
+Ein weiteres wichtiges Themenfeld ist die Malware-Analyse, die Schadsoftware untersucht und die von
+den Malware-Autoren unternommenen Obfuskationsversuche umgehen muss. Dies ist recht aufwändig,
+allerdings nicht minder notwendig, da nur auf diese Weise Gegenmaßnahmen unternommen werden können,
+die von simplen Desinfektionsroutinen bis hin zu komplexen Erkennungsalgorithmen und Signatursystemen
+reichen. Ein weiterer Aspekt, der diese Aufgabenstellung so bedeutend macht ist die Tatsache, dass
+Malware schon seit einiger Zeit eine enorme Bedrohung nicht nur für die Computer privater Nutzer, sondern
+auch für Unternehmen und staatliche Einrichtungen darstellt.
+
+Aus diesem Grund
 werden bereits seit einiger Zeit Ansätze unternommen, diesen Vorgang so weit wie möglich zu automatisieren.
 Die Hauptargumente für eine solche Vorgehensweise sind, dass die Wiederherstellung von Kontrollfluss,
 Variablen, Funktionen und weiteren HLL\footnote{High Level Language, also Programmiersprache mit hohem
@@ -226,7 +235,7 @@ Das Resultat der vorliegenden Besonderen Lernleistung ist in
 die zweite Kategorie einzuordnen, wobei es aus drei Submodulen besteht, die unabhängig arbeiten und
 verschiedene Bereiche des Analysegebiets abdecken. Die Entscheidung, keinen kompletten Decompiler
 anzustreben wurde aus mehreren Gründen getroffen: Zum Einen ist automatisierte Programmanalyse recht
-genau, kann jedoch trotz allem Fehler erzeugen. Deswegen ist es  deutlich günstiger, eine
+genau, kann jedoch trotz allem Fehler erzeugen. Deswegen ist es deutlich günstiger, eine
 transparente Arbeitsweise und eine enge Zusammenarbeit zwischen Benutzer und System zu ermöglichen,
 da auf diese Weise Fehler deutlich schneller gefunden und behoben werden können, was die Qualität
 der Arbeit des Nutzers wesentlich verbessert und ihm eine enorme Zeitersparnis ermöglicht. Zum Anderen sind
@@ -234,7 +243,10 @@ viele Funktionen und Features in einem solchen Projekt machbar und können auch 
 einfach integriert werden, obwohl sie kaum Nutzen erbringen, da das Verhältnis zwischen
 Ergebnisqualität und Programmkomplexität zu schlecht ist und die erbrachten Resultate zu fragil.
 Folglich ist es sinnvoll, sich auf die wesentlichen Aufgabenstellungen zu beschränken, so dass
-der Aufwand in Relation zum erbrachten Nutzen steht.
+der Aufwand in Relation zum erbrachten Nutzen steht. Auf diese Weise kann gewährleistet werden, dass
+solche Systeme dem Nutzer tatsächlich bei einer Aufgebenstellung helfen, und ihn nicht in einigen Fällen,
+für die das System nicht ausgelegt war, wesentlich behiindern, wie es der Fall sein könnte, wenn eine
+andere Entwicklungsphilosophie angewendet werden würde.
 
 \section{Zielsetzung} Wie bereits im letzten Abschnitt erwähnt, handelt es sich bei diesem Projekt
 um ein Analyseframework zur teilweisen Dekompilierung von Software, wobei auch eine Vielzahl
