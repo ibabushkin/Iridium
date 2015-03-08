@@ -179,9 +179,10 @@ class GraphAnalyzer(object):
                 self.non_knot_nodes = []
                 self.calculate_paths(start=node_id, depth=5 + ind)
                 try:
-                    self.reduce_condition(loop)
-                    node_id = self.graph.largest_id - 1
-                    break
+                    if self.ways2:
+                        self.reduce_condition(loop)
+                        node_id = self.graph.largest_id - 1
+                        break
                 except ValueError:
                     print 'No reduction of condition possible, retrying...'
         # normal reduction begins here...
@@ -432,7 +433,7 @@ class GraphAnalyzer(object):
             for i in next_nodes:
                 if not self.is_dominator(i, start):
                     self.calculate_paths(i, depth - 1, current_path)
-                elif len(self.get_next_nodes(start)) == 2:
+                elif len(next_nodes) == 2:
                     self.non_knot_nodes.append(start)
                 else:
                     self.ways2.append(current_path)
@@ -572,7 +573,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/conditions14_analysis/main.asm'
+    SOURCE = '../../tests/conditions_analysis/sub_4019F0.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source

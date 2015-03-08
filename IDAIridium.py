@@ -15,6 +15,7 @@ import sys
 import os
 import argparse
 import re
+from multiprocessing import Process
 
 # import the submodules
 from Iridium.defines.util.labels import Function
@@ -45,7 +46,11 @@ class AssemblyParser(object):
         self.code = [line.strip() for line in open(filepath, 'rb').readlines()]
         self.analysis_dir = os.path.dirname(filepath)
         self.filename = os.path.split(filepath)[1]
-        self.blacklist_pattern = blacklist
+        if blacklist:
+            self.blacklist_pattern = blacklist
+            self.no_blacklist = False
+        else:
+            self.no_blacklist = True
         self.current_function = ''
         if not SKIP_FILE_EXTENSION_FOR_DIRNAME:
             self.results_dir = os.path.join(self.analysis_dir,
@@ -75,7 +80,6 @@ class AssemblyParser(object):
         for index, line in enumerate(self.code):
             if not self.in_function:
                 if re.match('.+[\t ]proc[\t ]near$', line, re.MULTILINE):
-                    print 'line', line
                     self.functions.append(Function(line.split()[0]))
                     self.in_function = True
                     self.func_begin_index = index
@@ -166,21 +170,35 @@ class AssemblyParser(object):
             self,
             ignore_cfg=True,
             ignore_data=True,
-            ignore_div=True):
+            ignore_div=True,
+            multiproc=True):
         """
         For every function, perform the specified kinds of analysis.
         """
         for i in self.functions:
             code = self.load_function(i.name)
             self.current_function = i.name
-            if not re.match(self.blacklist_pattern, self.current_function):
+            if self.no_blacklist or not \
+                    re.match(self.blacklist_pattern, self.current_function):
                 print 'analyzing function', i.name + '...',
                 if not ignore_cfg:
-                    self.cfg_analysis(code)
+                    if multiproc:
+                        p = Process(target=self.cfg_analysis, args=(code,))
+                        p.start()
+                    else:
+                        self.cfg_analysis(code)
                 if not ignore_data:
-                    self.dataflow_analysis(code)
+                    if multiproc:
+                        p = Process(target=self.dataflow_analysis, args=(code,))
+                        p.start()
+                    else:
+                        self.dataflow_analysis(code)
                 if not ignore_div:
-                    self.division_analysis(code)
+                    if multiproc:
+                        p = Process(target=self.division_analysis, args=(code,))
+                        p.start()
+                    else:
+                        self.division_analysis(code)
                 print 'done.'
 
 if __name__ == '__main__':
@@ -202,6 +220,10 @@ if __name__ == '__main__':
         '--blacklist-pattern',
         help='Functions that match the pattern are excluded from analysis.\
             The source is still saved to disk.')
+    ARG_PARSER.add_argument(
+        '--no-multiprocessing',
+        action='store_true',
+        help='Use only one process for analysis.')
     ARGS = ARG_PARSER.parse_args()
     print ARGS.blacklist_pattern
     print 'target:', ARGS.file
@@ -213,6 +235,8 @@ if __name__ == '__main__':
         print 'skipping division analysis.'
     ASM_PARSER = AssemblyParser(ARGS.file, ARGS.blacklist_pattern)
     ASM_PARSER.dump_functions()
-    ASM_PARSER.analyze_everything(
-        ARGS.ignore_controlflow, ARGS.ignore_data, ARGS.ignore_division)
+    ASM_PARSER.analyze_everything(ARGS.ignore_controlflow,
+                                  ARGS.ignore_data,
+                                  ARGS.ignore_division,
+                                  not ARGS.no_multiprocessing)
     print 'task completed. see', ASM_PARSER.results_dir, 'for results.'

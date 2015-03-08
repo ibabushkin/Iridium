@@ -96,7 +96,13 @@ und die Eigenschaften des Projekts nachhaltig prägten.
 		Wahrscheinlichkeit zur Verfügung steht, die er/sie ggf. bereits beherrscht und die nicht nur
 		"gut zu schreiben", sondern auch einfach zu lesen ist. Zusätzlich sollte sie Erweiterungen
 		durch den Nutzer möglich machen. Deswegen fiel die Wahl auf Python, eine multiparadigmatische
-		und lesbarkeitsbetonte, interpretierte höhere Programmiersprache.
+		und lesbarkeitsbetonte, interpretierte höhere Programmiersprache. Die vorherige Erfahrung des
+		Autors beeinflusste diese Entscheidung wesentlich.
+	}
+	\item{Das Projekt sollte freie Software werden. Diese Entscheidung war nicht nur ideologisch begründet;
+		Vielmehr kann die Qualität des Quellcodes und dementsprechend der Arbeitsergebnisse auf diese Weise
+		wesentlich besser kontrolliert werden, während die Gesellschaft bzw. ein Teil von ihr auf diese
+		Art deutlich besser von der Arbeit des Autors profitiert.
 	}
 \end{enumerate}
 
