@@ -68,6 +68,8 @@ class Graph(CodeCrawler):
         print 'Graph starting at node', self.start_node_index
         for node in self.nodes:
             self.nodes[node].print_fancy()
+        for edge in self.edges:
+            print edge
 
     # end of section output
 
