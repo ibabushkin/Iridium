@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  10 MAR 2015 21:15
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  10 MAR 2015 21:25
 entering extended mode
 **first.tex
 (./first.tex
@@ -745,13 +745,13 @@ d-ule zu akzep-tieren, ohne []Anderungen
  []
 
 [6] [7]
-Overfull \hbox (4.94324pt too wide) in paragraph at lines 321--343
+Overfull \hbox (4.94324pt too wide) in paragraph at lines 319--341
 \OT1/cmr/m/n/10.95 weswe-gen das Lay-out der Vari-ablen, Ar-gu-mente/Parameter 
 und R^^?uckgabewerte von gro^^Yem
  []
 
 [8] [9] [10] [11] [12]
-Overfull \hbox (15.285pt too wide) in paragraph at lines 563--566
+Overfull \hbox (15.285pt too wide) in paragraph at lines 561--564
 \OT1/cmr/m/n/10.95 wurde bere-its teil-weise umge-setzt, ob tats^^?achlich weit
 -ere Um-struk-turierun-gen notwendig
  []
@@ -786,4 +786,4 @@ y/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/share
 8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/font
 s/type1/bluesky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pf
 b></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (14 pages, 162155 bytes).
+Output written on first.pdf (14 pages, 162156 bytes).
