@@ -95,9 +95,9 @@ und die Eigenschaften des Projekts nachhaltig prägten.
 	\item{Es sollte eine Programmiersprache verwendet werden, die dem potentiellen Nutzer mit hoher
 		Wahrscheinlichkeit zur Verfügung steht, die er/sie ggf. bereits beherrscht und die nicht nur
 		"gut zu schreiben", sondern auch einfach zu lesen ist. Zusätzlich sollte sie Erweiterungen
-		durch den Nutzer möglich machen. Deswegen fiel die Wahl auf Python, eine multiparadigmatische
-		und lesbarkeitsbetonte, interpretierte höhere Programmiersprache. Die vorherige Erfahrung des
-		Autors beeinflusste diese Entscheidung wesentlich.
+		durch den Nutzer möglich machen. Deswegen fiel die Wahl auf Python, eine lesbarkeitsbetonte,
+		interpretierte höhere Programmiersprache, die multiple Paradigmen unterstützt.
+		Die vorherige Erfahrung des Autors beeinflusste diese Entscheidung wesentlich.
 	}
 	\item{Das Projekt sollte freie Software werden. Diese Entscheidung war nicht nur ideologisch begründet;
 		Vielmehr kann die Qualität des Quellcodes und dementsprechend der Arbeitsergebnisse auf diese Weise
@@ -123,38 +123,44 @@ verwendet wird: $$ instruction\ destination[, source]$$
 \subsubsection{Einige häufig anzutreffende Instruktionen}
 \begin{itemize}
 	\item{\textit{add:}} Addiert Source- und Destination-Operand und speichert das Ergebnis in
-		Destination.
-	\item{\textit{sub:}} Subtrahiert den Source- vom Destination Operand und speichert dort das
-		Ergebnis.
+		letzterem.
+	\item{\textit{sub:}} Subtrahiert den Source- vom Destination Operand und speichert in letzterem
+		das Ergebnis.
 	\item{\textit{mov:}} Kopiert die Daten aus dem Source- in den Destination-Operand.
-	\item{\textit{push:}} Nimmt nur einen Source-Operanden und legt diesen auf dem Stack ab.
-	\item{\textit{pop:}} Nimmt nur einen Destination-Operanden und legt in ihm das letzte
-		Element auf dem Stack ab, was seiner Größe entspricht. Wenn also ein 4 Byte großer
-		Speicherbereich den Destination-Operanden darstellt, werden die obersten 4 Byte auf
-		dem Stack in ihm abgelegt und der Stack entsprechend verkleinert.
+	\item{\textit{push:}} Akzeptiert nur einen Source-Operanden und legt diesen auf dem Stack ab.
+	\item{\textit{pop:}} Akzeptiert nur einen Destination-Operanden und legt in ihm das oberste
+		Element auf dem Stack ab, wobei dessen Größe im Operanden definiert wird.
+		Wenn also ein 4 Byte großer Speicherbereich den Destination-Operanden darstellt,
+		werden die obersten 4 Byte auf dem Stack in ihm abgelegt und der Stack
+		entsprechend verkleinert.
 	\item{\textit{cmp:}} Führt einen Vergleich der Operanden durch und setzt entsprechende
-		CPU-Flags. Diese sind in einem speziellen EFLAGS-Register zu finden und sind
-		Boolsche Werte, die über das Ergebnis von Vergleichen etc. Auskunft geben. Es
-		existiert eine Reihe von Instruktionen, die in Abhängigkeit vom Zustand bestimmter
-		Flags ausgeführt werden.
+		CPU-Flags. Diese sind in einem speziellen EFLAGS-Register
+		\footnote{
+			EFLAGS steht für "Extended Flags" und bedeutet, dass das Register 32 boolesche
+			Werte mit klar umrissener Bedeutung enthält, während das FLAGS-Register, welches
+			unter der 16-Bit CPUArchitektur üblich war, nur 16 Bit umfasste.
+		}zu finden und sind
+		Boolsche Werte, die über das Ergebnis von Vergleichen und anderen Instruktion (\textit{sub},
+		\textit{add}, ...)Auskunft geben. Es existieren zudem eine Reihe von Instruktionen,
+		die in Abhängigkeit vom Zustand bestimmter Flags ausgeführt werden.
 	\item{\textit{Sprünge:}} Der einfachste Sprung, \textit{jmp}, wird immer ausgeführt und
 		springt zur Adresse / zum Label in seinem einzigen Operanden. Alle anderen
-		Sprnginstruktionen fragen vor der tatsächlichen Sprunginstruktion die CPU-Flags ab,
+		Sprunginstruktionen fragen vor der tatsächlichen Sprunginstruktion die CPU-Flags ab,
 		sind also sogenannte \textit{bedingte Sprünge}. Deren Instruktions-Mnemonics fangen
-		in der Regel mir einem \textit{j} an.
+		in der Regel mit einem \textit{j} an.
 	\item{\textit{call}} Ruft die durch den einzigen Operanden identifizierte Funktion auf.
 \end{itemize}
 Diese Liste ist natürlich bei weitem nicht vollständig, da sie nur dazu gedacht ist, die dem
-Programm beigefügten Test-Cases und Beispiele für vollständige Neulinge verständlicher zu gestalten.
-Um ein umfassendes Grundwissen über Programmierung und Verständnis von Assembler (zwecks
+Programm beigefügten Test-Cases und Beispiele für vollkommene Neulinge verständlicher zu gestalten.
+Um ein umfassendes Grundwissen über Programmierung und Verständnis von der Assemblersprache (zwecks
 Reverse-Engineering) zu erlangen, empfehlen sich die unter den Literaturverweisen \cite{wikibook1:7}
 und \cite{wikibook2:8} referenzierten Wikibooks.
 \subsubsection{Funktionen}
-Zum weiteren Verständnis des Projekts ist eine Erklärung von Funktionen in Assembler vonnöten.
+Zum weiteren Verständnis des Projekts ist eine Erklärung von Funktionen in der Assemblersprache vonnöten.
 Eine Funktion ist, genau wie in Hochsprachen, ein Codeabschnitt, der blockweise ausgeführt wird,
 wobei innerhalb eines solchen Blocks Verzweigungen möglich sind. Eine Funktion kann Argumente
 (Parameter) annehmen, welche für ihre Funktionsweise notwendig sind und meistens über den Stack
-üergeben werden. Auch kann eine Funktion Variablen mit lokal begrenzter Gültigkeit auf dem eigenen
+übergeben werden. Auch kann eine Funktion Variablen mit lokal begrenzter Gültigkeit auf dem eigenen
 Stackframe, dem für jede aufgerufene Instanz individuellen Stackabschnitt, ablegen.
 Dabei muss jede Funktion ihren Stackframe selbst initialisieren und - je nach Aufrufkonvention -
 wieder deinitialisieren. Gleichzeitig legt die Definition der Funktion die Reihenfolge der Parameter
@@ -166,67 +172,72 @@ für das Verständnis von Assembler-Programmen relevant sind. Auch hier sei noch
 Jede Hochsprache, die bis jetzt entwickelt wurde, hatte das Ziel, dem Programmierer ein effizientes
 Werkzeug bereitzustellen, welches verhältnismäßig einfache Softwareentwicklung möglich machen
 sollte, ohne ihn in seiner Handlungsfreiheit zu beschränken. Gleichzeitig soll der gesamte Prozess
-der Entrwicklung für den Programmierer so transparent wie möglich sein.
+der Entwicklung für den Programmierer so transparent wie möglich sein.
 Tatsächlich hat sich dieser Ansatz bewährt und erfüllt die Zielvorgaben. Damit die in einer solchen
-Sprache formalisierten Algortihmen auch von einem Prozessor ausgeführt werden können, muss der Quellcode
+Sprache formalisierten Algorithmen auch von einem Prozessor ausgeführt werden können, muss der Quellcode
 erst in eine für den Computer angemessene Form überführt werden, das heißt in die Assemblersprache
-beziehungsweise ihre Representation als einzelne Bytes im Speicher. Genau dies ist die Aufgabe eines
-sogenannten Compilers: Dieses Programm nimmt Hochsprachen-Quellcode als Eingabe und gibt entweder
-Assemblerprogramme oder direkt ausführbare Binärdateien zurück, die das selbe Programm
-repräsentieren. Dabei verlieren die so umgewandelten Programme jedoch viele Informationen, die für
+beziehungsweise ihre Räpresentation als einzelne Bytes im Speicher. Genau dies ist die Aufgabe eines
+sogenannten Compilers: Dieses System nimmt Hochsprachen-Quellcode als Eingabe und gibt entweder
+Assemblerprogramme oder direkt ausführbare Binärdateien zurück, die das Eingabeprogramm
+repräsentieren. Dabei verlieren die so umgewandelten Programme einige Informationen, die für
 die Ausführung unerheblich sind, zu ihrem Verständis jedoch entscheidend beitragen: Kommentare,
 Klassenprototypen, Variablennamen und viele weitere Details, die das Lesen von Quellcode durch menschliche
 Nutzer vereinfachen sollen. Wenn ein Programm jedoch nur in Binärform vorliegt,
 ist die Analyse - je nach Komplexität des Analyseziels - kompliziert und
 erfordert fundierte Fachkenntnisse über die Funktionsweise der CPU und grundlegende Konzepte der
-Assemblerprogrammerung, zumal die erwähnten Vereinfachungen und Hilfestellungen der Hochsprachen
+Assemblerprogrammierung, zumal die erwähnten Vereinfachungen und Hilfestellungen der Hochsprachen
 nicht verfügbar sind. Stattdessen besitzt die Assemblersprache - wie im vorangehenden Abschnitt
-eräutert - keine Kontrollstrukturen im eigentlichen Sinn, was es schwierig macht,
+erläutert - keine Kontrollstrukturen im eigentlichen Sinn, was es schwierig macht,
 den Kontrollfluss eines Programms, das in dieser Form vorliegt, zu verstehen. Die tatsächliche
 Umwandlung einer Binärdatei in ein Assemblerlisting, welches grundlegende Abstraktionen über
 einzelne Instruktion der CPU bereiststellt, ist Aufgabe eines Disassemblers, der aus diesem Grund
 ein zentrales Wekzeug eines Reverse Engineers darstellt. Durch die allgemeine Ausrichtung eines
 Compilers, nämlich schnell und effizient arbeitenden Code zu generieren und dabei auf (hürdenfreie)
-Menschenlesbarkeit unter Umständen zu verzichten, wird diese Art der Analyse zusehends zeitintensiv.
+Menschenlesbarkeit unter Umständen zu verzichten, wird diese Art der Analyse zusehends zeitintensiver.
 Aus diesem Grund gibt es auch einige Ansätze, diesen Prozess komplett zu automatisieren, so dass
-keine oder kaum Nutzrinteraktion notwendig ist, wovon sich die Entwickler eine enorme Beschleunigng
+keine oder kaum Nutzerinteraktionen notwendig sind wovon sich die Entwickler eine enorme Beschleunigung
 des Prozesses erhoffen. Diese technischen Lösungen sind als Decompiler bekannt, da sie - im
 Idealfall - die Funktionsweise eines Compilers umkehren. Da diese meist über eine für ein Programm
 überaus komplexe Aufgabe erfüllen, sind es auch in der Regel kommerzielle Produkte, die auf diesem
 Gebiet verhältnismäßig weite Verbreitung finden, wobei auch eine Anzahl von Open-Source-Projekten
 sich mit dieser Zielsetzung befassen.
 
-\section{Problemantik}
+\section{Problematik}
 Das erklärte Ziel dieses Projekts ist es, ein Programm zu entwickeln, welches
-es ermöglicht, Software teilweise automatisch zu dekompilieren. Da moderne Software immer kompexer
+es ermöglicht, Software teilweise automatisch zu dekompilieren. Da moderne Software immer komplexer
 wird, wird es entsprechend schwieriger, in binärer Form vorliegende Softwareprodukte so umzuformen,
 dass sie ein tiefgehendes Verständnis und darauf basierende Modifikation erlauben.
 Dies betrifft nicht nur die Untersuchung von fremder Software, sondern auch die Wiederherstellung
 von Quellcode aus alten, beendeten oder sonstwie des Quellcodes verlustig gewordenen Projekten.
-Ein weiteres wichtiges Themenfeld ist die Malware-Analyse, die Schadsoftware untersucht und die von
-den Malware-Autoren unternommenen Obfuskationsversuche umgehen muss. Dies ist recht aufwändig,
-allerdings nicht minder notwendig, da nur auf diese Weise Gegenmaßnahmen unternommen werden können,
-die von simplen Desinfektionsroutinen bis hin zu komplexen Erkennungsalgorithmen und Signatursystemen
-reichen. Ein weiterer Aspekt, der diese Aufgabenstellung so bedeutend macht ist die Tatsache, dass
-Malware schon seit einiger Zeit eine enorme Bedrohung nicht nur für die Computer privater Nutzer, sondern
+Ein weiteres wichtiges Themenfeld ist die Malware-Analyse
+\footnote{
+	Malware ist ein Oberbegriff für alle Arten von Schadprogrammen, die gegen den Willen des Nutzers
+	auf seinem Rechner installiert werden. Malware-Analyse ist demenstprechend die Untersuchung solcher
+	Programme und die Entwicklung von Gegenmaßnahmen.},
+die Schadsoftware untersucht und die von
+den Malware-Autoren unternommenen Versuche zur Codeverschleierung, Obfuskation genannt, umgehen muss.
+Dies ist recht aufwändig, allerdings nicht minder notwendig, da nur auf diese Weise Gegenmaßnahmen unternommen
+werden können, die von simplen Desinfektionsroutinen bis hin zu komplexen Erkennungsalgorithmen und
+Signatursystemen reichen. Ein weiterer Aspekt, der diese Aufgabenstellung so bedeutend macht, ist die Tatsache,
+dass Malware schon seit einiger Zeit eine enorme Bedrohung nicht nur für die Computer privater Nutzer, sondern
 auch für Unternehmen und staatliche Einrichtungen darstellt. Zusammenfassend lässt sich die Situation
-folgendermaßen beschreiben: Es eistiert eine Vielzahl von sinnvollen und gegebenenfalls luktrativen
+folgendermaßen beschreiben: Es existiert eine Vielzahl von sinnvollen und gegebenenfalls lukrativen
 Anwendungsmöglichkeiten für zumindest teilweise automatisierte Programmanalyse. Gleichzeitig sind die
 Produkte, die die daraus resultierende Nachfrage abdecken sollen, für einige der Nischen nicht oder nur
 wenig geeignet, was einen anderen Ansatz zur Lösung der Problemstellung erfordert, der auch im vorliegenden
-Projekt verfolgt werden soll. Allerdings ist an dieser Stelle eine grundsätziche Erläterung der Methoden,
-die bereits existierender Software des Themenfelds zugruneliegt, angemessen.
+Projekt verfolgt werden soll. Allerdings ist an dieser Stelle eine grundsätzliche Erläuterung der Methoden,
+die bereits existierender Software des Themenfelds zugrundeliegt, angemessen.
 Die Hauptargumente für eine automatisierte Vorgehensweise sind, dass die Wiederherstellung von Kontrollfluss,
 Variablen, Funktionen und weiteren HLL\footnote{High Level Language, also Programmiersprache mit hohem
 Abstraktionsgrad, bekannte Beispiele für kompilierte HLL's sind C, C++ und Java}-spezifischen Strukturen
 ohnehin nicht komplett möglich ist, das Ergebnis also bloß eine Annäherung an den Originalcode sein kann.
 Gleichzeitig ist der Vorgang - von Menschen durchgeführt - sehr zeitraubend, erfordert viel
 Fachwissen und möglichst detaillierte Kenntnisse über die Funktionsweise der zu untersuchenden Software.
-All dies lässt es vorteilhaft erscheinen, die recht "undankbare" Aufgabe des Reverse-Engineerings auf ein
-automatisiertes System zu verlagern, vorausgesetzt das Ziel ist der komplette Quellcode des zu
-untersuchenden Produkts. Diese Systeme beruhen auf verschiedenen theoretischen Ansätzen,
-Programme zu beschreiben und Muster in ihnen zu erkennen, die in ihrer Komplexität stark variieren.
-Dabei sind mehrer Programmkategorien zu unterscheiden:
+All dies lässt es vorteilhaft erscheinen, die recht schwierige und aufwändige  Aufgabe des
+Reverse-Engineerings auf ein automatisiertes System zu verlagern, vorausgesetzt das Ziel der Untersuchung
+ist der komplette Quellcode des zu untersuchenden Produkts. Diese Systeme beruhen auf verschiedenen
+theoretischen Ansätzen, Programme zu beschreiben und Muster in ihnen zu erkennen, die in ihrer Komplexität
+stark variieren. Dabei sind mehrere Programmkategorien zu unterscheiden:
 \begin{enumerate}
 	\item{Decompiler, deren Ziel es ist, ein Programm
 		komplett wiederherzustellen, die meistens eine non-interaktive Arbeitsweise erfordern.}
@@ -247,8 +258,8 @@ einfach integriert werden, obwohl sie kaum Nutzen erbringen, da das Verhältnis 
 Ergebnisqualität und Programmkomplexität zu schlecht ist und die erbrachten Resultate zu fragil.
 Folglich ist es sinnvoll, sich auf die wesentlichen Aufgabenstellungen zu beschränken, so dass
 der Aufwand in Relation zum erbrachten Nutzen steht. Auf diese Weise kann gewährleistet werden, dass
-solche Systeme dem Nutzer tatsächlich bei einer Aufgebenstellung helfen, und ihn nicht in einigen Fällen,
-für die das System nicht ausgelegt war, wesentlich behiindern, wie es der Fall sein könnte, wenn eine
+solche Systeme dem Nutzer tatsächlich bei einer Aufgabenstellung helfen, und ihn nicht in einigen Fällen,
+für die das System nicht ausgelegt war, wesentlich behindern, wie es der Fall sein könnte, wenn eine
 andere Entwicklungsphilosophie angewendet werden würde.
 
 \section{Zielsetzung} Wie bereits im letzten Abschnitt erwähnt, handelt es sich bei diesem Projekt
@@ -256,9 +267,12 @@ um ein Analyseframework zur teilweisen Dekompilierung von Software, wobei auch e
 weiterer Reverse-Engineering\footnote{Der Prozess, Software oder andere technische Systeme in ihrem
 Aufbau und Verhalten zu analysieren, um sie zu reproduzieren, zu modifizieren oder das dabei
 gewonnene Wissen weiterzuverwenden, z.B. um Anti-Malware Routinen zu entwickeln}-Aufgaben mit seiner
-Hilfe vereinfacht werden können. Dabei wird die Ausgabe von IDA Pro\footnote{Ein Disassembler, der
-viele verschiedene Eingabeformate unterstützt und nicht nur interaktive Arbeit ermöglicht, sondern
-auch Assemblerlistings etc. generieren kann.} als Grundlage der Analyse verwendet. Dies mag zuerst
+Hilfe vereinfacht werden können. Dabei wird die Ausgabe von IDA Pro
+\footnote{IDA Pro (Interactive Disassembler)
+	ist ein Disassembler, der
+	viele verschiedene Eingabeformate unterstützt und nicht nur interaktive Arbeit ermöglicht, sondern
+	auch Assemblerlistings etc. generieren kann.}
+als Grundlage der Analyse verwendet. Dies mag zuerst
 als Nachteil erscheinen, da es den Arbeitsverlauf des Nutzers einschränkt, wobei bedacht werden
 muss, dass der Analyse- und Input-Parsing-Code strikt getrennt wird, was es ermöglicht, andere
 Eingabeformate mithilfe weiterer Module zu akzeptieren, ohne Änderungen in der Programmmechanik
@@ -269,26 +283,24 @@ Demonstrationsbeispiel eignet. Für mehr Informationen zum Projektaufbau und ein
 Darstellung sei auf den gleichnamigen Abschnitt verwiesen.
 
 \subsection{Projektstruktur} Um eine Erweiterung im Sinne des vorhergehenden Abschnittes zu
-gewährleisten, ist es besonders wichtig, eine sinnvole Aufteilung des Codes in einzelne Module
+gewährleisten, ist es besonders wichtig, eine sinnvolle Aufteilung des Codes in einzelne Module
 durchzuführen. Auch sonst gehört es zu einem  "guten Stil", Programme in Sinneinheiten zu koppeln.
 Wie bereits erwähnt, wird deswegen das Projekt grob in zwei zentrale Teile unterteilt: Die
 tatsächlichen Analysemodule, die alle eine Eingabe in einem bestimmten Format erwarten, und Module,
 die den Zweck erfüllen, Daten in diesem Format bereitzustellen und diese aus verschiedenen
-Eingabeformaten generieren. Die Ordnerstruktur sieht aus, wie in Figur 1 dargestellt und wird
+Eingabeformaten generieren. Die Ordnerstruktur ist in Figur 1 dargestellt und wird
 primär verwendet, um das Projekt zu strukturieren. An der Wurzel der Ordnerstruktur liegen die
 einzelnen Module, die Eingabe verarbeiten und in ein Format umwandeln, welches von den Analysemodulen
 verwendet wird. Diese wiederum befinden sich innerhalb des Moduls \textit{defines}, welches pro
 Submodul einen Unterordner besitzt. Jedes dieser Submodule kann sowohl alleinstehend, also als
-Script, als auch als Modul benutzt bzw. imporiert werden. Auf diese Weise sind die
+Script, als auch als Modul benutzt bzw. importiert werden. Auf diese Weise sind die
 einzelnen Komponenten fähig, miteinander in Kontakt zu treten und auf die Funktionalität anderer
 Module zuzugreifen, jedoch ohne zu sehr voneinander abhängig zu sein, so dass Erweiterung und
-Modifikation sehr einfach zu bewerkstelligen ist. Beispielsweise sind so ohne Weiteres andere
+Modifikation sehr einfach zu bewerkstelligen sind. Beispielsweise sind so ohne Weiteres andere
 Eingabeparsing-Module denkbar, als die bereits mitgelieferten. Ebenfalls kann die Analyse um weitere
 Aspekte des zu untersuchenden Programms erweitert werden, sollte dies sich als notwendig
 herausstellen.
-%\newpage
 \begin{figure}[h!]
-%	\centering
 		\dirtree{%
 		.1 Iridium (Eingabeparsing-Module).
 		.2 defines (Behälter für Submodule).
@@ -306,22 +318,23 @@ historischer Programme ist die Möglichkeit, Code in Abhängigkeit von Bedingung
 können. Die am weitesten bekannten Beispiele sind verschiedene Arten Bedingter Anweisungen, Schleifen
 u.ä. Diese Beziehungen zwischen den einzelnen Teilen des Codes wiederherstellen zu können ist eine der
 Hauptaufgaben dieses Projekts. Dabei ist diese Zielsetzung keineswegs trivial, zumal Strukturen
-linear und nicht linear verschachtelt\footnote{Strukturen in einem CFG bestehen in der Regel aus
-zwei oder Mehr Teilen, wobei sogenannte primitive Teile einfache Knoten des Kontrollflussgraphen
-sind. In der Praxis können jedoch auch nich-primitive Teile, also andere Strukturen an dieser Stelle
-auftreten. Wenn eine Struktur komplett eine andere Teilstruktur ersetzt, wird der Begriff "linear
-verschachtelt" verwendet. Gleichzeitig ist es möglich, dass Strukturen verschiedener Ebenen den
-gleichen Knoten verwenden, was als nichtlineare Verschachtelung bezeichnet wird. Beide Begriffe sind
-vom Autor selbst geprägt.} sein können etc. Als Grundlage des verwendeten Algorithmus diente die in
-\cite{structural_analysis:1} beschriebene Vorgehensweise, die jedoch um fortgeschrittenere
-Bedingungsanalyse erweitert wurde. Dies war notwendig, da z.B. Bedingte Anweisungen nicht nur eine,
-sondern mehrere über logische Operatoren verknüpfte Bedingungen besitzen können. Dies führt dazu,
-dass Strukturen erst erkannt werden können, wenn diese komplexen Bedingungen reduziert wurden.
+linear und nicht linear verschachtelt\footnote{Strukturen in einem CFG (Kontrollflussgraph)
+bestehen in der Regel aus zwei oder mehr Teilen, wobei sogenannte primitive Teile einfache Knoten
+des Kontrollflussgraphen sind. In der Praxis können jedoch auch nicht-primitive Teile, also andere
+Strukturen an dieser Stelle auftreten. Wenn eine Struktur komplett eine andere Teilstruktur ersetzt,
+wird der Begriff "linear verschachtelt" verwendet. Gleichzeitig ist es möglich, dass Strukturen
+verschiedener Ebenen den gleichen Knoten verwenden, was als nichtlineare Verschachtelung bezeichnet
+wird. Beide Begriffe sind vom Autor selbst geprägt.} sein können. Als Grundlage des verwendeten
+Algorithmus diente die in \cite{structural_analysis:1} beschriebene Vorgehensweise, die jedoch um
+fortgeschrittenere Bedingungsanalyse erweitert wurde. Dies war notwendig, da z.B. Bedingte Anweisungen
+nicht nur eine, sondern mehrere über logische Operatoren verknüpfte Bedingungen besitzen können.
+Dies führt dazu, dass Strukturen erst erkannt werden können, wenn diese komplexen Bedingungen zu einem
+Knoten reduziert wurden.
 
-\subsection{Analyse von Variablen und anderen Daten} Daten bilden neben dem Code selbst den zweiten
+\subsection{Analyse von Variablen und anderen Daten} Daten bilden neben dem Code den zweiten
 Hauptbestandteil eines Programms, weswegen das Layout der Variablen, Argumente/Parameter und
 Rückgabewerte von großem Interesse für den Reverse-Engineer sein sollte. Gleichzeitig sind Arrays
-und Variablen nicht immer trivial zu erkennen, weswegen sich einige einfache, dennoch effektive
+und Variablen nicht immer einfach zu erkennen, weswegen sich einige einfache, dennoch effektive
 Heuristiken anbieten, die in diesem Projekt umfassend realisiert wurden. Die eigentliche Problematik
 liegt darin, dass Compiler nicht alle Daten auf dem Stack ablegen, aber gleichzeitig den Stack nicht
 nur zum Speichern lokaler Variablen verwenden. Folglich muss unterschieden werden, welche
@@ -330,7 +343,7 @@ Pointer darstellen. Aufgrund der oben beschrieben Umstände handelt es sich bei 
 Analyseergebnissen nur um eine Annäherung an die Realität, beispielsweise verwenden optimisierende
 Compiler zum Speichern lokaler Variablen häufig CPU-Register
 \footnote{Ein Speicherbereich, der direkt an die CPU angeschlossen ist und sehr viel schnelleren
-Zugriff erlaubt, allerdings in seiner Größe und Anzahl begrent ist. Jede Variation der
+Zugriff erlaubt, allerdings in seiner Größe und Anzahl begrenzt ist. Jede Variation der
 Assemblersprache definiert eine bestimmte Anzahl sogenannter Universalregister, die auf bestimmte
 Weise benannt werden und spezifisch für die jeweilige Prozessorarchitektur sind. Für die
 x86-Prozessorarchitektur sind dies EAX, EBX, ECX, EDX, ESI, EDI, EBP und ESP. Diese sind 32 Bit
@@ -345,14 +358,14 @@ werden würde, zumal Register auch für Arithmetik und Argumentübergabe verwend
 eine verhältnismäßig häufig verwendete Rechenarten in Programmen, bzw. ist meistens von zentraler
 Bedeutung für die Resultate der Ausführung. Allerdings sind diese Operationen auch sehr
 ressourcenintensiv, weswegen seit den späten 1990er Jahren die entsprechenden Prozessorinstruktionen
-kaum noch verwendet wurden, zumal die Division durch Konstanten durch Multiplikation und Shifts
+kaum noch verwendet wurden, zumal die Division durch Konstanten und Multiplikation und Shifts
 ersetzt werden kann, was deutlich schnellere Ausführung ermöglicht\cite{division:2}, wodurch
 gerade Schleifen beschleunigt werden können. Gleichzeitig wird dadurch die eigentliche
 Bedeutung des Codes verschleiert, was zu Hürden bei der Analyse durch Menschen führt. Auch hier ist
 eine automatisierte Lösung also naheliegend, zudem noch nicht allgemein verbreitet\footnote{Eine
 Recherche des Autors ergab, dass z.B. der Hex-Rays Decompiler "ohne Probleme" mit solchen
-Konstrukten umgehen kann, da dieser allerdings ein komerzielles und noch dazu recht teures Produkt
-darstellt, kann vermutlich nicht vonn allgemeiner Verbreitung gesprochen werden.}. Gleichzeitig ist
+Konstrukten umgehen kann, da dieser allerdings ein komerzielles, recht teures Produkt
+darstellt, kann vermutlich nicht von allgemeiner Verbreitung gesprochen werden.}. Gleichzeitig ist
 die Berechnung des Divisors aus den vorliegenden Konstanten durchaus möglich und ausreichend
 beschrieben bzw. erklärt\cite{stackexchange:4}.
 
@@ -360,7 +373,7 @@ beschrieben bzw. erklärt\cite{stackexchange:4}.
 auch Informationen zur Implementation sind hier wiedergegeben.
 
 \subsection{Kontrollflussanalyse} Wie bereits in Abschnitt \ref{sec:CFA} beschrieben, ist die
-Kontrollflussanalyse eine verhältnismäßig komplexe Aufgabe, da das zu untersuhende Objekt eine
+Kontrollflussanalyse eine verhältnismäßig komplexe Aufgabe, da das zu untersuchende Objekt eine
 Vielzahl an Formen annehmen kann, beispielsweise arrangieren Compiler den generierten Assemblercode
 nicht immer auf eine direkt erwartete Weise. Aus diesem Grund wurde im Laufe der Planung
 vorliegender Software sehr schnell klar, dass die Analyse des Programms auf Codeebene nicht
@@ -369,10 +382,10 @@ Eine Untersuchung der Fachliteratur ließ erkennen, dass die Analyse des Kontrol
 effektiver ist, wenn dieser als Graph betrachtet wird. Per Definition ist ein Kontrollfussgraph
 (CFG) ein gerichteter Graph \(G\), der über eine Menge Knoten \(V\), eine Menge gerichteter Kanten
 \(E\) und einen Wurzelknoten \(r\) mit \(r \in V\) verfügt \cite{wiki1:3}. \[G(V,E,r)\] Aufgrund der
-Konzeption von Codeflusssteuerung auf Machienenebene kann zudem davon ausgegangen werden, dass jeder
+Konzeption von Codeflusssteuerung auf Maschienenebene kann zudem davon ausgegangen werden, dass jeder
 Knoten 0 bis 2 Nachfolger hat, allerdings eine beliebige Anzahl Vorgänger, wobei nur der
 Wurzelknoten keinen Vorgänger haben darf. Die Verwendung einer solchen Datenstruktur zur
-Representation des Programms hat eine Reihe von Vorteilen, wobei die wichtigsten eine deutlich
+Räpresentation des Programms hat eine Reihe von Vorteilen, wobei die wichtigsten eine deutlich
 einfachere Analyse möglicher Pfade vom Start- zum Endknoten und die Unabhängigkeit vom Codelayout
 durch den Compiler im Speicher sind.  Die Software geht bei der Analyse folgendermaßen vor: Die
 Knoten werden nacheinander bearbeitet, wobei die Reihenfolge der Postorder-Traversierung des
@@ -382,8 +395,8 @@ Knoten ersetzt, der Informationen über die enthaltene Struktur speichert, und w
 analysiert wird. Sobald alle Knoten auf diese Weise behandelt wurden und alle notwendigen
 Graphenreduktionen stattgefunden haben, können die Informationen über erkannte Schleifen,
 Verzweigungen etc. in strukturierter Form dargestellt werden. Das aktuelle Featureset umfasst vor-
-und nachprüfende Schleifen, Verzweigungen mit beliebig vielen alternativen Pfaden und alle dem Autor
-bekannten Möglichkeiten der Verschachtelung. Seit neuestem werden auch komplexe Bedingungen in allen
+und nachprüfende Schleifen, Verzweigungen mit beliebig vielen alternativen Pfaden und alle 
+Möglichkeiten der Verschachtelung. Seit neuestem werden auch komplexe Bedingungen in allen
 möglichen Kontexten erkannt und reduziert, was ein Novum darstellt, da der dazu verwendete
 Algorithmus bs jetzt nicht in der dem Autor bekannten Fachliteratur beschrieben wurde. Sprungbefehle
 wie goto, break, continue und in manchen Fällen return werden aufgrund der Herangehensweise nicht
@@ -401,7 +414,7 @@ Knotens nach dieser Reihenfolge.
 		Diese erfüllen mindstens eine der nachfolgenden Bedingungen:
 		\begin{enumerate}
 			\item{Die vorherige Instruktion ist ein bedingter oder unbedingter Sprung.}
-			\item{Die nachfolgende Instruktion mit einem Label versehen,
+			\item{Die nachfolgende Instruktion ist mit einem Label versehen,
 				also Ziel eines oder mehrer Sprünge.}
 			\item{Die nachfolgende Instruktion ist ein Vergleich.}
 		\end{enumerate}
@@ -430,16 +443,18 @@ Knotens nach dieser Reihenfolge.
 		}
 		traversiert. Die sich dabei ergebende Reihenfolge ist
 		für die Analyse sehr gut geeignet, da auf diese Weise die innersten Strukturen
-		zuerst erkannt und reduziert werden, so dass kein Knoten, der am Anfang einer
+		zuerst erkannt und reduziert werden, sodass kein Knoten, der am Anfang einer
 		Struktur steht, analysiert wird, während der Graph eine Erkennung der entsprechenden
-		Struktur unmöglich macht.
+		Struktur unmöglich macht, da Teile der Struktur noch weitere unreduzierte Strukturen
+		enthalten, wie es im Falle von verschachtelten Bedingten Anweisungen und / oder Schleifen
+		der Fall sein kann.
 	\item{\textbf{Analyse der einzelnen Knoten nach der in Schritt 2 bestimmten Reihenfolge:}}
 		Zuerst wird überprüft, ob der aktuelle Knoten Anfang einer simplen
 		Struktur sein kann. Als simple Strukturen werden alle elementaren
-		Konstrukte bezeichenet, die von Hochsprachen definiert werden: vor-
+		Konstrukte bezeichnet, die von Hochsprachen definiert werden: vor-
 		und nachprüfende Schleifen, lineare Abfolgen beliebiger Strukturen
 		und if-then / if-then-else -strukturen, also Bedingte Anweisungen.
-		Das Programm unterscheided die folgenden Strukturen:
+		Das Programm unterscheidet die folgenden Strukturen:
 		\begin{enumerate}
 			\item{\textit{if-then:}}
 				Eine bedingte Anweisung, ohne else-Klausel.
@@ -461,13 +476,15 @@ Knotens nach dieser Reihenfolge.
 				Eine komplexe Bedingung.
 			\item{\textit{block:}}
 				Eine beliebig lange, lineare Abfolge von sowohl
-				primitiven, als auch Struktur-Knoten, ausgenommen
+				primitiven, als auch komplexen Knoten, ausgenommen
 				Bedingungen.\footnote{
 					Tatsächlich kann es vorkommen, dass Bedingungen direkt in
 					einem Block platziert werden, wenn dieser Block der einzige
 					Knoten in einer nachprüfenden Schleife ist.
 					Dies liegt an der Art, auf die nachprüfende Schleifen
-					erkannt werden und wird \textit{nicht} als Bug angesehen.
+					erkannt werden und wird \textit{nicht} als Bug angesehen,
+					da dieses Verhalten kaum zu beheben ist, allerdings auch
+					nicht seht störend ist.
 				}
 		\end{enumerate}
 		Ist eine solche Sruktur aufzufinden, werden ihre Teile aus dem Graphen entfernt und ein
@@ -481,31 +498,40 @@ Knotens nach dieser Reihenfolge.
 		ausgeführt wird. Konkret werden komplexe Bedingungen
 		folgendermaßen untersucht: Zunächst wird überprüft, ob es sich bei
 		der hypothetischen Bedingung um die Bedingung einer vorprüfenden
-		Schleife handeln kann. Dies wird über eine Suche nach Backedges, die den
+		Schleife handeln kann. Dies wird über eine Suche nach Backedges
+		\footnote{
+			Eine Backedge ist eine Kante, deren Ziel- ihren Ursprungsknoten dominiert.
+		}
+		, die den
 		aktuellen Knoten zum Ziel haben, bewerkstelligt. Sollten solche Knoten
 		vorhanden sein, werden alle Pfade (s. u), die diesen Knoten enthalten,
 		aus der Analyse ausgeschlossen. Danach werden die möglichen Pfade für den
-		Kontrollfluss ausgehend vom aktuellen Knoten berechnet.  Nun wird
-		nach einem Knoten mit speziellen Eigenschaften gesucht: Dem ersten
-		gemeinsamen Knoten aller gefundenen Pfade, der nicht dem
-		Anfangsknoten entspricht. Sollte es hingegen so sein, dass eine
+		Kontrollfluss ausgehend vom aktuellen Knoten berechnet.  Nun wird ein Knoten mit
+		besonderen Eigenschaften gesucht:
+		\begin{enumerate}
+			\item{Der Knoten ist in allen Pfaden vorhanden.}
+			\item{
+				Der Knoten ist dabei der relativ zu den Pfaden
+				der erste Knoten, der die erste Eigenschaft erfüllt.}
+			\item{Dieser Knoten ist zudem nicht der Anfangsknoten der Pfade}
+		\end{enumerate}
+		Sollte es hingegen so sein, dass eine
 		Schleifenbedingung betrachtet wird, werden nur die Pfade für die
 		Bestimmung des Knotens herangezogen, die nicht den Schleifenkörper
 		erreichen und dementsprechend keine Backedges enthalten, wie anfangs beschrieben.
 		Der gefundene Knoten ist nicht mehr zur Struktur und Bedingung gehörig.
 		Die Knoten, die vor ihm in den Pfaden auftreten, gehören hingegen
 		dazu, werden anhand der Anzahl ihrer Nachfolger als Bedingungen oder 
-		Code identifiziert. Die Knoten, die zur Bedingung gehören, also zwei Nach-
-		folger besitzen, werden zu einem Knoten reduziert, der die komplexe Bedingung
-		representiert.
+		Code identifiziert. Die Knoten, die zur Bedingung gehören, also zwei Nachfolger
+		besitzen, werden zu einem Knoten reduziert, der die komplexe Bedingung repräsentiert.
 		Dies geschieht jedoch nur, wenn keiner der Knoten in der Bedingungstruktur,
 		außer der Anfangsknoten, Vorgänger außerhalb der Struktur besitzt.
 		Auf diese Weise wird verhindert, dass Teile von großen und komplexen Bedingungen
-		als Strukturen reduziert werden, was die Reduktion sehr unperformant und nicht
-		gerade nützlich machen würde. Derzeit ist Code in der Entwicklung, der die Analyse
-		von bereits reduzierten Bedingungen übernehmen soll. Dies würde es ermöglichen,
-		logische Verknüpfungen zwischen den Teilbedingungen zu erkennen und ein weiteres
-		arbeitsintensives Detail des Reverse-Engineerings zu automatisieren.
+		als Strukturen reduziert werden, was die Reduktion sehr uneffizient und nicht
+		gerade nützlich machen würde. Die Funktionalität, reduzierte Bedingungen weiter
+		zu analysieren ermöglicht es, logische Verknüpfungen zwischen den Teilbedingungen
+		zu erkennen und ein weiteres arbeitsintensives Detail des Reverse-Engineerings
+		zu automatisieren.
 \end{enumerate}
 
 \subsection{Datenanalyse}
@@ -519,7 +545,13 @@ gleichgesetzt werden kann. So verwenden moderne Compiler die push\footnote{push 
 auf dem Stack und speichert dort den übergebenen Operanden}- und pop\footnote{pop entfernt den
 zuletzt auf den Stack geschobenen Wert und speichert ihn im übergebenen Operanden}-Instruktionen
 nicht mehr für Funktionsaufrufe, da diese zu viele Ressourcen verbrauchen. Stattdessen wird am
-Anfang der Funktion mehr Speicher alloziert als für die lokalen Variablen notwendig, so dass
+Anfang der Funktion mehr Speicher alloziert
+\footnote{Das Betriebssystem \textit{alloziert} Speicher, um ihn einem Programm zur Verfügung zu
+stellen. Dieser Prozess umfasst die Auswahl des Speicherbereichs, die Protokollierung des Vorgangs
+und (implementationsbhängige) Aspekte, die es dem Programm ermöglichen, den Speicher tatsächlich
+zu benutzen. Häufig ist mit diesem Begriff gemeint, dass Speicher, der dem Programm bereits zur Verfügung
+steht, der allerdings frei ist, mit Daten belegt wird.}
+, als für die lokalen Variablen notwendig, so dass
 Parameter direkt in den Speicher geschrieben werden, bevor eine Funktion aufgerufen wird. Darüber
 hinaus werden vermehrt sogenannte Canarys auf dem Stack hinterlegt, die sicherstellen sollen, dass
 kein Stackoverflow stattfindet, bzw. Schäden am Stackframe direkt erkannt werden.
@@ -546,7 +578,8 @@ des Divisors benutzbar ist:
 \end{equation*}
 Die mathematische Herleitung ist verhältnismäßig verworren und nicht gerade klar, weswegen sie hier,
 um Fehler zu vermeiden, nicht wiedergegeben wird. Dabei ist $d$ der gesuchte Divisor, $bitness$ ist
-die Breite der verwendeten Register, $rshift$ die Anzahl Stellen, um die das Ergebnis verschoben wird.
+die Breite der verwendeten Register, $rshift$ die Anzahl Stellen, um die das Ergebnis verschoben wird
+und $x$ die Konstante, mit der multipliziert wird.
 Folglich bleibt es dem Code noch übrig diese Werte aus dem Assebly-Listing zu extrahieren. Um den
 genauen Ablauf dieses Prozesses zu steuern, werden Grenzwerte festgelegt, wie weit die einzelnen
 Instruktionen voneinander entfernt sein dürfen, damit der gegebene Codeabschnitt noch als Division

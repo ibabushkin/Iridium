@@ -4,9 +4,9 @@
 \contentsline {subsubsection}{\numberline {2.1.1}Einige h\IeC {\"a}ufig anzutreffende Instruktionen}{3}
 \contentsline {subsubsection}{\numberline {2.1.2}Funktionen}{3}
 \contentsline {subsection}{\numberline {2.2}Compiler, Decompiler und Disassembler}{4}
-\contentsline {section}{\numberline {3}Problemantik}{5}
+\contentsline {section}{\numberline {3}Problematik}{5}
 \contentsline {section}{\numberline {4}Zielsetzung}{6}
-\contentsline {subsection}{\numberline {4.1}Projektstruktur}{6}
+\contentsline {subsection}{\numberline {4.1}Projektstruktur}{7}
 \contentsline {subsection}{\numberline {4.2}Kontrollflussanalyse}{7}
 \contentsline {subsection}{\numberline {4.3}Analyse von Variablen und anderen Daten}{8}
 \contentsline {subsection}{\numberline {4.4}Behandlung von Integerdivision}{8}
@@ -14,7 +14,7 @@
 \contentsline {subsection}{\numberline {5.1}Kontrollflussanalyse}{9}
 \contentsline {subsubsection}{\numberline {5.1.1}Algorithmusbeschreibung und Implementationsdetails}{10}
 \contentsline {subsection}{\numberline {5.2}Datenanalyse}{12}
-\contentsline {subsection}{\numberline {5.3}Optimisierte Intergerdivision}{12}
+\contentsline {subsection}{\numberline {5.3}Optimisierte Intergerdivision}{13}
 \contentsline {subsubsection}{\numberline {5.3.1}Herleitung des Algorithmus}{13}
 \contentsline {section}{\numberline {6}Ausblick}{13}
 \contentsline {section}{Bibliotheksreferenz}{14}
