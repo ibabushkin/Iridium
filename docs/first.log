@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  12 MAR 2015 16:12
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  14 MAR 2015 12:19
 entering extended mode
 **first.tex
 (./first.tex
@@ -585,18 +585,18 @@ Package: mhsetup 2004/10/10 v1.0b programming setup (MH)
 ) (./first.aux)
 \openout1 = `first.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
 -------------------- Geometry parameters
 paper: a4paper
 landscape: --
@@ -692,100 +692,158 @@ LaTeX Info: Redefining \selectfont on input line 125.
 \RaggedRightParindent=\skip122
 \JustifyingParindent=\skip123
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 79.
+Overfull \hbox (16.31618pt too wide) in paragraph at lines 61--68
+[]\OT1/cmr/m/n/10.95 Bei be-sagtem Soft-ware-pro-jekt han-delt es sich um ein S
+ys-tem, welches Reverse-Engineering,
+ []
 
+LaTeX Font Info:    Try loading font information for U+msa on input line 83.
 (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 79.
+LaTeX Font Info:    Try loading font information for U+msb on input line 83.
 
 (/usr/share/texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 79.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 83.
 
 (/usr/share/texmf/tex/latex/jknappen/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-) (./first.toc)
-\tf@toc=\write4
-\openout4 = `first.toc'.
-
- [1
+) [1
 
 {/usr/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 125.
-
-
-(/usr/share/texmf/tex/latex/base/omscmr.fd
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 98.
+ (/usr/share/texmf/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 125.
- [2]
-Overfull \hbox (23.21373pt too wide) in paragraph at lines 136--146
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 98.
+
+Overfull \hbox (23.21373pt too wide) in paragraph at lines 109--119
 \OT1/cmr/m/n/10.95 ...)Auskunft geben. Es ex-istieren zu-dem eine Reihe von In-
 struk-tio-nen, die in Abh^^?angigkeit
  []
 
 
-Overfull \hbox (0.68912pt too wide) in paragraph at lines 146--151
+Overfull \hbox (0.68912pt too wide) in paragraph at lines 119--124
 []\OT1/cmr/m/it/10.95 Spr^^?unge: \OT1/cmr/m/n/10.95 Der ein-fach-ste Sprung, \
 OT1/cmr/m/it/10.95 jmp\OT1/cmr/m/n/10.95 , wird im-mer aus-gef^^?uhrt und sprin
 gt zur Adresse
  []
 
-[3] [4] [5]
-Overfull \hbox (2.26668pt too wide) in paragraph at lines 248--264
-\OT1/cmr/m/n/10.95 Das Re-sul-tat der vor-liegen-den Beson-deren Lern-leis-tung
- ist in die zweite Kat-e-gorie einzuord-
+
+Package natbib Warning: Citation `wikibook1:7' on page 2 undefined on input lin
+e 129.
+
+
+Package natbib Warning: Citation `wikibook2:8' on page 2 undefined on input lin
+e 130.
+
+[2]
+
+Package natbib Warning: Citation `wikibook1:7' on page 3 undefined on input lin
+e 144.
+
+
+Package natbib Warning: Citation `wikibook2:8' on page 3 undefined on input lin
+e 144.
+
+
+Overfull \hbox (0.28654pt too wide) in paragraph at lines 169--182
+[]\OT1/cmr/m/n/10.95 Die tats^^?achliche Umwand-lung einer Bin^^?ardatei in ein
+ As-sem-blerlist-ing, welches grundle-
  []
 
-
-Overfull \hbox (15.71086pt too wide) in paragraph at lines 265--284
+[3] [4]
+Overfull \hbox (15.71086pt too wide) in paragraph at lines 248--267
 \OT1/cmr/m/n/10.95 erm^^?oglicht, an-dere Eingabefor-mate mithilfe weit-erer Mo
 d-ule zu akzep-tieren, ohne []Anderungen
  []
 
-[6] [7] [8] [9] [10] [11]
-Overfull \hbox (5.97752pt too wide) in paragraph at lines 518--535
+[5]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package natbib Warning: Citation `structural_analysis:1' on page 6 undefined on
+ input line 311.
+
+[6] [7]
+
+Package natbib Warning: Citation `division:2' on page 8 undefined on input line
+ 345.
+
+
+Package natbib Warning: Citation `stackexchange:4' on page 8 undefined on input
+ line 353.
+
+
+Package natbib Warning: Citation `wiki1:3' on page 8 undefined on input line 36
+7.
+
+[8]
+
+Package natbib Warning: Citation `wiki2:5' on page 9 undefined on input line 41
+6.
+
+
+Package natbib Warning: Citation `wiki3:6' on page 9 undefined on input line 42
+6.
+
+[9] [10]
+Overfull \hbox (5.97752pt too wide) in paragraph at lines 501--518
 \OT1/cmr/m/n/10.95 die Pfade f^^?ur die Bes-tim-mung des Knotens herange-zo-gen
 , die nicht den Schleifenk^^?orper
  []
 
-[12]
-Overfull \hbox (15.285pt too wide) in paragraph at lines 596--599
+
+Overfull \hbox (15.65001pt too wide) in paragraph at lines 518--527
+\OT1/cmr/m/n/10.95 den Anal-y-seschritte Be-din-gun-gen re-duziert wor-den sein
+, dann en-thal-ten die entsprechen-
+ []
+
+[11] [12]
+
+Package natbib Warning: Citation `stackexchange:4' on page 13 undefined on inpu
+t line 591.
+
+
+Package natbib Warning: Citation `stackexchange:4' on page 13 undefined on inpu
+t line 594.
+
+
+Overfull \hbox (15.285pt too wide) in paragraph at lines 615--625
 \OT1/cmr/m/n/10.95 wurde bere-its teil-weise umge-setzt, ob tats^^?achlich weit
 -ere Um-struk-turierun-gen notwendig
  []
 
-[13] (./first.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 24--27
-[]\OT1/cmr/m/n/10.95 http://reverseengineering.stackexchange.com/questions/1397
-/how-can-i-reverse-
- []
+[13] [14]
 
-[14]) [15] (./first.aux) ) 
+Package natbib Warning: There were undefined citations.
+
+[15] (./first.aux) ) 
 Here is how much of TeX's memory you used:
- 4562 strings out of 94500
- 60270 string characters out of 1176766
- 124497 words of memory out of 1000000
- 7620 multiletter control sequences out of 10000+50000
- 17208 words of font info for 67 fonts, out of 500000 for 2000
+ 4548 strings out of 94500
+ 60113 string characters out of 1176766
+ 125375 words of memory out of 1000000
+ 7613 multiletter control sequences out of 10000+50000
+ 15805 words of font info for 61 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,10n,43p,223b,346s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,11n,43p,223b,391s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 96 PDF objects out of 300000
+ 93 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 65536
-</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></
-usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1
-/bluesky/cm/cmti9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr
-/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bl
-uesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/s
-hare/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/texmf/fonts/type1/bluesk
-y/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/t
-exmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm
-/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/
-fonts/type1/bluesky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr1
-2.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (15 pages, 165839 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/sh
+are/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/blues
+ky/cm/cmti9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx9.pfb></usr/share/
+texmf/fonts/type1/bluesky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/c
+m/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/share/te
+xmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
+cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti10
+.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/
+type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pfb>
+
+Output written on first.pdf (15 pages, 159551 bytes).

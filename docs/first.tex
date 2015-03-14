@@ -1,90 +1,63 @@
 % !TEX TS-program = pdflatex
 % !TEX encoding = UTF-8 Unicode
 
-% This is a simple template for a LaTeX document using the "article" class.
-% See "book", "report", "letter" for other types of document.
+\documentclass[11pt]{article}
 
-\documentclass[11pt]{article} % use larger type; default would be 10pt
-
-\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+\usepackage[utf8]{inputenc}
 \usepackage{natbib}
 \usepackage{multicol}
 
-%%% Examples of Article customizations
-% These packages are optional, depending whether you want the features they provide.
-% See the LaTeX Companion or other references for full information.
+\usepackage{geometry}
+\geometry{a4paper,left=3.5cm,right=2.5cm}
 
-%%% PAGE DIMENSIONS
-\usepackage{geometry} % to change the page dimensions
-\geometry{a4paper,left=3.5cm,right=2.5cm}%,top=2.5cm,bottom=2cm} % or letterpaper (US) or a5paper or....
-% \geometry{margin=2in} % for example, change the margins to 2 inches all round
-% \geometry{landscape} % set up the page for landscape
-%   read geometry.pdf for detailed page layout information
+\usepackage{graphicx}
 
-\usepackage{graphicx} % support the \includegraphics command and options
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{paralist}
+\usepackage{verbatim}
+\usepackage{subfig}
 
-% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
-
-%%% PACKAGES
-\usepackage{booktabs} % for much better looking tables
-\usepackage{array} % for better arrays (eg matrices) in maths
-\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
-\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
-\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
-% These packages are all incorporated in the memoir class to one degree or another...
-
-%%% HEADERS & FOOTERS
-\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
-\pagestyle{fancy} % options: empty , plain , fancy
-\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
 \lhead{}\chead{}\rhead{}
 \lfoot{}\cfoot{\thepage}\rfoot{}
 
-%%% SECTION TITLE APPEARANCE
 \usepackage{sectsty}
-\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
-% (This matches ConTeXt defaults)
+\allsectionsfont{\sffamily\mdseries\upshape}
 
-%%% ToC (table of contents) APPEARANCE
-\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
-\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage[titles,subfigure]{tocloft}
 \renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
-\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape}
 
-%%% END Article customizations
-
-%%% The "real" document content comes below...
 \usepackage{dirtree}
 \columnseprule0.01pt
 \columnsep7mm
-%\usepackage[cm]{fullpage}
 
 \usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs, url}
 \usepackage{mathtools}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
-%\usepackage{mathtools, mathpazo}
-%\usepackage{url}
-%\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, pdftex,pagebackref]{hyperref}
 \renewcommand{\bibname}{Bibliotheksreferenz}
 \renewcommand{\contentsname}{Inhalt}
 \renewcommand{\figurename}{Figur}
 
 \title{Besondere Lernleistung - Dokumentation}
 \author{Inokentiy Babushkin}
-%\date{} % Activate to display a given date or no date (if empty),
-         % otherwise the current date is printed 
+\date{}
 
 \begin{document}
-\maketitle
-\tableofcontents
-%\begin{multicols}{2}
+%\maketitle
+%\tableofcontents
 
 \section{Grundlagen}
 Die vorliegende Besondere Lernleistung hat das Ziel, ein Softwareprojekt
 umfassend zu planen und umzusetzen.
 Dieses Dokument beschreibt Zielsetzung, Aufbau und konkrete Aspekte der Umsetzung,
 wobei der Hauptaugenmerk auf Algorithmen, Vorgehensweisen und Designentscheidungen liegen wird.
+
 Bei besagtem Softwareprojekt handelt es sich um ein System, welches Reverse-Engineering, manuelle
 Dekompilation und bestimmte Aspekte der Malware-Analyse vereinfachen bzw. automatisieren soll,
 ohne dass durch seine Benutzung weitere Probleme entstehen. Folglich lag der Schwerpunkt der Entwicklung
@@ -119,7 +92,7 @@ bezeichnet. Die folgenden 1 bis 2 Tokens sind sogenannte \textit{Operanden}, die
 \textit{Source-} und \textit{Destination-} Operand unterteilt werden. Diese sind immer
 eine Referenz auf Daten, auf die die Instruktion angewandt wird. Beispielsweise gibt es
 Instruktionen für Grundrechenarten und bitlogische Operationen, wobei folgende Darstellungsform
-verwendet wird: $$ instruction\ destination[, source]$$
+verwendet wird: $$ instruction\ destination-operand, source-operand$$
 \subsubsection{Einige häufig anzutreffende Instruktionen}
 \begin{itemize}
 	\item{\textit{add:}} Addiert Source- und Destination-Operand und speichert das Ergebnis in
@@ -160,7 +133,9 @@ Zum weiteren Verständnis des Projekts ist eine Erklärung von Funktionen in der
 Eine Funktion ist, genau wie in Hochsprachen, ein Codeabschnitt, der blockweise ausgeführt wird,
 wobei innerhalb eines solchen Blocks Verzweigungen möglich sind. Eine Funktion kann Argumente
 (Parameter) annehmen, welche für ihre Funktionsweise notwendig sind und meistens über den Stack
-übergeben werden. Auch kann eine Funktion Variablen mit lokal begrenzter Gültigkeit auf dem eigenen
+übergeben werden.
+
+Auch kann eine Funktion Variablen mit lokal begrenzter Gültigkeit auf dem eigenen
 Stackframe, dem für jede aufgerufene Instanz individuellen Stackabschnitt, ablegen.
 Dabei muss jede Funktion ihren Stackframe selbst initialisieren und - je nach Aufrufkonvention -
 wieder deinitialisieren. Gleichzeitig legt die Definition der Funktion die Reihenfolge der Parameter
@@ -173,6 +148,7 @@ Jede Hochsprache, die bis jetzt entwickelt wurde, hatte das Ziel, dem Programmie
 Werkzeug bereitzustellen, welches verhältnismäßig einfache Softwareentwicklung möglich machen
 sollte, ohne ihn in seiner Handlungsfreiheit zu beschränken. Gleichzeitig soll der gesamte Prozess
 der Entwicklung für den Programmierer so transparent wie möglich sein.
+
 Tatsächlich hat sich dieser Ansatz bewährt und erfüllt die Zielvorgaben. Damit die in einer solchen
 Sprache formalisierten Algorithmen auch von einem Prozessor ausgeführt werden können, muss der Quellcode
 erst in eine für den Computer angemessene Form überführt werden, das heißt in die Assemblersprache
@@ -188,7 +164,9 @@ erfordert fundierte Fachkenntnisse über die Funktionsweise der CPU und grundleg
 Assemblerprogrammierung, zumal die erwähnten Vereinfachungen und Hilfestellungen der Hochsprachen
 nicht verfügbar sind. Stattdessen besitzt die Assemblersprache - wie im vorangehenden Abschnitt
 erläutert - keine Kontrollstrukturen im eigentlichen Sinn, was es schwierig macht,
-den Kontrollfluss eines Programms, das in dieser Form vorliegt, zu verstehen. Die tatsächliche
+den Kontrollfluss eines Programms, das in dieser Form vorliegt, zu verstehen.
+
+Die tatsächliche
 Umwandlung einer Binärdatei in ein Assemblerlisting, welches grundlegende Abstraktionen über
 einzelne Instruktion der CPU bereiststellt, ist Aufgabe eines Disassemblers, der aus diesem Grund
 ein zentrales Wekzeug eines Reverse Engineers darstellt. Durch die allgemeine Ausrichtung eines
@@ -218,7 +196,9 @@ die Schadsoftware untersucht und die von
 den Malware-Autoren unternommenen Versuche zur Codeverschleierung, Obfuskation genannt, umgehen muss.
 Dies ist recht aufwändig, allerdings nicht minder notwendig, da nur auf diese Weise Gegenmaßnahmen unternommen
 werden können, die von simplen Desinfektionsroutinen bis hin zu komplexen Erkennungsalgorithmen und
-Signatursystemen reichen. Ein weiterer Aspekt, der diese Aufgabenstellung so bedeutend macht, ist die Tatsache,
+Signatursystemen reichen.
+
+Ein weiterer Aspekt, der diese Aufgabenstellung so bedeutend macht, ist die Tatsache,
 dass Malware schon seit einiger Zeit eine enorme Bedrohung nicht nur für die Computer privater Nutzer, sondern
 auch für Unternehmen und staatliche Einrichtungen darstellt. Zusammenfassend lässt sich die Situation
 folgendermaßen beschreiben: Es existiert eine Vielzahl von sinnvollen und gegebenenfalls lukrativen
@@ -227,6 +207,7 @@ Produkte, die die daraus resultierende Nachfrage abdecken sollen, für einige de
 wenig geeignet, was einen anderen Ansatz zur Lösung der Problemstellung erfordert, der auch im vorliegenden
 Projekt verfolgt werden soll. Allerdings ist an dieser Stelle eine grundsätzliche Erläuterung der Methoden,
 die bereits existierender Software des Themenfelds zugrundeliegt, angemessen.
+
 Die Hauptargumente für eine automatisierte Vorgehensweise sind, dass die Wiederherstellung von Kontrollfluss,
 Variablen, Funktionen und weiteren HLL\footnote{High Level Language, also Programmiersprache mit hohem
 Abstraktionsgrad, bekannte Beispiele für kompilierte HLL's sind C, C++ und Java}-spezifischen Strukturen
@@ -245,6 +226,7 @@ stark variieren. Dabei sind mehrere Programmkategorien zu unterscheiden:
 		Anleitung für den Benutzer generieren, wie er am besten verfährt, um ein umfassendes Verständnis
 		vom zu untersuchenden System zu erlangen.}
 \end{enumerate}
+
 Das Resultat der vorliegenden Besonderen Lernleistung ist in
 die zweite Kategorie einzuordnen, wobei es aus drei Submodulen besteht, die unabhängig arbeiten und
 verschiedene Bereiche des Analysegebiets abdecken. Die Entscheidung, keinen kompletten Decompiler
@@ -256,6 +238,7 @@ der Arbeit des Nutzers wesentlich verbessert und ihm eine enorme Zeitersparnis e
 viele Funktionen und Features in einem solchen Projekt machbar und können auch mehr oder weniger
 einfach integriert werden, obwohl sie kaum Nutzen erbringen, da das Verhältnis zwischen
 Ergebnisqualität und Programmkomplexität zu schlecht ist und die erbrachten Resultate zu fragil.
+
 Folglich ist es sinnvoll, sich auf die wesentlichen Aufgabenstellungen zu beschränken, so dass
 der Aufwand in Relation zum erbrachten Nutzen steht. Auf diese Weise kann gewährleistet werden, dass
 solche Systeme dem Nutzer tatsächlich bei einer Aufgabenstellung helfen, und ihn nicht in einigen Fällen,
@@ -532,6 +515,43 @@ Knotens nach dieser Reihenfolge.
 		zu analysieren ermöglicht es, logische Verknüpfungen zwischen den Teilbedingungen
 		zu erkennen und ein weiteres arbeitsintensives Detail des Reverse-Engineerings
 		zu automatisieren.
+	\item{\textbf{Analyse bereits reduzierter Bedingungen:}}
+		Sollten im Rahmen der vorangehenden Analyseschritte Bedingungen reduziert worden sein,
+		dann enthalten die entsprechenden Knoten nur die Einzelnen Elemente der Bedingung,
+		sagen aber nichts über die logischen Verknüpfungen zwischen diesen aus. Aus diesem
+		Grun werden alle Bedingungen einem weiteren Analyseschritt unterzogen, der es erlaubt,
+		diese für den Nutzer wichtigen Informationen wiederherzustellen. Das Ergebnis dieses
+		Prozesses lässt sich dann in die Ausgabe des Programms integrieren. Konkret sind dabe
+		die folgenden Schritte notwendig:
+		\begin{enumerate}
+			\item{Es werden die Knoten bestimmt, die ausgeführt werden, wenn die Gesamtbedingung
+				wahr oder falsch ist, und in einer dafür geeigneten Struktur gespeichert.}
+			\item{Nun wird der Subgraph, der die Bedingung darstellt per Postorder traversiert.
+				Für jeden Knoten wird überprüft, ob er den Anfang einer Struktur darstellt,
+				die folgende Bedingungen erfüllt:
+				\begin{itemize}
+					\item{Er hat zwei Nachfolger.}
+					\item{Beide Nachfolger besitzen ebenfalls zwei Nachfolger.}
+					\item{Nachfolger $a$ ist Zugleich ein Nachfolger von
+						Nachfolger $b$, der andere Nachfolger von $b$ ist
+						gleichzeitig Nachfolger von $a$ und $a$ besitzt insgesamt
+					        nur einen Nachfolger.}
+				\end{itemize}
+				Dabei werden die Äußeren Knoten, die im ersten Schritt bestimmt wurden, in
+				die Analyse einbezogen. Wenn nun eine Struktur gefunden wird, wird anhand
+				ihrer Orientierung entschieden, ob sie ein logisches ODER oder ein logisches
+				UND darstellt. Dabei wird unter Orientierung folgendes verstanden: Der
+				gemeinsame Nachfolger von $a$ und $b$ ist stets einer der im ersten Schritt
+				bestimmten Knoten, die außerhalb der Bedingung liegen, zumal $a$ und $b$
+				schon erkannte (komplexe) Teilbedingungen sein können. Wenn dieser gemeinsame
+				Nachfolger bei einer wahren Gesamtbedingung ausgeführt wird, handelt es sich
+				um ein logisches ODER, sonst um ein logisches UND.
+				
+				Um dem Nutzer keinen störenden Interpretationsspielraum zu
+				lassen, wird ein Knoten innerhalb einer Bedingung so aufgefasst, dass seine
+				elementare Bedingung dann wahr ist, wenn der bedingte Sprung an seinem Ende
+				ausgeführt wird.}
+		\end{enumerate}
 \end{enumerate}
 
 \subsection{Datenanalyse}
@@ -592,22 +612,47 @@ Trotz aller in den vorherigen Abschnitten beschriebenen Vorzügen des Projekts k
 einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch folgende Punkte aus:
 \begin{itemize}
 	\item{Die Dokumentation muss verbessert werden.}
-	\item{Die Analyse reduzierter Bedingungen muss umgesetzt werden.}
-	\item{Das CFG-Modul muss restrukturiert werden, um es stylistisch zu verbessern. Dies wurde
+	\item{Das CFG-Modul muss restrukturiert werden, um es stilistisch zu verbessern. Dies wurde
 		bereits teilweise umgesetzt, ob tatsächlich weitere Umstrukturierungen notwendig sind,
-		wird sich mit der Weiterentwicklung zeigen.}
+		wird sich mit der Weiterentwicklung zeigen. Konkret ist damit gemeint, dass einige
+		Zuständigkeiten von Klassen recht unkar definiert sind. Beispielweise werden Bedingungen
+		zwar korrekt analysiert, allerdings findet dieser Prozess in der selben Klasse statt,
+		deren Objekte Bedingungen representieren, was stilistisch fragwürdig erscheint. Die
+		allgemeine Graphenanalyse wurde hingegen bereits in zwei Klassen, $Graph$ und $GraphAnalyzer$
+		gespalten, auch um Erweiterungen zu vereinfachen und die Wiederverwedung des Codes
+		zu ermöglichen.
+	}
 	\item{Gegebenenfalls sollte eine Unterstützung von \textit{break}, \textit{continue},
 		\textit{goto} und \textit{return} in die Kontrollflussanalyse eingebunden werden.
-		Generall kann derzeit von keiner Unterstützung für nicht wohlstrkturierte Programme
+		Generell kann derzeit von keiner Unterstützung für nicht wohlstrkturierte Programme
 		gesprochen werden. Diese sind allerdings recht häufig anzutreffen, weswegen zumindest
 		der Ansatz einer Unterstützung notwendig wäre, um die Verwendung des Projekts in der
 		Praxis zu vereinfachen. Dies würde allerdings eine Änderung am Algorithmus des
 		Kontrollflussanalysemoduls erfordern und ist daher noch nicht in Angriff genommen worden.
+		Dabei liegt die grundsätziche Schwierigkeit darin, dass die verwendeten Algorithmen
+		grundsätzlich wohlstrukturierte Programme erwarten und die Analyseergebnisse anderer
+		Varianten der selben Algorithmen, die dieses Verhalten nicht besitzen, mit den vom
+		Autor eingeführten Modifikationen, wie der Reduktion komlexer Bedinguungen gegebenenfalls
+		interferieren würden.
 	}
 	\item{Derzeit unterstützt das Projekt keine Sprünge an zur Laufzeit berechnete Adressen. Gegebenenfalls
 		sollte eine Unterstützung für diese Strukturen implementiert werden. Zur Zeit ist dies
 		jedoch vermutlich nicht notwendig, da solche Sprünge aufgrund ihrer recht geringen Effizienz
-		kaum von Compilern verwendet werden.}
+		kaum von Compilern verwendet werden.
+	}
+	\item{Ein weiterer Aspekt des Programmverhaltens, der verbessert werden könnte, ist die Ausgabe bei
+		(teilweise) unmöglicher Analyse des Kontrollflusses. Diese ist zwar seit Beginn des Projekts
+		wesentlich verbessert worden, besitzt derzeit allerdings kaum Kontrollmechanismen, die dem
+		Nutzer helfen, den Erfolg der Analyse schnell und zuverlässig zu beurteilen. Aus diesem Grund
+		wäre die Einführung einer relativen Metrik für die Analyseergebnisse durchaus sinnvoll. Ein
+		entsprechendes System könnte zum Beispiel von der Anzahl verbliebener Knoten und Kanten im
+		Graphen nach der Analyse ausgehen.
+	}
+	\item{Auch weitere Aspekte der Ausgabe und Nutzerinteraktion sind gegebenenfalls zu verbessern. Sinnvoll
+		wären nicht nur mehr Eingabemöglichkeiten, wie bereits besprochen, sondern auch bessere
+		Möglichkeiten zur Steuerung der Analyseparameter, zum Beispiel mehr Kommandozeilenparameter
+		zum Ausschluss von einzelnen Funktionen etc.
+	}
 \end{itemize}
 Gleichzeitig ist das Projekt durchaus recht weit seiner Fertigstellung fortgeschritten, unter
 anderem, da alle Features einem sehr gründlichen System an Testläufen unterzogen wurden, die auch
@@ -618,8 +663,7 @@ einzelne Fehler in bestimmten Eingabekonfigurationen auftreten können. Dies ist
 Kontrollflussanalysemodul wichtig, da dieses mit Abstand am komplexesten ist, weswegen auch
 zukünftige Erweiterungen sehr streng auf ihre Interoperabilität geprüft werden müssen.
 
-\bibliography{first}
-\bibliographystyle{unsrt}
-%\end{multicols}
+%\bibliography{first}
+%\bibliographystyle{unsrt}
 
 \end{document}
