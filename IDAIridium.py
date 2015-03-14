@@ -183,20 +183,20 @@ class AssemblyParser(object):
                 print 'analyzing function', i.name + '...',
                 if not ignore_cfg:
                     if multiproc:
-                        p = Process(target=self.cfg_analysis, args=(code,))
-                        p.start()
+                        proc = Process(target=self.cfg_analysis, args=(code,))
+                        proc.start()
                     else:
                         self.cfg_analysis(code)
                 if not ignore_data:
                     if multiproc:
-                        p = Process(target=self.dataflow_analysis, args=(code,))
-                        p.start()
+                        proc = Process(target=self.dataflow_analysis, args=(code,))
+                        proc.start()
                     else:
                         self.dataflow_analysis(code)
                 if not ignore_div:
                     if multiproc:
-                        p = Process(target=self.division_analysis, args=(code,))
-                        p.start()
+                        proc = Process(target=self.division_analysis, args=(code,))
+                        proc.start()
                     else:
                         self.division_analysis(code)
                 print 'done.'
