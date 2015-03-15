@@ -49,8 +49,8 @@
 \date{}
 
 \begin{document}
-%\maketitle
-%\tableofcontents
+\maketitle
+\tableofcontents
 
 \section{Grundlagen}
 Die vorliegende Besondere Lernleistung hat das Ziel, ein Softwareprojekt
@@ -545,12 +545,15 @@ Knotens nach dieser Reihenfolge.
 				bestimmten Knoten, die außerhalb der Bedingung liegen, zumal $a$ und $b$
 				schon erkannte (komplexe) Teilbedingungen sein können. Wenn dieser gemeinsame
 				Nachfolger bei einer wahren Gesamtbedingung ausgeführt wird, handelt es sich
-				um ein logisches ODER, sonst um ein logisches UND.
-				
-				Um dem Nutzer keinen störenden Interpretationsspielraum zu
-				lassen, wird ein Knoten innerhalb einer Bedingung so aufgefasst, dass seine
-				elementare Bedingung dann wahr ist, wenn der bedingte Sprung an seinem Ende
-				ausgeführt wird.}
+				um ein logisches ODER, sonst um ein logisches UND. Sollte auf diese Weise eine
+				Struktur erkannt werden, wird der aktuelle Knoten zusammen mit $a$ und $b$
+				als ein gemeinsamer Knoten betrachtet, der dann einer erneuten Analyse nach
+				den selben Prinzipien unterzogen wird. Gleichzeitig wird eine Beschreibung
+				der Bedingung erstellt, die später in die Ausgabe integriert wird.
+				Um dem Nutzer beim Lesen dieser Beschreibung keinen störenden
+				Interpretationsspielraum zu lassen, wird ein Knoten innerhalb einer Bedingung
+				so aufgefasst, dass seine elementare Bedingung dann wahr ist, wenn der
+				bedingte Sprung an seinem Ende ausgeführt wird.}
 		\end{enumerate}
 \end{enumerate}
 
@@ -611,7 +614,16 @@ Hand eingeben lässt und das Ergebnis der Berechnungen ausgibt.
 Trotz aller in den vorherigen Abschnitten beschriebenen Vorzügen des Projekts kann nicht von
 einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch folgende Punkte aus:
 \begin{itemize}
-	\item{Die Dokumentation muss verbessert werden.}
+	\item{Die Dokumentation muss verbessert werden. Derzeit sind nahezu alle Teile des Programms
+		mit Docstrings\footnote{Ein Docstring ist ein Kommentar, der bestimmten Formatvorgaben
+		gerecht wird und eine Klasse, eine Funktion / Methode oder eine Variable allgemein beschreibt.
+		}
+		ausgestattet. Trotzdem ist schwer zu beurteilen, wie einfach oder schwer
+		es für einen Außenstehenden mit hinreichenden Programmierkenntnissen ist, sich in den
+		Code hineinzuversetzen und ihn komplett zu verstehen, zumal gerade die komplexen Algorithmen
+		des Kontrollflussmoduls teilweise nicht in ihrer Funktionsweise beschrieben werden, was
+		Modifikation und Verbesserung durch Dritte äußerst schwierig macht.
+	}
 	\item{Das CFG-Modul muss restrukturiert werden, um es stilistisch zu verbessern. Dies wurde
 		bereits teilweise umgesetzt, ob tatsächlich weitere Umstrukturierungen notwendig sind,
 		wird sich mit der Weiterentwicklung zeigen. Konkret ist damit gemeint, dass einige
@@ -638,20 +650,33 @@ einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch
 	\item{Derzeit unterstützt das Projekt keine Sprünge an zur Laufzeit berechnete Adressen. Gegebenenfalls
 		sollte eine Unterstützung für diese Strukturen implementiert werden. Zur Zeit ist dies
 		jedoch vermutlich nicht notwendig, da solche Sprünge aufgrund ihrer recht geringen Effizienz
-		kaum von Compilern verwendet werden.
+		kaum von Compilern verwendet werden. Allerdings sind sie gerade zum Zwecke der Obfuskation
+		sehr effizient, auch weil verschleierte Software, wie Malware, meist nicht sehr
+		performanceabhängig ist, was wiederum ein entsprechendes Feature recht nützlich machen würde.
 	}
 	\item{Ein weiterer Aspekt des Programmverhaltens, der verbessert werden könnte, ist die Ausgabe bei
 		(teilweise) unmöglicher Analyse des Kontrollflusses. Diese ist zwar seit Beginn des Projekts
-		wesentlich verbessert worden, besitzt derzeit allerdings kaum Kontrollmechanismen, die dem
+		wesentlich verbessert worden, verfügt derzeit allerdings kaum über Kontrollmechanismen, die dem
 		Nutzer helfen, den Erfolg der Analyse schnell und zuverlässig zu beurteilen. Aus diesem Grund
 		wäre die Einführung einer relativen Metrik für die Analyseergebnisse durchaus sinnvoll. Ein
 		entsprechendes System könnte zum Beispiel von der Anzahl verbliebener Knoten und Kanten im
-		Graphen nach der Analyse ausgehen.
+		Graphen nach der Analyse ausgehen und dem Nutzer signalisieren, ob die Verwendung des Programms
+		im Falle bestimmter Teile des Analysetargets überhaupt lohnenswert oder eine manuelle Analyse
+		sinnvoller ist.
 	}
 	\item{Auch weitere Aspekte der Ausgabe und Nutzerinteraktion sind gegebenenfalls zu verbessern. Sinnvoll
 		wären nicht nur mehr Eingabemöglichkeiten, wie bereits besprochen, sondern auch bessere
 		Möglichkeiten zur Steuerung der Analyseparameter, zum Beispiel mehr Kommandozeilenparameter
-		zum Ausschluss von einzelnen Funktionen etc.
+		zum Ausschluss von einzelnen Funktionen, mehr Ausgabeformate, oder die Möglichkeit für den Nutzer,
+		diese selbst zu modifizieren.
+	}
+	\item{Gleichzeitig muss der Code weiterhin hohen stilistischen Standards gerecht werden, teilweise müssen
+		diese noch weiter angehoben werden. Derzeit wird der Code des gesamten Projekts von $pylint$
+		\footnote{$pylint$ ist ein sogenannter $Linter$, also ein Tool, dass den Code eines Projekts auf
+			stilistische Mängel und allgemeine Lesbarkeit und Qualität des Codes untersucht.
+		}
+		mit etwa 9.72 / 10 Punkten bewertet. Es müssen einige Routineaufgaben in Methoden
+		gekapselt werden, Klassen gegebenenfalls refactort werden etc.
 	}
 \end{itemize}
 Gleichzeitig ist das Projekt durchaus recht weit seiner Fertigstellung fortgeschritten, unter
@@ -663,7 +688,7 @@ einzelne Fehler in bestimmten Eingabekonfigurationen auftreten können. Dies ist
 Kontrollflussanalysemodul wichtig, da dieses mit Abstand am komplexesten ist, weswegen auch
 zukünftige Erweiterungen sehr streng auf ihre Interoperabilität geprüft werden müssen.
 
-%\bibliography{first}
-%\bibliographystyle{unsrt}
+\bibliography{first}
+\bibliographystyle{unsrt}
 
 \end{document}
