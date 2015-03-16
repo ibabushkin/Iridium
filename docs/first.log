@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  15 MAR 2015 16:07
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  16 MAR 2015 22:25
 entering extended mode
 **first.tex
 (./first.tex
@@ -800,4 +800,4 @@ fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti
 s/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pf
 b></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/ty
 pe1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (16 pages, 176942 bytes).
+Output written on first.pdf (16 pages, 177010 bytes).

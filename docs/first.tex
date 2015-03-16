@@ -559,9 +559,9 @@ Knotens nach dieser Reihenfolge.
 
 \subsection{Datenanalyse}
 Bei diesem Modul liegt der Hauptaugenmerk auf der Möglichkeit, nicht nur
-addressierte Speicherbereiche aus dem Code zu extrahieren, wie es z.B. in IDA Pro
-geschieht, sondern auch aus dem Kontext der Speicheraufrufe auf die Funktion der entsprechenden
-Speicherabschnitte zu schließen. Dabei sei erwähnt, dass solche Verfahren grundsätzlich nur
+addressierte Speicherbereiche aus dem Code zu extrahieren, wie es z.B. in IDA Pro automatisch
+geschieht, sondern auch aus dem Kontext der Speicheraufrufe auf die Funktion und Verwendung der
+entsprechenden Speicherabschnitte zu schließen. Dabei sei erwähnt, dass solche Verfahren grundsätzlich nur
 Heuristiken darstellen, da nicht jeder Speicherabschnitt, aus dem z.B. ein DWORD\footnote{4 byte (32
 bit) großer Speicherabschnitt, meist ein Integer} gelesen wird, automatisch einer Integervariable
 gleichgesetzt werden kann. So verwenden moderne Compiler die push\footnote{push alloziert Speicher
@@ -585,7 +585,7 @@ durch Nutzereingaben zu verändern. Solche Canary-Werte können auch zwischen Ar
 Variablen eingefügt werden, was z.B. die Längenbestimmung von Arrays erschwert, zumal bei diesen
 selten direkte Addressierungen der Elemente stattfinden, was es sehr schwierig macht, ihre Grenzen
 genau zu bestimmen. Diese und andere Aspekte der Kompilierung, bei denen Informationen verlorengehen,
-erschweren die Analyse und Wiederherstellung mitunter sehr, was gleichermaßen für Menschen und
+erschweren die Analyse und Wiederherstellung von Variablen mitunter sehr, was gleichermaßen für Menschen und
 Programme gilt, wobei letztere weniger trugschlussanfällig zu sein scheinen, da sie das Analyseergebnis
 schrittweise aufbauen, so dass mitunter Informationen nur unvollständig sind, jedoch nur selten objektiv falsch.
 
@@ -603,7 +603,7 @@ Die mathematische Herleitung ist verhältnismäßig verworren und nicht gerade k
 um Fehler zu vermeiden, nicht wiedergegeben wird. Dabei ist $d$ der gesuchte Divisor, $bitness$ ist
 die Breite der verwendeten Register, $rshift$ die Anzahl Stellen, um die das Ergebnis verschoben wird
 und $x$ die Konstante, mit der multipliziert wird.
-Folglich bleibt es dem Code noch übrig diese Werte aus dem Assebly-Listing zu extrahieren. Um den
+Folglich bleibt es dem Code noch übrig diese Werte aus dem Assembler-Listing zu extrahieren. Um den
 genauen Ablauf dieses Prozesses zu steuern, werden Grenzwerte festgelegt, wie weit die einzelnen
 Instruktionen voneinander entfernt sein dürfen, damit der gegebene Codeabschnitt noch als Division
 betrachtet wird. Sollten die automatisch verwendeten Werte nicht zum gewünschten Ergebnis führen,
