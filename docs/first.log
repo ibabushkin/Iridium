@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  16 MAR 2015 22:25
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  17 MAR 2015 20:40
 entering extended mode
 **first.tex
 (./first.tex
@@ -775,7 +775,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 24--27
 /how-can-i-reverse-
  []
 
-) [16] (./first.aux) ) 
+[16]) [17] (./first.aux) ) 
 Here is how much of TeX's memory you used:
  4562 strings out of 94500
  60270 string characters out of 1176766
@@ -785,19 +785,19 @@ Here is how much of TeX's memory you used:
  580 hyphenation exceptions out of 1000
  32i,10n,43p,223b,350s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 102 PDF objects out of 300000
+ 105 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 65536
-</usr/share/texmf/fonts/type1/bluesky/cm/cmmi9.pfb></usr/
-share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/blue
-sky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/shar
-e/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky
-/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/te
-xmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cm
-ss10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/
-fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti
-10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/font
-s/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pf
-b></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/ty
-pe1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (16 pages, 177010 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi9.pfb></
+usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/
+bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/blu
+esky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/shar
+e/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/c
+m/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/te
+xmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
+cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss1
+2.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/font
+s/type1/bluesky/cm/cmr17.pfb>
+Output written on first.pdf (17 pages, 177867 bytes).
