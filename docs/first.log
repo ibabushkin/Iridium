@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  17 MAR 2015 20:40
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.5.17)  24 MAR 2015 18:35
 entering extended mode
 **first.tex
 (./first.tex
@@ -719,85 +719,100 @@ ys-tem, welches Reverse-Engineering,
 [1
 
 {/usr/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 98.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 101.
+
 
 (/usr/share/texmf/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 98.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 101.
  [2]
-Overfull \hbox (23.21373pt too wide) in paragraph at lines 109--119
+Overfull \hbox (23.21373pt too wide) in paragraph at lines 116--126
 \OT1/cmr/m/n/10.95 ...)Auskunft geben. Es ex-istieren zu-dem eine Reihe von In-
 struk-tio-nen, die in Abh^^?angigkeit
  []
 
 
-Overfull \hbox (0.68912pt too wide) in paragraph at lines 119--124
+Overfull \hbox (0.68912pt too wide) in paragraph at lines 126--131
 []\OT1/cmr/m/it/10.95 Spr^^?unge: \OT1/cmr/m/n/10.95 Der ein-fach-ste Sprung, \
 OT1/cmr/m/it/10.95 jmp\OT1/cmr/m/n/10.95 , wird im-mer aus-gef^^?uhrt und sprin
 gt zur Adresse
  []
 
 [3]
-Overfull \hbox (0.28654pt too wide) in paragraph at lines 169--182
+Overfull \hbox (0.28654pt too wide) in paragraph at lines 179--192
 []\OT1/cmr/m/n/10.95 Die tats^^?achliche Umwand-lung einer Bin^^?ardatei in ein
  As-sem-blerlist-ing, welches grundle-
  []
 
 [4] [5]
-Overfull \hbox (15.71086pt too wide) in paragraph at lines 248--267
+Overfull \hbox (50.47408pt too wide) in paragraph at lines 254--259
+[]\OT1/cmr/m/n/10.95 Folglich ist es sin-nvoll, sich auf die wesentlichen Auf-g
+aben-stel-lun-gen des Dekom-pilierungsprozesses
+ []
+
+
+Overfull \hbox (15.71086pt too wide) in paragraph at lines 260--277
 \OT1/cmr/m/n/10.95 erm^^?oglicht, an-dere Eingabefor-mate mithilfe weit-erer Mo
 d-ule zu akzep-tieren, ohne []Anderungen
  []
 
-[6] [7] [8] [9] [10] [11]
-Overfull \hbox (5.97752pt too wide) in paragraph at lines 501--518
+[6]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[7] [8] [9]
+Overfull \vbox (1.9505pt too high) has occurred while \output is active []
+
+
+[10] [11]
+Overfull \hbox (5.97752pt too wide) in paragraph at lines 514--531
 \OT1/cmr/m/n/10.95 die Pfade f^^?ur die Bes-tim-mung des Knotens herange-zo-gen
 , die nicht den Schleifenk^^?orper
  []
 
 
-Overfull \hbox (15.65001pt too wide) in paragraph at lines 518--527
+Overfull \hbox (15.65001pt too wide) in paragraph at lines 531--540
 \OT1/cmr/m/n/10.95 den Anal-y-seschritte Be-din-gun-gen re-duziert wor-den sein
 , dann en-thal-ten die entsprechen-
  []
 
-[12] [13]
-Overfull \hbox (15.285pt too wide) in paragraph at lines 627--637
+[12] [13] [14]
+Overfull \hbox (15.285pt too wide) in paragraph at lines 640--650
 \OT1/cmr/m/n/10.95 wurde bere-its teil-weise umge-setzt, ob tats^^?achlich weit
 -ere Um-struk-turierun-gen notwendig
  []
 
-[14] [15] (./first.bbl
+[15] (./first.bbl [16]
 Underfull \hbox (badness 10000) in paragraph at lines 24--27
 []\OT1/cmr/m/n/10.95 http://reverseengineering.stackexchange.com/questions/1397
 /how-can-i-reverse-
  []
 
-[16]) [17] (./first.aux) ) 
+) [17] (./first.aux) ) 
 Here is how much of TeX's memory you used:
  4562 strings out of 94500
  60270 string characters out of 1176766
- 124496 words of memory out of 1000000
+ 125496 words of memory out of 1000000
  7620 multiletter control sequences out of 10000+50000
  17208 words of font info for 67 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,10n,43p,223b,350s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,10n,43p,223b,346s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
  105 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 65536
-</usr/share/texmf/fonts/type1/bluesky/cm/cmmi9.pfb></
-usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/
-bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/
-share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/blu
-esky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/shar
-e/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/c
-m/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/te
-xmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
-cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/
-fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss1
-2.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/font
-s/type1/bluesky/cm/cmr17.pfb>
-Output written on first.pdf (17 pages, 177867 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi9.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/blue
+sky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/shar
+e/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/
+texmf/fonts/type1/bluesky/cm/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/c
+m/cmr9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti
+10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/font
+s/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pf
+b></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/ty
+pe1/bluesky/cm/cmr17.pfb>
+Output written on first.pdf (17 pages, 178824 bytes).
