@@ -16,5 +16,6 @@
 \contentsline {subsection}{\numberline {5.2}Datenanalyse}{13}
 \contentsline {subsection}{\numberline {5.3}Optimisierte Intergerdivision}{14}
 \contentsline {subsubsection}{\numberline {5.3.1}Herleitung des Algorithmus}{14}
-\contentsline {section}{\numberline {6}Ausblick}{15}
+\contentsline {section}{\numberline {6}Benutzung}{15}
+\contentsline {section}{\numberline {7}Ausblick}{15}
 \contentsline {section}{Bibliotheksreferenz}{17}
