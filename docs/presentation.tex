@@ -1,0 +1,138 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+\documentclass{beamer}
+\mode<presentation>
+{
+  \setbeamercovered{transparent}
+}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\title{Softwareprojekt: Iridium}
+\subtitle{ein Analyseframework für kompilierte Programme}
+\author{Inokentiy Babushkin}
+\institute{Abteigymnasium Brauweiler}
+\date{06.05.2015 / Colloquium zur Besonderen Lernleistung}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Inhalt}
+  \tableofcontents
+\end{frame}
+
+\section{Grundlagen}
+
+\subsection{Prinzipien}
+
+\begin{frame}{Erweiterbarkeit}
+  \begin{itemize}
+  \item Modularer Aufbau
+  \item Sinnvolles API-Design
+  \item Multiple Eingabeformate
+  \item Lesbarkeitsorientierter Code
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Freie Software}
+  \begin{itemize}
+  \item Verwendung der GPLv3
+  \item Codequalität und Funktionsumfang durch Community unterstützt
+  \end{itemize}
+\end{frame}
+
+\subsection{Reverse Engineering}
+
+\begin{frame}{Definition hier: Wiederherstellung von Hochsprachencode aus kompilierten Programmen}
+  \begin{itemize}
+  \item Komplexer und zeitaufändiger Prozess, da
+    \begin{itemize}
+    \item Software zunehmend komplex
+    \item Compiler den Code optimisieren
+    \end{itemize}
+  \item sehr nützlich
+    \begin{itemize}
+    \item Malware-Analyse
+    \item Wiederherstellung von altem Programmcode
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{(Halb-)Automatisierte Ansätze}
+  \begin{itemize}
+  \item Decompiler
+  \item Analyseframeworks
+  \end{itemize}
+\end{frame}
+
+\section{Features}
+
+\subsection{Kontrollflussanlyse}
+
+\begin{frame}{Analyse anhand von Kontrollflussgraphen}
+  \begin{itemize}
+  \item Schrittbasierter Reduktionsalgorithmus für einzelne Funktionen
+  \item Unterscheidung aller wichtigen Hochsprachen-Programmelemente
+  \item Strukturierte Darstellung
+  \end{itemize}
+\end{frame}
+
+\subsection{Analyse von Daten auf dem Stack}
+
+\begin{frame}{Heuristiken zur Untersuchung lokaler Variablen}
+  \begin{itemize}
+  \item Untersuchung des Stackframes der jeweiligen Funktion
+  \item (Teilweise) Erkennung von Arrays, Datentypen und Pointern
+  \end{itemize}
+\end{frame}
+
+\subsection{Analyse optimisierter Integerdivisionen}
+
+\begin{frame}{Optimisierte Integerdivision}
+  \begin{itemize}
+  \item Von modernen Compiler bei konstantem Divisor angewendet
+  \item Teure Divisions-Instruktion wird durch eine Reihe von Additionen, Shifts und Multiplikationen ersetzt
+  \item Für Menschen keine Rückschlüsse auf den Divisor möglich, deswegen Implementation eines entsprechenden Algorithmus
+  \end{itemize}
+\end{frame}
+
+\section*{Zusammenfassung und Ausblick}
+
+\begin{frame}{Zusammenfassung}
+
+  \begin{itemize}
+  \item Reverse-Engineering und Analyse kompilierter Programme sind häufig notwendig,
+	allerdings meist auch schwieig und mit enormem Aufwand verbunden.
+  \item Gleichzeitig sind die automatisierten Lösungsansätze für diese Aufgaben nicht
+	oder nur kaum für interaktive Arbeit geeignet, weswegen mit dem vorliegenden
+	Projekt ein entsprechender Prototyp vorgelegt wird.
+  \item Noch mehr?
+  \end{itemize}
+  
+  \vskip0pt plus.5fill
+  \begin{itemize}
+  \item
+    Ausblick
+    \begin{itemize}
+    \item Stabilisierung des Codes
+    \item Erweiterung um Eingabemodule
+    \item Weitere Features
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+
+

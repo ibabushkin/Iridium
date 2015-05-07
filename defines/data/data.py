@@ -145,11 +145,12 @@ class DataParser(CodeCrawler):
             for i in self.code:
                 if isinstance(i, Instruction):
                     if i.mnemonic.startswith('var_'):
-                        if int(
-                                '-' +
-                                i.mnemonic.split('=')[0][
-                                    4:],
-                                16) == offset:
+                        if int('-' + i.mnemonic.split('=')[0][4:], 16) == offset:
+                            name = i.mnemonic.split('=')[0]
+                            size = i.operands.split(' ')[0]
+                            return [name, size]
+                    elif i.mnemonic.startswith('arg_'):
+                        if int(i.mnemonic.split('=')[0][4:], 16) == offset:
                             name = i.mnemonic.split('=')[0]
                             size = i.operands.split(' ')[0]
                             return [name, size]

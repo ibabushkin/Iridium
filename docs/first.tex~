@@ -623,6 +623,12 @@ betrachtet wird. Sollten die automatisch verwendeten Werte nicht zum gewünschte
 kann der sogenannte \textit{interaktive Modus} verwendet werden, der den Nutzer die Konstanten von
 Hand eingeben lässt und das Ergebnis der Berechnungen ausgibt. 
 
+\section{Benutzung}
+Die oben beschriebenen Funktionalitäten des Projektes können derzeit über die Python-Dateien in der
+Projektstruktur aufgerufen werden. Notwendig ist dafür eine Version von Python 2, und die Möglichkeit,
+den Python-Interpreter von der Kommandozeile aus zu starten. Dabei übergibt man einfach das auszuführende
+Skript als Argument und betrachtet die Hilfemeldungen zur Benutzung.
+
 \section{Ausblick}
 Trotz aller in den vorherigen Abschnitten beschriebenen Vorzügen des Projekts kann nicht von
 einem kompletten und fehlerfreien Produkt gesprochen werden. Konkret stehen noch folgende Punkte aus:

@@ -189,13 +189,15 @@ class AssemblyParser(object):
                         self.cfg_analysis(code)
                 if not ignore_data:
                     if multiproc:
-                        proc = Process(target=self.dataflow_analysis, args=(code,))
+                        proc = Process(target=self.dataflow_analysis,
+                                       args=(code,))
                         proc.start()
                     else:
                         self.dataflow_analysis(code)
                 if not ignore_div:
                     if multiproc:
-                        proc = Process(target=self.division_analysis, args=(code,))
+                        proc = Process(target=self.division_analysis,
+                                       args=(code,))
                         proc.start()
                     else:
                         self.division_analysis(code)
@@ -225,7 +227,7 @@ if __name__ == '__main__':
         action='store_true',
         help='Use only one process for analysis.')
     ARGS = ARG_PARSER.parse_args()
-    print ARGS.blacklist_pattern
+    print 'blacklist:', ARGS.blacklist_pattern
     print 'target:', ARGS.file
     if ARGS.ignore_controlflow:
         print 'skipping CFG analysis.'

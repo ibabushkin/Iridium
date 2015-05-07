@@ -1,0 +1,9 @@
+\beamer@endinputifotherversion {3.01pt}
+\select@language {german}
+\beamer@sectionintoc {1}{Grundlagen}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Prinzipien}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Reverse Engineering}{6}{0}{1}
+\beamer@sectionintoc {2}{Features}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{Kontrollflussanlyse}{9}{0}{2}
+\beamer@subsectionintoc {2}{2}{Analyse von Daten auf dem Stack}{11}{0}{2}
+\beamer@subsectionintoc {2}{3}{Analyse optimisierter Integerdivisionen}{13}{0}{2}

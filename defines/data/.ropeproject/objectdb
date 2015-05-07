@@ -3,16 +3,16 @@ ScopeInfo
 q)q}q(UinstanceqUdefinedqU /usr/lib64/python2.7/argparse.pyUArgumentParserq‡†UbuiltinUstr†q	h	h	tUunknown…q
 s}q†bUArgumentParser.parse_argsh)q}qhhU /usr/lib64/python2.7/argparse.pyh‡†Unone…qh‡h
 s}q†bUArgumentParser.__init__h)q}q(hhU /usr/lib64/python2.7/argparse.pyh‡†hhh	hhhhhhhhhth
-s}q†buUdata.pyq}q(UDataParser.get_allocated_spaceh)q}qUinstanceqUdefinedqUdata.pyqU
-DataParserq‡†…Uunknown…qs}q†bUDataParser.draw_memory_layouth)q}qhhUdata.pyqU
-DataParserq ‡†…h	s}q!†bUVariable.__init__h)q"}q#(hhUdata.pyq$UVariableq%‡†Uunknown…q&h&h&th
-s}q'†bU"DataParser.find_all_function_callsh)q(}q)hhhh‡†…hs}q*†bUDataParser.__init__h)q+}q,(hhhh ‡†h&†h
-hhUdata.pyh ‡†Ubuiltinq-Ulistq.h	‡†h
-u}q/†bh h)q0}q1}q2(U	variableshhh$h%‡†Uaddressed_offsetsUunknown…u†bU&DataParser.find_variable_by_expressionh)q3}q4(hhUdata.pyq5h ‡†h†h
-hhh5h ‡†h&†h
-u}q6†bUDataParser.ida_memory_offsetsh)q7}q8hhhh ‡†…h
-s}q9†bU!DataParser.get_var_data_by_offseth)q:}q;hhh$h ‡†h&†h-h.h&‡s}q<†bU*DataParser.find_variable_by_contrast_pointh)q=}q>hhhh ‡†h&†h
-s}q?†bUDataParser.find_pointersh)q@}qAhhhh ‡†…h
-s}qB†bUDataParser.recognizeh)qC}qDhhhh ‡†…h
-s}qE†bUDataParser.generate_variablesh)qF}qGhhhh ‡†…h
-s}qH†buU0/home/thewormkill/Iridium/defines/util/parser.py}qI(UCodeCrawler.__init__h)qJ}qKhhhh‡†UbuiltinqLUlistqMUbuiltinUstr†qN‡†hs}qO†bUParser.get_code_from_texth)qP}qQhhU0/home/thewormkill/Iridium/defines/util/parser.pyUParser‡†…h-h.h‡s}qR†buu.
+s}q†buUdata.pyq}q(U&DataParser.find_variable_by_expressionh)q}q(hhUdata.pyqU
+DataParserq‡†h†h
+hhhh‡†Uunknown…q†h
+u}q†bUDataParser.recognizeh)q}qhhhh‡†…h
+s}q†bUDataParser.draw_memory_layouth)q}qhhUdata.pyq h‡†…h	s}q!†bUVariable.__init__h)q"}q#(hhUdata.pyq$UVariableq%‡†hhhth
+s}q&†bU"DataParser.find_all_function_callsh)q'}q(Uinstanceq)Udefinedq*Udata.pyq+U
+DataParserq,‡†…Uunknown…q-s}q.†bUDataParser.__init__h)q/}q0(hhhh‡†h†h
+hhUdata.pyh‡†Ubuiltinq1Ulistq2h	‡†h
+u}q3†bhh)q4}q5}q6(U	variableshhh$h%‡†Uaddressed_offsetsUunknown…u†bUDataParser.get_allocated_spaceh)q7}q8h)h*h+h,‡†…h-s}q9†bUDataParser.ida_memory_offsetsh)q:}q;hhh h‡†…h
+s}q<†bU*DataParser.find_variable_by_contrast_pointh)q=}q>hhh h‡†h†h
+s}q?†bUDataParser.find_pointersh)q@}qAhhh h‡†…h
+s}qB†bU!DataParser.get_var_data_by_offseth)qC}qDhhh$h‡†h†h1h2h‡s}qE†bUDataParser.generate_variablesh)qF}qGhhh h‡†…h
+s}qH†buU0/home/thewormkill/Iridium/defines/util/parser.py}qI(UCodeCrawler.get_code_from_texth)qJ}qKUinstanceqLUdefinedqMU0/home/thewormkill/Iridium/defines/util/parser.pyUCodeCrawlerqN‡†…UbuiltinqOUlistqPUnone…qQ‡s}qR†bUCodeCrawler.__init__h)qS}qTh)h*h+h,‡†UbuiltinUlistUbuiltinUstr†‡†h-s}qU†bUParser.get_code_from_texth)qV}qWhhU0/home/thewormkill/Iridium/defines/util/parser.pyUParser‡†…h1h2h‡s}qX†buu.

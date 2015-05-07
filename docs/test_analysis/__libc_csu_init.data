@@ -1,0 +1,21 @@
+get_var_data -48
+get_var_data -44
+get_var_data -40
+get_var_data -20
+get_var_data 0
+found instruction arg_0= dword ptr  10h
+0
+get_var_data 4
+found instruction arg_0= dword ptr  10h
+0
+found instruction arg_4= dword ptr  14h
+4
+get_var_data 8
+found instruction arg_0= dword ptr  10h
+0
+found instruction arg_4= dword ptr  14h
+4
+found instruction arg_8= dword ptr  18h
+8
+Allocated: 44
+Data analysis not possible!

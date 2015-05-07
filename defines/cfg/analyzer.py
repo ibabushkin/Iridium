@@ -573,7 +573,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/conditions_analysis/sub_4019F0.asm'
+    SOURCE = '../../../malware/pma/BinaryCollection/Chapter_1L/Lab01-2_analysis/sub_401000.cfg'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source

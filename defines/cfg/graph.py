@@ -554,7 +554,6 @@ class StructNode(object):
         Get an edge-instance which is identified by its start-
         and endpoint.
         """
-        print start, end
         if isinstance(start, str):
             start = self.struct_nodes[start][1]
         if isinstance(end, str):
