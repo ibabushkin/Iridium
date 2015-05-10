@@ -14,11 +14,11 @@
 \subtitle{ein Analyseframework für kompilierte Programme}
 \author{Inokentiy Babushkin}
 \institute{Abteigymnasium Brauweiler}
-\date{06.05.2015 / Colloquium zur Besonderen Lernleistung}
+\date{11.05.2015 / Colloquium zur Besonderen Lernleistung}
 
 \AtBeginSubsection[]
 {
-  \begin{frame}<beamer>{Outline}
+  \begin{frame}<beamer>{Inhalt}
     \tableofcontents[currentsection,currentsubsection]
   \end{frame}
 }
@@ -33,6 +33,44 @@
 \end{frame}
 
 \section{Grundlagen}
+
+\subsection{Kurze Einführung in CPU-Interna}
+
+\begin{frame}
+  \begin{itemize}
+    \item Die CPU unterstützt einzelne Instruktionen, darunter auch Sprünge
+    \item Diese werden durch sog. Opcodes im Speicher dargestellt
+    \item Können auch in Form von Assembler-Befehlen beschrieben werden
+    \item Vom Abstraktionsgrad kaum mit Hochsprachen zu vergleichen
+  \end{itemize}
+\end{frame}
+
+\subsection{Reverse Engineering}
+
+\begin{frame}{Definition hier: Wiederherstellung von Hochsprachencode aus kompilierten Programmen}
+  \begin{itemize}
+  \item Komplexer und zeitaufändiger Prozess, da
+    \begin{itemize}
+    \item Software zunehmend komplex
+    \item Compiler den Code optimisieren
+    \end{itemize}
+  \item Sehr nützlich
+    \begin{itemize}
+    \item Malware-Analyse
+    \item Wiederherstellung von altem Programmcode
+    \item Entwicklung von Exploits
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{(Halb-)Automatisierte Ansätze}
+  \begin{itemize}
+  \item Decompiler
+  \item Analyseframeworks
+  \end{itemize}
+\end{frame}
+
+\section{Features}
 
 \subsection{Prinzipien}
 
@@ -51,32 +89,6 @@
   \item Codequalität und Funktionsumfang durch Community unterstützt
   \end{itemize}
 \end{frame}
-
-\subsection{Reverse Engineering}
-
-\begin{frame}{Definition hier: Wiederherstellung von Hochsprachencode aus kompilierten Programmen}
-  \begin{itemize}
-  \item Komplexer und zeitaufändiger Prozess, da
-    \begin{itemize}
-    \item Software zunehmend komplex
-    \item Compiler den Code optimisieren
-    \end{itemize}
-  \item sehr nützlich
-    \begin{itemize}
-    \item Malware-Analyse
-    \item Wiederherstellung von altem Programmcode
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{(Halb-)Automatisierte Ansätze}
-  \begin{itemize}
-  \item Decompiler
-  \item Analyseframeworks
-  \end{itemize}
-\end{frame}
-
-\section{Features}
 
 \subsection{Kontrollflussanlyse}
 
@@ -117,7 +129,6 @@
   \item Gleichzeitig sind die automatisierten Lösungsansätze für diese Aufgaben nicht
 	oder nur kaum für interaktive Arbeit geeignet, weswegen mit dem vorliegenden
 	Projekt ein entsprechender Prototyp vorgelegt wird.
-  \item Noch mehr?
   \end{itemize}
   
   \vskip0pt plus.5fill
