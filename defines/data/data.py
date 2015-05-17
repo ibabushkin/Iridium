@@ -43,6 +43,9 @@ class DataParser(CodeCrawler):
         # 2:['short int'],
         # 1:['char']}
         self.allocated_space = self.get_allocated_space()
+        if self.allocated_space == 0:
+            print 'Seems like the module couldn\'t find out how much space was allocated!'
+            print 'You can\'t trust the results below, that is.'
 
     def recognize(self):
         """
