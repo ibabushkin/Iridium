@@ -376,7 +376,7 @@ mov	ecx, [ebp+var_4]
 leave
 lea	esp, [ecx-4]
 retn
-main endp
+main endp ; sp =  4
 
 align 10h
 

@@ -14,36 +14,36 @@ mov ebp, esp
 push ecx
 sub esp, 34h
 sub esp, 0Ch
-push offset aEingabeInBuff
+push offset aEingabeInBuffe
 call _puts
 add esp, 10h
 sub esp, 8
 lea eax, [ebp+var_2C]
 push eax
-push offset a20
+push offset a20s
 call ___isoc99_scanf
 add esp, 10h
 sub esp, 0Ch
-push offset aAnzahlSchleif
+push offset aAnzahlSchleife
 call _puts
 add esp, 10h
 sub esp, 8
 lea eax, [ebp+var_14]
 push eax
-push offset a
+push offset aD
 call ___isoc99_scanf
 add esp, 10h
 mov [ebp+var_C], 0
 jmp short loc_8048630
 loc_80485C7:
 sub esp, 0Ch
-push offset aAnzahlInnerer
+push offset aAnzahlInnererS
 call _puts
 add esp, 10h
 sub esp, 8
 lea eax, [ebp+var_18]
 push eax
-push offset a
+push offset aD
 call ___isoc99_scanf
 add esp, 10h
 mov [ebp+var_10], 0
@@ -54,13 +54,13 @@ and eax, 1
 test eax, eax
 jnz short loc_8048610
 sub esp, 0Ch
-push offset aDGerade
+push offset aDGerade_
 call _puts
 add esp, 10h
 jmp short loc_8048620
 loc_8048610:
 sub esp, 0Ch
-push offset aDUngerade
+push offset aDUngerade_
 call _puts
 add esp, 10h
 loc_8048620:

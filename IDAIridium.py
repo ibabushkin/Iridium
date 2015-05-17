@@ -84,7 +84,7 @@ class AssemblyParser(object):
                     self.in_function = True
                     self.func_begin_index = index
             else:
-                if re.match('.+[\t ]endp$', line, re.MULTILINE):
+                if re.match('.+[\t ]endp', line, re.MULTILINE):
                     self.functions[-1].set_code(self.get_code(
                         self.func_begin_index, index + 1))
                     self.func_begin_index = None
@@ -107,7 +107,7 @@ class AssemblyParser(object):
             for j in i.code:
                 if j != '':
                     if ';' in j:
-                        j = j.split(';')[0][:-2]
+                        j = j.split(';')[0].strip()
                     output.write(j.replace('\t', ' ') + '\n')
 
     def cfg_analysis(self, listing):
