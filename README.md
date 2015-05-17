@@ -14,7 +14,7 @@ fashion without "losing touch" with the binary's code.
   + Presents the results in an easy-to-understand format, making it easy to rewrite
     the given program in any HLL if needed.
 * Analysis of data found on the stack.
-  + Applies a heuristic to determine which data is a variable, which size it has and
+  + Applies heuristics to determine which data is a variable, which size it has and
     whether it is a pointer or array.
 * Analysis of optimized integer divisions.
   + Recovery of divisor from the source.
@@ -73,11 +73,10 @@ There are some minor bugs and quirks in the code, but they should not affect the
 in a serious way. Still, if found such behaviour should get an issue. Apart from that, there
 are some issues still not implemented:
 * Support for `break`, `continue` etc.
-* Better output in case the analysis did fail
+* Better output in case the analysis did fail - partly done
 * more input methods
   + PE/ELF standalone analysis via pefile and Capstone etc.
   + `IDAPython` integration
-* A function blacklist for `IDAIridium.py` and similar modules
 * Some bugfixes
   + Sometimes complex conditions in `if-then-else` structures are not
     recognized properly, because their edges leading to the `then` or 
