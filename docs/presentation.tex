@@ -41,7 +41,7 @@
     \item Die CPU unterstützt einzelne Instruktionen, darunter auch Sprünge
     \item Diese werden durch sog. Opcodes im Speicher dargestellt
     \item Können auch in Form von Assembler-Befehlen beschrieben werden
-    \item Vom Abstraktionsgrad kaum mit Hochsprachen zu vergleichen
+    \item Vom Abstraktionsgrad her kaum mit Hochsprachen zu vergleichen
   \end{itemize}
 \end{frame}
 
@@ -52,9 +52,9 @@
   \item Komplexer und zeitaufändiger Prozess, da
     \begin{itemize}
     \item Software zunehmend komplex
-    \item Compiler den Code optimisieren
+    \item Compiler den Code optimieren
     \end{itemize}
-  \item Sehr nützlich
+  \item Großer Nutzen für verschiedene Bereiche, z.B:
     \begin{itemize}
     \item Malware-Analyse
     \item Wiederherstellung von altem Programmcode
@@ -63,10 +63,11 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{(Halb-)Automatisierte Ansätze}
+\begin{frame}{(Halb-)Automatisierte Ansätze für die statische Analyse}
   \begin{itemize}
   \item Decompiler
   \item Analyseframeworks
+  \item Disassembler
   \end{itemize}
 \end{frame}
 
@@ -86,7 +87,7 @@
 \begin{frame}{Freie Software}
   \begin{itemize}
   \item Verwendung der GPLv3
-  \item Codequalität und Funktionsumfang durch Community unterstützt
+  \item Codequalität und Funktionsumfang kann durch die Community erweitert werden
   \end{itemize}
 \end{frame}
 
@@ -114,7 +115,7 @@
 \begin{frame}{Optimisierte Integerdivision}
   \begin{itemize}
   \item Von modernen Compiler bei konstantem Divisor angewendet
-  \item Teure Divisions-Instruktion wird durch eine Reihe von Additionen, Shifts und Multiplikationen ersetzt
+  \item Zeitintensive Divisions-Instruktion wird durch eine Reihe von Additionen, Shifts und Multiplikationen ersetzt
   \item Für Menschen keine Rückschlüsse auf den Divisor möglich, deswegen Implementation eines entsprechenden Algorithmus
   \end{itemize}
 \end{frame}
@@ -145,5 +146,3 @@
 
 
 \end{document}
-
-

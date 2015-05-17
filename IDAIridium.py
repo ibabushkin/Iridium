@@ -140,7 +140,7 @@ class AssemblyParser(object):
                 FILENAME_EXTENSIONS['data']),
             'wb')
         data_parser = DataParser(listing)
-        data_parser.recognize_from_frontend()
+        data_parser.recognize()
         sys.stdout = stdout
 
     def division_analysis(self, listing):

@@ -60,9 +60,10 @@ class DataParser(CodeCrawler):
             if current_byte != byte:
                 current_byte = byte
                 contrast_points.append(index)
-        for var in self.variables:
-            if var.offset >= contrast_points[1] - self.allocated_space:
-                self.real_variables.append(var)
+        if len(contrast_points) > 1:
+            for var in self.variables:
+                if var.offset >= contrast_points[1] - self.allocated_space:
+                    self.real_variables.append(var)
         if len(contrast_points) > 2:
             for i in range(0, self.allocated_space):
                 if i in contrast_points and contrast_points.index(i) > 1:
@@ -76,17 +77,6 @@ class DataParser(CodeCrawler):
         self.find_pointers()
         for var in self.real_variables:
             print var
-
-    def recognize_from_frontend(self):
-        """
-        Called by top-level scripts like IDAIridium.py
-        to prevent errors caused by compiler-generated functions.
-        Still keeping maintainability for the code in self.recognize().
-        """
-        try:
-            self.recognize()
-        except:
-            print 'Data analysis not possible!'
 
     def find_variable_by_contrast_point(self, point):
         """
@@ -115,6 +105,7 @@ class DataParser(CodeCrawler):
                     if value.endswith('h'):
                         value = value[:-1]
                     return int(value, 16)
+        return 0
 
     def draw_memory_layout(self):
         """
@@ -123,9 +114,11 @@ class DataParser(CodeCrawler):
         Can be drawn directly or analyzed.
         """
         ret = ['-' for i in range(0, self.allocated_space)]
+        print ret
         for var in self.variables:
-            for i in range(var.offset, var.offset + self.sizes[var.size]):
-                ret[i] = '|'
+            if var.offset > 0:
+                for i in range(var.offset, var.offset + self.sizes[var.size]):
+                    ret[i] = '|'
         return ''.join(ret)
 
     def generate_variables(self):
@@ -177,12 +170,12 @@ class DataParser(CodeCrawler):
             if isinstance(instruction, Instruction):
                 if instruction.mnemonic == 'lea':
                     destination = instruction.operands.split(',')[0]
-                    instruction = self.code[index + 1]
-                    if (instruction.mnemonic == 'mov'
-                            and instruction.
-                            operands.split(' ')[1] == destination):
+                    instruction2 = self.code[index + 1]
+                    if (isinstance(instruction2, Instruction) and
+                            instruction2.mnemonic == 'mov' and
+                            instruction2.operands.split(' ')[1] == destination):
                         self.find_variable_by_expression(
-                            instruction.operands.split(',')[0]).pointer = True
+                            instruction2.operands.split(',')[0]).pointer = True
                 # analyzing function calls regarding returned pointers
                 if instruction.mnemonic == 'call':
                     for function in self.functions_returning_pointers:
@@ -251,13 +244,12 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)''')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/data2_analysis/main.asm'
+    SOURCE = '../../tests/data2_analysis/__libc_csu_init.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source
     if ARGS.output:
         sys.stdout = open(ARGS.output, 'wb')
-    # code = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     CODE = [line.strip('\n') for line in open(SOURCE, 'rb').readlines()]
     DATA_PARSER = DataParser(CODE)
     DATA_PARSER.recognize()
