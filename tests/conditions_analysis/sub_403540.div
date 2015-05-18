@@ -1,2 +1,0 @@
-Found candidate for optimized integer division                                 starting at line 28:
-constant: 0x66666667, rshift: 1Fh
