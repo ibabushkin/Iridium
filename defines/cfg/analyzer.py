@@ -323,7 +323,6 @@ class GraphAnalyzer(object):
         is a dominant to all currently saved paths? (see next method)
         in other words, is a present in every element of self.ways?
         """
-        # dominance_paths = map(lambda x: a in x, self.ways)
         dominance_paths = [node_id in x for x in self.ways]
         return False not in dominance_paths
 

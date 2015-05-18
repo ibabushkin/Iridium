@@ -632,7 +632,8 @@ class StructNode(object):
                     # Nothing found, no recursive analysis needed.
                     break
         # Make the results availible to the HLL-view.
-        self.description = self.struct_nodes[chr(ord(self.current_id)-1)][2]
+        if self.current_id != 'a': # we have found at least something
+            self.description = self.struct_nodes[chr(ord(self.current_id)-1)][2]
 
     def get_condition_from_block(self):
         """
