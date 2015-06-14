@@ -156,7 +156,7 @@ class AssemblyParser(object):
                 FILENAME_EXTENSIONS['div']),
             'wb')
         div_parser = DivisionParser(listing)
-        div_parser.find_interestig_code_sequences()
+        div_parser.find_interesting_code_sequences()
         sys.stdout = stdout
 
     def load_function(self, function_name):

@@ -24,7 +24,7 @@ class DataParser(CodeCrawler):
     Similar to Graph (at least consdering the level of abstraction
     and overall position in the system).
     """
-
+    # TODO: make it work with our gdb frontend / make it platform independent
     def __init__(self, text):
         """
         Prepare everything for analysis.
@@ -104,9 +104,13 @@ class DataParser(CodeCrawler):
             if isinstance(instruction, Instruction):
                 # save enough, I hope
                 if instruction.mnemonic == 'sub' and 'esp' in instruction.operands:
-                    value = instruction.operands.split(' ')[1]
+                    value = instruction.operands.split(',')[1]
                     if value.endswith('h'):
+                        if value.startswith(' '):
+                            value = value[1:]
                         value = value[:-1]
+                    elif value.startswith('0x'):
+                        value = value[2:]
                     return int(value, 16)
         return 0
 
@@ -117,7 +121,6 @@ class DataParser(CodeCrawler):
         Can be drawn directly or analyzed.
         """
         ret = ['-' for i in range(0, self.allocated_space)]
-        print ret
         for var in self.variables:
             if var.offset > 0:
                 for i in range(var.offset, var.offset + self.sizes[var.size]):

@@ -54,15 +54,15 @@ class DivisionParser(CodeCrawler):
         self.next_imul = 5  # a threshold value, see help
         self.next_sar = 9  # see directly above
 
-    def find_interestig_code_sequences(self):
+    def find_interesting_code_sequences(self):
         """
         Find and analyze optimized divisions.
         """
         for index, instruction in enumerate(self.code):
             if isinstance(instruction, Instruction):
                 if instruction.mnemonic == 'mov' and instruction.operands.split(
-                        ', ')[1].endswith('h'):
-                    destination, hexstr = instruction.operands.split(', ')
+                        ',')[1].endswith('h'):
+                    destination, hexstr = instruction.operands.split(',')
                     next_imul = self.find_next_instruction(
                         index + 1, 'imul', destination + ', %X')
                     if next_imul < self.next_imul and next_imul:
@@ -71,6 +71,8 @@ class DivisionParser(CodeCrawler):
                         if next_sar < self.next_sar and next_sar:
                             shift = self.code[
                                 index + next_sar + 1].operands.split(', ')[1]
+                            if hexstr.startswith(' '):
+                                hexstring = hexstr[1:]
                             magic = '0x' + hexstr.lower()[:-1]
                             print 'Found candidate for optimized integer division \
                                 starting at line ' + str(index) + ':'
@@ -133,7 +135,6 @@ if __name__ == '__main__':
         SOURCE = ARGS.source
     if ARGS.output:
         sys.stdout = open(ARGS.output, 'wb')
-    # l = map(lambda x: x.strip('\n'), open(source, 'rb').readlines())
     LINES = [line.strip('\n') for line in open(SOURCE, 'rb').readlines()]
     if not ARGS.interactive:
         DIV = DivisionParser(LINES)
@@ -141,7 +142,7 @@ if __name__ == '__main__':
             DIV.next_imul = int(ARGS.next_imul_threshold)
         if ARGS.next_sar_threshold:
             DIV.next_sar = int(ARGS.next_sar_threshold)
-        DIV.find_interestig_code_sequences()
+        DIV.find_interesting_code_sequences()
     else:
         DIV = DivisionParser(LINES)
         MAGIC_NUMBER = raw_input(

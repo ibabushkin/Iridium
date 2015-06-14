@@ -30,25 +30,13 @@ class GDBIridium(gdb.Command):
                              gdb.COMMAND_USER,
                              gdb.COMPLETE_NONE, True)
 
-
-class GDBIridiumCFG(gdb.Command):
-    """
-    Command invoking the controlflow module.
-    """
-    def __init__(self):
-        """
-        Register command.
-        """
-        gdb.Command.__init__(self, "iridium cfg",
-                             gdb.COMMAND_USER,
-                             gdb.COMPLETE_NONE, True)
-
     def invoke(self, arg, from_tty):
         """
         Args parsing etc.
         """
         disas = gdb.execute("disas " + arg, False, True)
-        self.process(disas, arg)
+        code = self.process(disas, arg)
+        self.analyze(code)
 
     def process(self, code, func_name):
         """
@@ -75,16 +63,71 @@ class GDBIridiumCFG(gdb.Command):
         for index, instruction in enumerate(code):
             location = instruction[0].split(' ')[1]
             if location in jump_targets:
-                labels[index] = location
+                labels[index+1] = location
             code[index] = instruction[1]
         # insert labels into code
         for l in labels:
             code.insert(l, '<'+func_name+labels[l][1:])
-        # analyze the result
+        return code
+
+    def analyze(self, code):
+        for line in code:
+            print line
+
+
+class GDBIridiumCFG(GDBIridium):
+    """
+    Command invoking the controlflow module.
+    """
+    def __init__(self):
+        """
+        Register command.
+        """
+        gdb.Command.__init__(self, "iridium cfg",
+                             gdb.COMMAND_USER,
+                             gdb.COMPLETE_NONE, True)
+
+    def analyze(self, code):
         graph = Graph(code)
         analyzer = GraphAnalyzer(graph)
         analyzer.reduce()
 
+
+class GDBIridiumData(GDBIridium):
+    """
+    Command invoking data module.
+    """
+    def __init__(self):
+        """
+        Register command.
+        """
+        gdb.Command.__init__(self, "iridium data",
+                             gdb.COMMAND_USER,
+                             gdb.COMPLETE_NONE, True)
+
+    def analyze(self, code):
+        dp = DataParser(code)
+        dp.recognize()
+
+
+class GDBIridiumDiv(GDBIridium):
+    """
+    Command invoking division module.
+    """
+    def __init__(self):
+        """
+        Register command.
+        """
+        gdb.Command.__init__(self, "iridium div",
+                             gdb.COMMAND_USER,
+                             gdb.COMPLETE_NONE, True)
+
+    def analyze(self, code):
+        dp = DivisionParser(code)
+        dp.find_interesting_code_sequences()
+
 # Initialization
 GDBIridium()
 GDBIridiumCFG()
+GDBIridiumData()
+GDBIridiumDiv()
