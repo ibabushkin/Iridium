@@ -4,7 +4,7 @@
 File: analyzer.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description: Analyzing the controlflow of a Graph.
 """
 

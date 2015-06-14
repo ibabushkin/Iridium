@@ -4,7 +4,7 @@
 File: graph.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description: A module intended for controlflow-analysis,
 generating a graph from a assembly listing and representing it.
 """
