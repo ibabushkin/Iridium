@@ -4,3 +4,4 @@
 *.swo
 docs/*
 tests/*
+*.ropeproject*
