@@ -58,6 +58,8 @@ class GDBIridium(gdb.Command):
             if i.is_jump():
                 jump_targets.append('<+'+tokens[-1].split('+')[1]+':')
                 code[index][1] = tokens[0] + ' ' + tokens[-1]
+            if i.is_call():
+                code[index][1] = tokens[0] + ' ' + tokens[-1]
         # generate labels from jump targets
         labels = {}
         for index, instruction in enumerate(code):
@@ -85,7 +87,7 @@ class GDBIridiumCFG(GDBIridium):
         """
         gdb.Command.__init__(self, "iridium cfg",
                              gdb.COMMAND_USER,
-                             gdb.COMPLETE_NONE, True)
+                             gdb.COMPLETE_NONE, False)
 
     def analyze(self, code):
         graph = Graph(code)
@@ -103,7 +105,7 @@ class GDBIridiumData(GDBIridium):
         """
         gdb.Command.__init__(self, "iridium data",
                              gdb.COMMAND_USER,
-                             gdb.COMPLETE_NONE, True)
+                             gdb.COMPLETE_NONE, False)
 
     def analyze(self, code):
         dp = DataParser(code)
@@ -120,7 +122,7 @@ class GDBIridiumDiv(GDBIridium):
         """
         gdb.Command.__init__(self, "iridium div",
                              gdb.COMMAND_USER,
-                             gdb.COMPLETE_NONE, True)
+                             gdb.COMPLETE_NONE, False)
 
     def analyze(self, code):
         dp = DivisionParser(code)
@@ -129,5 +131,5 @@ class GDBIridiumDiv(GDBIridium):
 # Initialization
 GDBIridium()
 GDBIridiumCFG()
-GDBIridiumData()
+# GDBIridiumData() does not work. and is not really needed ;)
 GDBIridiumDiv()

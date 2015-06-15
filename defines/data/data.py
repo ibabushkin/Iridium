@@ -11,6 +11,8 @@ Description:
     and pointers.
 """
 
+# THIS IS DEPRECATED. WE *NEED* TO REWRITE THIS AS SOON AS POSSIBLE
+
 import argparse
 import sys
 
@@ -51,7 +53,16 @@ class DataParser(CodeCrawler):
         """
         The main method to record all data availible.
         """
-        self.ida_memory_offsets()
+        ida = False
+        for line in self.code:
+            if isinstance(line, Instruction):
+                if line.mnemonic.startswith('var_') and line.operands.endswith('h'):
+                    ida = True
+                    break
+        if ida:
+            self.ida_memory_offsets()
+        else:
+            self.memory_offsets()
         self.generate_variables()
         print 'Allocated:', self.allocated_space
         print self.draw_memory_layout()
@@ -140,6 +151,7 @@ class DataParser(CodeCrawler):
         """
         Analyzes how much space is addressed at a specific offset
         """
+        # FIXME: relies heavily on IDA
         if offset in self.addressed_offsets:
             for i in self.code:
                 if isinstance(i, Instruction):
@@ -167,6 +179,31 @@ class DataParser(CodeCrawler):
                     self.addressed_offsets.append(
                         int(i.mnemonic.split('=')[0][4:], 16))
         # print self.addressed_offsets
+
+    def memory_offsets(self):
+        """
+        Parse the code to find addressed offsets. Intended to replace
+        ida_memory_offsets() when it can't be used.
+        """
+        for i in self.code:
+            if isinstance(i, Instruction):
+                if 'PTR' in i.operands:
+                    ops = i.operands.split(',')
+                    if 'PTR' in ops[0]:
+                        ptr = ops[0].split(' ')[-1]
+                    else:
+                        ptr = ops[1].split(' ')[-1]
+                    if '+' in ptr:
+                        register, offset = ptr[1:-1].split('+')
+                        offset = int(offset, 16)
+                    elif '-' in ptr:
+                        register, offset = ptr[1:-1].split('-')
+                        offset = -int(+offset, 16)
+                    if register == 'esp':
+                        self.addressed_offsets.append(self.allocated_space -
+                                                      offset)
+                    elif register == 'ebp':
+                        self.addressed_offsets.append(offset)
 
     def find_pointers(self):
         """
@@ -197,6 +234,7 @@ class DataParser(CodeCrawler):
         """
         Used to determine the name of a variable used in an instruction.
         """
+        # FIXME: also relies on IDA
         var_name = expression[1:-1].split('+')[-1]
         for i in self.real_variables:
             if i.name == var_name:

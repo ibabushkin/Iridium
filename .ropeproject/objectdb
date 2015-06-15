@@ -12,6 +12,6 @@ s}q0†bUAssemblyParser.cfg_analysish)q1}q2hhh!h‡†h"h#h‡†h
 s}q3†bUAssemblyParser.obtain_functionsh)q4}q5hhUIDAIridium.pyq6h‡†…h
 s}q7†bU AssemblyParser.dataflow_analysish)q8}q9hhh!h‡†h"h#h‡†h
 s}q:†bUAssemblyParser.get_codeh)q;}q<hhh6h‡†Uunknown…q=h=‡h
-s}q>†buU0/home/thewormkill/Iridium/defines/util/parser.py}q?UCodeCrawler.get_code_from_texth)q@}qAUinstanceqBUdefinedqCU0/home/thewormkill/Iridium/defines/util/parser.pyUCodeCrawlerqD‡†…UbuiltinqEUlistqFUnone…qG‡s}qH†bsU/usr/lib64/python2.7/gettext.py}qI(Utranslationh)qJ}qK(hUunknown…qLUnone…qMhMhMhLthhU/usr/lib64/python2.7/gettext.pyUNullTranslationsqN‡†s}qO†bUNullTranslations.gettexth)qP}qQhhU/usr/lib64/python2.7/gettext.pyhN‡†h†hs}qR†bUdgettexth)qS}qThh†hs}qU†bUgettexth)qV}qWh…hs}qX†buU./home/thewormkill/Iridium/defines/data/data.py}qY(UDataParser.get_allocated_spaceh)qZ}q[hBhCU./home/thewormkill/Iridium/defines/data/data.pyU
-DataParserq\‡†…Uunknown…q]s}q^†bU"DataParser.find_all_function_callsh)q_}q`hBhCU./home/thewormkill/Iridium/defines/data/data.pyh\‡†…(hEUdictqahGhGts}qb†buU/usr/lib64/python2.7/re.py}qcUmatchh)qd}qehhUunknown…‡h
-s}qf†bsUdefines/data/data.pyqg}qh(UDataParser.get_allocated_spaceh)qi}qjhBhChgh\‡†…h]s}qk†bU"DataParser.find_all_function_callsh)ql}qmhBhChgh\‡†…(hEhahGhGts}qn†buu.
+s}q>†buU/usr/lib64/python2.7/gettext.py}q?(Utranslationh)q@}qA(hUunknown…qBUnone…qChChChBthhU/usr/lib64/python2.7/gettext.pyUNullTranslationsqD‡†s}qE†bUNullTranslations.gettexth)qF}qGhhU/usr/lib64/python2.7/gettext.pyhD‡†h†hs}qH†bUdgettexth)qI}qJhh†hs}qK†bUgettexth)qL}qMh…hs}qN†buU/usr/lib64/python2.7/re.py}qOUmatchh)qP}qQhhUunknown…‡h
+s}qR†bsUdefines/data/data.pyqS}qT(UDataParser.get_allocated_spaceh)qU}qVUinstanceqWUdefinedqXhSU
+DataParserqY‡†…Uunknown…s}qZ†bU"DataParser.find_all_function_callsh)q[}q\hWhXhShY‡†…(UbuiltinUdictUnone…q]h]ts}q^†buu.
