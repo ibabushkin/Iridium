@@ -94,7 +94,7 @@ class Graph(CodeCrawler):
             elif instruction.is_jump():
                 # found a jump, which is the end of a node
                 self.delimiter_lines.append(index + 1)
-            elif (instruction.mnemonic in ['cmp', 'test']
+            elif (instruction.mnemonic in ('cmp', 'test')
                   and index - 1 not in self.delimiter_lines):
                 # found a comparison, which is used as the beginning of a node
                 # to make sure conditions and code are separated.
@@ -114,7 +114,6 @@ class Graph(CodeCrawler):
                         self.delimiter_lines[index + 1])
                     current_node_id += 1
         for node_index in self.nodes:
-            # print self.nodes[node_index]
             node = self.nodes[node_index]
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
@@ -133,7 +132,7 @@ class Graph(CodeCrawler):
             if node.code[-1].is_conditional_jump() \
                     or not node.code[-1].is_jump():
                 if node.id != len(self.nodes) - 1 \
-                        and node.code[-1].mnemonic not in ['ret', 'retn']:
+                        and node.code[-1].mnemonic not in ('ret', 'retn'):
                     destination = self.nodes[node.id + 1]
                     self.edges.append(
                         Edge(current_edge_id, node.id, destination.id, False))
@@ -356,7 +355,7 @@ class StructNode(object):
         """
         cur_node_id = None
         ordered_nodes = []
-        if self.structtype in ['do-loop', 'block']:
+        if self.structtype in ('do-loop', 'block'):
             for i in range(0, len(self.nodes)):
                 if i == 0:
                     cur_node_id = self.start_id
@@ -632,7 +631,7 @@ class StructNode(object):
                     # Nothing found, no recursive analysis needed.
                     break
         # Make the results availible to the HLL-view.
-        if self.current_id != 'a': # we have found at least something
+        if self.current_id != 'a':  # we have found at least something
             self.description = self.struct_nodes[chr(ord(self.current_id)-1)][2]
 
     def get_condition_from_block(self):

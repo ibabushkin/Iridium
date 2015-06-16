@@ -2,7 +2,7 @@
 File: instructions.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     Provides an abstraction over every single instruction.
 """
@@ -19,11 +19,25 @@ class Instruction(object):
         self.address = address
         self.size = size
         self.mnemonic = mnemonic
+        # operands is a tuple!
         self.operands = operands
 
     def __str__(self):
         """ Print in a ASM-like fashion. """
-        return '%s %s' % (self.mnemonic, self.operands)
+        ret = self.mnemonic
+        if len(self.operands) <= 2 and not self.is_jump():
+            if len(self.operands) > 0:
+                ret += ' ' + self.operands[0]
+            if len(self.operands) > 1:
+                if self.operands != ('proc', 'near'):
+                    ret += ', '
+                else:
+                    ret += ' '
+                ret += self.operands[1]
+        else:
+            for op in self.operands:
+                ret += ' ' + op
+        return ret
 
     def is_jump(self):
         """ Check whether the instance is representing a jump. """
@@ -47,19 +61,21 @@ class Instruction(object):
 
     def is_push_ebp(self):
         """ Check whether the instance is pushing ebp. """
-        return self.mnemonic == 'push' and self.operands == 'ebp'
+        return self.mnemonic == 'push' and self.operands[0] == 'ebp'
 
     def is_mov_ebp_esp(self):
         """ Check whether the instance is moving esp to ebp. """
-        return self.mnemonic == 'mov' and self.operands == 'ebp, esp'
+        return self.mnemonic == 'mov' and \
+            self.operands[0] == 'ebp' and self.operands[1] == 'esp'
 
     def is_mov_esp_ebp(self):
         """ Check whether the instance is moving ebp to esp. """
-        return self.mnemonic == 'mov' and self.operands == 'esp, ebp'
+        return self.mnemonic == 'mov' and \
+            self.operands[0] == 'esp' and self.operands[1] == 'ebp'
 
     def is_pop_ebp(self):
         """ Check whether the instance is popping ebp. """
-        return self.mnemonic == 'pop' and self.operands == 'ebp'
+        return self.mnemonic == 'pop' and self.operands[0] == 'ebp'
 
     def is_sub(self):
         """ Check whether the instance represents a subtraction. """
@@ -86,25 +102,4 @@ class Instruction(object):
         fetching it directly from the code.
         """
         if self.is_jump():
-            return self.operands.split(' ')[-1]
-
-
-class Jump(object):
-    """
-    A jump, containing information about
-    occurence, instruction and destination
-    of a real instruction.
-    """
-    def __init__(self, line_index, mnemonic, destination):
-        """
-        Set the attributes.
-        """
-        self.index = line_index
-        self.mnemonic = mnemonic
-        self.destination = destination
-
-    def __str__(self):
-        """
-        Print in an appropriate format.
-        """
-        return 'line %i: %s %s' % (self.index, self.mnemonic, self.destination)
+            return self.operands[-1]

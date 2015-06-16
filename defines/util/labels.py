@@ -31,10 +31,11 @@ class Function(object):
         """
         for j, i in enumerate(lines):
             if len(i) > 0 and not i.endswith(':'):
-                mnemonic = i.split()[0]
-                operands = i[len(mnemonic) + 1:]
-                if ';' in operands:
-                    operands = operands.split(';')[0][:-2]
+                if ';' in i:
+                    i = i.split(';')[0][:-2]
+                tokens = i.split()[0]
+                mnemonic = tokens[0]
+                operands = tokens[1:]
                 self.instructions.append(Instruction(j, 0, mnemonic, operands))
         self.code = lines
 

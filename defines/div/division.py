@@ -39,12 +39,10 @@ def get_divisor(magic, rshift, bitness=32):
 
 
 class DivisionParser(CodeCrawler):
-
     """
-    The class retrieving and workiing on the information
+    The class retrieving and working on the information
     present in the analyzed source, equivalent to Graph and DataParser
     """
-
     def __init__(self, text):
         """
         Set default threshold vales and prepare
@@ -60,9 +58,10 @@ class DivisionParser(CodeCrawler):
         """
         for index, instruction in enumerate(self.code):
             if isinstance(instruction, Instruction):
-                if instruction.mnemonic == 'mov' and instruction.operands.split(
-                        ',')[1].endswith('h'):
-                    destination, hexstr = instruction.operands.split(',')
+                if instruction.mnemonic == 'mov' and (
+                        instruction.operands[1].endswith('h') or
+                        instruction.operands[1].startswith('0x')):
+                    destination, hexstr = instruction.operands
                     next_imul = self.find_next_instruction(
                         index + 1, 'imul', destination + ', %X')
                     if next_imul < self.next_imul and next_imul:
@@ -70,14 +69,19 @@ class DivisionParser(CodeCrawler):
                             index + 1, 'sar', '%X, %X')
                         if next_sar < self.next_sar and next_sar:
                             shift = self.code[
-                                index + next_sar + 1].operands.split(', ')[1]
-                            if hexstr.startswith(' '):
-                                hexstring = hexstr[1:]
-                            magic = '0x' + hexstr.lower()[:-1]
+                                index + next_sar + 1].operands[1]
+                            if '0x' not in hexstr:
+                                magic = '0x' + hexstr.lower()[:-1]
+                            else:
+                                magic = hexstr
                             print 'Found candidate for optimized integer division \
-                                starting at line ' + str(index) + ':'
+starting at line ' + str(index) + ':'
                             print 'constant: ' + magic + ', rshift: ' + shift
-                            result = get_divisor(magic, int(shift))
+                            if '0x' in shift:
+                                shift = int(shift, 16)
+                            else:
+                                shift = int(shift)
+                            result = get_divisor(magic, shift)
                             print '--> division by ' + str(result)
 
     def find_next_instruction(self, start_index, mnemonic, opers):
@@ -91,10 +95,9 @@ class DivisionParser(CodeCrawler):
         for index, instruction in enumerate(self.code[start_index:]):
             if isinstance(instruction, Instruction):
                 if instruction.mnemonic == mnemonic:
-                    operands = instruction.operands.split(', ')
-                    if (first == '%X' or first == operands[0]) and (
+                    if (first == '%X' or first == instruction.operands[0]) and (
                             magic_constant == '%X' or (
-                                magic_constant == operands[1])):
+                                magic_constant == instruction.operands[1])):
                         return index
 
 

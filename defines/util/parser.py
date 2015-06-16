@@ -2,7 +2,7 @@
 File: parser.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     A module that makes traversing the code of a file
     in some manner possible.
@@ -36,7 +36,12 @@ class CodeCrawler(object):
                 tokens = line.split(' ')
                 if len(tokens) > 0:
                     mnemonic = tokens[0]
-                    operands = line[len(mnemonic) + 1:]
-                    lines.append(Instruction(index, 0, mnemonic, operands))
+                    operands = tokens[1:]
+                    if len(operands) > 0 and operands[0].endswith(','):
+                        operands[0] = operands[0][:-1]
+                    if len(operands) == 1 and ',' in operands[0]:
+                        operands = operands[0].split(',')
+                    lines.append(Instruction(index, 0,
+                                             mnemonic, tuple(operands)))
             index += 1
         return lines

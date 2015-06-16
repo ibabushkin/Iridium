@@ -5,8 +5,7 @@ q)q}q(UinstanceqUdefinedqU /usr/lib64/python2.7/argparse.pyUArgumentPar
 (hhU /usr/lib64/python2.7/argparse.pyh‡†h	h	h	h	th
 u}q†bUArgumentParser.parse_argsh)q}qhhU /usr/lib64/python2.7/argparse.pyh‡†Unone…qh‡h
 s}q†bUArgumentParser.__init__h)q}q(hhU /usr/lib64/python2.7/argparse.pyh‡†hhh	hhhhhhhhhth
-s}q†buU0/home/thewormkill/Iridium/defines/util/parser.py}qUCodeCrawler.__init__h)q}qhhUdivision.pyqUDivisionParserq‡†Uunknown…q†h
-s}q†bsh}q(Uget_divisorqh)q}qh	Uunknown…qh‡h
-s}q†bUDivisionParser.__init__h)q }q!hhhh‡†Ubuiltinq"Ulistq#h	‡†h
-s}q$†bU-DivisionParser.find_interestig_code_sequencesh)q%}q&hhhh‡†…h
-s}q'†buu.
+s}q†buU0/home/thewormkill/Iridium/defines/util/parser.py}q(UCodeCrawler.get_code_from_texth)q}qUinstanceUdefinedU0/home/thewormkill/Iridium/defines/util/parser.pyUCodeCrawler‡†…UbuiltinUlistUnone…‡s}q†bUCodeCrawler.__init__h)q}qhhUdivision.pyqUDivisionParserq‡†Uunknown…†h
+s}q†buh}q(Uget_divisorh)q}qh	Uunknown…h‡h
+s}q†bUDivisionParser.__init__h)q }q!hhhh‡†UbuiltinUlisth	‡†h
+s}q"†buu.
