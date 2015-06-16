@@ -4,7 +4,7 @@
 File: data.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     This module is intended to search the code for
     variables saved on the stack, as well as arrays

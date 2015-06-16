@@ -2,7 +2,7 @@
 File: settings.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 
 Description:
     Holds all user-customizable values that affect

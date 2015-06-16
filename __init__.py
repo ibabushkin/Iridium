@@ -2,7 +2,7 @@
 File: __init__.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     The Iridium Package.
     Everything the user interacts with directly is here,

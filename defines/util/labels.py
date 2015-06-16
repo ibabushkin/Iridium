@@ -2,7 +2,7 @@
 File: labels.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     Abstractions over functions and labels are
     provided in this module.

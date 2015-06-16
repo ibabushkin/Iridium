@@ -4,7 +4,7 @@
 File: division.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     Find optimized integer divisions and recover the divisor
     in a function.

@@ -2,7 +2,7 @@
 File: tree.py
 Author: Inokentiy Babushkin
 Email: inokentiy.babushkin@googlemail.com
-Github: None
+Github: ibabushkin
 Description:
     A tree used to store DFS-trees for the CFG-module.
 """
