@@ -33,15 +33,21 @@ class CodeCrawler(object):
             if line.endswith(':'):
                 lines.append(Label(index, line))
             else:
-                tokens = line.split(' ')
-                if len(tokens) > 0:
-                    mnemonic = tokens[0]
-                    operands = tokens[1:]
-                    if len(operands) > 0 and operands[0].endswith(','):
-                        operands[0] = operands[0][:-1]
-                    if len(operands) == 1 and ',' in operands[0]:
-                        operands = operands[0].split(',')
-                    lines.append(Instruction(index, 0,
-                                             mnemonic, tuple(operands)))
+                if ' ' in line:
+                    end_of_mnemonic = line.index(' ')
+                    mnemonic = line[:end_of_mnemonic]
+                    operands = line[end_of_mnemonic+1:]
+                    if ',' in operands:
+                        end_of_op1 = operands.index(',')
+                        op1 = operands[:end_of_op1]
+                        op2 = operands[end_of_op1+1:]
+                        if op2.startswith(' '):
+                            op2 = op2[1:]
+                        operands = (op1, op2)
+                    else:
+                        operands = (operands,)
+                    lines.append(Instruction(index, 0, mnemonic, operands))
+                else:
+                    lines.append(Instruction(index, 0, line, tuple()))
             index += 1
         return lines
