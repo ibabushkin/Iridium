@@ -21,7 +21,7 @@ from multiprocessing import Process
 from Iridium.defines.util.labels import Function
 from Iridium.defines.cfg.graph import Graph
 from Iridium.defines.cfg.analyzer import GraphAnalyzer
-from Iridium.defines.data.new_data import DataParser
+from Iridium.defines.data.data import DataParser
 from Iridium.defines.div.division import DivisionParser
 
 # import the settings

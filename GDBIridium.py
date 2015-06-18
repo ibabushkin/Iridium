@@ -13,7 +13,7 @@ Description:
 # import the submodules
 from Iridium.defines.cfg.graph import Graph
 from Iridium.defines.cfg.analyzer import GraphAnalyzer
-from Iridium.defines.data.new_data import DataParser
+from Iridium.defines.data.data import DataParser
 from Iridium.defines.div.division import DivisionParser
 from Iridium.defines.util.instructions import Instruction
 
