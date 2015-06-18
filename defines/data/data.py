@@ -94,6 +94,8 @@ class DataParser(CodeCrawler):
                                 instr.operands[1].endswith(']'):
                             op = instr.operands[1].split('[')[1][:-1]
                             size = instr.operands[1].split(' ')[0]
+                            if size.lower() not in Variable.hll_sizes:
+                                break
                     register = None
                     offset = None
                     name = None
@@ -107,16 +109,19 @@ class DataParser(CodeCrawler):
                         else:
                             register = op
                             offset = 0
-                        if register == 'esp':
-                            offset = -1 * (self.allocated_space-offset)
-                        if offset < 0:
-                            name = 'var_'
-                        else:
-                            name = 'arg_'
-                        name += hex(abs(offset))[2:]
-                        var = Variable(name, size.lower(), offset)
-                        if var not in self.variables:
-                            self.variables.append(var)
+                        if register in ('ebp', 'esp'):
+                            if register == 'esp':
+                                offset = -1 * (self.allocated_space-offset)
+                            if offset < 0:
+                                name = 'var_'
+                            else:
+                                name = 'arg_'
+                            name += hex(abs(offset))[2:]
+                            if size == '[esp+0]':
+                                print instr
+                            var = Variable(name, size.lower(), offset)
+                            if var not in self.variables:
+                                self.variables.append(var)
 
     def draw_memory_layout(self):
         """
@@ -127,8 +132,12 @@ class DataParser(CodeCrawler):
         ret = ['-' for i in range(0, self.allocated_space)]
         for var in self.variables:
             if var.ebp_offset < 0:
-                for i in range(var.ebp_offset, var.ebp_offset + self.sizes[var.size]):
-                    ret[i] = '|'
+                for i in range(var.ebp_offset,
+                               var.ebp_offset + self.sizes[var.size]):
+                    try:
+                        ret[i] = '|'
+                    except IndexError:
+                        pass
         return ''.join(ret)
 
     def find_pointers(self):
@@ -225,21 +234,21 @@ class DataParser(CodeCrawler):
                 return i
 
 
-
 class Variable(object):
     """
     The medium-level representation of an addressed offset
     """
+
+    hll_sizes = {'qword': ['double', 'long long int'],
+                 'dword': ['int', 'float'],
+                 'word': ['short int'],
+                 'byte': ['char']}
 
     def __init__(self, name, size, offset):
         """
         Prepare the data and instance variables.
         """
         self.size = size
-        self.hll_sizes = {'qword': ['double', 'long long int'],
-                          'dword': ['int', 'float'],
-                          'word': ['short int'],
-                          'byte': ['char']}
         self.hll_size = self.hll_sizes[size]
         self.ebp_offset = offset
         self.name = name
