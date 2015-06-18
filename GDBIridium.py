@@ -13,7 +13,7 @@ Description:
 # import the submodules
 from Iridium.defines.cfg.graph import Graph
 from Iridium.defines.cfg.analyzer import GraphAnalyzer
-from Iridium.defines.data.data import DataParser
+from Iridium.defines.data.new_data import DataParser
 from Iridium.defines.div.division import DivisionParser
 from Iridium.defines.util.instructions import Instruction
 
@@ -109,7 +109,6 @@ class GDBIridiumData(GDBIridium):
 
     def analyze(self, code):
         dp = DataParser(code)
-        dp.recognize()
 
 
 class GDBIridiumDiv(GDBIridium):
@@ -131,5 +130,5 @@ class GDBIridiumDiv(GDBIridium):
 # Initialization
 GDBIridium()
 GDBIridiumCFG()
-# GDBIridiumData() does not work. and is not really needed ;)
+GDBIridiumData()
 GDBIridiumDiv()

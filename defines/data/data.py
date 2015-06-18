@@ -36,7 +36,6 @@ class DataParser(CodeCrawler):
         self.variables = []  # used for class 0 vars
         self.real_variables = []  # class 1 vars
         # for call-/ return-analysis
-        self.called_funcs = self.find_all_function_calls()
         # var sizes
         self.sizes = {'qword': 8, 'dword': 4, 'word': 2, 'byte': 1}
         self.functions_returning_pointers = ['malloc', 'calloc', 'realloc']
