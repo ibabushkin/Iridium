@@ -21,7 +21,7 @@ from multiprocessing import Process
 from Iridium.defines.util.labels import Function
 from Iridium.defines.cfg.graph import Graph
 from Iridium.defines.cfg.analyzer import GraphAnalyzer
-from Iridium.defines.data.data import DataParser
+from Iridium.defines.data.new_data import DataParser
 from Iridium.defines.div.division import DivisionParser
 
 # import the settings
@@ -139,8 +139,7 @@ class AssemblyParser(object):
                 self.current_function +
                 FILENAME_EXTENSIONS['data']),
             'wb')
-        data_parser = DataParser(listing)
-        data_parser.recognize()
+        DataParser(listing)
         sys.stdout = stdout
 
     def division_analysis(self, listing):

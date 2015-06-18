@@ -216,7 +216,7 @@ class Variable(object):
 
     def __eq__(self, other):
         """
-        Are two variable objects equal?
+        Are two objects equal?
         """
         return self.ebp_offset == other.ebp_offset and self.size == other.size
 
