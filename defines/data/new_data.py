@@ -31,15 +31,17 @@ class DataParser(CodeCrawler):
         """
         CodeCrawler.__init__(self, text)
         self.variables = []
+        self.real_variables = []
         self.allocated_space = 0
         self.sizes = {'qword': 8, 'dword': 4, 'word': 2, 'byte': 1}
         self.functions_returning_pointers = ('malloc', 'calloc', 'realloc')
         self.get_allocated_space()
         self.find_addressed_offsets()
         self.print_allocated_space()
-        self.draw_memory_layout()
+        print self.draw_memory_layout()
         self.find_pointers()
-        for var in self.variables:
+        self.calculate_contrast_points()
+        for var in self.real_variables:
             print var
 
     def get_allocated_space(self):
@@ -127,7 +129,7 @@ class DataParser(CodeCrawler):
             if var.ebp_offset < 0:
                 for i in range(var.ebp_offset, var.ebp_offset + self.sizes[var.size]):
                     ret[i] = '|'
-        print ''.join(ret)
+        return ''.join(ret)
 
     def find_pointers(self):
         """
@@ -181,6 +183,46 @@ class DataParser(CodeCrawler):
                 if var.ebp_offset == offset:
                     return var
 
+    def calculate_contrast_points(self):
+        """
+        Calculate which variables are in fact variables, and arrays.
+        """
+        contrast_points = []
+        current_byte = None
+        for index, byte in enumerate(self.draw_memory_layout()):
+            if current_byte is None:
+                current_byte = byte
+            if current_byte != byte:
+                current_byte = byte
+                contrast_points.append(index)
+        if len(contrast_points) > 1:
+            for var in self.variables:
+                if var.ebp_offset >= contrast_points[1] - self.allocated_space:
+                    self.real_variables.append(var)
+        if len(contrast_points) > 2:
+            for i in range(0, self.allocated_space):
+                if i in contrast_points and contrast_points.index(i) > 1:
+                    var = self.find_variable_by_contrast_point(i)
+                    if var:
+                        var.array = True
+                        var.num_items = abs(
+                            contrast_points[
+                                contrast_points.index(i) + 1] - i) / self.sizes[
+                                    var.size] + 1
+
+    def find_variable_by_contrast_point(self, point):
+        """
+        A contrast point is a point in memory (on the stack)
+        that is at the edge of some chunk of memory that is adressed
+        directly by the code. This method makes it possible to find the
+        corresponding variable.
+        """
+        byte_offset = -self.allocated_space + point - 1
+        for i in self.real_variables:
+            # print i.name, i.offset, self.sizes[i.size], byte_offset
+            if (i.offset + self.sizes[i.size] >= byte_offset
+                    and i.offset <= byte_offset):
+                return i
 
 
 
