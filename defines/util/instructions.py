@@ -102,4 +102,7 @@ class Instruction(object):
         fetching it directly from the code.
         """
         if self.is_jump():
-            return self.operands[-1]
+            if ' ' not in self.operands[-1]:
+                return self.operands[-1]
+            else:
+                return self.operands[-1].split(' ')[-1]
