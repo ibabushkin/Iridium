@@ -131,4 +131,3 @@ are some issues still not implemented:
     recognized properly, because their edges leading to the `then` or 
     `else` part are reduced pseudo-randomly. Probably hard to fix, but
     sometimes annoying and slowing down.
-  + make the project more usable
