@@ -65,11 +65,11 @@ class GDBIridium(gdb.Command):
         for index, instruction in enumerate(code):
             location = instruction[0].split(' ')[1]
             if location in jump_targets:
-                labels[index+1] = location
+                labels[index] = location
             code[index] = instruction[1]
         # insert labels into code
-        for l in labels:
-            code.insert(l, '<'+func_name+labels[l][1:])
+        for i, l in enumerate(sorted(labels.keys())):
+            code.insert(l+i, '<'+func_name+labels[l][1:])
         return code
 
     def analyze(self, code):

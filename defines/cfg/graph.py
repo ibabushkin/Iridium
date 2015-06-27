@@ -115,6 +115,7 @@ class Graph(CodeCrawler):
                     current_node_id += 1
         for node_index in self.nodes:
             node = self.nodes[node_index]
+            print node.code[-1]
             if node.code[-1].is_jump():
                 destination = node.code[-1].get_destination()
                 destination = self.find_node_by_label(destination)
