@@ -214,10 +214,13 @@ class DataParser(CodeCrawler):
                     var = self.find_variable_by_contrast_point(i)
                     if var:
                         var.array = True
-                        var.num_items = abs(
-                            contrast_points[
-                                contrast_points.index(i) + 1] - i) / self.sizes[
-                                    var.size] + 1
+                        try: # FIXME: find the bug here and fix it
+                            var.num_items = abs(
+                                contrast_points[
+                                    contrast_points.index(i) + 1] - i) / self.sizes[
+                                        var.size] + 1
+                        except IndexError:
+                            var.num_items = 1
 
     def find_variable_by_contrast_point(self, point):
         """
@@ -229,8 +232,8 @@ class DataParser(CodeCrawler):
         byte_offset = -self.allocated_space + point - 1
         for i in self.real_variables:
             # print i.name, i.offset, self.sizes[i.size], byte_offset
-            if (i.offset + self.sizes[i.size] >= byte_offset
-                    and i.offset <= byte_offset):
+            if (i.ebp_offset + self.sizes[i.size] >= byte_offset
+                    and i.ebp_offset <= byte_offset):
                 return i
 
 
