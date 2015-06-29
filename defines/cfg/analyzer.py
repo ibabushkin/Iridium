@@ -103,7 +103,6 @@ class GraphAnalyzer(object):
                     visited_nodes.append(j)
         omnipresent_nodes = visited_nodes[:]
         if loop:
-            # self.ways2 = filter(lambda x: jump_source not in x, self.ways2)
             self.ways2 = [way for way in self.ways2 if jump_source not in way]
         for i in visited_nodes:
             for j in self.ways2:
@@ -111,6 +110,8 @@ class GraphAnalyzer(object):
                     if i in omnipresent_nodes:
                         omnipresent_nodes.remove(i)
         first_knot = None  # first node after structure
+        if self.ways2[0][0] in omnipresent_nodes:
+            omnipresent_nodes.remove(self.ways2[0][0])
         if loop:
             for i in omnipresent_nodes:
                 if jump_source not in self.get_next_nodes(i):
@@ -572,7 +573,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/conditions18_analysis/main.asm'
+    SOURCE = '../../tests/conditions19_analysis/main.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source
