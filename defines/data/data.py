@@ -77,7 +77,10 @@ class DataParser(CodeCrawler):
                         instr.mnemonic.startswith('arg_'):
                     tokens = instr.operands[0].split(' ')
                     size = tokens[0]
-                    offset = hex_to_num(tokens[2])
+                    if tokens[2]:
+                        offset = hex_to_num(tokens[2])
+                    else:
+                        offset = hex_to_num(tokens[3])
                     name = instr.mnemonic[:-1]
                     self.variables.append(Variable(name, size, offset))
                     ida = True
@@ -210,17 +213,15 @@ class DataParser(CodeCrawler):
                     self.real_variables.append(var)
         if len(contrast_points) > 2:
             for i in range(0, self.allocated_space):
-                if i in contrast_points and contrast_points.index(i) > 1:
+                if i in contrast_points and (len(contrast_points)-1) > \
+                        contrast_points.index(i) > 1:
                     var = self.find_variable_by_contrast_point(i)
                     if var:
                         var.array = True
-                        try: # FIXME: find the bug here and fix it
-                            var.num_items = abs(
-                                contrast_points[
-                                    contrast_points.index(i) + 1] - i) / self.sizes[
-                                        var.size] + 1
-                        except IndexError:
-                            var.num_items = 1
+                        var.num_items = abs(
+                            contrast_points[
+                                contrast_points.index(i) + 1] - i) / self.sizes[
+                                    var.size] + 1
 
     def find_variable_by_contrast_point(self, point):
         """
@@ -284,7 +285,7 @@ if __name__ == '__main__':
         the hard-coded-default is used (for debugging purposes)''')
     ARG_PARSER.add_argument(
         '-o', '--output', help='Optional file to redirect input to')
-    SOURCE = '../../tests/data2_analysis/main.asm'
+    SOURCE = '../../tests/conditions19_analysis/__libc_csu_init.asm'
     ARGS = ARG_PARSER.parse_args()
     if ARGS.source:
         SOURCE = ARGS.source
