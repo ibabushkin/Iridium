@@ -8,4 +8,3 @@ Description:
     Everything that is used by multiple parts
     of the program goes here.
 """
-
