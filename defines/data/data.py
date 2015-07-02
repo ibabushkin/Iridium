@@ -106,7 +106,7 @@ class DataParser(CodeCrawler):
                         if '+' in op and len(op.split('+')) == 2:
                             register, offset = op.split('+')
                             offset = hex_to_num(offset)
-                        elif '-' in op:
+                        elif '-' in op and len(op.split('-')) == 2:
                             register, offset = op.split('-')
                             offset = hex_to_num('-'+offset)
                         else:
@@ -120,8 +120,6 @@ class DataParser(CodeCrawler):
                             else:
                                 name = 'arg_'
                             name += hex(abs(offset))[2:]
-                            if size == '[esp+0]':
-                                print instr
                             var = Variable(name, size.lower(), offset)
                             if var not in self.variables:
                                 self.variables.append(var)
@@ -211,6 +209,9 @@ class DataParser(CodeCrawler):
             for var in self.variables:
                 if var.ebp_offset >= contrast_points[1] - self.allocated_space:
                     self.real_variables.append(var)
+        else:
+            self.real_variables = self.variables
+            # may we need a copy, fix it here then
         if len(contrast_points) > 2:
             for i in range(0, self.allocated_space):
                 if i in contrast_points and (len(contrast_points)-1) > \
