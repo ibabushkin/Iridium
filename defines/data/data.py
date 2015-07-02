@@ -103,7 +103,7 @@ class DataParser(CodeCrawler):
                     offset = None
                     name = None
                     if op:
-                        if '+' in op:
+                        if '+' in op and len(op.split('+')) == 2:
                             register, offset = op.split('+')
                             offset = hex_to_num(offset)
                         elif '-' in op:
