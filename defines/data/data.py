@@ -181,11 +181,15 @@ class DataParser(CodeCrawler):
                 expression = expression.split(' ')[-1][1:-1]
             else:
                 expression = expression[1:-1]
+            register = None
             if '+' in expression:
                 register, offset = expression.split('+')
             elif '-' in expression:
                 register, offset = expression.split('-')
                 offset = '-' + offset
+            else:
+                register = expression
+                offset = '0h'
             offset = hex_to_num(offset)
             if register == 'esp':
                 offset -= self.allocated_space
