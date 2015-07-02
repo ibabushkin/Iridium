@@ -13,11 +13,18 @@ def hex_to_num(string):
     Get a string that contains a hexadecimal
     number in any format and return an int.
     """
+    ret = None
     if string:
+        neg = False
+        if string.startswith('-'):
+            neg = True
+            string = string[1:]
         if string.startswith('0x'):
-            return int(string, 16)
+            ret = int(string, 16)
         elif string.endswith('h'):
-            return int(string[:-1], 16)
+            ret = int(string[:-1], 16)
         else:
-            return int(string)
-    return 0
+            ret = int(string)
+        if neg:
+            ret = -ret
+    return ret
