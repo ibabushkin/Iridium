@@ -41,6 +41,7 @@ class DataParser(CodeCrawler):
         print self.draw_memory_layout()
         self.find_pointers()
         self.calculate_contrast_points()
+        self.real_variables.sort(key=lambda x: x.ebp_offset, reverse=True)
         for var in self.real_variables:
             print var
 
@@ -109,6 +110,10 @@ class DataParser(CodeCrawler):
                         elif '-' in op and len(op.split('-')) == 2:
                             register, offset = op.split('-')
                             offset = hex_to_num('-'+offset)
+                        elif '+' in op and len(op.split('+')) == 3:
+                            tokens = op.split('+')
+                            register = tokens[0]
+                            offset = hex_to_num(tokens[2])
                         else:
                             register = op
                             offset = 0
