@@ -104,15 +104,39 @@ class DataParser(CodeCrawler):
                     offset = None
                     name = None
                     if op:
-                        if '+' in op and len(op.split('+')) == 2:
+                        if '+' in op and len(op.split(
+                                '+')) == 2 and '-' not in op:
                             register, offset = op.split('+')
                             offset = hex_to_num(offset)
-                        elif '-' in op and len(op.split('-')) == 2:
+                        elif '-' in op and len(op.split(
+                                '-')) == 2 and '+' not in op:
                             register, offset = op.split('-')
                             offset = hex_to_num('-'+offset)
                         elif '+' in op and len(op.split('+')) == 3:
                             tokens = op.split('+')
-                            register = tokens[0]
+                            if 'ebp' not in tokens[1] and \
+                                    'esp' not in tokens[1]:
+                                register = tokens[0]
+                            elif '*1' in tokens[1]:
+                                register = tokens[1][:-2]
+                            else:
+                                register = tokens[1]
+                            offset = hex_to_num(tokens[2])
+                        elif '+' in op and '-' in op:
+                            tokens = op.split('+')
+                            if '-' in tokens[0]:
+                                tokens = tokens[0].split('-') + [tokens[1]]
+                                tokens[1] = '-' + tokens[1]
+                            else:
+                                tokens = [tokens[0]] + tokens[1].split('-')
+                                tokens[2] = '-' + tokens[2]
+                            if 'ebp' not in tokens[1] and \
+                                    'esp' not in tokens[1]:
+                                register = tokens[0]
+                            elif '*1' in tokens[1]:
+                                register = tokens[1][:-2]
+                            else:
+                                register = tokens[1]
                             offset = hex_to_num(tokens[2])
                         else:
                             register = op
