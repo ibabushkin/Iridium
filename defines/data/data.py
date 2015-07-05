@@ -33,7 +33,7 @@ class DataParser(CodeCrawler):
         self.variables = []
         self.real_variables = []
         self.allocated_space = 0
-        self.sizes = {'qword': 8, 'dword': 4, 'word': 2, 'byte': 1}
+        self.sizes = {'qword': 8, 'dword': 4, 'word': 2, 'byte': 1, '':0}
         self.functions_returning_pointers = ('malloc', 'calloc', 'realloc')
         self.get_allocated_space()
         self.find_addressed_offsets()
@@ -43,7 +43,7 @@ class DataParser(CodeCrawler):
         self.calculate_contrast_points()
         self.real_variables.sort(key=lambda x: x.ebp_offset, reverse=True)
         for var in self.real_variables:
-            print var
+            print var, self.allocated_space - var.ebp_offset
 
     def get_allocated_space(self):
         """
@@ -85,8 +85,7 @@ class DataParser(CodeCrawler):
                     name = instr.mnemonic[:-1]
                     self.variables.append(Variable(name, size, offset))
                     ida = True
-                elif not ida and instr.mnemonic != 'lea' and \
-                        len(instr.operands) == 2:
+                elif not ida and len(instr.operands) == 2:
                     op = None
                     size = None
                     if '[' in instr.operands[0] and \
@@ -97,9 +96,8 @@ class DataParser(CodeCrawler):
                         if '[' in instr.operands[1] and \
                                 instr.operands[1].endswith(']'):
                             op = instr.operands[1].split('[')[1][:-1]
-                            size = instr.operands[1].split(' ')[0]
-                            if size.lower() not in Variable.hll_sizes:
-                                break
+                            if 'ptr' in instr.operands[1].lower():
+                                size = instr.operands[1].split(' ')[0]
                     register = None
                     offset = None
                     name = None
@@ -149,7 +147,11 @@ class DataParser(CodeCrawler):
                             else:
                                 name = 'arg_'
                             name += hex(abs(offset))[2:]
-                            var = Variable(name, size.lower(), offset)
+                            if size:
+                                size = size.lower()
+                            else:
+                                size = ''
+                            var = Variable(name, size, offset)
                             if var not in self.variables:
                                 self.variables.append(var)
 
@@ -280,7 +282,8 @@ class Variable(object):
     hll_sizes = {'qword': ['double', 'long long int'],
                  'dword': ['int', 'float'],
                  'word': ['short int'],
-                 'byte': ['char']}
+                 'byte': ['char'],
+                 '': ['size unknown']}
 
     def __init__(self, name, size, offset):
         """
@@ -307,7 +310,7 @@ class Variable(object):
         """
         Are two objects equal?
         """
-        return self.ebp_offset == other.ebp_offset and self.size == other.size
+        return self.ebp_offset == other.ebp_offset
 
 if __name__ == '__main__':
     ARG_PARSER = argparse.ArgumentParser(
